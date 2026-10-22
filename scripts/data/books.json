@@ -76,7 +76,8 @@
   "color": "#9DB0C7",
   "ink": "#0A0A0A",
   "thickness": 38,
-  "sort": 8
+  "sort": 8,
+  "coverUrl": "/covers/mente-milionaria.jpg"
  },
  {
   "title": "Pai Rico, Pai Pobre",
@@ -174,7 +175,8 @@
   "color": "#B5651D",
   "ink": "#FFFFFF",
   "thickness": 41,
-  "sort": 18
+  "sort": 18,
+  "coverUrl": "/covers/o-homem-do-castelo-alto.jpg"
  },
  {
   "title": "Roube como um Artista",
@@ -183,7 +185,8 @@
   "color": "#7C8B6F",
   "ink": "#FFFFFF",
   "thickness": 24,
-  "sort": 19
+  "sort": 19,
+  "coverUrl": "/covers/roube-como-um-artista.jpg"
  },
  {
   "title": "The Hard Thing About Hard Things",
@@ -192,7 +195,8 @@
   "color": "#264653",
   "ink": "#FFFFFF",
   "thickness": 28,
-  "sort": 20
+  "sort": 20,
+  "coverUrl": "/covers/the-hard-thing-about-hard-things.jpg"
  },
  {
   "title": "A Revolta de Atlas",
@@ -201,7 +205,8 @@
   "color": "#0A0A0A",
   "ink": "#F1F0EB",
   "thickness": 45,
-  "sort": 21
+  "sort": 21,
+  "coverUrl": "/covers/a-revolta-de-atlas.jpg"
  },
  {
   "title": "Iludidos pelo Acaso",
@@ -210,7 +215,8 @@
   "color": "#7C8B6F",
   "ink": "#FFFFFF",
   "thickness": 23,
-  "sort": 22
+  "sort": 22,
+  "coverUrl": "/covers/iludidos-pelo-acaso.jpg"
  },
  {
   "title": "O Andar do Bêbado",
@@ -229,7 +235,8 @@
   "color": "#E9E4D4",
   "ink": "#0A0A0A",
   "thickness": 38,
-  "sort": 24
+  "sort": 24,
+  "coverUrl": "/covers/como-me-tornei-estupido.jpg"
  },
  {
   "title": "Eram os Deuses Astronautas?",
@@ -238,7 +245,8 @@
   "color": "#E8C547",
   "ink": "#0A0A0A",
   "thickness": 24,
-  "sort": 25
+  "sort": 25,
+  "coverUrl": "/covers/eram-os-deuses-astronautas.jpg"
  },
  {
   "title": "Leonardo da Vinci",
@@ -247,7 +255,8 @@
   "color": "#5B4B8A",
   "ink": "#FFFFFF",
   "thickness": 46,
-  "sort": 26
+  "sort": 26,
+  "coverUrl": "/covers/leonardo-da-vinci.jpg"
  },
  {
   "title": "Crime e Castigo",
@@ -256,7 +265,8 @@
   "color": "#2F5D50",
   "ink": "#FFFFFF",
   "thickness": 45,
-  "sort": 27
+  "sort": 27,
+  "coverUrl": "/covers/crime-e-castigo.jpg"
  },
  {
   "title": "Armas, Germes e Aço",
@@ -265,7 +275,8 @@
   "color": "#1F3A5F",
   "ink": "#FFFFFF",
   "thickness": 34,
-  "sort": 28
+  "sort": 28,
+  "coverUrl": "/covers/armas-germes-e-aco.jpg"
  },
  {
   "title": "O Homem e seus Símbolos",
@@ -274,7 +285,8 @@
   "color": "#D9C7B0",
   "ink": "#0A0A0A",
   "thickness": 44,
-  "sort": 29
+  "sort": 29,
+  "coverUrl": "/covers/o-homem-e-seus-simbolos.jpg"
  },
  {
   "title": "A Metamorfose",
@@ -283,7 +295,8 @@
   "color": "#5B4B8A",
   "ink": "#FFFFFF",
   "thickness": 38,
-  "sort": 30
+  "sort": 30,
+  "coverUrl": "/covers/a-metamorfose.jpg"
  },
  {
   "title": "Como Fazer Amigos e Influenciar Pessoas",
@@ -292,7 +305,8 @@
   "color": "#1F3A5F",
   "ink": "#FFFFFF",
   "thickness": 27,
-  "sort": 31
+  "sort": 31,
+  "coverUrl": "/covers/como-fazer-amigos-e-influenciar-pessoas.jpg"
  },
  {
   "title": "O Quarto Reich",
@@ -301,7 +315,8 @@
   "color": "#D9C7B0",
   "ink": "#0A0A0A",
   "thickness": 45,
-  "sort": 32
+  "sort": 32,
+  "coverUrl": "/covers/o-quarto-reich.jpg"
  },
  {
   "title": "Sociedade do Cansaço",
@@ -310,7 +325,8 @@
   "color": "#C8442F",
   "ink": "#FFFFFF",
   "thickness": 31,
-  "sort": 33
+  "sort": 33,
+  "coverUrl": "/covers/sociedade-do-cansaco.jpg"
  },
  {
   "title": "O Príncipe",
@@ -319,7 +335,8 @@
   "color": "#264653",
   "ink": "#FFFFFF",
   "thickness": 25,
-  "sort": 34
+  "sort": 34,
+  "coverUrl": "/covers/o-principe.jpg"
  },
  {
   "title": "Dedique-se de Coração",
@@ -328,7 +345,8 @@
   "color": "#3A3A35",
   "ink": "#F1F0EB",
   "thickness": 41,
-  "sort": 35
+  "sort": 35,
+  "coverUrl": "/covers/dedique-se-de-coracao.jpg"
  },
  {
   "title": "Uma Breve História do Tempo",
@@ -337,7 +355,8 @@
   "color": "#C8442F",
   "ink": "#FFFFFF",
   "thickness": 35,
-  "sort": 36
+  "sort": 36,
+  "coverUrl": "/covers/uma-breve-historia-do-tempo.jpg"
  },
  {
   "title": "101 Perguntas e Respostas para Investidores Iniciantes",
@@ -355,7 +374,8 @@
   "color": "#2F5D50",
   "ink": "#FFFFFF",
   "thickness": 22,
-  "sort": 38
+  "sort": 38,
+  "coverUrl": "/covers/mais-esperto-que-o-diabo.jpg"
  },
  {
   "title": "A Marca da Vitória",
@@ -364,7 +384,8 @@
   "color": "#E8C547",
   "ink": "#0A0A0A",
   "thickness": 41,
-  "sort": 39
+  "sort": 39,
+  "coverUrl": "/covers/a-marca-da-vitoria.jpg"
  },
  {
   "title": "Meditações",
@@ -373,7 +394,8 @@
   "color": "#1F3A5F",
   "ink": "#FFFFFF",
   "thickness": 41,
-  "sort": 40
+  "sort": 40,
+  "coverUrl": "/covers/meditacoes.jpg"
  },
  {
   "title": "Sobre a Brevidade da Vida",
@@ -382,7 +404,8 @@
   "color": "#9DB0C7",
   "ink": "#0A0A0A",
   "thickness": 25,
-  "sort": 41
+  "sort": 41,
+  "coverUrl": "/covers/sobre-a-brevidade-da-vida.jpg"
  },
  {
   "title": "O Momento Decisivo",
@@ -391,7 +414,8 @@
   "color": "#5B4B8A",
   "ink": "#FFFFFF",
   "thickness": 22,
-  "sort": 42
+  "sort": 42,
+  "coverUrl": "/covers/o-momento-decisivo.jpg"
  },
  {
   "title": "A Insustentável Leveza do Ser",
@@ -400,7 +424,8 @@
   "color": "#F1F0EB",
   "ink": "#0A0A0A",
   "thickness": 35,
-  "sort": 43
+  "sort": 43,
+  "coverUrl": "/covers/a-insustentavel-leveza-do-ser.jpg"
  },
  {
   "title": "Breves Respostas para Grandes Questões",
@@ -409,7 +434,8 @@
   "color": "#1F3A5F",
   "ink": "#FFFFFF",
   "thickness": 46,
-  "sort": 44
+  "sort": 44,
+  "coverUrl": "/covers/breves-respostas-para-grandes-questoes.jpg"
  },
  {
   "title": "Acredite, Estou Mentindo",
@@ -418,7 +444,8 @@
   "color": "#1F3A5F",
   "ink": "#FFFFFF",
   "thickness": 43,
-  "sort": 45
+  "sort": 45,
+  "coverUrl": "/covers/acredite-estou-mentindo.jpg"
  },
  {
   "title": "Predictably Irrational",
@@ -427,7 +454,8 @@
   "color": "#3A3A35",
   "ink": "#F1F0EB",
   "thickness": 47,
-  "sort": 46
+  "sort": 46,
+  "coverUrl": "/covers/predictably-irrational.jpg"
  },
  {
   "title": "Guerra e Paz",
@@ -436,7 +464,8 @@
   "color": "#B5651D",
   "ink": "#FFFFFF",
   "thickness": 27,
-  "sort": 47
+  "sort": 47,
+  "coverUrl": "/covers/guerra-e-paz.jpg"
  },
  {
   "title": "O Algoritmo Mestre",
@@ -445,7 +474,8 @@
   "color": "#1F3A5F",
   "ink": "#FFFFFF",
   "thickness": 45,
-  "sort": 48
+  "sort": 48,
+  "coverUrl": "/covers/o-algoritmo-mestre.jpg"
  },
  {
   "title": "O Mínimo que Você Precisa Saber para Não Ser um Idiota",
@@ -454,7 +484,8 @@
   "color": "#0A0A0A",
   "ink": "#F1F0EB",
   "thickness": 36,
-  "sort": 49
+  "sort": 49,
+  "coverUrl": "/covers/o-minimo-que-voce-precisa-saber-para-nao-ser-um-idiota.jpg"
  },
  {
   "title": "O Capital",
@@ -463,7 +494,8 @@
   "color": "#1F3A5F",
   "ink": "#FFFFFF",
   "thickness": 30,
-  "sort": 50
+  "sort": 50,
+  "coverUrl": "/covers/o-capital.jpg"
  },
  {
   "title": "O Fim da Infância",
@@ -472,7 +504,8 @@
   "color": "#3A3A35",
   "ink": "#F1F0EB",
   "thickness": 37,
-  "sort": 51
+  "sort": 51,
+  "coverUrl": "/covers/o-fim-da-infancia.jpg"
  },
  {
   "title": "Outliers",
@@ -481,7 +514,8 @@
   "color": "#E9E4D4",
   "ink": "#0A0A0A",
   "thickness": 45,
-  "sort": 52
+  "sort": 52,
+  "coverUrl": "/covers/outliers.jpg"
  },
  {
   "title": "A Revolução dos Bichos",
@@ -500,6 +534,7 @@
   "color": "#264653",
   "ink": "#FFFFFF",
   "thickness": 42,
-  "sort": 54
+  "sort": 54,
+  "coverUrl": "/covers/never-split-the-difference.jpg"
  }
 ]
