@@ -6,7 +6,8 @@
   "color": "#E8C547",
   "ink": "#0A0A0A",
   "thickness": 36,
-  "sort": 1
+  "sort": 1,
+  "coverUrl": "/covers/contos.jpg"
  },
  {
   "title": "A Sutil Arte de Ligar o Foda-se",
@@ -15,7 +16,8 @@
   "color": "#E9E4D4",
   "ink": "#0A0A0A",
   "thickness": 40,
-  "sort": 2
+  "sort": 2,
+  "coverUrl": "/covers/a-sutil-arte-de-ligar-o-foda-se.jpg"
  },
  {
   "title": "Inabalável",
@@ -24,7 +26,8 @@
   "color": "#C8442F",
   "ink": "#FFFFFF",
   "thickness": 42,
-  "sort": 3
+  "sort": 3,
+  "coverUrl": "/covers/inabalavel.jpg"
  },
  {
   "title": "A Arte da Guerra",
@@ -33,7 +36,8 @@
   "color": "#264653",
   "ink": "#FFFFFF",
   "thickness": 29,
-  "sort": 4
+  "sort": 4,
+  "coverUrl": "/covers/a-arte-da-guerra.jpg"
  },
  {
   "title": "Hamlet",
@@ -42,7 +46,8 @@
   "color": "#B5651D",
   "ink": "#FFFFFF",
   "thickness": 31,
-  "sort": 5
+  "sort": 5,
+  "coverUrl": "/covers/hamlet.jpg"
  },
  {
   "title": "O Pequeno Príncipe",
@@ -51,7 +56,8 @@
   "color": "#E5484D",
   "ink": "#FFFFFF",
   "thickness": 34,
-  "sort": 6
+  "sort": 6,
+  "coverUrl": "/covers/o-pequeno-principe.jpg"
  },
  {
   "title": "1984",
@@ -60,7 +66,8 @@
   "color": "#E9E4D4",
   "ink": "#0A0A0A",
   "thickness": 30,
-  "sort": 7
+  "sort": 7,
+  "coverUrl": "/covers/1984.jpg"
  },
  {
   "title": "Mente Milionária",
@@ -78,7 +85,8 @@
   "color": "#5B4B8A",
   "ink": "#FFFFFF",
   "thickness": 28,
-  "sort": 9
+  "sort": 9,
+  "coverUrl": "/covers/pai-rico-pai-pobre.jpg"
  },
  {
   "title": "As 16 Leis do Sucesso",
@@ -87,7 +95,8 @@
   "color": "#9DB0C7",
   "ink": "#0A0A0A",
   "thickness": 32,
-  "sort": 10
+  "sort": 10,
+  "coverUrl": "/covers/as-16-leis-do-sucesso.jpg"
  },
  {
   "title": "Percy Jackson (coleção)",
@@ -96,7 +105,8 @@
   "color": "#B5651D",
   "ink": "#FFFFFF",
   "thickness": 24,
-  "sort": 11
+  "sort": 11,
+  "coverUrl": "/covers/percy-jackson-colecao.jpg"
  },
  {
   "title": "Diário de um Banana",
@@ -105,7 +115,8 @@
   "color": "#C8442F",
   "ink": "#FFFFFF",
   "thickness": 23,
-  "sort": 12
+  "sort": 12,
+  "coverUrl": "/covers/diario-de-um-banana.jpg"
  },
  {
   "title": "Steve Jobs",
@@ -114,7 +125,8 @@
   "color": "#9DB0C7",
   "ink": "#0A0A0A",
   "thickness": 32,
-  "sort": 13
+  "sort": 13,
+  "coverUrl": "/covers/steve-jobs.jpg"
  },
  {
   "title": "As 48 Leis do Poder",
@@ -123,7 +135,8 @@
   "color": "#264653",
   "ink": "#FFFFFF",
   "thickness": 31,
-  "sort": 14
+  "sort": 14,
+  "coverUrl": "/covers/as-48-leis-do-poder.jpg"
  },
  {
   "title": "The Champion's Mind",
@@ -141,7 +154,8 @@
   "color": "#3A3A35",
   "ink": "#F1F0EB",
   "thickness": 26,
-  "sort": 16
+  "sort": 16,
+  "coverUrl": "/covers/12-regras-para-a-vida.jpg"
  },
  {
   "title": "The Obstacle Is the Way",
@@ -150,7 +164,8 @@
   "color": "#B5651D",
   "ink": "#FFFFFF",
   "thickness": 29,
-  "sort": 17
+  "sort": 17,
+  "coverUrl": "/covers/the-obstacle-is-the-way.jpg"
  },
  {
   "title": "O Homem do Castelo Alto",
@@ -204,7 +219,8 @@
   "color": "#E9E4D4",
   "ink": "#0A0A0A",
   "thickness": 23,
-  "sort": 23
+  "sort": 23,
+  "coverUrl": "/covers/o-andar-do-bebado.jpg"
  },
  {
   "title": "Como me Tornei Estúpido",
@@ -474,7 +490,8 @@
   "color": "#264653",
   "ink": "#FFFFFF",
   "thickness": 27,
-  "sort": 53
+  "sort": 53,
+  "coverUrl": "/covers/a-revolucao-dos-bichos.jpg"
  },
  {
   "title": "Never Split the Difference",
