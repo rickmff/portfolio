@@ -4,6 +4,7 @@
  *
  *   pnpm import:books
  */
+import { and, eq, isNull } from "drizzle-orm";
 import { db, schema } from "../src/db";
 import books from "./data/books.json";
 
@@ -12,6 +13,24 @@ export async function importBooks() {
   const fresh = (books as (typeof schema.books.$inferInsert)[]).filter((b) => !existing.has(b.title));
   if (fresh.length) await db.insert(schema.books).values(fresh);
   return fresh.length;
+}
+
+/**
+ * Gives books that still have no cover the cover (and cover-derived spine colours) from the
+ * export. Covers set by hand in the backoffice are never overwritten.
+ */
+export async function syncBookCovers() {
+  let n = 0;
+  for (const b of books as (typeof schema.books.$inferInsert)[]) {
+    if (!b.coverUrl) continue;
+    const rows = await db
+      .update(schema.books)
+      .set({ coverUrl: b.coverUrl, color: b.color, ink: b.ink })
+      .where(and(eq(schema.books.title, b.title), isNull(schema.books.coverUrl)))
+      .returning({ id: schema.books.id });
+    n += rows.length;
+  }
+  return n;
 }
 
 if (process.argv[1]?.endsWith("import-books.ts")) {

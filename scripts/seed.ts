@@ -1,8 +1,12 @@
-// Fills an empty database with sample content so the site has something to show.
+// Fills an empty database with sample content so the site has something to show,
+// and backfills book covers on every boot.
 import { db, schema } from "../src/db";
-import { importBooks } from "./import-books";
+import { importBooks, syncBookCovers } from "./import-books";
 
 async function main() {
+  const covers = await syncBookCovers();
+  if (covers) console.log(`books: added ${covers} covers`);
+
   const existing = await db.select().from(schema.projects).limit(1);
   if (existing.length) {
     console.log("database already has content, skipping seed");
