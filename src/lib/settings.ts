@@ -1,0 +1,16 @@
+export const SETTING_KEYS = {
+  name: { label: "Name", fallback: "Henrique Matos" },
+  role: { label: "Role (small caps line)", fallback: "Fullstack developer" },
+  hero: {
+    label: "Hero sentence (wrap a word in **double asterisks** to emphasise it)",
+    fallback:
+      "I make software that feels **considered** — products, platforms and the small details between them.",
+  },
+  now: { label: "Now (what you are working on)", fallback: "" },
+  email: { label: "Contact email", fallback: "" },
+  github: { label: "GitHub URL", fallback: "https://github.com/rickmff" },
+  linkedin: { label: "LinkedIn URL", fallback: "" },
+} as const;
+
+export type SettingKey = keyof typeof SETTING_KEYS;
+export type SiteSettings = Record<SettingKey, string>;
