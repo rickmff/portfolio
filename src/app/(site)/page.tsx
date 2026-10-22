@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { BookStage } from "@/components/BookStage";
+import { BookShelf } from "@/components/BookShelf";
 import { Emphasis } from "@/components/SiteChrome";
 import { WorkStrip } from "@/components/WorkStrip";
 import { WritingList } from "@/components/WritingList";
-import { onShelf, toStageBook } from "@/lib/books";
+import { onShelf, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -44,7 +44,10 @@ export default async function Home() {
           <div className="section-head center">
             <h2>On the shelf</h2>
           </div>
-          <BookStage books={books.filter(onShelf).map(toStageBook)} />
+          <BookShelf
+            shelves={[{ books: books.filter(onShelf).map(toShelfBook) }]}
+            initialOpen={books.find((b) => b.status === "reading")?.id}
+          />
           <p style={{ textAlign: "center", margin: "32px 0 0", fontSize: 13 }}>
             <Link href="/books" className="link-muted">All books →</Link>
           </p>

@@ -1,13 +1,14 @@
 import type { Book } from "@/db/schema";
-import type { StageBook } from "@/components/BookStage";
+import type { ShelfBook } from "@/components/BookShelf";
 
-export function toStageBook(b: Book): StageBook {
+export function toShelfBook(b: Book): ShelfBook {
   return {
     id: b.id,
     title: b.title,
     author: b.author,
     status: b.status,
     finishedYear: b.finishedYear,
+    rating: b.rating,
     color: b.color,
     ink: b.ink,
     coverUrl: b.coverUrl,
