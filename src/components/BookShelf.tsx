@@ -24,7 +24,9 @@ const COVER_W = 150;
 const PER_SHELF = 22;
 
 /** Stable, slightly varied book height so the row doesn't look machine-cut. */
-const heightOf = (b: ShelfBook) => 196 + ((b.id * 37 + b.title.length * 7) % 48);
+// Books with a real cover keep its ~2:3 proportions; the rest vary a little for a lived-in shelf.
+const heightOf = (b: ShelfBook) =>
+  b.coverUrl ? 220 + ((b.id * 37) % 9) : 196 + ((b.id * 37 + b.title.length * 7) % 48);
 const depthOf = (b: ShelfBook) => Math.min(56, Math.max(18, b.thickness));
 
 function chunk<T>(list: T[], size: number) {
@@ -94,7 +96,7 @@ export function BookShelf({ shelves, initialOpen }: { shelves: Shelf[]; initialO
                           <span
                             className={`sb-front${b.coverUrl ? " has-cover" : ""}`}
                             style={{
-                              background: b.color,
+                              backgroundColor: b.color,
                               color: b.ink,
                               backgroundImage: b.coverUrl ? `url(${b.coverUrl})` : undefined,
                             }}
