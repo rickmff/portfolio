@@ -35,7 +35,16 @@ function chunk<T>(list: T[], size: number) {
   return out;
 }
 
-export function BookShelf({ shelves, initialOpen }: { shelves: Shelf[]; initialOpen?: number | null }) {
+export function BookShelf({
+  shelves,
+  initialOpen,
+  centered = false,
+}: {
+  shelves: Shelf[];
+  initialOpen?: number | null;
+  /** Centre short shelves (the home page shows only a handful of books). */
+  centered?: boolean;
+}) {
   const all = shelves.flatMap((s) => s.books);
   const [open, setOpen] = useState<number | null>(initialOpen ?? null);
   const selected = all.find((b) => b.id === open) ?? null;
@@ -68,7 +77,7 @@ export function BookShelf({ shelves, initialOpen }: { shelves: Shelf[]; initialO
             ) : null}
             {chunk(shelf.books, PER_SHELF).map((row, ri) => (
               <div key={ri} className="shelf">
-                <div className="shelf-row">
+                <div className={`shelf-row${centered ? " centered" : ""}`}>
                   {row.map((b) => {
                     const isOpen = b.id === open;
                     const h = heightOf(b);

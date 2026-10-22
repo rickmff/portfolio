@@ -263,6 +263,9 @@ a {
   overflow-y: hidden;
   scrollbar-width: none;
 }
+.shelf-row.centered {
+  justify-content: safe center;
+}
 .shelf-row::-webkit-scrollbar {
   display: none;
 }

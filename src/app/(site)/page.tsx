@@ -3,7 +3,7 @@ import { BookShelf } from "@/components/BookShelf";
 import { Emphasis } from "@/components/SiteChrome";
 import { WorkStrip } from "@/components/WorkStrip";
 import { WritingList } from "@/components/WritingList";
-import { onShelf, toShelfBook } from "@/lib/books";
+import { latestRead, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -15,6 +15,8 @@ export default async function Home() {
     getBooks(),
     getPublishedPosts(6),
   ]);
+
+  const shelf = latestRead(books);
 
   return (
     <>
@@ -39,14 +41,15 @@ export default async function Home() {
         <WorkStrip projects={projects} />
       </section>
 
-      {books.some(onShelf) ? (
+      {shelf.length ? (
         <section id="books" className="wrap section">
           <div className="section-head center">
-            <h2>On the shelf</h2>
+            <h2>Recently read</h2>
           </div>
           <BookShelf
-            shelves={[{ books: books.filter(onShelf).map(toShelfBook) }]}
-            initialOpen={books.find((b) => b.status === "reading")?.id}
+            shelves={[{ books: shelf.map(toShelfBook) }]}
+            initialOpen={shelf[0].id}
+            centered
           />
           <p style={{ textAlign: "center", margin: "32px 0 0", fontSize: 13 }}>
             <Link href="/books" className="link-muted">All books →</Link>
