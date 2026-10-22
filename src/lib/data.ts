@@ -30,7 +30,7 @@ export async function getProject(slug: string) {
 }
 
 export function getBooks() {
-  return db.select().from(books).orderBy(asc(books.sort), desc(books.finishedYear));
+  return db.select().from(books).orderBy(asc(books.sort), asc(books.id));
 }
 
 const livePost = and(

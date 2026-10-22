@@ -137,6 +137,23 @@ export async function saveBook(_: FormState, fd: FormData): Promise<FormState> {
   redirect("/admin/books");
 }
 
+/** Saves the shelf order: `ids` is every book, first to last. */
+export async function reorderBooks(ids: number[]): Promise<FormState> {
+  await requireAdmin();
+  try {
+    const order = z.array(z.number().int().positive()).parse(ids);
+    await db.transaction(async (tx) => {
+      for (const [i, id] of order.entries()) {
+        await tx.update(books).set({ sort: i + 1 }).where(eq(books.id, id));
+      }
+    });
+  } catch (e) {
+    return fail(e);
+  }
+  refreshSite();
+  return { ok: true };
+}
+
 export async function deleteBook(id: number) {
   await requireAdmin();
   await db.delete(books).where(eq(books.id, id));

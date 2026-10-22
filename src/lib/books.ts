@@ -37,13 +37,10 @@ export function statusLabel(b: Pick<Book, "status" | "finishedYear">) {
 /** How many books the home page shelf shows. */
 export const HOME_SHELF_SIZE = 8;
 
-/**
- * The most recently read books: by year finished, then by most recently added (higher order
- * number). Set "Year finished" or "Order" in the backoffice to change which ones show.
- */
+/** The first read books in the shelf order set in the backoffice (Books → drag to reorder). */
 export function latestRead(books: Book[], limit = HOME_SHELF_SIZE) {
   return books
     .filter((b) => b.status === "read")
-    .sort((a, b) => (b.finishedYear ?? 0) - (a.finishedYear ?? 0) || b.sort - a.sort || b.id - a.id)
+    .sort((a, b) => a.sort - b.sort || a.id - b.id)
     .slice(0, limit);
 }

@@ -353,3 +353,129 @@
   font-weight: 400;
   letter-spacing: -0.03em;
 }
+
+/* Book order */
+.adm-order-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.adm-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.adm-tabs button {
+  border: 1px solid var(--adm-line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.adm-tabs button span {
+  color: var(--muted);
+  margin-left: 4px;
+}
+.adm-tabs button.on {
+  background: #111;
+  border-color: #111;
+  color: #fff;
+}
+.adm-tabs button.on span {
+  color: rgba(255, 255, 255, 0.6);
+}
+.adm-order-hint {
+  font-size: 13px;
+  margin: 14px 0;
+}
+.adm-order-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  border: 1px solid var(--adm-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.adm-order-list li {
+  display: grid;
+  grid-template-columns: 18px 28px 28px 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--adm-line);
+  cursor: grab;
+  background: #fff;
+}
+.adm-order-list li:last-child {
+  border-bottom: 0;
+}
+.adm-order-list li.dragging {
+  opacity: 0.4;
+}
+.adm-order-list li.over {
+  box-shadow: inset 0 2px 0 #111;
+}
+.adm-grip {
+  color: #bbb;
+  letter-spacing: -2px;
+}
+.adm-order-n {
+  font-size: 12px;
+  color: var(--muted);
+}
+.adm-order-cover {
+  width: 24px;
+  height: 34px;
+  border-radius: 2px;
+  object-fit: cover;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+.adm-order-title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.adm-order-title a {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.adm-order-title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.adm-order-title small {
+  font-size: 12px;
+}
+.adm-order-status {
+  font-size: 12px;
+}
+.adm-order-arrows {
+  display: flex;
+  gap: 4px;
+}
+.adm-order-arrows button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--adm-line);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+.adm-order-arrows button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+@media (max-width: 640px) {
+  .adm-order-list li {
+    grid-template-columns: 28px 28px 1fr auto;
+  }
+  .adm-grip,
+  .adm-order-status {
+    display: none;
+  }
+}
