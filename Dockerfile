@@ -11,7 +11,7 @@ FROM base AS build
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN pnpm build
+RUN pnpm build && pnpm build:seed
 
 # Migration runner needs drizzle-orm + postgres outside the traced standalone bundle.
 FROM base AS migrator
@@ -27,8 +27,10 @@ COPY --from=build --chown=app:app /app/public ./public
 COPY --from=build --chown=app:app /app/drizzle ./drizzle
 COPY --from=build --chown=app:app /app/scripts/migrate.mjs ./scripts/migrate.mjs
 COPY --from=build --chown=app:app /app/src/db/url.mjs ./src/db/url.mjs
+# Self-contained bundle: fills an empty database with starter content and the reading list.
+COPY --from=build --chown=app:app /app/scripts/seed.bundle.mjs ./scripts/seed.bundle.mjs
 # ESM ignores NODE_PATH, so the migrator's deps sit next to the script.
 COPY --from=migrator /m/node_modules ./scripts/node_modules
 USER app
 EXPOSE 3000
-CMD ["sh", "-c", "node scripts/migrate.mjs && node server.js"]
+CMD ["sh", "-c", "node scripts/migrate.mjs && node scripts/seed.bundle.mjs && node server.js"]

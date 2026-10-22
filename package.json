@@ -15,7 +15,8 @@
     "typecheck": "tsc --noEmit",
     "import:contentful": "tsx scripts/import-contentful.ts",
     "import:books": "tsx scripts/import-books.ts",
-    "vercel-build": "node scripts/migrate.mjs && tsx scripts/seed.ts && next build"
+    "vercel-build": "node scripts/migrate.mjs && tsx scripts/seed.ts && next build",
+    "build:seed": "esbuild scripts/seed.ts --bundle --platform=node --target=node22 --format=esm --outfile=scripts/seed.bundle.mjs --log-level=warning --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\""
   },
   "dependencies": {
     "@vercel/blob": "^2.8.2",
@@ -38,6 +39,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.11",
+    "esbuild": "^0.28.2",
     "eslint": "^9",
     "eslint-config-next": "15.5.28",
     "tailwindcss": "^4",
