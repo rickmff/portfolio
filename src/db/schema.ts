@@ -28,6 +28,8 @@ export const projects = pgTable("projects", {
   year: integer("year").notNull(),
   stack: text("stack").notNull().default(""),
   coverUrl: text("cover_url"),
+  /** Short looping video or GIF that plays when the card is hovered. */
+  previewUrl: text("preview_url"),
   liveUrl: text("live_url"),
   repoUrl: text("repo_url"),
   tint: varchar("tint", { length: 9 }).notNull().default("#F1F0EB"),

@@ -68,6 +68,7 @@ const projectSchema = z.object({
   stack: z.string().trim(),
   liveUrl: optionalText,
   repoUrl: optionalText,
+  previewUrl: optionalText,
   tint: hex,
   sort: z.coerce.number().int(),
   published: checkbox,

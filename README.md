@@ -29,6 +29,17 @@ Change the schema in `src/db/schema.ts`, then `pnpm db:generate` to write a migr
 Migrations run automatically when the app container starts. Caddy fetches the TLS certificate. Uploaded images live in the `uploads` volume and the database in `pgdata`; back both up (for example `docker compose exec db pg_dump -U portfolio portfolio > backup.sql`).
 
 
+## Importing the old rickmff.com content
+
+The previous site loads its content from Contentful in the browser, so it is imported through the Contentful Delivery API rather than scraped:
+
+```bash
+CONTENTFUL_SPACE_ID=… CONTENTFUL_ACCESS_TOKEN=… pnpm import:contentful --dry-run   # preview
+CONTENTFUL_SPACE_ID=… CONTENTFUL_ACCESS_TOKEN=… pnpm import:contentful             # write
+```
+
+`work` entries become projects (thumbnail → cover, gif/video → hover preview, files downloaded into `uploads/`), and the `about` entries (profile, experience, stack, awards, certificates) become the About page, editable under Settings. Re-running updates projects by slug.
+
 ## Structure
 
 ```

@@ -12,7 +12,8 @@
     "db:seed": "tsx scripts/seed.ts",
     "db:studio": "drizzle-kit studio",
     "hash-password": "node scripts/hash-password.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "import:contentful": "tsx scripts/import-contentful.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

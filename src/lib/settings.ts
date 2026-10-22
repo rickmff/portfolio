@@ -9,7 +9,10 @@ export const SETTING_KEYS = {
   now: { label: "Now (what you are working on)", fallback: "" },
   email: { label: "Contact email", fallback: "" },
   github: { label: "GitHub URL", fallback: "https://github.com/rickmff" },
-  linkedin: { label: "LinkedIn URL", fallback: "" },
+  linkedin: { label: "LinkedIn URL", fallback: "https://www.linkedin.com/in/rickmff/" },
+  twitter: { label: "X / Twitter URL", fallback: "https://twitter.com/rickmff" },
+  discord: { label: "Discord invite URL", fallback: "" },
+  about: { label: "About page (Markdown)", fallback: "" },
 } as const;
 
 export type SettingKey = keyof typeof SETTING_KEYS;

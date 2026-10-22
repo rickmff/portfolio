@@ -9,6 +9,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
         <Link href="/#work" className="link-muted">Work</Link>
         <Link href="/books" className="link-muted">Books</Link>
         <Link href="/blog" className="link-muted">Writing</Link>
+        {settings.about ? <Link href="/about" className="link-muted">About</Link> : null}
         {settings.email ? (
           <a href={`mailto:${settings.email}`} className="link-muted">Email</a>
         ) : null}
@@ -24,6 +25,8 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
       <span>
         {settings.github ? <a href={settings.github} className="link-muted">GitHub</a> : null}
         {settings.linkedin ? <a href={settings.linkedin} className="link-muted">LinkedIn</a> : null}
+        {settings.twitter ? <a href={settings.twitter} className="link-muted">X</a> : null}
+        {settings.discord ? <a href={settings.discord} className="link-muted">Discord</a> : null}
         {settings.email ? <a href={`mailto:${settings.email}`} className="link-muted">Email</a> : null}
         <a href="/rss.xml" className="link-muted">RSS</a>
       </span>

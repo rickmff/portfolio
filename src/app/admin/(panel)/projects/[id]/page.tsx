@@ -41,6 +41,12 @@ export default async function EditProject({ params }: { params: Promise<{ id: st
           <ImageField label="Cover image (4:5 works best)" current={p?.coverUrl} />
           <Color name="tint" label="Background tint" defaultValue={p?.tint ?? "#F1F0EB"} />
         </Row>
+        <Text
+          name="previewUrl"
+          label="Hover preview URL (optional)"
+          defaultValue={p?.previewUrl}
+          hint="A short MP4/WebM or GIF that plays when someone hovers the card."
+        />
         <MarkdownField name="body" label="Case study" defaultValue={p?.body} />
         <Check name="published" label="Published" defaultChecked={p?.published ?? true} />
       </AdminForm>
