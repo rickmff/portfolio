@@ -26,6 +26,7 @@ COPY --from=build --chown=app:app /app/.next/static ./.next/static
 COPY --from=build --chown=app:app /app/public ./public
 COPY --from=build --chown=app:app /app/drizzle ./drizzle
 COPY --from=build --chown=app:app /app/scripts/migrate.mjs ./scripts/migrate.mjs
+COPY --from=build --chown=app:app /app/src/db/url.mjs ./src/db/url.mjs
 # ESM ignores NODE_PATH, so the migrator's deps sit next to the script.
 COPY --from=migrator /m/node_modules ./scripts/node_modules
 USER app

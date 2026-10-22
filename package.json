@@ -14,9 +14,11 @@
     "hash-password": "node scripts/hash-password.mjs",
     "typecheck": "tsc --noEmit",
     "import:contentful": "tsx scripts/import-contentful.ts",
-    "import:books": "tsx scripts/import-books.ts"
+    "import:books": "tsx scripts/import-books.ts",
+    "vercel-build": "node scripts/migrate.mjs && tsx scripts/seed.ts && next build"
   },
   "dependencies": {
+    "@vercel/blob": "^2.8.2",
     "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.4",
     "jose": "^6.2.13",

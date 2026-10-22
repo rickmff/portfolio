@@ -1,9 +1,10 @@
-// Runs pending SQL migrations from ./drizzle. Used by the container on boot.
+// Runs pending SQL migrations from ./drizzle. Used by the container on boot and the Vercel build.
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import postgres from "postgres";
+import { databaseUrl } from "../src/db/url.mjs";
 
-const url = process.env.DATABASE_URL;
+const url = databaseUrl({ direct: true });
 if (!url) throw new Error("DATABASE_URL is not set");
 
 const client = postgres(url, { max: 1 });
