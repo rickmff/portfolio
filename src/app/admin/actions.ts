@@ -107,7 +107,7 @@ export async function deleteProject(id: number) {
 const bookSchema = z.object({
   title: z.string().trim().min(1, "required"),
   author: z.string().trim().min(1, "required"),
-  status: z.enum(["reading", "read", "next"]),
+  status: z.enum(schema.BOOK_STATUSES),
   finishedYear: optionalInt(1900, 2100),
   rating: optionalInt(1, 5),
   note: z.string().trim(),

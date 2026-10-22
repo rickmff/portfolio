@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BookStage } from "@/components/BookStage";
-import { statusLabel, toStageBook } from "@/lib/books";
+import { onShelf, toStageBook } from "@/lib/books";
 import { getBooks } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -10,6 +10,8 @@ const GROUPS = [
   { key: "reading", label: "Reading" },
   { key: "read", label: "Read" },
   { key: "next", label: "Up next" },
+  { key: "wishlist", label: "Wishlist" },
+  { key: "abandoned", label: "Put down" },
 ] as const;
 
 export default async function BooksPage() {
@@ -21,7 +23,7 @@ export default async function BooksPage() {
         <h1>Books that changed how I build things.</h1>
       </section>
       <section className="wrap section">
-        <BookStage books={books.map(toStageBook)} showNote />
+        <BookStage books={books.filter(onShelf).map(toStageBook)} showNote />
       </section>
       <section className="wrap section" style={{ maxWidth: 720 }}>
         {GROUPS.map((g) => {
@@ -38,7 +40,7 @@ export default async function BooksPage() {
                       {b.title} <span className="muted" style={{ fontSize: 13 }}>— {b.author}</span>
                     </span>
                     <span className="mono" style={{ color: "var(--faint)" }}>
-                      {b.rating ? "●".repeat(b.rating) : statusLabel(b)}
+                      {b.rating ? "●".repeat(b.rating) : b.finishedYear ?? ""}
                     </span>
                   </div>
                 ))}

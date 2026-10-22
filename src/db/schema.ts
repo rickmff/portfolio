@@ -9,7 +9,9 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-export const bookStatus = pgEnum("book_status", ["reading", "read", "next"]);
+export const bookStatus = pgEnum("book_status", ["reading", "read", "next", "wishlist", "abandoned"]);
+export const BOOK_STATUSES = bookStatus.enumValues;
+export type BookStatus = (typeof BOOK_STATUSES)[number];
 
 const timestamps = {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),

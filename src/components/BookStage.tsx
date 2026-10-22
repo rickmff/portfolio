@@ -1,13 +1,14 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import type { BookStatus } from "@/db/schema";
 import { statusLabel } from "@/lib/books";
 
 export type StageBook = {
   id: number;
   title: string;
   author: string;
-  status: "reading" | "read" | "next";
+  status: BookStatus;
   finishedYear: number | null;
   color: string;
   ink: string;

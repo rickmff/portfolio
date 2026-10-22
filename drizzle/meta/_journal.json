@@ -15,6 +15,13 @@
       "when": 1792704042389,
       "tag": "0001_project_preview",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792704348514,
+      "tag": "0002_book_statuses",
+      "breakpoints": true
     }
   ]
 }

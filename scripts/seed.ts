@@ -1,5 +1,6 @@
 // Fills an empty database with sample content so the site has something to show.
 import { db, schema } from "../src/db";
+import { importBooks } from "./import-books";
 
 async function main() {
   const existing = await db.select().from(schema.projects).limit(1);
@@ -16,14 +17,7 @@ async function main() {
     { slug: "open-source", title: "[Open‑source library]", summary: "[One line on what it does.]", year: 2024, stack: "TypeScript", tint: "#F1F0EB", sort: 5 },
   ]);
 
-  await db.insert(schema.books).values([
-    { title: "Shape Up", author: "Ryan Singer", status: "reading", color: "#1F3A5F", ink: "#FFFFFF", thickness: 30, sort: 1 },
-    { title: "Designing Data‑Intensive Applications", author: "Martin Kleppmann", status: "read", finishedYear: 2025, rating: 5, color: "#E5484D", ink: "#FFFFFF", thickness: 56, sort: 2 },
-    { title: "Refactoring UI", author: "Adam Wathan & Steve Schoger", status: "read", finishedYear: 2024, rating: 5, color: "#F1F0EB", ink: "#0A0A0A", thickness: 22, sort: 3 },
-    { title: "The Design of Everyday Things", author: "Don Norman", status: "read", finishedYear: 2023, rating: 5, color: "#E8C547", ink: "#0A0A0A", thickness: 36, sort: 4 },
-    { title: "A Philosophy of Software Design", author: "John Ousterhout", status: "read", finishedYear: 2025, rating: 4, color: "#0A0A0A", ink: "#F1F0EB", thickness: 24, sort: 5 },
-    { title: "Thinking in Systems", author: "Donella Meadows", status: "next", color: "#7C8B6F", ink: "#FFFFFF", thickness: 28, sort: 6 },
-  ]);
+  console.log(`books: ${await importBooks()} imported from Notion export`);
 
   const day = 86_400_000;
   await db.insert(schema.posts).values([

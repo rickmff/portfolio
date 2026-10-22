@@ -3,7 +3,7 @@ import { BookStage } from "@/components/BookStage";
 import { Emphasis } from "@/components/SiteChrome";
 import { WorkStrip } from "@/components/WorkStrip";
 import { WritingList } from "@/components/WritingList";
-import { toStageBook } from "@/lib/books";
+import { onShelf, toStageBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -39,12 +39,12 @@ export default async function Home() {
         <WorkStrip projects={projects} />
       </section>
 
-      {books.length > 0 ? (
+      {books.some(onShelf) ? (
         <section id="books" className="wrap section">
           <div className="section-head center">
             <h2>On the shelf</h2>
           </div>
-          <BookStage books={books.map(toStageBook)} />
+          <BookStage books={books.filter(onShelf).map(toStageBook)} />
           <p style={{ textAlign: "center", margin: "32px 0 0", fontSize: 13 }}>
             <Link href="/books" className="link-muted">All books →</Link>
           </p>

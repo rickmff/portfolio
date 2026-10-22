@@ -2,7 +2,7 @@ import { asc, desc } from "drizzle-orm";
 import Link from "next/link";
 import { db, schema } from "@/db";
 
-const LABEL = { reading: "Reading", read: "Read", next: "Up next" } as const;
+import { STATUS_LABEL as LABEL } from "@/lib/books";
 
 export default async function BooksAdmin() {
   const rows = await db.select().from(schema.books).orderBy(asc(schema.books.sort), desc(schema.books.finishedYear));

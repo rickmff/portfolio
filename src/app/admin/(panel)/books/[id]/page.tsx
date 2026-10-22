@@ -31,6 +31,8 @@ export default async function EditBook({ params }: { params: Promise<{ id: strin
               { value: "reading", label: "Reading now" },
               { value: "read", label: "Read" },
               { value: "next", label: "Up next" },
+              { value: "wishlist", label: "Wishlist (to buy)" },
+              { value: "abandoned", label: "Put down" },
             ]}
           />
           <Text name="finishedYear" label="Year finished" type="number" defaultValue={b?.finishedYear} />

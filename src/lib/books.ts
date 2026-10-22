@@ -16,8 +16,19 @@ export function toStageBook(b: Book): StageBook {
   };
 }
 
+export const STATUS_LABEL: Record<Book["status"], string> = {
+  reading: "Reading",
+  read: "Read",
+  next: "Up next",
+  wishlist: "Wishlist",
+  abandoned: "Put down",
+};
+
+/** Books that go on the 3D stage: the ones actually read or being read. */
+export const onShelf = (b: Pick<Book, "status">) => b.status === "reading" || b.status === "read";
+
 export function statusLabel(b: Pick<Book, "status" | "finishedYear">) {
   if (b.status === "reading") return "Reading now";
-  if (b.status === "next") return "Up next";
-  return b.finishedYear ? `Read in ${b.finishedYear}` : "Read";
+  if (b.status === "read") return b.finishedYear ? `Read in ${b.finishedYear}` : "Read";
+  return STATUS_LABEL[b.status];
 }
