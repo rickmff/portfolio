@@ -3,7 +3,7 @@
 // rises with the mobile site, scrolls it, shows "Add to Home Screen", the home screen with the
 // site's icon and the app opening; and it ends on the phone beside the name, a tagline and the URL.
 //   node scripts/showcase-project.mjs https://example.com [--out capture/example] [--tagline "…"]
-//     [--accent "#16A34A"] [--desktop 22] [--pause 1.6] [--wait 3] [--no-pwa]
+//     [--accent "#16A34A"] [--desktop 22] [--pause 1.6] [--wait 3] [--no-pwa] [--cookie NEXT_LOCALE=en]
 // Writes showcase.mp4 (60 fps, H.264) and showcase.webp (poster, first frame) into --out.
 // Filming runs on virtual time like capture-project.mjs, so every animation comes out at 60 fps.
 // Needs ffmpeg on PATH and a Chromium for Playwright.
@@ -24,6 +24,7 @@ const { values: opt, positionals } = parseArgs({
     pause: { type: "string", default: "1.6" },
     wait: { type: "string", default: "3" },
     "no-pwa": { type: "boolean", default: false },
+    cookie: { type: "string", multiple: true },
   },
 });
 const url = positionals[0];
@@ -62,6 +63,11 @@ const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PAT
 async function openPage(context) {
   const page = await browser.newPage({ ...context, reducedMotion: "no-preference", colorScheme: "light" });
   await page.clock.install();
+  // Sites that pick the language from the visitor's location can be pinned with --cookie NAME=VALUE.
+  for (const c of [].concat(opt.cookie ?? [])) {
+    const [name, ...rest] = c.split("=");
+    await page.context().addCookies([{ name, value: rest.join("="), url }]);
+  }
   await page.goto(url, { waitUntil: "networkidle", timeout: 45_000 }).catch((e) => {
     if (e.name !== "TimeoutError") throw e;
   });
