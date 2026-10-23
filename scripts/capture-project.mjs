@@ -3,7 +3,11 @@
 //   node scripts/capture-project.mjs https://example.com [--out capture/example] [--device both|desktop|mobile]
 //     [--pause 1.2] [--max 22] [--wait 2]
 // Writes desktop/{cover.webp,preview.mp4} (4:5, fills the card), mobile/{cover.webp,preview.mp4}
-// (390×844 phone screen, shown in a phone frame) and meta.json.
+// (390×844 phone screen, shown in a phone frame), thumbnail.webp (the site's og:image on the card
+// colour, 4:5, when the site has one) and meta.json.
+// Filming runs on virtual time: the page's clock (timers, requestAnimationFrame, Date) and its
+// CSS/Web animations are stepped exactly one 60 fps frame per screenshot, so animations come out
+// fluid however long each screenshot takes.
 // Needs ffmpeg on PATH and a Chromium for Playwright (`pnpm exec playwright install chromium`).
 import { execFileSync } from "node:child_process";
 import { mkdir, readdir, rm, stat, writeFile } from "node:fs/promises";
@@ -25,7 +29,10 @@ const { values: opt, positionals } = parseArgs({
 const url = positionals[0];
 if (!url) throw new Error("Usage: node scripts/capture-project.mjs <url> [--out dir] [--device both|desktop|mobile]");
 
-const FPS = 30;
+const FPS = 60;
+// The page's faked requestAnimationFrame ticks every 16 ms, so each frame steps exactly one tick
+// (motion plays 4% slower than real time, which nobody sees; 16.67 ms steps would double some ticks).
+const STEP = 16;
 const PAUSE = Number(opt.pause);
 const MAX_SECONDS = Number(opt.max);
 
@@ -37,7 +44,7 @@ const DEVICES = {
     context: { viewport: { width: 1200, height: 1500 }, deviceScaleFactor: 1 },
     clip: [840, 1050],
     cover: [1200, 1500],
-    maxMb: 6,
+    maxMb: 12,
   },
   mobile: {
     context: {
@@ -50,7 +57,7 @@ const DEVICES = {
     },
     clip: [480, 1038],
     cover: [780, 1688],
-    maxMb: 6,
+    maxMb: 12,
   },
 };
 const names = opt.device === "both" ? ["desktop", "mobile"] : [opt.device];
@@ -72,6 +79,8 @@ async function capture(name) {
   await mkdir(frames, { recursive: true });
 
   const page = await browser.newPage({ ...context, reducedMotion: "no-preference", colorScheme: "light" });
+  // Real time while loading; paused and stepped frame by frame once filming starts.
+  await page.clock.install();
   // Sites that keep polling never reach network idle; loaded is enough for those.
   await page.goto(url, { waitUntil: "networkidle", timeout: 45_000 }).catch(async (e) => {
     if (e.name !== "TimeoutError") throw e;
@@ -135,28 +144,32 @@ async function capture(name) {
   // A very long page still gets a single smooth pass, just a quicker one.
   const tooLong = duration(plan) > MAX_SECONDS;
 
+  // Freeze time, then every frame: advance CSS/Web animations and videos by one step, run the
+  // page's timers and animation frames for one step, screenshot.
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 50));
   let n = 0;
-  const list = [];
-  const shoot = async (seconds) => {
-    const file = `${String(n++).padStart(5, "0")}.jpg`;
-    await page.screenshot({ path: path.join(frames, file), type: "jpeg", quality: 92 });
-    list.push({ file, seconds });
+  const frame = async () => {
+    await page.evaluate((dt) => {
+      for (const a of document.getAnimations()) {
+        if (a.playState === "running") a.pause();
+        if (a.currentTime != null) a.currentTime = Number(a.currentTime) + dt;
+      }
+      for (const v of document.querySelectorAll("video")) {
+        if (!v.paused) v.pause();
+        if (v.duration) v.currentTime = (v.currentTime + dt / 1000) % v.duration;
+      }
+    }, STEP);
+    await page.clock.runFor(STEP);
+    await page.screenshot({ path: path.join(frames, `${String(n++).padStart(5, "0")}.jpg`), type: "jpeg", quality: 92 });
   };
-  // Pauses are filmed in real time so carousels and other running animations keep moving.
   const rest = async (seconds) => {
-    const end = Date.now() + seconds * 1000;
-    while (Date.now() < end) {
-      const t = Date.now();
-      await shoot(0);
-      list.at(-1).seconds = Math.min((Date.now() - t) / 1000, (end - t) / 1000);
-    }
+    for (let i = Math.round(seconds * FPS); i > 0; i--) await frame();
   };
-  // Scrolls are filmed frame by frame, so they stay smooth however slow the screenshots are.
   const glide = async (from, to, seconds) => {
     const count = Math.round(seconds * FPS);
     for (let i = 1; i <= count; i++) {
       await page.evaluate((y) => scrollTo(0, y), Math.round(from + (to - from) * ease(i / count)));
-      await shoot(1 / FPS);
+      await frame();
     }
   };
 
@@ -174,24 +187,23 @@ async function capture(name) {
     return {
       title: m('meta[property="og:site_name"]') || m('meta[property="og:title"]') || document.title.trim(),
       description: m('meta[property="og:description"]') || m('meta[name="description"]'),
+      image: (() => {
+        const src = m('meta[property="og:image"]') || m('meta[name="twitter:image"]');
+        return src ? new URL(src, location.href).href : "";
+      })(),
     };
   });
   await page.close();
-
-  // The concat demuxer needs the last frame listed again to honour its duration.
-  const concat = list.map((f) => `file '${f.file}'\nduration ${Math.max(f.seconds, 0.001).toFixed(4)}`);
-  concat.push(`file '${list.at(-1).file}'`);
-  await writeFile(path.join(frames, "list.txt"), `${concat.join("\n")}\n`);
 
   const [w, h] = clip;
   const mp4 = path.join(dir, "preview.mp4");
   const encode = (crf) =>
     execFileSync("ffmpeg", [
       "-y", "-loglevel", "error",
-      "-f", "concat", "-safe", "0", "-i", path.join(frames, "list.txt"),
-      "-vf", `fps=${FPS},scale=${w}:${h}:force_original_aspect_ratio=increase:flags=lanczos,crop=${w}:${h}:0:0`,
+      "-framerate", String(FPS), "-i", path.join(frames, "%05d.jpg"),
+      "-vf", `scale=${w}:${h}:force_original_aspect_ratio=increase:flags=lanczos,crop=${w}:${h}:0:0`,
       "-c:v", "libx264", "-preset", "slow", "-crf", String(crf), "-pix_fmt", "yuv420p",
-      "-profile:v", "high", "-movflags", "+faststart", "-an",
+      "-profile:v", "high", "-r", String(FPS), "-movflags", "+faststart", "-an",
       mp4,
     ]);
   let crf = 23;
@@ -226,5 +238,21 @@ const info = {
   year: new Date().getFullYear(),
   ...Object.fromEntries(Object.entries(results).map(([k, r]) => [k, r.info])),
 };
+// The site's own share image, centred on the card colour at the card's 4:5, as an alternative cover.
+if (first.meta.image) {
+  try {
+    const res = await fetch(first.meta.image, { signal: AbortSignal.timeout(20_000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const img = sharp(Buffer.from(await res.arrayBuffer())).resize(1080, 1350, { fit: "inside", withoutEnlargement: false });
+    const { data, info: dim } = await img.toBuffer({ resolveWithObject: true });
+    await sharp({ create: { width: 1200, height: 1500, channels: 3, background: first.tint } })
+      .composite([{ input: data, left: Math.round((1200 - dim.width) / 2), top: Math.round((1500 - dim.height) / 2) }])
+      .webp({ quality: 86 })
+      .toFile(path.join(out, "thumbnail.webp"));
+    info.thumbnail = "thumbnail.webp";
+  } catch (e) {
+    info.thumbnail = `failed: ${e.message}`;
+  }
+}
 await writeFile(path.join(out, "meta.json"), `${JSON.stringify(info, null, 2)}\n`);
 console.log(JSON.stringify(info, null, 2));
