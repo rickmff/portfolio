@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPost } from "@/lib/data";
@@ -11,7 +12,12 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPost((await params).slug);
-  return post ? { title: post.title, description: post.excerpt } : {};
+  if (!post) return {};
+  return {
+    title: post.title,
+    description: post.excerpt,
+    ...(post.bannerUrl && { openGraph: { images: [post.bannerUrl] } }),
+  };
 }
 
 
@@ -28,6 +34,13 @@ export default async function PostPage({ params }: Props) {
         </p>
         <h1>{post.title}</h1>
       </header>
+      {post.bannerUrl ? (
+        <div className="wrap post-banner reveal">
+          <div className="post-banner-frame">
+            <Image src={post.bannerUrl} alt="" fill sizes="(max-width: 1080px) 100vw, 1000px" priority />
+          </div>
+        </div>
+      ) : null}
       <div className="wrap">
         <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(post.body) }} />
         <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>

@@ -174,6 +174,7 @@ const postSchema = z.object({
   body: z.string(),
   tags: z.string().trim(),
   published: checkbox,
+  removeCover: checkbox,
   publishedAt: z
     .string()
     .trim()
@@ -185,12 +186,15 @@ export async function savePost(_: FormState, fd: FormData): Promise<FormState> {
   await requireAdmin();
   const id = Number(fd.get("id")) || null;
   try {
-    const data = postSchema.parse(fields(fd));
+    const { removeCover, ...data } = postSchema.parse(fields(fd));
+    const banner = await saveUpload(fd.get("cover"));
+    const bannerUrl = banner ?? (removeCover ? null : undefined);
     const values = {
       ...data,
       slug: slugify(data.slug || data.title),
       // Publishing without a date means "now".
       publishedAt: data.published ? (data.publishedAt ?? new Date()) : data.publishedAt,
+      ...(bannerUrl !== undefined && { bannerUrl }),
     };
     if (id) await db.update(posts).set(values).where(eq(posts.id, id));
     else await db.insert(posts).values(values);

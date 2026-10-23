@@ -72,6 +72,8 @@ export const posts = pgTable("posts", {
   excerpt: text("excerpt").notNull().default(""),
   body: text("body").notNull().default(""),
   tags: text("tags").notNull().default(""),
+  /** Wide image on top of the post and in the hover preview on the blog list. */
+  bannerUrl: text("banner_url"),
   published: boolean("published").notNull().default(false),
   publishedAt: timestamp("published_at", { withTimezone: true }),
   ...timestamps,

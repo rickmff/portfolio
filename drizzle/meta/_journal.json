@@ -50,6 +50,13 @@
       "when": 1792759074902,
       "tag": "0006_harness",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792763071082,
+      "tag": "0007_post_banner",
+      "breakpoints": true
     }
   ]
 }

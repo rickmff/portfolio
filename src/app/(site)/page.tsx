@@ -25,13 +25,17 @@ export default async function Home() {
       <section className="wrap hero">
         <p className="eyebrow hero-in" style={{ margin: 0 }}>{settings.role}</p>
         <HeroLines text={settings.hero} />
-        <span className="hero-after">
-          <span className="dot" aria-hidden="true" />
-        </span>
         {settings.now ? (
-          <p className="muted hero-after" style={{ margin: "40px auto 0", maxWidth: 420, fontSize: 13 }}>
+          <p className="muted hero-after" style={{ margin: "48px auto 0", maxWidth: 420, fontSize: 13 }}>
             {t.home.now} — {settings.now}
           </p>
+        ) : null}
+        {projects.length ? (
+          <a href="#work" className="scroll-cue hero-after" aria-label={t.home.latestWork}>
+            <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true">
+              <path d="M7 1v19M1 14l6 6 6-6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
         ) : null}
       </section>
 
