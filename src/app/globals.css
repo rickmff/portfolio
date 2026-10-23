@@ -450,64 +450,429 @@ a {
   gap: 24px;
 }
 
-/* Long-form */
+/* Long-form Markdown (blog posts, case studies, book notes). Rendered by src/lib/markdown.ts. */
 .prose {
   max-width: 640px;
   margin-inline: auto;
   font-size: 17px;
   line-height: 1.75;
+  overflow-wrap: break-word;
+}
+.prose > :first-child {
+  margin-top: 0;
+}
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  scroll-margin-top: 96px;
+  text-wrap: balance;
+}
+.prose h1 {
+  margin: 2.2em 0 0.6em;
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 300;
+  letter-spacing: -0.035em;
 }
 .prose h2 {
   margin: 2.4em 0 0.6em;
   font-size: 22px;
+  line-height: 1.3;
   font-weight: 500;
   letter-spacing: -0.02em;
 }
 .prose h3 {
   margin: 2em 0 0.5em;
   font-size: 18px;
+  line-height: 1.4;
   font-weight: 500;
+}
+.prose h4 {
+  margin: 1.8em 0 0.4em;
+  font-size: 17px;
+  font-weight: 500;
+}
+.prose h5,
+.prose h6 {
+  margin: 1.8em 0 0.4em;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 .prose p,
 .prose ul,
-.prose ol {
+.prose ol,
+.prose dl {
   margin: 0 0 1.2em;
+}
+.prose strong {
+  font-weight: 600;
+}
+.prose del {
+  color: var(--faint);
+}
+.prose mark {
+  background: #fff3b8;
+  color: inherit;
+  padding: 0 0.15em;
 }
 .prose a {
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-thickness: 1px;
+  text-decoration-color: var(--faint);
+  transition: text-decoration-color 0.2s var(--ease);
 }
 .prose a:hover {
+  text-decoration-color: var(--ink);
+}
+
+/* Lists, including GitHub task lists */
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose li {
+  padding-left: 0.2em;
+}
+.prose li + li {
+  margin-top: 0.35em;
+}
+.prose li::marker {
+  color: var(--faint);
+}
+.prose li > ul,
+.prose li > ol {
+  margin: 0.35em 0 0;
+}
+.prose ul ul {
+  list-style: circle;
+}
+.prose li:has(> input[type="checkbox"]) {
+  list-style: none;
+  margin-left: -1.4em;
+}
+.prose li > input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  margin: 0 0.6em 0 0;
+  vertical-align: -1px;
+  accent-color: var(--ink);
+}
+.prose dt {
+  font-weight: 500;
+}
+.prose dd {
+  margin: 0 0 0.8em 1.2em;
   color: var(--muted);
 }
-.prose img {
+
+/* Quotes and GitHub callouts: > [!NOTE] / [!TIP] / [!IMPORTANT] / [!WARNING] / [!CAUTION] */
+.prose blockquote {
+  margin: 1.8em 0;
+  padding-left: 20px;
+  border-left: 1px solid var(--ink);
+  color: var(--muted);
+}
+.prose blockquote > :last-child,
+.prose .markdown-alert > :last-child {
+  margin-bottom: 0;
+}
+.prose .markdown-alert {
+  --alert: var(--ink);
+  margin: 1.8em 0;
+  padding: 16px 20px;
+  font-size: 15px;
+  background: var(--surface);
+  border-left: 2px solid var(--alert);
+}
+.prose .markdown-alert-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--alert);
+}
+.prose .markdown-alert-title svg {
+  fill: currentColor;
+}
+.prose .markdown-alert-tip {
+  --alert: #2f6f4f;
+}
+.prose .markdown-alert-important {
+  --alert: #5b3fa8;
+}
+.prose .markdown-alert-warning {
+  --alert: #9a6200;
+}
+.prose .markdown-alert-caution {
+  --alert: #b3261e;
+}
+
+/* Media */
+.prose img,
+.prose video {
+  display: block;
   max-width: 100%;
   height: auto;
-  margin-block: 1.5em;
+  margin: 2em auto;
 }
+.prose .figure {
+  display: block;
+  margin: 2em 0;
+}
+.prose .figure img {
+  margin: 0 auto;
+}
+.prose .caption,
+.prose figure.code figcaption {
+  display: block;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--faint);
+}
+.prose .caption {
+  margin-top: 12px;
+  text-align: center;
+}
+.prose hr {
+  margin: 3em auto;
+  width: 48px;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+/* Code */
 .prose code {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-size: 0.85em;
   background: var(--surface);
   padding: 0.15em 0.35em;
+  border-radius: 3px;
+}
+.prose kbd {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.8em;
+  padding: 0.1em 0.45em;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+}
+.prose figure.code {
+  position: relative;
+  margin: 1.8em 0;
+}
+.prose figure.code figcaption {
+  padding: 12px 20px 0;
+  background: var(--surface);
+  border-radius: 4px 4px 0 0;
+  text-transform: lowercase;
+}
+.prose figure.code figcaption + pre {
+  padding-top: 10px;
+  border-radius: 0 0 4px 4px;
 }
 .prose pre {
+  margin: 1.8em 0;
   background: var(--surface);
   padding: 20px;
   overflow-x: auto;
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.65;
+  border-radius: 4px;
+  tab-size: 2;
+}
+.prose figure.code pre {
+  margin: 0;
 }
 .prose pre code {
   background: none;
   padding: 0;
+  font-size: inherit;
+  border-radius: 0;
 }
-.prose blockquote {
-  margin: 1.5em 0;
-  padding-left: 20px;
-  border-left: 1px solid var(--ink);
+/* Syntax colours: mostly ink and grey, with a few quiet accents */
+.hljs-comment,
+.hljs-quote {
+  color: var(--faint);
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-meta .hljs-keyword,
+.hljs-doctag,
+.hljs-section {
+  color: var(--ink);
+  font-weight: 600;
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-meta .hljs-string {
+  color: #2f6f4f;
+}
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet {
+  color: #9a4a00;
+}
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.class_ {
+  color: #1f4e8c;
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-property,
+.hljs-params {
+  color: #3a3a3a;
+}
+.hljs-built_in,
+.hljs-type,
+.hljs-name,
+.hljs-tag,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: #5b3fa8;
+}
+.hljs-meta,
+.hljs-punctuation,
+.hljs-operator {
   color: var(--muted);
+}
+.hljs-deletion {
+  color: #b3261e;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 600;
+}
+
+/* Tables */
+.prose .table-wrap {
+  margin: 1.8em 0;
+  overflow-x: auto;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.prose th {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+  border-bottom: 1px solid var(--ink);
+}
+.prose th,
+.prose td {
+  padding: 10px 14px 10px 0;
+  vertical-align: top;
+}
+.prose td {
+  border-bottom: 1px solid var(--line);
+}
+.prose tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Collapsible blocks written as raw <details><summary> */
+.prose details {
+  margin: 1.5em 0;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+.prose summary {
+  cursor: pointer;
+  font-weight: 500;
+}
+.prose details[open] summary {
+  margin-bottom: 0.6em;
+}
+
+/* Footnotes */
+.prose sup a[data-footnote-ref] {
+  text-decoration: none;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  padding-left: 1px;
+}
+.prose .footnotes {
+  margin-top: 4em;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--muted);
+}
+.prose .footnotes ol {
+  margin: 0;
+}
+.prose .footnotes p {
+  margin: 0;
+}
+.prose [data-footnote-backref] {
+  text-decoration: none;
+}
+.prose :target {
+  background: #fff3b8;
+  transition: background 1.5s var(--ease);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .prose {
+    font-size: 16px;
+  }
+  .prose pre,
+  .prose figure.code {
+    margin-inline: -16px;
+  }
+  .prose figure.code pre {
+    margin-inline: 0;
+  }
+  .prose pre,
+  .prose figure.code figcaption,
+  .prose figure.code figcaption + pre {
+    border-radius: 0;
+  }
 }
 
 .page-title {
@@ -621,32 +986,6 @@ a {
   transition:
     filter 0.8s var(--ease) 0.15s,
     opacity 0.8s var(--ease) 0.15s;
-}
-.notes-body ul,
-.notes-body ol {
-  padding-left: 1.2em;
-  list-style: disc;
-}
-.notes-body ol {
-  list-style: decimal;
-}
-.notes-body li + li {
-  margin-top: 0.3em;
-}
-.notes-body ul ul {
-  margin: 0.3em 0 0.6em;
-  list-style: circle;
-}
-.notes-body blockquote {
-  margin: 0 0 1.2em;
-  padding-left: 16px;
-  border-left: 2px solid var(--line);
-  color: var(--muted);
-}
-.notes-body hr {
-  margin: 2em 0;
-  border: 0;
-  border-top: 1px solid var(--line);
 }
 .notes-body > :first-child {
   margin-top: 0;
