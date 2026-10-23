@@ -6,6 +6,7 @@
  */
 import { and, eq, isNull } from "drizzle-orm";
 import { db, schema } from "../src/db";
+import { bookPages } from "./data/book-pages";
 import books from "./data/books.json";
 
 export async function importBooks() {
@@ -29,6 +30,28 @@ export async function syncBookCovers() {
       .where(and(eq(schema.books.title, b.title), isNull(schema.books.coverUrl)))
       .returning({ id: schema.books.id });
     n += rows.length;
+  }
+  return n;
+}
+
+/**
+ * Fills in each book page's synopsis, notes and free edition link from scripts/data/book-pages.ts.
+ * Each field is only written while it is still empty, so edits made in the backoffice stick.
+ */
+export async function syncBookPages() {
+  const { books: t } = schema;
+  let n = 0;
+  for (const p of bookPages) {
+    const steps = [
+      p.synopsis && db.update(t).set({ synopsis: p.synopsis }).where(and(eq(t.title, p.title), eq(t.synopsis, ""))),
+      p.notes &&
+        db
+          .update(t)
+          .set({ notes: p.notes, notesGenerated: !!p.notesGenerated })
+          .where(and(eq(t.title, p.title), eq(t.notes, ""))),
+      p.readUrl && db.update(t).set({ readUrl: p.readUrl }).where(and(eq(t.title, p.title), isNull(t.readUrl))),
+    ];
+    for (const q of steps) if (q) n += (await q.returning({ id: t.id })).length;
   }
   return n;
 }

@@ -16,7 +16,7 @@
     "import:contentful": "tsx scripts/import-contentful.ts",
     "import:books": "tsx scripts/import-books.ts",
     "vercel-build": "node scripts/migrate.mjs && tsx scripts/seed.ts && next build",
-    "build:seed": "esbuild scripts/seed.ts --bundle --platform=node --target=node22 --format=esm --outfile=scripts/seed.bundle.mjs --log-level=warning --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\""
+    "build:seed": "esbuild scripts/seed.ts scripts/import-contentful.ts --bundle --platform=node --target=node22 --format=esm --outdir=scripts --out-extension:.js=.bundle.mjs --log-level=warning --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\""
   },
   "dependencies": {
     "@vercel/blob": "^2.8.2",

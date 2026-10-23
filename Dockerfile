@@ -29,6 +29,8 @@ COPY --from=build --chown=app:app /app/scripts/migrate.mjs ./scripts/migrate.mjs
 COPY --from=build --chown=app:app /app/src/db/url.mjs ./src/db/url.mjs
 # Self-contained bundle: fills an empty database with starter content and the reading list.
 COPY --from=build --chown=app:app /app/scripts/seed.bundle.mjs ./scripts/seed.bundle.mjs
+# One-off: docker compose exec -e CONTENTFUL_SPACE_ID=… -e CONTENTFUL_ACCESS_TOKEN=… app node scripts/import-contentful.bundle.mjs
+COPY --from=build --chown=app:app /app/scripts/import-contentful.bundle.mjs ./scripts/import-contentful.bundle.mjs
 # ESM ignores NODE_PATH, so the migrator's deps sit next to the script.
 COPY --from=migrator /m/node_modules ./scripts/node_modules
 USER app

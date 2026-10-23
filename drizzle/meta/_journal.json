@@ -29,6 +29,13 @@
       "when": 1792713699411,
       "tag": "0003_arte_da_guerra_spine",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792727358565,
+      "tag": "0004_book_pages",
+      "breakpoints": true
     }
   ]
 }

@@ -143,10 +143,11 @@
   "title": "The Champion's Mind",
   "author": "James Afremow",
   "status": "read",
-  "color": "#2F5D50",
+  "color": "#080808",
   "ink": "#FFFFFF",
   "thickness": 45,
-  "sort": 15
+  "sort": 15,
+  "coverUrl": "/covers/the-champions-mind.jpg"
  },
  {
   "title": "12 Regras para a Vida",

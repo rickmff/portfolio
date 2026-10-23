@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import type { BookStatus } from "@/db/schema";
 import { statusLabel } from "@/lib/books";
 
 export type ShelfBook = {
   id: number;
+  slug: string;
   title: string;
   author: string;
   status: BookStatus;
@@ -151,6 +153,11 @@ function Detail({ book }: { book: ShelfBook }) {
         {book.rating ? ` · ${"●".repeat(book.rating)}${"○".repeat(5 - book.rating)}` : ""}
       </p>
       {book.note ? <p className="shelf-detail-note">{book.note}</p> : null}
+      <p style={{ margin: "16px 0 0", fontSize: 13 }}>
+        <Link href={`/books/${book.slug}`} className="link-muted">
+          Open the book →
+        </Link>
+      </p>
     </div>
   );
 }

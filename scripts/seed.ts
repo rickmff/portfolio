@@ -1,7 +1,7 @@
 // Fills an empty database with sample content so the site has something to show,
-// and backfills book covers on every boot.
+// and backfills book covers and book pages on every boot.
 import { db, schema } from "../src/db";
-import { importBooks, syncBookCovers } from "./import-books";
+import { importBooks, syncBookCovers, syncBookPages } from "./import-books";
 
 async function main() {
   const covers = await syncBookCovers();
@@ -9,6 +9,8 @@ async function main() {
 
   const existing = await db.select().from(schema.projects).limit(1);
   if (existing.length) {
+    const pages = await syncBookPages();
+    if (pages) console.log(`books: filled ${pages} synopsis/notes/link fields`);
     console.log("database already has content, skipping seed");
     process.exit(0);
   }
@@ -22,6 +24,8 @@ async function main() {
   ]);
 
   console.log(`books: ${await importBooks()} imported from Notion export`);
+  await syncBookCovers();
+  await syncBookPages();
 
   const day = 86_400_000;
   await db.insert(schema.posts).values([

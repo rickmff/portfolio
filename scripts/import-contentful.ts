@@ -12,6 +12,7 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { like } from "drizzle-orm";
 import { db, schema } from "../src/db";
 import { slugify } from "../src/lib/markdown";
 
@@ -127,6 +128,12 @@ async function main() {
       .insert(schema.projects)
       .values(values)
       .onConflictDoUpdate({ target: schema.projects.slug, set: { ...values, updatedAt: new Date() } });
+  }
+
+  // The starter seed's placeholder projects are titled "[…]"; the real ones replace them.
+  if (!DRY && work.items.length) {
+    const gone = await db.delete(schema.projects).where(like(schema.projects.title, "[%")).returning({ slug: schema.projects.slug });
+    if (gone.length) console.log(`removed ${gone.length} placeholder projects`);
   }
 
   const about = await entries("about");

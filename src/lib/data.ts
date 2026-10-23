@@ -1,6 +1,7 @@
 import "server-only";
 import { and, asc, desc, eq, isNotNull, lte } from "drizzle-orm";
 import { db, schema } from "@/db";
+import { slugify } from "./markdown";
 import { SETTING_KEYS, type SettingKey, type SiteSettings } from "./settings";
 
 const { projects, books, posts, settings } = schema;
@@ -27,6 +28,12 @@ export async function getProject(slug: string) {
     .from(projects)
     .where(and(eq(projects.slug, slug), eq(projects.published, true)));
   return row ?? null;
+}
+
+/** Book pages are addressed by a slug of the title, so there is nothing extra to keep in sync. */
+export async function getBookBySlug(slug: string) {
+  const all = await getBooks();
+  return all.find((b) => slugify(b.title) === slug) ?? null;
 }
 
 export function getBooks() {

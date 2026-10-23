@@ -1,9 +1,11 @@
 import type { Book } from "@/db/schema";
 import type { ShelfBook } from "@/components/BookShelf";
+import { slugify } from "./markdown";
 
 export function toShelfBook(b: Book): ShelfBook {
   return {
     id: b.id,
+    slug: slugify(b.title),
     title: b.title,
     author: b.author,
     status: b.status,
@@ -44,3 +46,5 @@ export function latestRead(books: Book[], limit = HOME_SHELF_SIZE) {
     .sort((a, b) => a.sort - b.sort || a.id - b.id)
     .slice(0, limit);
 }
+
+export const bookHref = (b: Pick<Book, "title">) => `/books/${slugify(b.title)}`;

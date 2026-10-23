@@ -6,7 +6,7 @@ import { db, schema } from "@/db";
 export default async function BooksAdmin() {
   const { books } = schema;
   const rows = await db
-    .select({ id: books.id, title: books.title, author: books.author, status: books.status, color: books.color, coverUrl: books.coverUrl })
+    .select({ id: books.id, title: books.title, author: books.author, status: books.status, color: books.color, coverUrl: books.coverUrl, notesGenerated: books.notesGenerated })
     .from(books)
     .orderBy(asc(books.sort), asc(books.id));
   return (

@@ -51,6 +51,14 @@ export const books = pgTable("books", {
   color: varchar("color", { length: 9 }).notNull().default("#1F3A5F"),
   ink: varchar("ink", { length: 9 }).notNull().default("#FFFFFF"),
   coverUrl: text("cover_url"),
+  /** Spoiler-free blurb shown above the notes on the book page. */
+  synopsis: text("synopsis").notNull().default(""),
+  /** Reading notes in Markdown, hidden behind a reveal on the book page. */
+  notes: text("notes").notNull().default(""),
+  /** True when the notes were drafted for the owner rather than written by them. */
+  notesGenerated: boolean("notes_generated").notNull().default(false),
+  /** A free, legal edition (public domain) to read online. */
+  readUrl: text("read_url"),
   /** Spine thickness in px, roughly page count / 10. */
   thickness: integer("thickness").notNull().default(36),
   sort: integer("sort").notNull().default(0),

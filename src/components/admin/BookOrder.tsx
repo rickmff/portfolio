@@ -6,7 +6,7 @@ import { reorderBooks } from "@/app/admin/actions";
 import type { Book } from "@/db/schema";
 import { STATUS_LABEL } from "@/lib/books";
 
-type Row = Pick<Book, "id" | "title" | "author" | "status" | "color" | "coverUrl">;
+type Row = Pick<Book, "id" | "title" | "author" | "status" | "color" | "coverUrl" | "notesGenerated">;
 type Filter = Book["status"] | "all";
 
 const FILTERS: Filter[] = ["all", "read", "reading", "next", "wishlist", "abandoned"];
@@ -121,6 +121,7 @@ export function BookOrder({ books }: { books: Row[] }) {
             )}
             <span className="adm-order-title">
               <Link href={`/admin/books/${r.id}`}>{r.title}</Link>
+              {r.notesGenerated ? <span className="adm-draft" title="Notes drafted for you, not written by you">draft notes</span> : null}
               <small className="muted">{r.author}</small>
             </span>
             <span className="muted adm-order-status">{STATUS_LABEL[r.status]}</span>

@@ -1,8 +1,11 @@
 import { eq } from "drizzle-orm";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { deleteBook, saveBook } from "@/app/admin/actions";
 import { AdminForm, DeleteButton } from "@/components/admin/AdminForm";
-import { Area, Color, ImageField, Row, Select, Text } from "@/components/admin/Fields";
+import { Area, Check, Color, ImageField, Row, Select, Text } from "@/components/admin/Fields";
+import { MarkdownField } from "@/components/admin/MarkdownField";
+import { bookHref } from "@/lib/books";
 import { db, schema } from "@/db";
 
 export default async function EditBook({ params }: { params: Promise<{ id: string }> }) {
@@ -14,7 +17,12 @@ export default async function EditBook({ params }: { params: Promise<{ id: strin
     <>
       <header className="adm-head">
         <h1>{b ? b.title : "Add book"}</h1>
-        {b ? <DeleteButton action={deleteBook.bind(null, b.id)} /> : null}
+        {b ? (
+          <div className="adm-head-actions">
+            <Link href={bookHref(b)} target="_blank" className="adm-btn">View ↗</Link>
+            <DeleteButton action={deleteBook.bind(null, b.id)} />
+          </div>
+        ) : null}
       </header>
       <AdminForm action={saveBook}>
         {b ? <input type="hidden" name="id" value={b.id} /> : null}
@@ -39,6 +47,13 @@ export default async function EditBook({ params }: { params: Promise<{ id: strin
           <Text name="rating" label="Rating (1–5)" type="number" defaultValue={b?.rating} />
         </Row>
         <Area name="note" label="Your note" defaultValue={b?.note} rows={4} hint="Shown on the Books page under the 3D book." />
+        <Area name="synopsis" label="Synopsis" defaultValue={b?.synopsis} rows={4} hint="Spoiler-free. Shown on the book page above your notes." />
+        <MarkdownField name="notes" label="Reading notes (hidden until the reader clicks Reveal)" defaultValue={b?.notes ?? ""} />
+        {b?.notesGenerated ? (
+          <p className="adm-flag">These notes were drafted for you in your style, not written by you. Rewrite them and untick the box below.</p>
+        ) : null}
+        <Check name="notesGenerated" label="Notes are a generated draft" defaultChecked={b?.notesGenerated ?? false} />
+        <Text name="readUrl" label="Free edition link" defaultValue={b?.readUrl} hint="Only public-domain or official free editions." />
         <Row>
           <Color name="color" label="Cover colour" defaultValue={b?.color ?? "#1F3A5F"} />
           <Color name="ink" label="Text colour" defaultValue={b?.ink ?? "#FFFFFF"} />
