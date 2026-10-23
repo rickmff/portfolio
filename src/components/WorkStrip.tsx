@@ -35,7 +35,7 @@ function useWheelToHorizontal() {
           snapping = false;
           return;
         }
-        el.scrollLeft += diff * 0.1;
+        el.scrollLeft += diff * 0.06;
         frame = requestAnimationFrame(step);
       };
       frame = requestAnimationFrame(step);
@@ -64,10 +64,10 @@ function useWheelToHorizontal() {
       const px = e.deltaMode === 1 ? e.deltaY * 32 : e.deltaMode === 2 ? e.deltaY * el.clientWidth : e.deltaY;
       el.classList.add("is-wheeling");
       snapping = false;
-      target = clamp(target + px * 1.6);
+      target = clamp(target + px * 1.1);
       animate();
       clearTimeout(settle);
-      settle = setTimeout(snapToNearest, 180);
+      settle = setTimeout(snapToNearest, 260);
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });
