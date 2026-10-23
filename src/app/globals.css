@@ -919,6 +919,60 @@ a {
 .reveal {
   animation: reveal 0.9s var(--ease) both;
 }
+
+/* Page transitions: fade out on internal link clicks, fade in on the new page */
+.page-enter {
+  animation: page-enter 0.55s var(--ease) both;
+}
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+main {
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+html.is-leaving main {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* Scroll reveal (src/components/ScrollReveal.tsx adds these classes) */
+.sr {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.9s var(--ease) var(--sr-delay, 0ms),
+    transform 0.9s var(--ease) var(--sr-delay, 0ms);
+}
+.sr.sr-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Height + fade open/close (book details on the shelf) */
+.collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.7s var(--ease),
+    opacity 0.45s var(--ease);
+}
+.collapse.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows 0.7s var(--ease),
+    opacity 0.6s var(--ease) 0.15s;
+}
+.collapse-inner {
+  min-height: 0;
+  overflow: hidden;
+}
 @keyframes reveal {
   from {
     opacity: 0;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProject } from "@/lib/data";
@@ -29,10 +30,7 @@ export default async function ProjectPage({ params }: Props) {
       </header>
       <div className="wrap">
         <div className="frame" style={{ aspectRatio: "16 / 9", background: p.tint, marginBottom: 80 }}>
-          {p.coverUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={p.coverUrl} alt={p.title} />
-          ) : null}
+          {p.coverUrl ? <Image src={p.coverUrl} alt={p.title} fill sizes="(max-width: 1100px) 100vw, 1000px" priority /> : null}
         </div>
         <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(p.body) }} />
         <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NotesReveal } from "@/components/NotesReveal";
@@ -23,8 +24,7 @@ export default async function BookPage({ params }: Props) {
       <header className="wrap book-head reveal">
         <div className="book-cover" style={{ backgroundColor: b.color, color: b.ink }}>
           {b.coverUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={b.coverUrl} alt={`Cover of ${b.title}`} />
+            <Image src={b.coverUrl} alt={`Cover of ${b.title}`} fill sizes="180px" priority />
           ) : (
             <span className="book-cover-title">{b.title}</span>
           )}

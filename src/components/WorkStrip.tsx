@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import type { Project } from "@/db/schema";
@@ -93,8 +94,7 @@ export function WorkStrip({ projects }: { projects: Project[] }) {
         >
           <div className="frame" style={{ background: p.tint }}>
             {p.coverUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={p.coverUrl} alt="" loading="lazy" />
+              <Image src={p.coverUrl} alt="" fill sizes="(max-width: 600px) 78vw, 420px" quality={80} priority={i < 3} />
             ) : (
               <span className="frame-empty eyebrow" style={{ color: "var(--faint)", fontSize: 10 }}>
                 {p.title}

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { navigateWithTransition, prefetchFull } from "@/components/PageTransition";
 import type { BookStatus } from "@/db/schema";
 import { statusLabel } from "@/lib/books";
 
@@ -50,6 +52,12 @@ export function BookShelf({
   const all = shelves.flatMap((s) => s.books);
   const [open, setOpen] = useState<number | null>(initialOpen ?? null);
   const selected = all.find((b) => b.id === open) ?? null;
+  const router = useRouter();
+
+  // The open book is one click from its page, so load that page in the background.
+  useEffect(() => {
+    if (selected) prefetchFull(router, `/books/${selected.slug}`);
+  }, [router, selected]);
 
   const move = (dir: 1 | -1) => {
     const i = all.findIndex((b) => b.id === open);
@@ -91,8 +99,9 @@ export function BookShelf({
                         type="button"
                         className={`sb-slot${isOpen ? " is-open" : ""}`}
                         aria-pressed={isOpen}
-                        aria-label={`${b.title} by ${b.author}`}
-                        onClick={() => setOpen(isOpen ? null : b.id)}
+                        aria-label={isOpen ? `Open the page for ${b.title}` : `${b.title} by ${b.author}`}
+                        title={isOpen ? "Click again to open the book" : undefined}
+                        onClick={() => (isOpen ? navigateWithTransition(router, `/books/${b.slug}`) : setOpen(b.id))}
                         style={
                           {
                             "--w": `${COVER_W}px`,
@@ -128,25 +137,41 @@ export function BookShelf({
                   })}
                 </div>
                 <div className="shelf-board" aria-hidden="true" />
-                {selected && row.includes(selected) ? <Detail book={selected} /> : null}
+                <DetailSlot book={selected && row.includes(selected) ? selected : null} />
               </div>
             ))}
           </section>
         ),
       )}
 
-      {selected ? null : (
+      <Collapse open={!selected}>
         <p className="mono shelf-detail" style={{ margin: 0, color: "var(--faint)" }}>
-          Pick a book off the shelf · ← → to browse · Esc to put it back
+          Pick a book off the shelf · click it again to open · ← → to browse · Esc to put it back
         </p>
-      )}
+      </Collapse>
     </div>
   );
 }
 
+/** Opens and closes by animating its height and opacity, so content below glides instead of jumping. */
+function Collapse({ open, children }: { open: boolean; children: React.ReactNode }) {
+  return (
+    <div className={`collapse${open ? " is-open" : ""}`} aria-hidden={!open}>
+      <div className="collapse-inner">{children}</div>
+    </div>
+  );
+}
+
+/** Keeps the last book on screen while its panel closes, so it fades out rather than vanishing. */
+function DetailSlot({ book }: { book: ShelfBook | null }) {
+  const [shown, setShown] = useState(book);
+  if (book && book !== shown) setShown(book);
+  return <Collapse open={!!book}>{shown ? <Detail key={shown.id} book={shown} /> : null}</Collapse>;
+}
+
 function Detail({ book }: { book: ShelfBook }) {
   return (
-    <div key={book.id} className="shelf-detail reveal" aria-live="polite">
+    <div className="shelf-detail reveal" aria-live="polite">
       <p className="shelf-detail-title">{book.title}</p>
       <p className="muted" style={{ margin: 0, fontSize: 13 }}>
         {book.author} · {statusLabel(book)}
