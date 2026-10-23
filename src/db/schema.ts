@@ -32,6 +32,9 @@ export const projects = pgTable("projects", {
   coverUrl: text("cover_url"),
   /** Short looping video or GIF that plays when the card is hovered. */
   previewUrl: text("preview_url"),
+  /** The same pair captured on a phone, shown in a phone frame when the card is switched to mobile. */
+  coverMobileUrl: text("cover_mobile_url"),
+  previewMobileUrl: text("preview_mobile_url"),
   liveUrl: text("live_url"),
   repoUrl: text("repo_url"),
   tint: varchar("tint", { length: 9 }).notNull().default("#F1F0EB"),
