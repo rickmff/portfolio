@@ -103,16 +103,18 @@ a {
   gap: 10px;
 }
 .site-avatar {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 0 0 1px var(--line);
-  filter: grayscale(1);
-  transition: filter 0.4s var(--ease);
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.06),
+    0 2px 6px -2px rgb(0 0 0 / 0.18);
+  transition: transform 0.4s var(--ease);
 }
 .site-brand:hover .site-avatar {
-  filter: none;
+  transform: scale(1.06);
 }
 .site-header nav {
   display: flex;

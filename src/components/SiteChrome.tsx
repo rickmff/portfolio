@@ -6,7 +6,7 @@ export function SiteHeader({ settings, harness = false }: { settings: SiteSettin
     <header className="wrap site-header">
       <Link href="/" className="site-brand">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/profile.jpg" alt="" width={28} height={28} className="site-avatar" />
+        <img src="/profile.jpg?v=2" alt="" width={36} height={36} className="site-avatar" />
         {settings.name}
       </Link>
       <nav aria-label="Main">
