@@ -1,6 +1,7 @@
 import {
   boolean,
   integer,
+  jsonb,
   pgEnum,
   pgTable,
   serial,
@@ -12,6 +13,13 @@ import {
 export const bookStatus = pgEnum("book_status", ["reading", "read", "next", "wishlist", "abandoned"]);
 export const BOOK_STATUSES = bookStatus.enumValues;
 export type BookStatus = (typeof BOOK_STATUSES)[number];
+
+/**
+ * Per-language overrides of a row's text fields, e.g. { en: { notes: "…" }, pt: { notes: "…" } }.
+ * The site shows the visitor's language when present and the base column otherwise.
+ */
+export type Translations = Partial<Record<"en" | "pt", Record<string, string>>>;
+const translations = () => jsonb("translations").$type<Translations>().notNull().default({});
 
 const timestamps = {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
@@ -32,11 +40,15 @@ export const projects = pgTable("projects", {
   coverUrl: text("cover_url"),
   /** Short looping video or GIF that plays when the card is hovered. */
   previewUrl: text("preview_url"),
+  /** The same pair captured on a phone, shown in a phone frame when the card is switched to mobile. */
+  coverMobileUrl: text("cover_mobile_url"),
+  previewMobileUrl: text("preview_mobile_url"),
   liveUrl: text("live_url"),
   repoUrl: text("repo_url"),
   tint: varchar("tint", { length: 9 }).notNull().default("#F1F0EB"),
   sort: integer("sort").notNull().default(0),
   published: boolean("published").notNull().default(true),
+  translations: translations(),
   ...timestamps,
 });
 
@@ -62,6 +74,7 @@ export const books = pgTable("books", {
   /** Spine thickness in px, roughly page count / 10. */
   thickness: integer("thickness").notNull().default(36),
   sort: integer("sort").notNull().default(0),
+  translations: translations(),
   ...timestamps,
 });
 
@@ -76,6 +89,7 @@ export const posts = pgTable("posts", {
   bannerUrl: text("banner_url"),
   published: boolean("published").notNull().default(false),
   publishedAt: timestamp("published_at", { withTimezone: true }),
+  translations: translations(),
   ...timestamps,
 });
 
@@ -94,6 +108,7 @@ export const harness = pgTable("harness", {
   description: text("description").notNull().default(""),
   category: varchar("category", { length: 80 }).notNull().default(""),
   sort: integer("sort").notNull().default(0),
+  translations: translations(),
   ...timestamps,
 });
 

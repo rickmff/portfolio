@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Project } from "@/db/schema";
 import { useDict } from "@/lib/i18n/client";
 
@@ -80,6 +80,98 @@ function useWheelToHorizontal() {
   return ref;
 }
 
+type View = "desktop" | "mobile";
+
+/** Plays the clip of the visible view while the card is hovered, or on touch screens while it sits mostly in view. */
+function WorkCard({ project: p, index: i }: { project: Project; index: number }) {
+  const t = useDict();
+  const card = useRef<HTMLDivElement>(null);
+  const hasMobile = Boolean(p.coverMobileUrl || p.previewMobileUrl);
+  const [view, setView] = useState<View>("desktop");
+  const [active, setActive] = useState(false);
+
+  // Open on the visitor's own kind of screen.
+  useEffect(() => {
+    if (hasMobile && matchMedia("(max-width: 600px)").matches) setView("mobile");
+  }, [hasMobile]);
+
+  useEffect(() => {
+    const el = card.current;
+    if (!el || !matchMedia("(hover: none)").matches) return;
+    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), { threshold: 0.6 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    card.current?.querySelectorAll("video").forEach((v) => {
+      const on = active && v.dataset.view === view;
+      v.classList.toggle("is-playing", on);
+      if (on) v.play().catch(() => {});
+      else v.pause();
+    });
+  }, [active, view]);
+
+  return (
+    <div
+      ref={card}
+      className="strip-item"
+      data-view={view}
+      onMouseEnter={() => setActive(true)}
+      onMouseLeave={() => setActive(false)}
+    >
+      <Link href={`/work/${p.slug}`} className="frame" style={{ background: p.tint }} aria-label={p.title}>
+        <div className="frame-view frame-desktop">
+          {p.coverUrl ? (
+            <Image src={p.coverUrl} alt="" fill sizes="(max-width: 600px) 78vw, 420px" quality={80} priority={i < 3} />
+          ) : (
+            <span className="frame-empty eyebrow" style={{ color: "var(--faint)", fontSize: 10 }}>
+              {p.title}
+            </span>
+          )}
+          {p.previewUrl ? (
+            isVideo(p.previewUrl) ? (
+              <video className="frame-preview" data-view="desktop" src={p.previewUrl} muted loop playsInline preload="none" />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className="frame-preview" src={p.previewUrl} alt="" loading="lazy" />
+            )
+          ) : null}
+        </div>
+        {hasMobile ? (
+          <div className="frame-view frame-mobile">
+            <div className="phone">
+              {p.coverMobileUrl ? <Image src={p.coverMobileUrl} alt="" fill sizes="220px" quality={80} /> : null}
+              {p.previewMobileUrl ? (
+                <video className="frame-preview" data-view="mobile" src={p.previewMobileUrl} muted loop playsInline preload="none" />
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+      </Link>
+      <div className="strip-meta">
+        <Link href={`/work/${p.slug}`}>
+          <span className="mono" style={{ color: "var(--faint)", marginRight: 12 }}>
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          {p.title}
+        </Link>
+        {hasMobile ? (
+          <span className="view-toggle" role="group" aria-label={p.title}>
+            {(["desktop", "mobile"] as const).map((v) => (
+              <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>
+                {t.home[v]}
+              </button>
+            ))}
+          </span>
+        ) : (
+          <span className="muted">{p.year}</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function WorkStrip({ projects }: { projects: Project[] }) {
   const strip = useWheelToHorizontal();
   const t = useDict();
@@ -87,40 +179,7 @@ export function WorkStrip({ projects }: { projects: Project[] }) {
   return (
     <div className="strip" ref={strip}>
       {projects.map((p, i) => (
-        <Link
-          key={p.id}
-          href={`/work/${p.slug}`}
-          className="strip-item"
-          onMouseEnter={(e) => e.currentTarget.querySelector("video")?.play().catch(() => {})}
-          onMouseLeave={(e) => e.currentTarget.querySelector("video")?.pause()}
-        >
-          <div className="frame" style={{ background: p.tint }}>
-            {p.coverUrl ? (
-              <Image src={p.coverUrl} alt="" fill sizes="(max-width: 600px) 78vw, 420px" quality={80} priority={i < 3} />
-            ) : (
-              <span className="frame-empty eyebrow" style={{ color: "var(--faint)", fontSize: 10 }}>
-                {p.title}
-              </span>
-            )}
-            {p.previewUrl ? (
-              isVideo(p.previewUrl) ? (
-                <video className="frame-preview" src={p.previewUrl} muted loop playsInline preload="none" />
-              ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img className="frame-preview" src={p.previewUrl} alt="" loading="lazy" />
-              )
-            ) : null}
-          </div>
-          <div className="strip-meta">
-            <span>
-              <span className="mono" style={{ color: "var(--faint)", marginRight: 12 }}>
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              {p.title}
-            </span>
-            <span className="muted">{p.year}</span>
-          </div>
-        </Link>
+        <WorkCard key={p.id} project={p} index={i} />
       ))}
     </div>
   );

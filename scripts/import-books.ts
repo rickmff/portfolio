@@ -6,7 +6,9 @@
  */
 import { and, eq, isNull } from "drizzle-orm";
 import { db, schema } from "../src/db";
+import type { Translations } from "../src/db/schema";
 import { bookPages } from "./data/book-pages";
+import { bookTranslations } from "./data/translations";
 import books from "./data/books.json";
 
 export async function importBooks() {
@@ -52,6 +54,31 @@ export async function syncBookPages() {
       p.readUrl && db.update(t).set({ readUrl: p.readUrl }).where(and(eq(t.title, p.title), isNull(t.readUrl))),
     ];
     for (const q of steps) if (q) n += (await q.returning({ id: t.id })).length;
+  }
+  return n;
+}
+
+/** Adds the translations in data/translations.ts, field by field, only where none exists yet. */
+export async function syncTranslations() {
+  const { books: t } = schema;
+  const rows = await db.select({ id: t.id, title: t.title, translations: t.translations }).from(t);
+  let n = 0;
+  for (const tr of bookTranslations) {
+    const row = rows.find((r) => r.title === tr.title);
+    if (!row) continue;
+    const merged: Translations = { ...row.translations };
+    let changed = false;
+    for (const lang of ["en", "pt"] as const) {
+      for (const [field, value] of Object.entries(tr[lang] ?? {})) {
+        if (!value || merged[lang]?.[field]) continue;
+        merged[lang] = { ...merged[lang], [field]: value };
+        changed = true;
+      }
+    }
+    if (changed) {
+      await db.update(t).set({ translations: merged }).where(eq(t.id, row.id));
+      n++;
+    }
   }
   return n;
 }

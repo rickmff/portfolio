@@ -7,8 +7,7 @@ services:
     restart: unless-stopped
     environment:
       DATABASE_URL: postgres://portfolio:${POSTGRES_PASSWORD}@db:5432/portfolio
-      SESSION_SECRET: ${SESSION_SECRET}
-      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH}
+      CONTENT_API_TOKEN: ${CONTENT_API_TOKEN}
       SITE_URL: https://${DOMAIN}
     volumes:
       - uploads:/app/uploads

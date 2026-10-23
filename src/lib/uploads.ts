@@ -19,12 +19,15 @@ export const MIME: Record<string, string> = {
 };
 
 /** Saves an uploaded image (or short MP4/WebM clip) and returns its public URL, or null when no file was sent. */
-export async function saveUpload(file: FormDataEntryValue | null): Promise<string | null> {
+export async function saveUpload(
+  file: FormDataEntryValue | null,
+  opts: { maxMb?: number } = {},
+): Promise<string | null> {
   if (!(file instanceof File) || file.size === 0) return null;
   const ext = path.extname(file.name).toLowerCase();
   if (!MIME[ext] || ext === ".svg") throw new Error("Upload a JPG, PNG, WebP, AVIF or GIF image, or an MP4/WebM clip.");
   // Vercel caps function request bodies at 4.5 MB.
-  const maxMb = process.env.VERCEL ? 4 : 8;
+  const maxMb = process.env.VERCEL ? 4 : (opts.maxMb ?? 8);
   if (file.size > maxMb * 1024 * 1024) throw new Error(`Files must be ${maxMb} MB or smaller.`);
   const name = `${randomUUID()}${ext}`;
   // On Vercel the disk is ephemeral, so files go to Vercel Blob when a store is connected.
