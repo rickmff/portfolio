@@ -54,6 +54,28 @@ export default async function EditProject({ params }: { params: Promise<{ id: st
             <small>4:5, muted, up to 8 MB. Replaces the URL.</small>
           </label>
         </Row>
+        <Row>
+          <div className="adm-field">
+            <span>Mobile cover (phone screen, 390×844)</span>
+            {p?.coverMobileUrl ? (
+              <div className="adm-image">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.coverMobileUrl} alt="" />
+                <label className="adm-check">
+                  <input type="checkbox" name="removeMobile" />
+                  <span>Remove mobile view</span>
+                </label>
+              </div>
+            ) : null}
+            <input type="file" name="coverMobile" accept="image/jpeg,image/png,image/webp,image/avif" />
+          </div>
+          <label className="adm-field">
+            <span>Mobile clip</span>
+            {p?.previewMobileUrl ? <small>Current: {p.previewMobileUrl}</small> : null}
+            <input type="file" name="previewMobile" accept="video/mp4,video/webm" />
+            <small>Shown in a phone frame when the card is switched to mobile.</small>
+          </label>
+        </Row>
         <MarkdownField name="body" label="Case study" defaultValue={p?.body} />
         <Check name="published" label="Published" defaultChecked={p?.published ?? true} />
       </AdminForm>

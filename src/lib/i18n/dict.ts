@@ -15,6 +15,8 @@ const en = {
     writing: "Writing",
     allWriting: "All writing →",
     noProjects: "No projects yet.",
+    desktop: "Desktop",
+    mobile: "Mobile",
   },
   books: {
     eyebrow: "Library",
@@ -65,6 +67,8 @@ const pt: Dict = {
     writing: "Textos",
     allWriting: "Todos os textos →",
     noProjects: "Nenhum projeto ainda.",
+    desktop: "Desktop",
+    mobile: "Mobile",
   },
   books: {
     eyebrow: "Biblioteca",

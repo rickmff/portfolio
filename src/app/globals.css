@@ -214,6 +214,7 @@ a {
 }
 .frame {
   position: relative;
+  display: block;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   transition: transform 0.6s var(--ease);
@@ -242,6 +243,63 @@ a {
 .strip-item:hover .frame-preview,
 .frame-preview.is-playing {
   opacity: 1;
+}
+/* Desktop and mobile captures of a project, switched from the card's footer */
+.frame-view {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.6s var(--ease-soft);
+}
+.strip-item[data-view="mobile"] .frame-desktop,
+.strip-item[data-view="desktop"] .frame-mobile {
+  opacity: 0;
+  pointer-events: none;
+}
+.frame-mobile {
+  display: grid;
+  place-items: center;
+}
+.phone {
+  position: relative;
+  height: 84%;
+  aspect-ratio: 390 / 844;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #000;
+  box-shadow:
+    0 0 0 5px #111,
+    0 0 0 6px rgb(255 255 255 / 0.12),
+    0 28px 50px -18px rgb(0 0 0 / 0.45);
+  transition: transform 0.8s var(--ease);
+}
+.strip-item[data-view="desktop"] .phone {
+  transform: translateY(14px) scale(0.97);
+}
+.phone img,
+.phone video {
+  object-position: top;
+}
+.view-toggle {
+  display: flex;
+  gap: 12px;
+}
+.view-toggle button {
+  font: inherit;
+  font-size: 12px;
+  color: var(--faint);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.view-toggle button:hover,
+.view-toggle button[aria-pressed="true"] {
+  color: var(--ink);
+}
+.view-toggle button:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 3px;
 }
 .frame-empty {
   position: absolute;
