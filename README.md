@@ -5,7 +5,8 @@ Minimal portfolio with a project gallery, an interactive 3D bookshelf, a blog an
 - **Next.js 15** (App Router, server actions) + **TypeScript**
 - **Postgres** + **Drizzle ORM** (SQL migrations in `drizzle/`)
 - **CSS 3D** books, no WebGL needed
-- **Content API** (`/api/content`, bearer token) for projects, books, posts, harness, settings and media, driven by the `portfolio` Claude skill instead of a backoffice. Every text field can carry English and Portuguese versions
+- **/admin** backoffice: projects, books, posts, harness and site texts, each with English and Portuguese versions
+- **Content API** (`/api/content`, bearer token) for projects, books, posts, harness, settings and media, driven by the `portfolio` Claude skill. Every text field can carry English and Portuguese versions
 - **Docker Compose** with Postgres and Caddy (automatic HTTPS)
 
 ## Local development
@@ -14,7 +15,7 @@ Minimal portfolio with a project gallery, an interactive 3D bookshelf, a blog an
 pnpm install
 cp .env.example .env.local          # set DATABASE_URL and CONTENT_API_TOKEN (openssl rand -hex 32)
 pnpm db:migrate && pnpm db:seed     # schema + sample content
-pnpm dev                            # http://localhost:3000, content API at /api/content
+pnpm dev                            # http://localhost:3000, backoffice at /admin, content API at /api/content
 ```
 
 Change the schema in `src/db/schema.ts`, then `pnpm db:generate` to write a migration.
@@ -43,6 +44,7 @@ CONTENTFUL_SPACE_ID=… CONTENTFUL_ACCESS_TOKEN=… pnpm import:contentful      
 
 ```
 src/app/(site)      public pages: home, /work/[slug], /books, /blog, /blog/[slug]
+src/app/admin       backoffice (login, CRUD, settings) and server actions
 src/app/api/content content API (CRUD, settings, media, reorder, book lookup)
 src/components      BookStage (3D book), WorkStrip, WritingList
 src/db              Drizzle schema and client

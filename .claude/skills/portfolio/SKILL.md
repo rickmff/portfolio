@@ -5,7 +5,7 @@ description: Manage the content of rickmff's portfolio (novo.rickmff.com): proje
 
 # Portfolio content
 
-Use when the user types `/portfolio` or asks to add, edit, reorder or remove anything on their portfolio site: a project in Latest Work, a book on the shelf, a blog post, the About page, a Harness link, or the hero / "now" lines. There is no backoffice: this skill is the only way content changes. Talk to the user in Portuguese.
+Use when the user types `/portfolio` or asks to add, edit, reorder or remove anything on their portfolio site: a project in Latest Work, a book on the shelf, a blog post, the About page, a Harness link, or the hero / "now" lines. The same content can also be edited by hand in the /admin backoffice (Google sign-in, rickmff@gmail.com only); both write to the same database. Talk to the user in Portuguese.
 
 ## 0. Connect
 

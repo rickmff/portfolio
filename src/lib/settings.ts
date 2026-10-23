@@ -17,3 +17,6 @@ export const SETTING_KEYS = {
 
 export type SettingKey = keyof typeof SETTING_KEYS;
 export type SiteSettings = Record<SettingKey, string>;
+
+/** Settings with an English and a Portuguese version (`key:en`, `key:pt`). */
+export const TRANSLATED_SETTINGS: SettingKey[] = ["role", "hero", "now", "about"];
