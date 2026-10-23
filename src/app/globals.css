@@ -8,7 +8,8 @@
   --faint: #8a8a8a;
   --line: #ededeb;
   --accent: #e5484d;
-  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.65, 0, 0.35, 1);
   --measure: 1080px;
 }
 
@@ -130,7 +131,8 @@ a {
   padding-block: 200px 220px;
   text-align: center;
 }
-.hero h1 {
+.hero h1,
+.hero-lines {
   margin: 32px auto 0;
   max-width: 760px;
   font-size: clamp(30px, 4.4vw, 56px);
@@ -309,7 +311,7 @@ a {
   background: transparent;
   cursor: pointer;
   perspective: 1400px;
-  transition: width 0.7s var(--ease);
+  transition: width 1s var(--ease);
 }
 .sb-slot:focus-visible {
   outline: none;
@@ -327,7 +329,7 @@ a {
   margin-left: calc(var(--w) / -2);
   transform-style: preserve-3d;
   transform: rotateY(90deg);
-  transition: transform 0.7s var(--ease);
+  transition: transform 1s var(--ease);
 }
 .sb-slot:hover .sb-book {
   transform: translateY(-10px) rotateY(90deg);
@@ -917,23 +919,60 @@ a {
 
 /* Fade-in on load */
 .reveal {
-  animation: reveal 0.9s var(--ease) both;
+  animation: reveal 1.4s var(--ease) both;
+}
+
+/* Hero: eyebrow, then the sentence line by line (src/components/HeroLines.tsx), then the rest */
+.hero-in {
+  animation: reveal 1.4s var(--ease) both;
+}
+.hero-after {
+  display: block;
+  animation: reveal 1.6s var(--ease) both;
+  animation-delay: calc(0.35s + var(--hero-lines, 3) * 0.22s + 0.3s);
+}
+.hl-w {
+  display: inline-block;
+  opacity: 0;
+  /* Safety net: if the script never runs the words still show up. */
+  animation: hl-fallback 0.8s var(--ease) 1.5s forwards;
+}
+.hero-lines.is-ready .hl-w {
+  animation: hl-in 1.5s var(--ease) both;
+  animation-delay: calc(0.35s + var(--line, 0) * 0.22s);
+}
+@keyframes hl-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+@keyframes hl-fallback {
+  to {
+    opacity: 1;
+  }
 }
 
 /* Page transitions: fade out on internal link clicks, fade in on the new page */
 .page-enter {
-  animation: page-enter 0.55s var(--ease) both;
+  animation: page-enter 0.95s var(--ease) both;
 }
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(14px);
   }
 }
 main {
   transition:
-    opacity 0.15s ease,
-    transform 0.15s ease;
+    opacity 0.22s var(--ease-soft),
+    transform 0.22s var(--ease-soft);
 }
 html.is-leaving main {
   opacity: 0;
@@ -943,10 +982,10 @@ html.is-leaving main {
 /* Scroll reveal (src/components/ScrollReveal.tsx adds these classes) */
 .sr {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(28px);
   transition:
-    opacity 0.9s var(--ease) var(--sr-delay, 0ms),
-    transform 0.9s var(--ease) var(--sr-delay, 0ms);
+    opacity 1.4s var(--ease) var(--sr-delay, 0ms),
+    transform 1.6s var(--ease) var(--sr-delay, 0ms);
 }
 .sr.sr-in {
   opacity: 1;
@@ -959,15 +998,15 @@ html.is-leaving main {
   grid-template-rows: 0fr;
   opacity: 0;
   transition:
-    grid-template-rows 0.7s var(--ease),
-    opacity 0.45s var(--ease);
+    grid-template-rows 1s var(--ease),
+    opacity 0.6s var(--ease-soft);
 }
 .collapse.is-open {
   grid-template-rows: 1fr;
   opacity: 1;
   transition:
-    grid-template-rows 0.7s var(--ease),
-    opacity 0.6s var(--ease) 0.15s;
+    grid-template-rows 1s var(--ease),
+    opacity 0.9s var(--ease) 0.2s;
 }
 .collapse-inner {
   min-height: 0;
@@ -976,7 +1015,7 @@ html.is-leaving main {
 @keyframes reveal {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(14px);
   }
 }
 
@@ -1064,8 +1103,8 @@ html.is-leaving main {
   opacity: 0.55;
   user-select: none;
   transition:
-    filter 0.8s var(--ease) 0.15s,
-    opacity 0.8s var(--ease) 0.15s;
+    filter 1.2s var(--ease) 0.15s,
+    opacity 1.2s var(--ease) 0.15s;
 }
 .notes-body > :first-child {
   margin-top: 0;
@@ -1084,8 +1123,8 @@ html.is-leaving main {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition:
-    clip-path 0.9s var(--ease),
-    opacity 0.5s var(--ease) 0.35s;
+    clip-path 1.3s var(--ease),
+    opacity 0.7s var(--ease-soft) 0.45s;
   clip-path: inset(0 0 0 0);
 }
 .notes-cover-label {

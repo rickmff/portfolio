@@ -4,7 +4,7 @@ import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const LEAVE_MS = 150;
+const LEAVE_MS = 220;
 
 type PrefetchKind = NonNullable<Parameters<AppRouterInstance["prefetch"]>[1]>["kind"];
 // Pages here are rendered per request, so Next's default prefetch only fetches their shell.

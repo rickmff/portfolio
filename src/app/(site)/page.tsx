@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BookShelf } from "@/components/BookShelf";
-import { Emphasis } from "@/components/SiteChrome";
+import { HeroLines } from "@/components/HeroLines";
 import { WorkStrip } from "@/components/WorkStrip";
 import { WritingList } from "@/components/WritingList";
 import { latestRead, toShelfBook } from "@/lib/books";
@@ -22,14 +22,14 @@ export default async function Home() {
 
   return (
     <>
-      <section className="wrap hero reveal">
-        <p className="eyebrow" style={{ margin: 0 }}>{settings.role}</p>
-        <h1>
-          <Emphasis text={settings.hero} />
-        </h1>
-        <span className="dot" aria-hidden="true" />
+      <section className="wrap hero">
+        <p className="eyebrow hero-in" style={{ margin: 0 }}>{settings.role}</p>
+        <HeroLines text={settings.hero} />
+        <span className="hero-after">
+          <span className="dot" aria-hidden="true" />
+        </span>
         {settings.now ? (
-          <p className="muted" style={{ margin: "40px auto 0", maxWidth: 420, fontSize: 13 }}>
+          <p className="muted hero-after" style={{ margin: "40px auto 0", maxWidth: 420, fontSize: 13 }}>
             {t.home.now} — {settings.now}
           </p>
         ) : null}

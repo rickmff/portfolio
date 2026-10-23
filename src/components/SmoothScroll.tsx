@@ -8,7 +8,7 @@ import { useEffect } from "react";
 export function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.9, anchors: { offset: -24 } });
+    const lenis = new Lenis({ lerp: 0.075, wheelMultiplier: 0.9, anchors: { offset: -24 } });
     let frame = requestAnimationFrame(function raf(t) {
       lenis.raf(t);
       frame = requestAnimationFrame(raf);
