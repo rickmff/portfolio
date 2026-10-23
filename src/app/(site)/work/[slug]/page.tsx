@@ -23,7 +23,7 @@ export default async function ProjectPage({ params }: Props) {
   return (
     <article className="section">
       <header className="wrap page-title reveal">
-        <p className="eyebrow" style={{ margin: 0 }}>{p.year}{p.stack ? ` · ${p.stack}` : ""}</p>
+        <p className="eyebrow" style={{ margin: 0 }}>{p.year}</p>
         <h1>{p.title}</h1>
         {p.summary ? <p className="muted" style={{ maxWidth: 520, margin: "24px auto 0" }}>{p.summary}</p> : null}
         <p style={{ display: "flex", gap: 24, justifyContent: "center", margin: "28px 0 0", fontSize: 13 }}>
