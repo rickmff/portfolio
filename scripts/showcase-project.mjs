@@ -4,6 +4,7 @@
 // site's icon and the app opening; and it ends on the phone beside the name, a tagline and the URL.
 //   node scripts/showcase-project.mjs https://example.com [--out capture/example] [--tagline "…"]
 //     [--accent "#16A34A"] [--desktop 22] [--pause 1.6] [--wait 3] [--no-pwa] [--cookie NEXT_LOCALE=en]
+//     [--mobile-url https://example.com/demo]   (the page the phone shows and installs; default: the url)
 // Writes showcase.mp4 (60 fps, H.264) and showcase.webp (poster, first frame) into --out.
 // Filming runs on virtual time like capture-project.mjs, so every animation comes out at 60 fps.
 // Needs ffmpeg on PATH and a Chromium for Playwright.
@@ -25,6 +26,7 @@ const { values: opt, positionals } = parseArgs({
     wait: { type: "string", default: "3" },
     "no-pwa": { type: "boolean", default: false },
     cookie: { type: "string", multiple: true },
+    "mobile-url": { type: "string" },
   },
 });
 const url = positionals[0];
@@ -60,19 +62,56 @@ const FONT = "-apple-system, 'SF Pro Display', 'Helvetica Neue', Inter, Arial, s
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 
 /** Loads the page on a controllable clock, clears banners, plays every reveal once, then freezes time. */
-async function openPage(context) {
+async function openPage(context, target = url) {
   const page = await browser.newPage({ ...context, reducedMotion: "no-preference", colorScheme: "light" });
   await page.clock.install();
+  // While filming, only the script scrolls: the page's own scroll guides, snapping and smooth
+  // scrollers are muted, and the script's position is put back before every frame.
+  await page.addInitScript(() => {
+    const w = window;
+    const scrollTo = w.scrollTo.bind(w);
+    const film = (w.__film = {
+      lock: false,
+      y: null,
+      to(y) {
+        film.y = y;
+        scrollTo(0, y);
+      },
+      hold() {
+        if (film.y != null && Math.abs(w.scrollY - film.y) > 0.5) scrollTo(0, film.y);
+      },
+    });
+    const guard = (fn) =>
+      function (...args) {
+        if (film.lock) return;
+        return fn.apply(this, args);
+      };
+    w.scrollTo = guard(w.scrollTo);
+    w.scroll = guard(w.scroll);
+    w.scrollBy = guard(w.scrollBy);
+    for (const k of ["scrollIntoView", "scrollTo", "scroll", "scrollBy"]) Element.prototype[k] = guard(Element.prototype[k]);
+    const top = Object.getOwnPropertyDescriptor(Element.prototype, "scrollTop");
+    Object.defineProperty(Element.prototype, "scrollTop", {
+      configurable: true,
+      get() {
+        return top.get.call(this);
+      },
+      set(v) {
+        if (film.lock && (this === document.documentElement || this === document.body)) return;
+        top.set.call(this, v);
+      },
+    });
+  });
   // Sites that pick the language from the visitor's location can be pinned with --cookie NAME=VALUE.
   for (const c of [].concat(opt.cookie ?? [])) {
     const [name, ...rest] = c.split("=");
-    await page.context().addCookies([{ name, value: rest.join("="), url }]);
+    await page.context().addCookies([{ name, value: rest.join("="), url: target }]);
   }
-  await page.goto(url, { waitUntil: "networkidle", timeout: 45_000 }).catch((e) => {
+  await page.goto(target, { waitUntil: "networkidle", timeout: 45_000 }).catch((e) => {
     if (e.name !== "TimeoutError") throw e;
   });
   await page.addStyleTag({
-    content: `html,body{scroll-behavior:auto!important;scrollbar-width:none!important}::-webkit-scrollbar{display:none!important}`,
+    content: `html,body{scroll-behavior:auto!important;scroll-snap-type:none!important;scrollbar-width:none!important}::-webkit-scrollbar{display:none!important}`,
   });
   for (const frame of page.frames()) {
     const button = frame.getByRole("button", { name: consent }).first();
@@ -88,6 +127,10 @@ async function openPage(context) {
   });
   await page.waitForLoadState("networkidle", { timeout: 10_000 }).catch(() => {});
   await page.waitForTimeout(Number(opt.wait) * 1000);
+  await page.evaluate(() => {
+    window.__film.to(0);
+    window.__film.lock = true;
+  });
   await page.clock.pauseAt(await page.evaluate(() => Date.now() + 50));
   return page;
 }
@@ -109,6 +152,7 @@ function recorder(page, dir, prefix) {
       }
     }, STEP);
     await page.clock.runFor(STEP);
+    await page.evaluate(() => window.__film.hold());
     const file = path.join(dir, `${prefix}${String(n++).padStart(5, "0")}.jpg`);
     await page.screenshot({ path: file, type: "jpeg", quality: 93 });
     return file;
@@ -122,7 +166,7 @@ function recorder(page, dir, prefix) {
     glide: async (from, to, seconds) => {
       const count = Math.max(1, Math.round(seconds * FPS));
       for (let i = 1; i <= count; i++) {
-        await page.evaluate((y) => scrollTo(0, y), Math.round(from + (to - from) * ease(i / count)));
+        await page.evaluate((y) => window.__film.to(y), Math.round(from + (to - from) * ease(i / count)));
         files.push(await frame());
       }
     },
@@ -174,7 +218,7 @@ async function filmScroll(rec, page, budget, { pause, firstRest }) {
 
 /* Site identity: name, icon, accent colour, tagline. */
 
-async function identity(page) {
+async function identity(page, pageUrl = url) {
   const info = await page.evaluate(() => {
     const m = (sel) => document.querySelector(sel)?.getAttribute("content")?.trim() || "";
     const href = (sel) => {
@@ -212,7 +256,7 @@ async function identity(page) {
     icon = await sharp(Buffer.from(buf)).resize(256, 256, { fit: "cover" }).png().toBuffer().catch(() => null);
     if (icon) break;
   }
-  const name = manifest?.short_name || manifest?.name || info.title || host;
+  const name = manifest?.short_name || manifest?.name || info.title || new URL(pageUrl).hostname.replace(/^www\./, "");
   const accent = opt.accent || manifest?.theme_color || info.theme || "#16A34A";
   const firstSentence = (info.description.match(/^[^.!?]+[.!?]?/)?.[0] ?? "").trim();
   return { name, accent, icon, tagline: opt.tagline || firstSentence, installable: Boolean(manifest) };
@@ -314,6 +358,7 @@ await filmScroll(deskRec, desk, DESKTOP_SECONDS, { pause: PAUSE, firstRest: 1.6 
 await desk.close();
 
 // 2. Phone: scroll down and back up, with the status bar drawn above the page.
+const mobileUrl = opt["mobile-url"] ?? url;
 const mob = await openPage({
   viewport: { width: 390, height: (SCREEN.h - SCREEN.bar) / 2 },
   deviceScaleFactor: 2,
@@ -321,7 +366,9 @@ const mob = await openPage({
   hasTouch: true,
   userAgent:
     "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
-});
+}, mobileUrl);
+// The phone installs whatever it shows: a demo store can have its own name and icon.
+const app = mobileUrl === url ? id : await identity(mob, mobileUrl);
 const mobRec = recorder(mob, raw, "m");
 await mobRec.rest(1.0);
 const { maxY } = await stopsOf(mob);
@@ -469,9 +516,9 @@ const mobFiles = mobRec.files;
 for (const f of mobFiles.slice(0, mobFrames)) await phoneFrame(await pageScreen(f));
 
 let lastScreen = await pageScreen(mobFiles[mobFrames - 1]);
-if (id.installable && !opt["no-pwa"]) {
+if (app.installable && !opt["no-pwa"]) {
   const iconSize = 132;
-  const sheetIcon = await iconTile(id.icon, 120, id.accent, id.name);
+  const sheetIcon = await iconTile(app.icon, 120, app.accent, app.name);
   const sheet = await sharp(
     svg(
       SCREEN.w,
@@ -481,8 +528,8 @@ if (id.installable && !opt["no-pwa"]) {
       <text x="50%" y="74" text-anchor="middle" font-family="${FONT}" font-size="32" font-weight="600" fill="#111">Add to Home Screen</text>
       <text x="${SCREEN.w - 40}" y="74" text-anchor="end" font-family="${FONT}" font-size="32" font-weight="600" fill="#007aff">Add</text>
       <rect x="40" y="130" width="${SCREEN.w - 80}" height="200" rx="24" fill="#fff"/>
-      <text x="${70 + 120 + 30}" y="215" font-family="${FONT}" font-size="34" fill="#111">${esc(id.name.slice(0, 22))}</text>
-      <text x="${70 + 120 + 30}" y="265" font-family="${FONT}" font-size="28" fill="#8a8a8e">${esc(host)}</text>
+      <text x="${70 + 120 + 30}" y="215" font-family="${FONT}" font-size="34" fill="#111">${esc(app.name.slice(0, 22))}</text>
+      <text x="${70 + 120 + 30}" y="265" font-family="${FONT}" font-size="28" fill="#8a8a8e">${esc(new URL(mobileUrl).hostname.replace(/^www\./, ""))}</text>
       <text x="60" y="400" font-family="${FONT}" font-size="26" fill="#8a8a8e">An icon will be added to your Home Screen so you</text>
       <text x="60" y="436" font-family="${FONT}" font-size="26" fill="#8a8a8e">can quickly access this website.</text>`,
     ),
@@ -511,8 +558,8 @@ if (id.installable && !opt["no-pwa"]) {
   // Home screen with the new icon; a tap; a white splash; the app.
   const iconX = 68 + 2 * 172;
   const iconY = 300 + 1 * 200;
-  const home = await sharp(homeScreen(id.accent, id.name, iconX, iconY, iconSize))
-    .composite([{ input: await iconTile(id.icon, iconSize, id.accent, id.name), left: iconX, top: iconY }])
+  const home = await sharp(homeScreen(app.accent, app.name, iconX, iconY, iconSize))
+    .composite([{ input: await iconTile(app.icon, iconSize, app.accent, app.name), left: iconX, top: iconY }])
     .png()
     .toBuffer();
   const fade = Math.round(0.35 * FPS);
@@ -524,14 +571,14 @@ if (id.installable && !opt["no-pwa"]) {
   for (let i = 1; i <= press; i++) {
     const s = 1 - 0.12 * Math.sin((Math.PI * i) / press);
     const sz = Math.round(iconSize * s);
-    const tile = await iconTile(id.icon, sz, id.accent, id.name);
-    const pressed = await sharp(homeScreen(id.accent, id.name, iconX, iconY, iconSize))
+    const tile = await iconTile(app.icon, sz, app.accent, app.name);
+    const pressed = await sharp(homeScreen(app.accent, app.name, iconX, iconY, iconSize))
       .composite([{ input: tile, left: Math.round(iconX + (iconSize - sz) / 2), top: Math.round(iconY + (iconSize - sz) / 2) }])
       .png()
       .toBuffer();
     await phoneFrame(pressed);
   }
-  const splashIcon = await iconTile(id.icon, 200, id.accent, id.name);
+  const splashIcon = await iconTile(app.icon, 200, app.accent, app.name);
   const splash = await sharp({ create: { width: SCREEN.w, height: SCREEN.h, channels: 3, background: "#ffffff" } })
     .composite([{ input: splashIcon, left: (SCREEN.w - 200) / 2, top: (SCREEN.h - 200) / 2 - 40 }])
     .png()
@@ -553,36 +600,37 @@ if (id.installable && !opt["no-pwa"]) {
 
 // Outro: the phone moves left, the name, tagline and URL come in on the right.
 const tagline = id.tagline;
-const words = tagline.split(/\s+/);
 const lines = [];
-for (const w of words) {
-  if (!lines.length || (lines.at(-1) + " " + w).length > 34) lines.push(w);
+for (const w of tagline.split(/\s+/).filter(Boolean)) {
+  if (!lines.length || (lines.at(-1) + " " + w).length > 30) lines.push(w);
   else lines[lines.length - 1] += " " + w;
 }
-const brandIcon = await iconTile(id.icon, 76, id.accent, id.name);
-const textW = 760;
-const pillW = Math.round(host.length * 17 + 56);
+const shown = lines.slice(0, 3);
+const brandIcon = await iconTile(id.icon, 116, id.accent, id.name);
+const lineY = (i) => 236 + i * 62;
+const pillTop = lineY(shown.length) - 6;
+const pillW = Math.round(host.length * 21 + 76);
 const brand = await sharp(
   svg(
-    textW,
-    360,
-    `<text x="100" y="62" font-family="${FONT}" font-size="64" font-weight="700" fill="#111">${esc(id.name)}</text>
-    ${lines
-      .slice(0, 3)
-      .map((l, i) => `<text x="0" y="${150 + i * 46}" font-family="${FONT}" font-size="34" fill="${i === lines.length - 1 && lines.length > 1 ? id.accent : "#333"}">${esc(l)}</text>`)
+    960,
+    pillTop + 90,
+    `<text x="146" y="94" font-family="${FONT}" font-size="100" font-weight="700" letter-spacing="-2" fill="#111">${esc(id.name)}</text>
+    ${shown
+      .map((l, i) => `<text x="4" y="${lineY(i)}" font-family="${FONT}" font-size="46" fill="${i === shown.length - 1 && shown.length > 1 ? id.accent : "#2a2a2a"}">${esc(l)}</text>`)
       .join("")}
-    <rect x="0" y="${150 + Math.min(lines.length, 3) * 46 - 10}" width="${pillW}" height="58" rx="29" fill="#111"/>
-    <text x="${pillW / 2}" y="${150 + Math.min(lines.length, 3) * 46 + 28}" text-anchor="middle" font-family="${FONT}" font-size="28" font-weight="600" fill="#fff">${esc(host)}</text>`,
+    <rect x="2" y="${pillTop}" width="${pillW}" height="76" rx="38" fill="#111"/>
+    <text x="${2 + pillW / 2}" y="${pillTop + 50}" text-anchor="middle" font-family="${FONT}" font-size="34" font-weight="600" fill="#fff">${esc(host)}</text>`,
   ),
 )
-  .composite([{ input: brandIcon, left: 0, top: 6 }])
+  .composite([{ input: brandIcon, left: 0, top: 0 }])
   .png()
   .toBuffer();
+const brandH = pillTop + 90;
 const outroPhone = await phone(lastScreen);
 const O = Math.round(1.1 * FPS);
-const hold = Math.round(2.2 * FPS);
+const hold = Math.round(2.4 * FPS);
 const fromX = W / 2;
-const toX = W / 2 - 330;
+const toX = W / 2 - 420;
 for (let i = 1; i <= O + hold; i++) {
   const t = ease(clamp01(i / O));
   const pos = phoneAt(fromX + (toX - fromX) * t, H / 2);
@@ -591,7 +639,7 @@ for (let i = 1; i <= O + hold; i++) {
     await scene([
       { input: phoneShadow.input, left: pos.left - phoneShadow.pad, top: pos.top - phoneShadow.pad + 20 },
       { input: outroPhone, ...pos },
-      { input: brand, left: Math.round(W / 2 - 40 + 30 * (1 - tt)), top: Math.round(H / 2 - 150), opacity: tt },
+      { input: brand, left: Math.round(W / 2 - 110 + 30 * (1 - tt)), top: Math.round((H - brandH) / 2), opacity: tt },
     ]),
   );
 }
