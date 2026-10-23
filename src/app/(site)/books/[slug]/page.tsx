@@ -3,9 +3,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Book3D } from "@/components/Book3D";
+import { BookPreview } from "@/components/BookPreview";
 import { NotesReveal } from "@/components/NotesReveal";
+import { ReadLink } from "@/components/ReadingProgress";
 import { statusLabel } from "@/lib/books";
 import { getBookBySlug } from "@/lib/data";
+import { getEditions } from "@/lib/editions";
 import { getDict } from "@/lib/i18n/server";
 import { renderMarkdown } from "@/lib/markdown";
 
@@ -19,9 +22,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BookPage({ params }: Props) {
-  const b = await getBookBySlug((await params).slug);
+  const { slug } = await params;
+  const b = await getBookBySlug(slug);
   if (!b) notFound();
-  const t = await getDict();
+  const [t, ed] = await Promise.all([getDict(), getEditions(b)]);
   return (
     <article className="section">
       <header className="wrap book-head reveal">
@@ -39,7 +43,24 @@ export default async function BookPage({ params }: Props) {
         </p>
         <h1>{b.title}</h1>
         <p className="muted" style={{ margin: "12px 0 0" }}>{b.author}</p>
-        {b.readUrl ? (
+        {ed.read.length || ed.downloads.length || ed.preview ? (
+          <div className="book-actions">
+            {ed.read.length ? <ReadLink slug={slug} /> : null}
+            {ed.downloads.map((d) => (
+              <a
+                key={d.href}
+                href={d.href}
+                className="book-read with-arrow"
+                title={`${t.books.download} · ${d.source}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {d.label} <Arrow dir="down" />
+              </a>
+            ))}
+            {ed.preview ? <BookPreview id={ed.preview.id} title={b.title} /> : null}
+          </div>
+        ) : b.readUrl ? (
           <p style={{ margin: "28px 0 0", fontSize: 13 }}>
             <a href={b.readUrl} className="book-read with-arrow" target="_blank" rel="noopener noreferrer">
               {t.books.readFree} <Arrow dir="out" />
