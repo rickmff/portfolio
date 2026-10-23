@@ -43,9 +43,14 @@ export default async function BookPage({ params }: Props) {
         </p>
         <h1>{b.title}</h1>
         <p className="muted" style={{ margin: "12px 0 0" }}>{b.author}</p>
-        {ed.read.length || ed.downloads.length || ed.preview ? (
+        {ed.read.length || ed.downloads.length || ed.preview || ed.external ? (
           <div className="book-actions">
             {ed.read.length ? <ReadLink slug={slug} /> : null}
+            {ed.external ? (
+              <a href={ed.external} className="book-read with-arrow" target="_blank" rel="noopener noreferrer">
+                {t.books.readFree} <Arrow dir="out" />
+              </a>
+            ) : null}
             {ed.downloads.map((d) => (
               <a
                 key={d.href}
@@ -60,12 +65,6 @@ export default async function BookPage({ params }: Props) {
             ))}
             {ed.preview ? <BookPreview id={ed.preview.id} title={b.title} /> : null}
           </div>
-        ) : b.readUrl ? (
-          <p style={{ margin: "28px 0 0", fontSize: 13 }}>
-            <a href={b.readUrl} className="book-read with-arrow" target="_blank" rel="noopener noreferrer">
-              {t.books.readFree} <Arrow dir="out" />
-            </a>
-          </p>
         ) : null}
       </header>
 

@@ -20,47 +20,47 @@ type Curated = {
   standardEbooks?: string;
 };
 
-/** Keyed by the book title as it is stored (scripts/data/books.json). */
+/** Keyed by book slug (from the base title, so it is the same in every language). */
 const CURATED: Record<string, Curated> = {
-  Contos: {
+  "contos": {
     gutenberg: [{ id: 2147, lang: "en" }],
     standardEbooks: "edgar-allan-poe/short-fiction",
   },
-  "A Arte da Guerra": {
+  "a-arte-da-guerra": {
     gutenberg: [{ id: 132, lang: "en", translator: "Lionel Giles" }],
     standardEbooks: "sun-tzu/the-art-of-war/lionel-giles",
   },
-  Hamlet: {
+  "hamlet": {
     gutenberg: [
       { id: 25667, lang: "pt", translator: "D. Luís I" },
       { id: 1524, lang: "en" },
     ],
     standardEbooks: "william-shakespeare/hamlet",
   },
-  "Crime e Castigo": {
+  "crime-e-castigo": {
     gutenberg: [{ id: 2554, lang: "en", translator: "Constance Garnett" }],
     standardEbooks: "fyodor-dostoevsky/crime-and-punishment/constance-garnett",
   },
-  "A Metamorfose": {
+  "a-metamorfose": {
     gutenberg: [{ id: 5200, lang: "en", translator: "David Wyllie" }],
   },
-  "O Príncipe": {
+  "o-principe": {
     gutenberg: [{ id: 1232, lang: "en", translator: "W. K. Marriott" }],
     standardEbooks: "niccolo-machiavelli/the-prince/w-k-marriott",
   },
-  Meditações: {
+  "meditacoes": {
     gutenberg: [{ id: 2680, lang: "en", translator: "Meric Casaubon" }],
     standardEbooks: "marcus-aurelius/meditations/george-long",
   },
-  "Sobre a Brevidade da Vida": {
+  "sobre-a-brevidade-da-vida": {
     gutenberg: [{ id: 64576, lang: "en", translator: "Aubrey Stewart" }],
     standardEbooks: "seneca/dialogues/aubrey-stewart",
   },
-  "Guerra e Paz": {
+  "guerra-e-paz": {
     gutenberg: [{ id: 2600, lang: "en", translator: "Louise & Aylmer Maude" }],
     standardEbooks: "leo-tolstoy/war-and-peace/louise-maude_aylmer-maude",
   },
-  "O Capital": {
+  "o-capital": {
     standardEbooks: "karl-marx/the-capital/samuel-moore_edward-aveling",
   },
 };
@@ -74,6 +74,8 @@ export type Editions = {
   downloads: Download[];
   /** Google Books embeddable preview (a few pages, or the whole book when public domain). */
   preview: Preview | null;
+  /** A readUrl on some other free source, shown as a plain outbound link. */
+  external: string | null;
 };
 
 const GUTENBERG = "https://www.gutenberg.org";
@@ -81,6 +83,11 @@ const GUTENBERG = "https://www.gutenberg.org";
 function gutenbergIdFrom(url: string | null) {
   const m = url?.match(/gutenberg\.org\/(?:ebooks|cache\/epub|files)\/(\d+)/);
   return m ? Number(m[1]) : null;
+}
+
+function standardEbooksPathFrom(url: string | null) {
+  const m = url?.match(/standardebooks\.org\/ebooks\/([a-z0-9_/-]+?)\/?(?:[?#]|$)/);
+  return m ? m[1] : null;
 }
 
 /** standardebooks.org names its files after the path, with "_" between parts and "-" inside them. */
@@ -91,22 +98,28 @@ function standardEbooksFile(path: string) {
     .join("_");
 }
 
-export function readableEditions(b: Pick<Book, "title" | "readUrl">): GutenbergEdition[] {
-  const curated = CURATED[b.title]?.gutenberg ?? [];
-  if (curated.length) return curated;
-  // A Gutenberg link set by hand still gets the reader.
+type BookRef = Pick<Book, "readUrl"> & { slug: string };
+
+/**
+ * The book's own readUrl (set through the content API) comes first; the curated list above
+ * fills in what it does not cover.
+ */
+export function readableEditions(b: BookRef): GutenbergEdition[] {
+  const curated = CURATED[b.slug]?.gutenberg ?? [];
   const id = gutenbergIdFrom(b.readUrl);
-  return id ? [{ id, lang: "en" }] : [];
+  if (!id) return curated;
+  const own = curated.find((e) => e.id === id) ?? { id, lang: "en" as const };
+  return [own, ...curated.filter((e) => e.id !== id)];
 }
 
-export async function getEditions(b: Pick<Book, "title" | "author" | "readUrl">): Promise<Editions> {
+export async function getEditions(b: BookRef & Pick<Book, "title" | "author">): Promise<Editions> {
   const read = readableEditions(b);
   const downloads: Download[] = [];
   for (const e of read) {
     const lang = read.length > 1 ? ` · ${e.lang.toUpperCase()}` : "";
     downloads.push({ label: `EPUB${lang}`, href: `${GUTENBERG}/ebooks/${e.id}.epub3.images`, source: "Project Gutenberg" });
   }
-  const se = CURATED[b.title]?.standardEbooks;
+  const se = standardEbooksPathFrom(b.readUrl) ?? CURATED[b.slug]?.standardEbooks;
   if (se) {
     downloads.push({
       label: read.length ? "EPUB · Standard Ebooks" : "EPUB",
@@ -116,7 +129,8 @@ export async function getEditions(b: Pick<Book, "title" | "author" | "readUrl">)
   }
   const google = await googleBooks(b.title, b.author);
   if (google?.pdf) downloads.push({ label: "PDF", href: google.pdf, source: "Google Books" });
-  return { read, downloads, preview: google?.preview ?? null };
+  const own = gutenbergIdFrom(b.readUrl) || standardEbooksPathFrom(b.readUrl);
+  return { read, downloads, preview: google?.preview ?? null, external: own ? null : b.readUrl };
 }
 
 /* ---------- Google Books ---------- */
