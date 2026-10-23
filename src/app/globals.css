@@ -1259,3 +1259,167 @@ html.is-leaving main {
 .lang-toggle button:hover {
   color: var(--ink);
 }
+
+/* Book page: CSS 3D model of the book */
+.b3d {
+  --bw: 200px;
+  --bh: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.b3d-stage {
+  position: relative;
+  width: calc(var(--bw) + 120px);
+  height: calc(var(--bh) + 70px);
+  display: grid;
+  place-items: center;
+  perspective: 1200px;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+.b3d-stage.is-dragging {
+  cursor: grabbing;
+}
+.b3d-stage:focus-visible .b3d-floor {
+  outline: 1.5px solid var(--ink);
+  outline-offset: 6px;
+}
+.b3d-book {
+  position: relative;
+  width: var(--bw);
+  height: var(--bh);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.b3d-face {
+  position: absolute;
+  box-sizing: border-box;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+.b3d-front,
+.b3d-back {
+  inset: 0;
+  background: var(--bg);
+  color: var(--book-ink);
+  border-radius: 2px 5px 5px 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 22px 18px;
+}
+.b3d-front {
+  transform: translateZ(calc(var(--d) / 2));
+  box-shadow: inset 7px 0 8px -5px rgb(0 0 0 / 0.3);
+}
+.b3d-front img {
+  object-fit: cover;
+  pointer-events: none;
+}
+.b3d-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, rgb(255 255 255 / 0.14), transparent 40%), rgb(0 0 0 / var(--shade, 0));
+  pointer-events: none;
+}
+.b3d-back {
+  transform: rotateY(180deg) translateZ(calc(var(--d) / 2));
+  border-radius: 5px 2px 2px 5px;
+  justify-content: flex-end;
+  box-shadow: inset -7px 0 8px -5px rgb(0 0 0 / 0.25), inset 0 0 0 999px rgb(0 0 0 / 0.08);
+}
+.b3d-author {
+  position: relative;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+.b3d-title {
+  position: relative;
+  font-size: 20px;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+  text-align: left;
+}
+.b3d-spine,
+.b3d-edge {
+  top: 0;
+  left: calc((var(--bw) - var(--d)) / 2);
+  width: var(--d);
+  height: var(--bh);
+}
+.b3d-spine {
+  transform: rotateY(-90deg) translateZ(calc(var(--bw) / 2));
+  background: var(--bg);
+  color: var(--book-ink);
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 0 999px rgb(0 0 0 / 0.12), inset 2px 0 0 rgb(255 255 255 / 0.12);
+}
+.b3d-spine-title {
+  writing-mode: vertical-rl;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: calc(var(--bh) - 40px);
+}
+.b3d-edge {
+  top: 3px;
+  height: calc(var(--bh) - 6px);
+  transform: rotateY(90deg) translateZ(calc(var(--bw) / 2 - 3px));
+  background: repeating-linear-gradient(90deg, #fbfaf6 0 2px, #e4e2db 2px 3px);
+  box-shadow: inset 0 0 12px rgb(0 0 0 / 0.08);
+}
+.b3d-top,
+.b3d-bottom {
+  left: 0;
+  top: calc((var(--bh) - var(--d)) / 2);
+  width: calc(var(--bw) - 3px);
+  height: var(--d);
+  background: repeating-linear-gradient(0deg, #f5f4ef 0 2px, #e4e2db 2px 3px);
+}
+.b3d-top {
+  transform: rotateX(90deg) translateZ(calc(var(--bh) / 2 - 3px));
+}
+.b3d-bottom {
+  transform: rotateX(-90deg) translateZ(calc(var(--bh) / 2 - 3px));
+}
+.b3d-floor {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  width: calc(var(--bw) * 0.9);
+  height: 18px;
+  margin-left: calc(var(--bw) * -0.45);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.22), transparent);
+  filter: blur(4px);
+  pointer-events: none;
+}
+.b3d-hint {
+  margin: 4px 0 0;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint, var(--muted));
+  transition: opacity 0.6s var(--ease);
+}
+.b3d-hint.is-hidden {
+  opacity: 0;
+}
+@media (max-width: 600px) {
+  .b3d {
+    --bw: 170px;
+    --bh: 255px;
+  }
+}

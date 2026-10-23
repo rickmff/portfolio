@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Book3D } from "@/components/Book3D";
 import { NotesReveal } from "@/components/NotesReveal";
 import { statusLabel } from "@/lib/books";
 import { getBookBySlug } from "@/lib/data";
@@ -24,14 +24,15 @@ export default async function BookPage({ params }: Props) {
   return (
     <article className="section">
       <header className="wrap book-head reveal">
-        <div className="book-cover" style={{ backgroundColor: b.color, color: b.ink }}>
-          {b.coverUrl ? (
-            <Image src={b.coverUrl} alt={t.books.coverOf(b.title)} fill sizes="180px" priority />
-          ) : (
-            <span className="book-cover-title">{b.title}</span>
-          )}
-        </div>
-        <p className="eyebrow" style={{ margin: "40px 0 0" }}>
+        <Book3D
+          title={b.title}
+          author={b.author}
+          color={b.color}
+          ink={b.ink}
+          coverUrl={b.coverUrl}
+          thickness={b.thickness}
+        />
+        <p className="eyebrow" style={{ margin: "28px 0 0" }}>
           {statusLabel(b, t)}
           {b.rating ? ` · ${"●".repeat(b.rating)}${"○".repeat(5 - b.rating)}` : ""}
         </p>
