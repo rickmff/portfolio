@@ -9,8 +9,7 @@ const en = {
   nav: { work: "Work", books: "Books", writing: "Writing", harness: "Harness", about: "About", email: "Email" },
   home: {
     now: "Now",
-    selectedWork: "Selected work",
-    scroll: "Scroll →",
+    latestWork: "Latest Work",
     recentlyRead: "Recently read",
     allBooks: "All books →",
     writing: "Writing",
@@ -60,8 +59,7 @@ const pt: Dict = {
   nav: { work: "Projetos", books: "Livros", writing: "Textos", harness: "Harness", about: "Sobre", email: "Email" },
   home: {
     now: "Agora",
-    selectedWork: "Projetos selecionados",
-    scroll: "Role →",
+    latestWork: "Trabalhos recentes",
     recentlyRead: "Lidos recentemente",
     allBooks: "Todos os livros →",
     writing: "Textos",

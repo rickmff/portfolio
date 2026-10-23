@@ -991,6 +991,9 @@ html.is-leaving main {
   opacity: 1;
   transform: none;
 }
+.sr.sr-instant {
+  transition: none;
+}
 
 /* Height + fade open/close (book details on the shelf) */
 .collapse {

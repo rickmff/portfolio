@@ -36,9 +36,8 @@ export default async function Home() {
       </section>
 
       <section id="work" className="section">
-        <div className="wrap section-head">
-          <h2>{t.home.selectedWork}</h2>
-          {projects.length > 2 ? <span className="mono" style={{ color: "var(--muted)" }}>{t.home.scroll}</span> : null}
+        <div className="wrap section-head center">
+          <h2>{t.home.latestWork}</h2>
         </div>
         <WorkStrip projects={projects} />
       </section>

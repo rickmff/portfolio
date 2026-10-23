@@ -6,7 +6,7 @@ import { useEffect } from "react";
 /** What fades in as it enters the viewport and out again as it leaves. */
 const TARGETS = [
   ".section-head",
-  ".strip-item",
+  ".strip",
   ".shelf-label",
   ".shelf",
   ".year-row",
@@ -26,6 +26,7 @@ export function ScrollReveal() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const seen = new WeakSet<Element>();
+    const fresh: Element[] = [];
     const io = new IntersectionObserver(
       (entries) => {
         // Things that arrive together cascade in rather than popping at once.
@@ -47,8 +48,22 @@ export function ScrollReveal() {
       for (const el of document.querySelectorAll(TARGETS)) {
         if (seen.has(el)) continue;
         seen.add(el);
-        el.classList.add("sr");
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) {
+          // Already on screen when the script runs: it was painted visible, so leave it that way.
+          el.classList.add("sr", "sr-in");
+        } else {
+          // Hide without a transition, otherwise it visibly fades out before fading back in.
+          el.classList.add("sr", "sr-instant");
+          fresh.push(el);
+        }
         io.observe(el);
+      }
+      if (fresh.length) {
+        const batch = fresh.splice(0);
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => batch.forEach((el) => el.classList.remove("sr-instant"))),
+        );
       }
     };
     scan();
