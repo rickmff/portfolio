@@ -97,7 +97,7 @@ const cache = new Map<number, Promise<ReaderBook>>();
 const CACHE_SIZE = 12;
 
 async function load(id: number): Promise<ReaderBook> {
-  const res = await fetch(`http://127.0.0.1:8099/cache/epub/${id}/pg${id}-images.html`, {
+  const res = await fetch(`https://www.gutenberg.org/cache/epub/${id}/pg${id}-images.html`, {
     headers: { "User-Agent": "rickmff-portfolio (book reader)" },
     signal: AbortSignal.timeout(20_000),
     // Whole books go past the fetch cache's size limit; the in-memory cache below keeps them.
