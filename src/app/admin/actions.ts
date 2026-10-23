@@ -84,6 +84,8 @@ export async function saveProject(_: FormState, fd: FormData): Promise<FormState
     const values = { ...data, slug: slugify(data.slug || data.title) };
     const cover = await saveUpload(fd.get("cover"));
     const coverUrl = cover ?? (removeCover ? null : undefined);
+    // An uploaded clip wins over a typed preview URL.
+    values.previewUrl = (await saveUpload(fd.get("preview"))) ?? values.previewUrl;
     if (id) {
       await db.update(projects).set({ ...values, ...(coverUrl !== undefined && { coverUrl }) }).where(eq(projects.id, id));
     } else {

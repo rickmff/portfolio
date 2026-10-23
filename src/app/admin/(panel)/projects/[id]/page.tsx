@@ -41,12 +41,19 @@ export default async function EditProject({ params }: { params: Promise<{ id: st
           <ImageField label="Cover image (4:5 works best)" current={p?.coverUrl} />
           <Color name="tint" label="Background tint" defaultValue={p?.tint ?? "#F1F0EB"} />
         </Row>
-        <Text
-          name="previewUrl"
-          label="Hover preview URL (optional)"
-          defaultValue={p?.previewUrl}
-          hint="A short MP4/WebM or GIF that plays when someone hovers the card."
-        />
+        <Row>
+          <Text
+            name="previewUrl"
+            label="Hover preview URL (optional)"
+            defaultValue={p?.previewUrl}
+            hint="A short MP4/WebM or GIF that plays when someone hovers the card."
+          />
+          <label className="adm-field">
+            <span>…or upload a clip</span>
+            <input type="file" name="preview" accept="video/mp4,video/webm,image/gif,image/webp" />
+            <small>4:5, muted, up to 8 MB. Replaces the URL.</small>
+          </label>
+        </Row>
         <MarkdownField name="body" label="Case study" defaultValue={p?.body} />
         <Check name="published" label="Published" defaultChecked={p?.published ?? true} />
       </AdminForm>

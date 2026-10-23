@@ -239,7 +239,8 @@ a {
   opacity: 0;
   transition: opacity 0.4s ease;
 }
-.strip-item:hover .frame-preview {
+.strip-item:hover .frame-preview,
+.frame-preview.is-playing {
   opacity: 1;
 }
 .frame-empty {

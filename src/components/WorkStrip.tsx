@@ -80,8 +80,30 @@ function useWheelToHorizontal() {
   return ref;
 }
 
+/** Touch screens have no hover, so previews play while their card sits mostly in view. */
+function usePlayInView(strip: React.RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const el = strip.current;
+    if (!el || !matchMedia("(hover: none)").matches) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const { target, isIntersecting } of entries) {
+          const video = target as HTMLVideoElement;
+          video.classList.toggle("is-playing", isIntersecting);
+          if (isIntersecting) video.play().catch(() => {});
+          else video.pause();
+        }
+      },
+      { threshold: 0.6 },
+    );
+    el.querySelectorAll("video").forEach((v) => io.observe(v));
+    return () => io.disconnect();
+  }, [strip]);
+}
+
 export function WorkStrip({ projects }: { projects: Project[] }) {
   const strip = useWheelToHorizontal();
+  usePlayInView(strip);
   const t = useDict();
   if (projects.length === 0) return <p className="muted wrap">{t.home.noProjects}</p>;
   return (
