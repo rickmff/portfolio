@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BookShelf } from "@/components/BookShelf";
 import { HeroLines } from "@/components/HeroLines";
+import { ScrollCue } from "@/components/ScrollCue";
 import { WorkStrip } from "@/components/WorkStrip";
 import { WritingList } from "@/components/WritingList";
 import { latestRead, toShelfBook } from "@/lib/books";
@@ -30,20 +31,16 @@ export default async function Home() {
             {t.home.now} — {settings.now}
           </p>
         ) : null}
-        {projects.length ? (
-          <a href="#work" className="scroll-cue hero-after" aria-label={t.home.latestWork}>
-            <svg width="14" height="22" viewBox="0 0 14 22" fill="none" aria-hidden="true">
-              <path d="M7 1v19M1 14l6 6 6-6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
-        ) : null}
       </section>
 
       <section id="work" className="section">
         <div className="wrap section-head center">
           <h2>{t.home.latestWork}</h2>
         </div>
-        <WorkStrip projects={projects} />
+        {projects.length ? <ScrollCue target="#work-strip" label={t.home.latestWork} /> : null}
+        <div id="work-strip">
+          <WorkStrip projects={projects} />
+        </div>
       </section>
 
       {shelf.length ? (

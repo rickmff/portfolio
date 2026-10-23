@@ -10,7 +10,8 @@ import { checkPassword, requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/markdown";
 import { SESSION_COOKIE, createSessionToken, sessionCookieOptions } from "@/lib/session";
 import { SETTING_KEYS } from "@/lib/settings";
-import { saveUpload } from "@/lib/uploads";
+import { type BookDetails, type BookHit, bookDetails, searchBooks } from "@/lib/book-lookup";
+import { saveRemoteImage, saveUpload } from "@/lib/uploads";
 
 export type FormState = { error?: string; ok?: boolean } | undefined;
 
@@ -127,7 +128,8 @@ export async function saveBook(_: FormState, fd: FormData): Promise<FormState> {
   const id = Number(fd.get("id")) || null;
   try {
     const { removeCover, ...values } = bookSchema.parse(fields(fd));
-    const cover = await saveUpload(fd.get("cover"));
+    const remote = String(fd.get("coverRemote") ?? "").trim();
+    const cover = (await saveUpload(fd.get("cover"))) ?? (remote ? await saveRemoteImage(remote) : null);
     const coverUrl = cover ?? (removeCover ? null : undefined);
     if (id) {
       await db.update(books).set({ ...values, ...(coverUrl !== undefined && { coverUrl }) }).where(eq(books.id, id));
@@ -139,6 +141,25 @@ export async function saveBook(_: FormState, fd: FormData): Promise<FormState> {
   }
   refreshSite();
   redirect("/admin/books");
+}
+
+/** Book lookup on Open Library for the add-book form. */
+export async function lookupBooks(q: string): Promise<{ hits?: BookHit[]; error?: string }> {
+  await requireAdmin();
+  try {
+    return { hits: await searchBooks(z.string().trim().min(2).max(200).parse(q)) };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Search failed" };
+  }
+}
+
+export async function lookupBookDetails(key: string, coverId: number | null): Promise<BookDetails | { error: string }> {
+  await requireAdmin();
+  try {
+    return await bookDetails(key, coverId);
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Lookup failed" };
+  }
 }
 
 /** Saves the shelf order: `ids` is every book, first to last. */

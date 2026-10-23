@@ -571,3 +571,73 @@
   border-radius: 4px;
   vertical-align: 1px;
 }
+
+/* Book lookup (Open Library) on the book form */
+.adm-lookup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border: 1px dashed #d8d8d4;
+  border-radius: 8px;
+  background: #fafaf8;
+}
+.adm-lookup-label {
+  font-size: 13px;
+  color: #3a3a3a;
+}
+.adm-lookup-bar {
+  display: flex;
+  gap: 8px;
+}
+.adm-lookup-bar input {
+  flex: 1;
+  min-width: 0;
+}
+.adm-lookup-msg {
+  margin: 0;
+  font-size: 12px;
+  color: #777;
+}
+.adm-lookup-hits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 6px;
+}
+.adm-lookup-hits button {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ececea;
+  border-radius: 6px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+.adm-lookup-hits button:hover {
+  border-color: #111;
+}
+.adm-lookup-hits img,
+.adm-lookup-nocover {
+  flex: none;
+  width: 32px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 2px;
+  background: #ececea;
+}
+.adm-lookup-hits strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+}
+.adm-lookup-hits small {
+  font-size: 11px;
+  color: #777;
+}

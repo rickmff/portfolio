@@ -38,9 +38,13 @@ export function Book3D({ title, author, color, ink, coverUrl, thickness }: Props
     let target: { x: number; y: number } | null = null;
     let drag: { id: number; x: number; y: number; t: number } | null = null;
     let raf = 0;
+    // Hover: a small tilt toward the cursor and a lift, layered on top of the rotation.
+    let tilt = { x: 0, y: 0, lift: 0 };
+    let tiltTo = { x: 0, y: 0, lift: 0 };
 
     const paint = () => {
-      b.style.transform = `rotateX(${rot.x}deg) rotateY(${rot.y}deg)`;
+      b.style.transform = `translateY(${-tilt.lift}px) rotateX(${rot.x + tilt.x}deg) rotateY(${rot.y + tilt.y}deg)`;
+      el.style.setProperty("--lift", tilt.lift.toFixed(2));
       // Light comes from the upper left: the cover dims as it turns away from it.
       const facing = Math.cos(((rot.y + 20) * Math.PI) / 180);
       b.style.setProperty("--shade", String(Math.max(0, 0.28 - facing * 0.28).toFixed(3)));
@@ -48,7 +52,17 @@ export function Book3D({ title, author, color, ink, coverUrl, thickness }: Props
 
     const tick = () => {
       raf = 0;
-      if (drag) return;
+      tilt = {
+        x: tilt.x + (tiltTo.x - tilt.x) * 0.07,
+        y: tilt.y + (tiltTo.y - tilt.y) * 0.07,
+        lift: tilt.lift + (tiltTo.lift - tilt.lift) * 0.07,
+      };
+      const tilting = Math.abs(tiltTo.x - tilt.x) + Math.abs(tiltTo.y - tilt.y) + Math.abs(tiltTo.lift - tilt.lift) > 0.02;
+      if (drag) {
+        paint();
+        if (tilting) raf = requestAnimationFrame(tick);
+        return;
+      }
       if (target) {
         rot.x += (target.x - rot.x) * 0.12;
         rot.y += (target.y - rot.y) * 0.12;
@@ -63,7 +77,7 @@ export function Book3D({ title, author, color, ink, coverUrl, thickness }: Props
         if (Math.abs(vel.x) + Math.abs(vel.y) < 0.02) vel = { x: 0, y: 0 };
       }
       paint();
-      if (target || vel.x || vel.y) raf = requestAnimationFrame(tick);
+      if (target || vel.x || vel.y || tilting) raf = requestAnimationFrame(tick);
     };
     const run = () => {
       if (!raf) raf = requestAnimationFrame(tick);
@@ -90,8 +104,23 @@ export function Book3D({ title, author, color, ink, coverUrl, thickness }: Props
       el.setPointerCapture(e.pointerId);
       el.classList.add("is-dragging");
       seen();
+      if (!reduced) tiltTo = { x: 0, y: 0, lift: 4 };
+      run();
+    };
+    const hover = (e: PointerEvent) => {
+      if (reduced || e.pointerType !== "mouse") return;
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      tiltTo = drag ? { x: 0, y: 0, lift: 4 } : { x: -py * 14, y: px * 20, lift: 10 };
+      run();
+    };
+    const leave = () => {
+      tiltTo = { x: 0, y: 0, lift: 0 };
+      run();
     };
     const move = (e: PointerEvent) => {
+      hover(e);
       if (!drag || e.pointerId !== drag.id) return;
       const dx = e.clientX - drag.x;
       const dy = e.clientY - drag.y;
@@ -128,6 +157,7 @@ export function Book3D({ title, author, color, ink, coverUrl, thickness }: Props
     el.addEventListener("pointermove", move);
     el.addEventListener("pointerup", up);
     el.addEventListener("pointercancel", up);
+    el.addEventListener("pointerleave", leave);
     el.addEventListener("keydown", key);
     el.addEventListener("dblclick", reset);
 
@@ -145,6 +175,7 @@ export function Book3D({ title, author, color, ink, coverUrl, thickness }: Props
       el.removeEventListener("pointermove", move);
       el.removeEventListener("pointerup", up);
       el.removeEventListener("pointercancel", up);
+      el.removeEventListener("pointerleave", leave);
       el.removeEventListener("keydown", key);
       el.removeEventListener("dblclick", reset);
     };

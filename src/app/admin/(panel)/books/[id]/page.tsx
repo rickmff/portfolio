@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { deleteBook, saveBook } from "@/app/admin/actions";
 import { AdminForm, DeleteButton } from "@/components/admin/AdminForm";
+import { BookLookup } from "@/components/admin/BookLookup";
 import { Area, Check, Color, ImageField, Row, Select, Text } from "@/components/admin/Fields";
 import { MarkdownField } from "@/components/admin/MarkdownField";
 import { bookHref } from "@/lib/books";
@@ -26,6 +27,7 @@ export default async function EditBook({ params }: { params: Promise<{ id: strin
       </header>
       <AdminForm action={saveBook}>
         {b ? <input type="hidden" name="id" value={b.id} /> : null}
+        <BookLookup />
         <Row>
           <Text name="title" label="Title" defaultValue={b?.title} required />
           <Text name="author" label="Author" defaultValue={b?.author} required />
@@ -34,12 +36,11 @@ export default async function EditBook({ params }: { params: Promise<{ id: strin
           <Select
             name="status"
             label="Status"
-            defaultValue={b?.status ?? "read"}
+            defaultValue={b?.status === "next" ? "wishlist" : (b?.status ?? "read")}
             options={[
               { value: "reading", label: "Reading now" },
               { value: "read", label: "Read" },
-              { value: "next", label: "Up next" },
-              { value: "wishlist", label: "Wishlist (to buy)" },
+              { value: "wishlist", label: "Waitlist" },
               { value: "abandoned", label: "Put down" },
             ]}
           />

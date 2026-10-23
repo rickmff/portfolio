@@ -23,8 +23,8 @@ export function toShelfBook(b: Book): ShelfBook {
 export const STATUS_LABEL: Record<Book["status"], string> = {
   reading: "Reading",
   read: "Read",
-  next: "Up next",
-  wishlist: "Wishlist",
+  next: "Waitlist",
+  wishlist: "Waitlist",
   abandoned: "Put down",
 };
 

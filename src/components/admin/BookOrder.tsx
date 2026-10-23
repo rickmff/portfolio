@@ -9,7 +9,7 @@ import { STATUS_LABEL } from "@/lib/books";
 type Row = Pick<Book, "id" | "title" | "author" | "status" | "color" | "coverUrl" | "notesGenerated">;
 type Filter = Book["status"] | "all";
 
-const FILTERS: Filter[] = ["all", "read", "reading", "next", "wishlist", "abandoned"];
+const FILTERS: Filter[] = ["all", "read", "reading", "wishlist", "abandoned"];
 
 /**
  * Drag (or use the arrows) to set the order books appear on the shelves. With a status filter on,

@@ -128,7 +128,7 @@ a {
 
 /* Hero */
 .hero {
-  padding-block: 200px 120px;
+  padding-block: 200px 160px;
   text-align: center;
 }
 .hero h1,
@@ -466,10 +466,23 @@ a {
 .scroll-cue {
   display: block;
   width: fit-content;
-  margin: 96px auto 0;
+  margin: -16px auto 0;
   padding: 10px;
   color: var(--faint);
-  transition: color 0.4s var(--ease);
+  transition:
+    color 0.4s var(--ease),
+    opacity 0.9s var(--ease-soft),
+    transform 0.9s var(--ease);
+}
+.scroll-cue.is-gone {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+/* Room under the arrow so the projects arrive after it, not with it. */
+#work-strip {
+  margin-top: 40vh;
+  scroll-margin-top: 15vh;
 }
 .scroll-cue:hover {
   color: var(--ink);
@@ -1554,6 +1567,9 @@ html.is-leaving main {
   background: radial-gradient(closest-side, rgb(0 0 0 / 0.22), transparent);
   filter: blur(4px);
   pointer-events: none;
+  /* The shadow spreads and fades as the book lifts on hover. */
+  transform: scale(calc(1 - var(--lift, 0) * 0.012));
+  opacity: calc(1 - var(--lift, 0) * 0.035);
 }
 .b3d-hint {
   margin: 4px 0 0;

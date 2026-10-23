@@ -36,3 +36,16 @@ export async function saveUpload(file: FormDataEntryValue | null): Promise<strin
   await writeFile(path.join(UPLOAD_DIR, name), Buffer.from(await file.arrayBuffer()));
   return `/media/${name}`;
 }
+
+/** Downloads a cover picked in the book lookup and stores it like an upload. Only Open Library covers. */
+export async function saveRemoteImage(url: string): Promise<string | null> {
+  const u = new URL(url);
+  if (u.protocol !== "https:" || u.hostname !== "covers.openlibrary.org") throw new Error("Covers can only come from Open Library.");
+  const res = await fetch(u, { signal: AbortSignal.timeout(15000) });
+  const type = res.headers.get("content-type") ?? "";
+  if (!res.ok || !type.startsWith("image/")) throw new Error("Could not download the cover.");
+  const buf = await res.arrayBuffer();
+  // Open Library returns a 1×1 placeholder when it has no cover.
+  if (buf.byteLength < 1000) return null;
+  return saveUpload(new File([buf], "cover.jpg", { type: "image/jpeg" }));
+}
