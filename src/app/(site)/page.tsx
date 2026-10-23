@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BookShelf } from "@/components/BookShelf";
+import { CursorArrow } from "@/components/CursorArrow";
 import { HeroLines } from "@/components/HeroLines";
 import { ScrollCue } from "@/components/ScrollCue";
 import { WorkStrip } from "@/components/WorkStrip";
@@ -41,6 +42,7 @@ export default async function Home() {
         <div id="work-strip">
           <WorkStrip projects={projects} />
         </div>
+        {projects.length ? <CursorArrow section="#work" strip="#work-strip" /> : null}
       </section>
 
       {shelf.length ? (
