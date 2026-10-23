@@ -74,30 +74,20 @@ const projectSchema = z.object({
   sort: z.coerce.number().int(),
   published: checkbox,
   removeCover: checkbox,
-  removeMobile: checkbox,
 });
 
 export async function saveProject(_: FormState, fd: FormData): Promise<FormState> {
   await requireAdmin();
   const id = Number(fd.get("id")) || null;
   try {
-    const { removeCover, removeMobile, ...data } = projectSchema.parse(fields(fd));
+    const { removeCover, ...data } = projectSchema.parse(fields(fd));
     const values = { ...data, slug: slugify(data.slug || data.title) };
     const cover = await saveUpload(fd.get("cover"));
     const coverUrl = cover ?? (removeCover ? null : undefined);
-    // An uploaded clip wins over a typed preview URL.
-    values.previewUrl = (await saveUpload(fd.get("preview"))) ?? values.previewUrl;
-    const mobile = {
-      coverMobileUrl: (await saveUpload(fd.get("coverMobile"))) ?? (removeMobile ? null : undefined),
-      previewMobileUrl: (await saveUpload(fd.get("previewMobile"))) ?? (removeMobile ? null : undefined),
-    };
     if (id) {
-      await db
-        .update(projects)
-        .set({ ...values, ...(coverUrl !== undefined && { coverUrl }), ...mobile })
-        .where(eq(projects.id, id));
+      await db.update(projects).set({ ...values, ...(coverUrl !== undefined && { coverUrl }) }).where(eq(projects.id, id));
     } else {
-      await db.insert(projects).values({ ...values, coverUrl: cover, ...mobile });
+      await db.insert(projects).values({ ...values, coverUrl: cover });
     }
   } catch (e) {
     return fail(e);
