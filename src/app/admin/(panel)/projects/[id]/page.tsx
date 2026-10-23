@@ -56,6 +56,27 @@ export default async function EditProject({ params }: { params: Promise<{ id: st
         </Row>
         <Row>
           <div className="adm-field">
+            <span>Showcase film (16:9)</span>
+            {p?.showcaseUrl ? (
+              <>
+                <small>Current: {p.showcaseUrl}</small>
+                <label className="adm-check">
+                  <input type="checkbox" name="removeShowcase" />
+                  <span>Remove showcase</span>
+                </label>
+              </>
+            ) : null}
+            <input type="file" name="showcase" accept="video/mp4,video/webm" />
+            <small>From scripts/showcase-project.mjs, up to 40 MB. Plays on the card instead of the desktop/mobile clips.</small>
+          </div>
+          <label className="adm-field">
+            <span>Showcase poster</span>
+            <input type="file" name="showcasePoster" accept="image/jpeg,image/png,image/webp,image/avif" />
+            <small>The film&apos;s first frame (showcase.webp).</small>
+          </label>
+        </Row>
+        <Row>
+          <div className="adm-field">
             <span>Mobile cover (phone screen, 390×844)</span>
             {p?.coverMobileUrl ? (
               <div className="adm-image">

@@ -78,6 +78,13 @@
       "when": 1792765432975,
       "tag": "0010_translations",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1792800000000,
+      "tag": "0011_project_showcase",
+      "breakpoints": true
     }
   ]
 }

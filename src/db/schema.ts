@@ -43,6 +43,9 @@ export const projects = pgTable("projects", {
   /** The same pair captured on a phone, shown in a phone frame when the card is switched to mobile. */
   coverMobileUrl: text("cover_mobile_url"),
   previewMobileUrl: text("preview_mobile_url"),
+  /** 16:9 showcase film (desktop window, phone, outro) and its first frame; the card plays it on hover. */
+  showcaseUrl: text("showcase_url"),
+  showcasePosterUrl: text("showcase_poster_url"),
   liveUrl: text("live_url"),
   repoUrl: text("repo_url"),
   tint: varchar("tint", { length: 9 }).notNull().default("#F1F0EB"),

@@ -91,13 +91,14 @@ const projectSchema = z.object({
   published: checkbox,
   removeCover: checkbox,
   removeMobile: checkbox,
+  removeShowcase: checkbox,
 });
 
 export async function saveProject(_: FormState, fd: FormData): Promise<FormState> {
   await requireAdmin();
   const id = Number(fd.get("id")) || null;
   try {
-    const { removeCover, removeMobile, ...data } = projectSchema.parse(fields(fd));
+    const { removeCover, removeMobile, removeShowcase, ...data } = projectSchema.parse(fields(fd));
     const values = {
       ...data,
       slug: slugify(data.slug || data.title),
@@ -110,6 +111,8 @@ export async function saveProject(_: FormState, fd: FormData): Promise<FormState
     const mobile = {
       coverMobileUrl: (await saveUpload(fd.get("coverMobile"))) ?? (removeMobile ? null : undefined),
       previewMobileUrl: (await saveUpload(fd.get("previewMobile"), CLIP)) ?? (removeMobile ? null : undefined),
+      showcaseUrl: (await saveUpload(fd.get("showcase"), CLIP)) ?? (removeShowcase ? null : undefined),
+      showcasePosterUrl: (await saveUpload(fd.get("showcasePoster"))) ?? (removeShowcase ? null : undefined),
     };
     if (id) {
       await db
