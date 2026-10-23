@@ -151,8 +151,10 @@ async function capture(name) {
   const frame = async () => {
     await page.evaluate((dt) => {
       for (const a of document.getAnimations()) {
+        // Scroll-driven animations follow the scroll position, not time; their currentTime is a percentage.
+        if (a.timeline !== document.timeline || typeof a.currentTime !== "number") continue;
         if (a.playState === "running") a.pause();
-        if (a.currentTime != null) a.currentTime = Number(a.currentTime) + dt;
+        a.currentTime += dt;
       }
       for (const v of document.querySelectorAll("video")) {
         if (!v.paused) v.pause();
