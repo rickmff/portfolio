@@ -94,6 +94,26 @@ a {
   padding-block: 32px;
   font-size: 13px;
 }
+.site-header {
+  align-items: center;
+}
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.site-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px var(--line);
+  filter: grayscale(1);
+  transition: filter 0.4s var(--ease);
+}
+.site-brand:hover .site-avatar {
+  filter: none;
+}
 .site-header nav {
   display: flex;
   flex-wrap: wrap;
@@ -175,6 +195,7 @@ a {
 }
 .strip.is-wheeling {
   scroll-snap-type: none;
+  scroll-behavior: auto;
 }
 .strip::-webkit-scrollbar {
   display: none;
@@ -1066,4 +1087,43 @@ a {
   .notes-cover {
     transition: none;
   }
+}
+
+/* About: experience entries stay compact. Each is "### Company <small>date</small>", then
+   "*Role*" and a one-line description, so the role and description are styled by position. */
+.about h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin: 1.6em 0 0.15em;
+  font-size: 16px;
+}
+.about h3 small {
+  flex: none;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--faint);
+}
+.about h3 + p {
+  margin: 0;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+.about h3 + p em {
+  font-style: normal;
+}
+.about h3 + p + p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--faint);
+}
+.about h2 + h3 {
+  margin-top: 0.8em;
 }

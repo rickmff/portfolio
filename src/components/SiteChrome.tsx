@@ -4,7 +4,11 @@ import type { SiteSettings } from "@/lib/settings";
 export function SiteHeader({ settings }: { settings: SiteSettings }) {
   return (
     <header className="wrap site-header">
-      <Link href="/">{settings.name}</Link>
+      <Link href="/" className="site-brand">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/profile.jpg" alt="" width={28} height={28} className="site-avatar" />
+        {settings.name}
+      </Link>
       <nav aria-label="Main">
         <Link href="/#work" className="link-muted">Work</Link>
         <Link href="/books" className="link-muted">Books</Link>

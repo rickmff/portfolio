@@ -16,7 +16,7 @@ export default async function AboutPage() {
         <h1>{settings.name}</h1>
       </header>
       <div className="wrap">
-        <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(settings.about) }} />
+        <div className="prose about" dangerouslySetInnerHTML={{ __html: renderMarkdown(settings.about) }} />
       </div>
     </article>
   );

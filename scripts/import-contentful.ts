@@ -5,7 +5,7 @@
  *
  * Uses the read-only Content Delivery API. Content types it understands:
  *   work  → projects (title, description, url, thumb → cover, gif → hover preview)
- *   about → About page Markdown (profile, experiences, stack, awards, certificates)
+ *   about → About page Markdown (profile, experiences, awards)
  * Images are downloaded into UPLOAD_DIR so the new site no longer depends on Contentful.
  * Re-running is safe: projects are matched by slug and updated.
  */
@@ -56,8 +56,8 @@ async function download(asset: Asset | undefined): Promise<string | null> {
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 const list = <T>(v: unknown) => (Array.isArray(v) ? (v as T[]) : []);
 
-/** Rebuilds the old About page (profile, experience, stack, awards, certificates) as Markdown. */
-function aboutMarkdown(items: Entry[]) {
+/** Rebuilds the old About page (profile, experience, awards) as Markdown. */
+export function aboutMarkdown(items: Entry[]) {
   const by = (title: string) => items.find((i) => i.fields.title === title)?.fields.content;
   const out: string[] = [];
 
@@ -74,14 +74,6 @@ function aboutMarkdown(items: Entry[]) {
     }
   }
 
-  const stack = by("stack");
-  if (stack && typeof stack === "object" && !Array.isArray(stack)) {
-    out.push("## Stack");
-    for (const [group, tools] of Object.entries(stack as Record<string, unknown>)) {
-      out.push(`**${group}** — ${list<string>(tools).join(", ")}`);
-    }
-  }
-
   const awards = list<Record<string, string>>(by("awards"));
   if (awards.length) {
     out.push("## Awards");
@@ -90,12 +82,6 @@ function aboutMarkdown(items: Entry[]) {
         .map((a) => `- **${[str(a.place), str(a.award)].filter(Boolean).join(" · ")}**${a.date ? ` (${str(a.date)})` : ""}${a.description ? ` — ${str(a.description)}` : ""}`)
         .join("\n"),
     );
-  }
-
-  const certs = list<Record<string, string>>(by("certificates"));
-  if (certs.length) {
-    out.push("## Certificates");
-    out.push(certs.map((c) => `- **${str(c.certificate)}**${c.description ? ` — ${str(c.description)}` : ""}`).join("\n"));
   }
 
   return out.join("\n\n");
@@ -151,7 +137,9 @@ async function main() {
   process.exit(0);
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+if (process.argv[1]?.includes("import-contentful")) {
+  main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
+}
