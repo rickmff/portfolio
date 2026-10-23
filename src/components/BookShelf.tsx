@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { navigateWithTransition, prefetchFull } from "@/components/PageTransition";
 import type { BookStatus } from "@/db/schema";
 import { statusLabel } from "@/lib/books";
+import { useDict } from "@/lib/i18n/client";
 
 export type ShelfBook = {
   id: number;
@@ -53,6 +54,7 @@ export function BookShelf({
   const [open, setOpen] = useState<number | null>(initialOpen ?? null);
   const selected = all.find((b) => b.id === open) ?? null;
   const router = useRouter();
+  const t = useDict();
 
   // The open book is one click from its page, so load that page in the background.
   useEffect(() => {
@@ -99,8 +101,8 @@ export function BookShelf({
                         type="button"
                         className={`sb-slot${isOpen ? " is-open" : ""}`}
                         aria-pressed={isOpen}
-                        aria-label={isOpen ? `Open the page for ${b.title}` : `${b.title} by ${b.author}`}
-                        title={isOpen ? "Click again to open the book" : undefined}
+                        aria-label={isOpen ? t.books.openPageFor(b.title) : t.books.by(b.title, b.author)}
+                        title={isOpen ? t.books.clickAgain : undefined}
                         onClick={() => (isOpen ? navigateWithTransition(router, `/books/${b.slug}`) : setOpen(b.id))}
                         style={
                           {
@@ -146,7 +148,7 @@ export function BookShelf({
 
       <Collapse open={!selected}>
         <p className="mono shelf-detail" style={{ margin: 0, color: "var(--faint)" }}>
-          Pick a book off the shelf · click it again to open · ← → to browse · Esc to put it back
+          {t.books.hint}
         </p>
       </Collapse>
     </div>
@@ -170,17 +172,18 @@ function DetailSlot({ book }: { book: ShelfBook | null }) {
 }
 
 function Detail({ book }: { book: ShelfBook }) {
+  const t = useDict();
   return (
     <div className="shelf-detail reveal" aria-live="polite">
       <p className="shelf-detail-title">{book.title}</p>
       <p className="muted" style={{ margin: 0, fontSize: 13 }}>
-        {book.author} · {statusLabel(book)}
+        {book.author} · {statusLabel(book, t)}
         {book.rating ? ` · ${"●".repeat(book.rating)}${"○".repeat(5 - book.rating)}` : ""}
       </p>
       {book.note ? <p className="shelf-detail-note">{book.note}</p> : null}
       <p style={{ margin: "16px 0 0", fontSize: 13 }}>
         <Link href={`/books/${book.slug}`} className="link-muted">
-          Open the book →
+          {t.books.openBook}
         </Link>
       </p>
     </div>

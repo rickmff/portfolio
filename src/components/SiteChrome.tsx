@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { LanguageToggle } from "@/components/LanguageToggle";
+import type { Dict } from "@/lib/i18n/dict";
 import type { SiteSettings } from "@/lib/settings";
 
-export function SiteHeader({ settings, harness = false }: { settings: SiteSettings; harness?: boolean }) {
+export function SiteHeader({ settings, harness = false, t }: { settings: SiteSettings; harness?: boolean; t: Dict }) {
   return (
     <header className="wrap site-header">
       <Link href="/" className="site-brand">
@@ -10,11 +12,11 @@ export function SiteHeader({ settings, harness = false }: { settings: SiteSettin
         {settings.name}
       </Link>
       <nav aria-label="Main">
-        <Link href="/#work" className="link-muted">Work</Link>
-        <Link href="/books" className="link-muted">Books</Link>
-        <Link href="/blog" className="link-muted">Writing</Link>
-        {harness ? <Link href="/harness" className="link-muted">Harness</Link> : null}
-        {settings.about ? <Link href="/about" className="link-muted">About</Link> : null}
+        <Link href="/#work" className="link-muted">{t.nav.work}</Link>
+        <Link href="/books" className="link-muted">{t.nav.books}</Link>
+        <Link href="/blog" className="link-muted">{t.nav.writing}</Link>
+        {harness ? <Link href="/harness" className="link-muted">{t.nav.harness}</Link> : null}
+        {settings.about ? <Link href="/about" className="link-muted">{t.nav.about}</Link> : null}
         {settings.email ? (
           <a href={`mailto:${settings.email}`} className="link-muted">Email</a>
         ) : null}
@@ -34,6 +36,7 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
         {settings.discord ? <a href={settings.discord} className="link-muted">Discord</a> : null}
         {settings.email ? <a href={`mailto:${settings.email}`} className="link-muted">Email</a> : null}
         <a href="/rss.xml" className="link-muted">RSS</a>
+        <LanguageToggle />
       </span>
     </footer>
   );

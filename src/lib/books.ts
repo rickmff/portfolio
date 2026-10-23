@@ -1,5 +1,6 @@
 import type { Book } from "@/db/schema";
 import type { ShelfBook } from "@/components/BookShelf";
+import { DICTS, type Dict } from "./i18n/dict";
 import { slugify } from "./markdown";
 
 export function toShelfBook(b: Book): ShelfBook {
@@ -30,10 +31,10 @@ export const STATUS_LABEL: Record<Book["status"], string> = {
 /** Books that go on the 3D stage: the ones actually read or being read. */
 export const onShelf = (b: Pick<Book, "status">) => b.status === "reading" || b.status === "read";
 
-export function statusLabel(b: Pick<Book, "status" | "finishedYear">) {
-  if (b.status === "reading") return "Reading now";
-  if (b.status === "read") return b.finishedYear ? `Read in ${b.finishedYear}` : "Read";
-  return STATUS_LABEL[b.status];
+export function statusLabel(b: Pick<Book, "status" | "finishedYear">, t: Dict = DICTS.en) {
+  if (b.status === "reading") return t.books.readingNow;
+  if (b.status === "read") return b.finishedYear ? t.books.readIn(b.finishedYear) : t.books.status.read;
+  return t.books.status[b.status];
 }
 
 /** How many books the home page shelf shows. */

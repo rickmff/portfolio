@@ -1234,3 +1234,28 @@ html.is-leaving main {
     display: none;
   }
 }
+
+/* Footer language switch */
+.lang-toggle {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: 8px;
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
+}
+.lang-toggle button {
+  padding: 2px 4px;
+  font: inherit;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--faint);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.lang-toggle button[aria-pressed="true"] {
+  color: var(--ink);
+}
+.lang-toggle button:hover {
+  color: var(--ink);
+}

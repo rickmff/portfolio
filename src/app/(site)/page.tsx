@@ -5,15 +5,17 @@ import { WorkStrip } from "@/components/WorkStrip";
 import { WritingList } from "@/components/WritingList";
 import { latestRead, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
+import { getDict } from "@/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [settings, projects, books, posts] = await Promise.all([
+  const [settings, projects, books, posts, t] = await Promise.all([
     getSettings(),
     getPublishedProjects(),
     getBooks(),
     getPublishedPosts(6),
+    getDict(),
   ]);
 
   const shelf = latestRead(books);
@@ -28,15 +30,15 @@ export default async function Home() {
         <span className="dot" aria-hidden="true" />
         {settings.now ? (
           <p className="muted" style={{ margin: "40px auto 0", maxWidth: 420, fontSize: 13 }}>
-            Now — {settings.now}
+            {t.home.now} — {settings.now}
           </p>
         ) : null}
       </section>
 
       <section id="work" className="section">
         <div className="wrap section-head">
-          <h2>Selected work</h2>
-          {projects.length > 2 ? <span className="mono" style={{ color: "var(--muted)" }}>Scroll →</span> : null}
+          <h2>{t.home.selectedWork}</h2>
+          {projects.length > 2 ? <span className="mono" style={{ color: "var(--muted)" }}>{t.home.scroll}</span> : null}
         </div>
         <WorkStrip projects={projects} />
       </section>
@@ -44,7 +46,7 @@ export default async function Home() {
       {shelf.length ? (
         <section id="books" className="wrap section">
           <div className="section-head center">
-            <h2>Recently read</h2>
+            <h2>{t.home.recentlyRead}</h2>
           </div>
           <BookShelf
             shelves={[{ books: shelf.map(toShelfBook) }]}
@@ -52,18 +54,18 @@ export default async function Home() {
             centered
           />
           <p style={{ textAlign: "center", margin: "32px 0 0", fontSize: 13 }}>
-            <Link href="/books" className="link-muted">All books →</Link>
+            <Link href="/books" className="link-muted">{t.home.allBooks}</Link>
           </p>
         </section>
       ) : null}
 
       <section id="writing" className="wrap section" style={{ maxWidth: 720 }}>
         <div className="section-head center">
-          <h2>Writing</h2>
+          <h2>{t.home.writing}</h2>
         </div>
-        <WritingList posts={posts} />
+        <WritingList posts={posts} t={t} />
         <p style={{ textAlign: "center", margin: "32px 0 0", fontSize: 13 }}>
-          <Link href="/blog" className="link-muted">All writing →</Link>
+          <Link href="/blog" className="link-muted">{t.home.allWriting}</Link>
         </p>
       </section>
     </>

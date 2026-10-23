@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { getHarness } from "@/lib/data";
+import { getDict } from "@/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Harness",
-  description: "The tools, services and setup I build with.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getDict();
+  return { title: t.harness.eyebrow, description: t.harness.title };
+}
 
 const host = (url: string) => {
   try {
@@ -16,7 +17,7 @@ const host = (url: string) => {
 };
 
 export default async function HarnessPage() {
-  const items = await getHarness();
+  const [items, t] = await Promise.all([getHarness(), getDict()]);
   // Categories keep the order of their first item, so the backoffice order decides both.
   const groups = new Map<string, typeof items>();
   for (const item of items) groups.set(item.category, [...(groups.get(item.category) ?? []), item]);
@@ -24,11 +25,11 @@ export default async function HarnessPage() {
   return (
     <>
       <section className="wrap page-title reveal">
-        <p className="eyebrow" style={{ margin: 0 }}>Harness</p>
-        <h1>The tools and setup I build with.</h1>
+        <p className="eyebrow" style={{ margin: 0 }}>{t.harness.eyebrow}</p>
+        <h1>{t.harness.title}</h1>
       </section>
       <section className="wrap section harness" style={{ maxWidth: 720 }}>
-        {items.length === 0 ? <p className="muted" style={{ textAlign: "center" }}>Coming soon.</p> : null}
+        {items.length === 0 ? <p className="muted" style={{ textAlign: "center" }}>{t.harness.empty}</p> : null}
         {[...groups].map(([category, list]) => (
           <div key={category} className="harness-group">
             {category ? <h2 className="eyebrow">{category}</h2> : null}

@@ -1,15 +1,15 @@
 import Link from "next/link";
 import type { Post } from "@/db/schema";
+import type { Dict } from "@/lib/i18n/dict";
 
-const month = new Intl.DateTimeFormat("en", { month: "short" });
-
-export function WritingList({ posts }: { posts: Post[] }) {
+export function WritingList({ posts, t }: { posts: Post[]; t: Dict }) {
+  const month = new Intl.DateTimeFormat(t.intl, { month: "short" });
   const byYear = new Map<number, Post[]>();
   for (const p of posts) {
     const y = p.publishedAt!.getFullYear();
     byYear.set(y, [...(byYear.get(y) ?? []), p]);
   }
-  if (posts.length === 0) return <p className="muted" style={{ textAlign: "center" }}>Nothing published yet.</p>;
+  if (posts.length === 0) return <p className="muted" style={{ textAlign: "center" }}>{t.blog.empty}</p>;
   return (
     <div>
       {[...byYear.entries()].map(([year, list]) => (

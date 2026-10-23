@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import type { Project } from "@/db/schema";
+import { useDict } from "@/lib/i18n/client";
 
 const isVideo = (url: string) => /\.(mp4|webm|mov)(\?|$)/i.test(url);
 
@@ -81,7 +82,8 @@ function useWheelToHorizontal() {
 
 export function WorkStrip({ projects }: { projects: Project[] }) {
   const strip = useWheelToHorizontal();
-  if (projects.length === 0) return <p className="muted wrap">No projects yet.</p>;
+  const t = useDict();
+  if (projects.length === 0) return <p className="muted wrap">{t.home.noProjects}</p>;
   return (
     <div className="strip" ref={strip}>
       {projects.map((p, i) => (
