@@ -558,7 +558,8 @@ if (app.installable && !opt["no-pwa"]) {
   // Home screen with the new icon; a tap; a white splash; the app.
   const iconX = 68 + 2 * 172;
   const iconY = 300 + 1 * 200;
-  const home = await sharp(homeScreen(app.accent, app.name, iconX, iconY, iconSize))
+  // The wallpaper takes the product's colour, the icon and label the installed page's.
+  const home = await sharp(homeScreen(id.accent, app.name, iconX, iconY, iconSize))
     .composite([{ input: await iconTile(app.icon, iconSize, app.accent, app.name), left: iconX, top: iconY }])
     .png()
     .toBuffer();
@@ -572,7 +573,7 @@ if (app.installable && !opt["no-pwa"]) {
     const s = 1 - 0.12 * Math.sin((Math.PI * i) / press);
     const sz = Math.round(iconSize * s);
     const tile = await iconTile(app.icon, sz, app.accent, app.name);
-    const pressed = await sharp(homeScreen(app.accent, app.name, iconX, iconY, iconSize))
+    const pressed = await sharp(homeScreen(id.accent, app.name, iconX, iconY, iconSize))
       .composite([{ input: tile, left: Math.round(iconX + (iconSize - sz) / 2), top: Math.round(iconY + (iconSize - sz) / 2) }])
       .png()
       .toBuffer();
