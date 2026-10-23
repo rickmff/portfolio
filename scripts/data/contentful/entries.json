@@ -1,0 +1,1694 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "total": 15,
+  "skip": 0,
+  "limit": 1000,
+  "items": [
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "4Rf8V6mBhz7qCaPOrRgkUz",
+        "type": "Entry",
+        "createdAt": "2025-11-27T21:44:45.698Z",
+        "updatedAt": "2026-02-21T00:17:22.838Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 31,
+        "revision": 4,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "work"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "HudRest",
+        "url": "https://hudrest.com/",
+        "description": "SaaS for restaurant owners create their websites and run in less then minutes with commission-free reservations, and a digital menu. Everything you need to grow, all in a single platform with your full control and fix price.",
+        "thumb": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "6VSMKcruSwYp6RPyKUP87i"
+          }
+        },
+        "gif": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "13YGbNhT5qF9YOZCYnqZRo"
+          }
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "5ORObBxSue7KkW9mllluOJ",
+        "type": "Entry",
+        "createdAt": "2024-07-10T01:31:32.840Z",
+        "updatedAt": "2026-02-20T00:27:45.987Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 42,
+        "revision": 13,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "about"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "certificates",
+        "content": [
+          {
+            "certificate": "Bachelor of Computer Science (On going)",
+            "description": "University Paulista"
+          },
+          {
+            "certificate": "Google UX Design Certificate",
+            "description": "UX search • wireframing • prototyping • usability."
+          },
+          {
+            "certificate": "W3Cx's Certificate",
+            "description": "Code quality concepts and guidelines for web applications."
+          }
+        ]
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "dVk4bd6kSmbMxEKmyhpsS",
+        "type": "Entry",
+        "createdAt": "2025-11-27T23:46:38.117Z",
+        "updatedAt": "2025-11-28T01:59:25.539Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 11,
+        "revision": 3,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "work"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Im-Vestor",
+        "url": "https://www.im-vestor.com/",
+        "description": "Connecting visionary entrepreneurs with strategic investors in the expanding universe of opportunity.",
+        "thumb": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "nD4JNFNe4Ua0MHVVfyNIf"
+          }
+        },
+        "gif": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "pa7B5MJI1Z2GACARLukZ9"
+          }
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "1bkbr2XCdw5kEZyvL9MYvO",
+        "type": "Entry",
+        "createdAt": "2025-11-27T21:15:27.341Z",
+        "updatedAt": "2025-11-28T01:59:25.474Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 28,
+        "revision": 4,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "work"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "V Arena",
+        "url": "https://www.v-arena.com/",
+        "description": "V Arena is website for a V Rising game server where players can craft their builds and generate custom commands to use inside the game.",
+        "thumb": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "4jngdESq2rSQWI4d1xB9oS"
+          }
+        },
+        "gif": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "1ICADIsHP5Xlsn0WfZeoWL"
+          }
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "40SRgAMHtbzLRp7ZQkPOUz",
+        "type": "Entry",
+        "createdAt": "2025-11-28T01:50:50.978Z",
+        "updatedAt": "2025-11-28T01:59:16.499Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 8,
+        "revision": 2,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "work"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Renato Renault",
+        "url": "https://renatorenault.vercel.app/",
+        "description": "Renato Renault, consultor oficial Renault na Motorpor. Encontre o seu automóvel Renault perfeito em Portugal. Stock disponível, financiamento aprovado em 24h, garantia oficial. Especialista em Renault novo e usado.",
+        "thumb": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "58X6KTiP9oVTreuD1bDlCw"
+          }
+        },
+        "gif": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "6rpxll1Jc9A2yGqp53c92w"
+          }
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "1dsmvRdSNfeI1YXcolca5x",
+        "type": "Entry",
+        "createdAt": "2025-11-28T01:58:58.591Z",
+        "updatedAt": "2025-11-28T01:58:58.591Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 8,
+        "revision": 1,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "work"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Try",
+        "url": "https://www.try.com.br/",
+        "description": "Developed an institutional website using Next.js, integrated with a headless CMS and dynamic content insertion via GraphQL with an admin space.",
+        "thumb": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "2UxE1kAqImrybz0WGjJd9r"
+          }
+        },
+        "gif": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "2lk19IsQxwdxcFuU9x4USa"
+          }
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "4OIDvHW0dbOTGcHNDqpjxV",
+        "type": "Entry",
+        "createdAt": "2025-11-28T01:58:58.552Z",
+        "updatedAt": "2025-11-28T01:58:58.552Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 7,
+        "revision": 1,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "work"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Barboost",
+        "url": "https://www.barboost.pt/",
+        "description": "Barboost",
+        "thumb": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "4iGzXlqszKwDcebcyzf0kc"
+          }
+        },
+        "gif": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "6xFHygh6iyY55gRr0ZFGEy"
+          }
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "5lGUWARP2xmBJloYcx7KAr",
+        "type": "Entry",
+        "createdAt": "2025-11-28T01:18:26.339Z",
+        "updatedAt": "2025-11-28T01:58:58.429Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 19,
+        "revision": 2,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "work"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Sunny Pools",
+        "url": "https://www.sunnypoolsusa.com/",
+        "description": "A website for Sunny Pools USA a hub were sells diferents brands across Florida.",
+        "thumb": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "HmUBiQYw1QLASdmqEM9Ls"
+          }
+        },
+        "gif": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "46qXMwfobtFYvVUfhg1fMa"
+          }
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "7Gsasi3xZ4qGayZafS1RmS",
+        "type": "Entry",
+        "createdAt": "2025-11-28T00:11:07.088Z",
+        "updatedAt": "2025-11-28T01:58:48.175Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 24,
+        "revision": 3,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "work"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "100diasdecodigo",
+        "url": "https://www.100diasdecodigo.dev/",
+        "description": "#100DiasDeCodigo is a huge trend that poped on X (Twitter) helping tousands Devs to lock in coding for 100 days.",
+        "thumb": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "5UWaa2VKEJ6vcJzuYkWcxy"
+          }
+        },
+        "gif": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "5TM91Tc6sg5jiCYt1RJw6Z"
+          }
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "6eufEl1RwHF5RykauDCCxD",
+        "type": "Entry",
+        "createdAt": "2025-11-28T00:49:50.940Z",
+        "updatedAt": "2025-11-28T01:58:36.223Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 21,
+        "revision": 3,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "work"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Pizza Rita",
+        "url": "https://www.pizzarita.com.br/",
+        "description": "Website for restaurant Pizza Rita that won the 3tr place on Sorocaba Marketing APP Award",
+        "thumb": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "2S7v1GDkJalSZ08Hb7CGYJ"
+          }
+        },
+        "gif": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "54PLCFhWFuPsDi4qi77eFS"
+          }
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "1TdcKszDQqNr9dy26wMiFq",
+        "type": "Entry",
+        "createdAt": "2024-07-10T01:13:53.972Z",
+        "updatedAt": "2025-10-31T00:09:14.388Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 137,
+        "revision": 19,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "about"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "profile",
+        "content": {
+          "content": [
+            "I’m a web developer with 8 years of experience, surveyed different market segments.",
+            "Experienced with agile methodologies, web and mobile platforms, SPAS, and hybrid mobile applications."
+          ]
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "QDPkRJC6NJqvlDp8Fm88r",
+        "type": "Entry",
+        "createdAt": "2024-07-30T13:36:44.444Z",
+        "updatedAt": "2025-03-10T20:05:53.236Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 77,
+        "revision": 16,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "about"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "experiences",
+        "content": [
+          {
+            "type": "Full time",
+            "company": "TLS",
+            "endDate": null,
+            "position": "Senior Front-end Developer",
+            "startDate": "Mar 2023",
+            "description": "System for visa application data collection, supporting both agents and consular authorities."
+          },
+          {
+            "type": "Full time",
+            "company": "Try",
+            "endDate": "Mar 2023",
+            "position": "Senior Front-end Developer",
+            "startDate": "Abr 2022",
+            "description": "Website to maximize business potential and reflect the company identity as a UX agency."
+          },
+          {
+            "type": "Part-time",
+            "company": "Warren",
+            "endDate": "Abr 2022",
+            "position": "Front-end Developer",
+            "startDate": "Nov 2021",
+            "description": "Major investment brokerage platform serving thousands of investors worldwide."
+          },
+          {
+            "type": "Full time",
+            "company": "Valtech",
+            "endDate": "Nov 2021",
+            "position": "Front-end Developer",
+            "startDate": "May 2020",
+            "description": "Several major international brands and products: mail marketing, landing pages, and blogs."
+          },
+          {
+            "type": "Full time",
+            "company": "Kombi",
+            "endDate": "May 2020",
+            "position": "Front-end Developer & Designer UX",
+            "startDate": "Jun 2019",
+            "description": "Focusing on SEO, UI, and front-end development of e-commerce platforms, landing pages, and blogs."
+          },
+          {
+            "type": "Full time",
+            "company": "ProBrain",
+            "endDate": null,
+            "position": "Front-end Developer & Designer UI / UX",
+            "startDate": "Jun 2018",
+            "description": "Platform to carry the games and content for the clients to have the best experience."
+          },
+          {
+            "type": "Full time",
+            "company": "ProBrain",
+            "endDate": null,
+            "position": "Intern Game Developer",
+            "startDate": "Dec 2017",
+            "description": "Development of games for pedagogical professionals and clients."
+          }
+        ]
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "1HUASrQZ5fTyHi4nviHm1i",
+        "type": "Entry",
+        "createdAt": "2024-07-30T13:30:50.308Z",
+        "updatedAt": "2024-07-30T20:08:22.721Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 37,
+        "revision": 14,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "about"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "stack",
+        "content": {
+          "Languages": [
+            "JavaScript",
+            "TypeScript",
+            "PHP"
+          ],
+          "Test Tools": [
+            "Jest",
+            "Cypress",
+            "Vue test library"
+          ],
+          "Frameworks": [
+            "Vue",
+            "Nuxt",
+            "Next",
+            "React",
+            "Laravel"
+          ],
+          "CSS Libraries": [
+            "Tailwind",
+            "Bootstrap",
+            "PrimeVue",
+            "Material UI",
+            "Ant Design"
+          ],
+          "Designer Tools": [
+            "Figma",
+            "Photoshop",
+            "After Effects",
+            "Illustrator",
+            "Adobe XD"
+          ]
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "3LFnuqG4oT7n7jRCZsb1s2",
+        "type": "Entry",
+        "createdAt": "2024-07-30T11:59:49.828Z",
+        "updatedAt": "2024-07-30T13:13:38.801Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 18,
+        "revision": 6,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "about"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "awards",
+        "content": [
+          {
+            "date": "2019",
+            "place": "Copper",
+            "award": "App Sorocaba Award",
+            "description": "The best website of the year for the agencies in Sorocaba and the region."
+          },
+          {
+            "date": "2018",
+            "place": "Gold",
+            "award": "Tech Innovation Award",
+            "description": "The CEV 'Fonoaudiologia' Council awards the best software."
+          }
+        ]
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "3MOUeunwyWw70m9Y6bxPhe",
+        "type": "Entry",
+        "createdAt": "2024-06-25T22:56:41.742Z",
+        "updatedAt": "2024-07-07T14:40:37.543Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 4,
+        "revision": 2,
+        "contentType": {
+          "sys": {
+            "type": "Link",
+            "linkType": "ContentType",
+            "id": "hero"
+          }
+        },
+        "locale": "en-US"
+      },
+      "fields": {
+        "hero": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Asset",
+            "id": "4Q6SnbZTJCXoyH83EioqHO"
+          }
+        },
+        "herotext": "Henrique Faria"
+      }
+    }
+  ],
+  "includes": {
+    "Asset": [
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "13YGbNhT5qF9YOZCYnqZRo",
+          "type": "Asset",
+          "createdAt": "2025-11-27T21:47:11.745Z",
+          "updatedAt": "2025-11-28T23:09:41.143Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 12,
+          "revision": 3,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "HudRest gif",
+          "description": "",
+          "file": {
+            "url": "//videos.ctfassets.net/SPACE_ID/13YGbNhT5qF9YOZCYnqZRo/d7a6c976be718cf104af33d08a680665/hudrest.mp4",
+            "details": {
+              "size": 8621274
+            },
+            "fileName": "hudrest.mp4",
+            "contentType": "video/mp4"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "1ICADIsHP5Xlsn0WfZeoWL",
+          "type": "Asset",
+          "createdAt": "2025-11-27T22:01:27.356Z",
+          "updatedAt": "2025-11-27T23:04:01.580Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 18,
+          "revision": 3,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "V Arena gif",
+          "description": "",
+          "file": {
+            "url": "//videos.ctfassets.net/SPACE_ID/1ICADIsHP5Xlsn0WfZeoWL/c2e8d684baccfb60295298aca0c8e36a/v-arena-gif.mp4",
+            "details": {
+              "size": 11903643
+            },
+            "fileName": "v-arena-gif.mp4",
+            "contentType": "video/mp4"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "2S7v1GDkJalSZ08Hb7CGYJ",
+          "type": "Asset",
+          "createdAt": "2024-07-31T20:37:35.830Z",
+          "updatedAt": "2024-07-31T21:30:40.948Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 10,
+          "revision": 2,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Pizza da Rita",
+          "description": "https://www.pizzarita.com.br/",
+          "file": {
+            "url": "//images.ctfassets.net/SPACE_ID/2S7v1GDkJalSZ08Hb7CGYJ/d5e3fa1fad5ccbd2de77b355350ff689/image.png",
+            "details": {
+              "size": 2065931,
+              "image": {
+                "width": 1717,
+                "height": 966
+              }
+            },
+            "fileName": "image.png",
+            "contentType": "image/png"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "2UxE1kAqImrybz0WGjJd9r",
+          "type": "Asset",
+          "createdAt": "2024-07-31T11:51:35.646Z",
+          "updatedAt": "2025-02-03T19:06:25.782Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 15,
+          "revision": 5,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Try",
+          "description": "https://try.com.br/",
+          "file": {
+            "url": "//images.ctfassets.net/SPACE_ID/2UxE1kAqImrybz0WGjJd9r/e11a26eb98e091fa68b3ecbc0b8cf52c/Screenshot_2025-02-03_190602.png",
+            "details": {
+              "size": 263451,
+              "image": {
+                "width": 1722,
+                "height": 831
+              }
+            },
+            "fileName": "Screenshot 2025-02-03 190602.png",
+            "contentType": "image/png"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "2lk19IsQxwdxcFuU9x4USa",
+          "type": "Asset",
+          "createdAt": "2025-11-28T01:44:08.320Z",
+          "updatedAt": "2025-11-28T01:44:08.320Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 4,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "try gif",
+          "description": "try gif",
+          "file": {
+            "url": "//videos.ctfassets.net/SPACE_ID/2lk19IsQxwdxcFuU9x4USa/e007fbe1c33817e65dc77e9ba811631b/try.mp4",
+            "details": {
+              "size": 19869974
+            },
+            "fileName": "try.mp4",
+            "contentType": "video/mp4"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "46qXMwfobtFYvVUfhg1fMa",
+          "type": "Asset",
+          "createdAt": "2025-11-28T01:15:44.531Z",
+          "updatedAt": "2025-11-28T01:15:44.531Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 5,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Sunny Pools gif",
+          "description": "Sunny Pools gif",
+          "file": {
+            "url": "//videos.ctfassets.net/SPACE_ID/46qXMwfobtFYvVUfhg1fMa/aa5e6f6e55186da97f69a914124482fd/sunnypools.mp4",
+            "details": {
+              "size": 38039479
+            },
+            "fileName": "sunnypools.mp4",
+            "contentType": "video/mp4"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "4Q6SnbZTJCXoyH83EioqHO",
+          "type": "Asset",
+          "createdAt": "2024-06-25T22:56:34.233Z",
+          "updatedAt": "2024-07-08T17:51:51.729Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 7,
+          "revision": 2,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "hero",
+          "description": "",
+          "file": {
+            "url": "//images.ctfassets.net/SPACE_ID/4Q6SnbZTJCXoyH83EioqHO/431966774cec125c9fd1072d1d1edff7/hero.png",
+            "details": {
+              "size": 3805855,
+              "image": {
+                "width": 2912,
+                "height": 1632
+              }
+            },
+            "fileName": "hero.png",
+            "contentType": "image/png"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "4iGzXlqszKwDcebcyzf0kc",
+          "type": "Asset",
+          "createdAt": "2025-02-03T19:04:15.863Z",
+          "updatedAt": "2025-11-28T01:57:59.468Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 21,
+          "revision": 5,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "BarBoost",
+          "description": "https://www.barboost.pt/",
+          "file": {
+            "url": "//images.ctfassets.net/SPACE_ID/4iGzXlqszKwDcebcyzf0kc/7b24a80f142da884881fadd40aeb3ddb/barboost.png",
+            "details": {
+              "size": 935742,
+              "image": {
+                "width": 1896,
+                "height": 935
+              }
+            },
+            "fileName": "barboost.png",
+            "contentType": "image/png"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "4jngdESq2rSQWI4d1xB9oS",
+          "type": "Asset",
+          "createdAt": "2025-06-11T15:12:26.071Z",
+          "updatedAt": "2025-06-11T15:12:26.071Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 5,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "V Arena",
+          "description": "https://www.v-arena.com/",
+          "file": {
+            "url": "//images.ctfassets.net/SPACE_ID/4jngdESq2rSQWI4d1xB9oS/61eb0417609ac1e731ac8146e0d52078/image.png",
+            "details": {
+              "size": 813431,
+              "image": {
+                "width": 1892,
+                "height": 922
+              }
+            },
+            "fileName": "image.png",
+            "contentType": "image/png"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "54PLCFhWFuPsDi4qi77eFS",
+          "type": "Asset",
+          "createdAt": "2025-11-28T00:49:44.561Z",
+          "updatedAt": "2025-11-28T00:49:44.561Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 5,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Pizza Rita",
+          "description": "pizzarita",
+          "file": {
+            "url": "//videos.ctfassets.net/SPACE_ID/54PLCFhWFuPsDi4qi77eFS/f92e8f5b0708be54a14d8b152b07860f/pizzarita.mp4",
+            "details": {
+              "size": 21107441
+            },
+            "fileName": "pizzarita.mp4",
+            "contentType": "video/mp4"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "58X6KTiP9oVTreuD1bDlCw",
+          "type": "Asset",
+          "createdAt": "2025-11-28T01:50:01.016Z",
+          "updatedAt": "2025-11-28T01:50:01.016Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 4,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Renato Renault",
+          "description": "Renato Renault",
+          "file": {
+            "url": "//images.ctfassets.net/SPACE_ID/58X6KTiP9oVTreuD1bDlCw/f8af85e417c5f760f617709b2dd857cc/renatoranault.png",
+            "details": {
+              "size": 982880,
+              "image": {
+                "width": 1898,
+                "height": 938
+              }
+            },
+            "fileName": "renatoranault.png",
+            "contentType": "image/png"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "5TM91Tc6sg5jiCYt1RJw6Z",
+          "type": "Asset",
+          "createdAt": "2025-11-28T00:10:32.614Z",
+          "updatedAt": "2025-11-28T00:10:32.614Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 5,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "100diasdecodigo gif",
+          "description": "100diasdecodigo",
+          "file": {
+            "url": "//videos.ctfassets.net/SPACE_ID/5TM91Tc6sg5jiCYt1RJw6Z/c33bbbc1fcb7edef63aa40e22d9491ff/100diasdecodigo.mp4",
+            "details": {
+              "size": 15840525
+            },
+            "fileName": "100diasdecodigo.mp4",
+            "contentType": "video/mp4"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "5UWaa2VKEJ6vcJzuYkWcxy",
+          "type": "Asset",
+          "createdAt": "2024-07-31T19:39:42.863Z",
+          "updatedAt": "2024-07-31T19:39:42.863Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 7,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "100DiasdeCodigo",
+          "description": "https://www.100diasdecodigo.dev/",
+          "file": {
+            "url": "//images.ctfassets.net/SPACE_ID/5UWaa2VKEJ6vcJzuYkWcxy/e0452bacb806efabc468697c6b203860/Screenshot_2024-07-31_at_11.15.58.png",
+            "details": {
+              "size": 1130903,
+              "image": {
+                "width": 1898,
+                "height": 959
+              }
+            },
+            "fileName": "Screenshot 2024-07-31 at 11.15.58.png",
+            "contentType": "image/png"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "6VSMKcruSwYp6RPyKUP87i",
+          "type": "Asset",
+          "createdAt": "2025-11-27T17:22:28.290Z",
+          "updatedAt": "2025-11-27T22:36:21.482Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 8,
+          "revision": 2,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "HudRest",
+          "description": "https://www.hudrest.com/",
+          "file": {
+            "url": "//images.ctfassets.net/SPACE_ID/6VSMKcruSwYp6RPyKUP87i/728130639411a25fad0a94919c1e852c/hudrest-og.png",
+            "details": {
+              "size": 161196,
+              "image": {
+                "width": 1860,
+                "height": 891
+              }
+            },
+            "fileName": "hudrest-og.png",
+            "contentType": "image/png"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "6rpxll1Jc9A2yGqp53c92w",
+          "type": "Asset",
+          "createdAt": "2025-11-28T01:50:45.559Z",
+          "updatedAt": "2025-11-28T01:50:45.559Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 5,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Renato Renault gif",
+          "description": "Renato Renault gif",
+          "file": {
+            "url": "//videos.ctfassets.net/SPACE_ID/6rpxll1Jc9A2yGqp53c92w/4663bc5dd7ca1d17665b90706cc20e58/renaultrenato.mp4",
+            "details": {
+              "size": 28672293
+            },
+            "fileName": "renaultrenato.mp4",
+            "contentType": "video/mp4"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "6xFHygh6iyY55gRr0ZFGEy",
+          "type": "Asset",
+          "createdAt": "2025-11-28T01:57:18.595Z",
+          "updatedAt": "2025-11-28T01:57:18.595Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 7,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Barboost gif",
+          "description": "Barboost gif",
+          "file": {
+            "url": "//videos.ctfassets.net/SPACE_ID/6xFHygh6iyY55gRr0ZFGEy/b2783c3c71399c68d9dbc1e0fc11da21/barboost.mp4",
+            "details": {
+              "size": 30512085
+            },
+            "fileName": "barboost.mp4",
+            "contentType": "video/mp4"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "HmUBiQYw1QLASdmqEM9Ls",
+          "type": "Asset",
+          "createdAt": "2024-08-01T09:10:31.006Z",
+          "updatedAt": "2024-08-01T09:10:31.006Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 12,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Sunny Pools",
+          "description": "https://www.sunnypoolsusa.com/",
+          "file": {
+            "url": "//images.ctfassets.net/SPACE_ID/HmUBiQYw1QLASdmqEM9Ls/a76328cd923f65bc25e7543b71908610/image.png",
+            "details": {
+              "size": 2034010,
+              "image": {
+                "width": 1504,
+                "height": 846
+              }
+            },
+            "fileName": "image.png",
+            "contentType": "image/png"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "nD4JNFNe4Ua0MHVVfyNIf",
+          "type": "Asset",
+          "createdAt": "2025-02-03T18:56:33.333Z",
+          "updatedAt": "2025-03-21T18:18:39.018Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 12,
+          "revision": 3,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Im-Vestor",
+          "description": "https://www.im-vestor.com/",
+          "file": {
+            "url": "//images.ctfassets.net/SPACE_ID/nD4JNFNe4Ua0MHVVfyNIf/f2cef2b87b1d7aed9e68813e5555d0c8/image.png",
+            "details": {
+              "size": 125918,
+              "image": {
+                "width": 1329,
+                "height": 801
+              }
+            },
+            "fileName": "image.png",
+            "contentType": "image/png"
+          }
+        }
+      },
+      {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "SPACE_ID"
+            }
+          },
+          "id": "pa7B5MJI1Z2GACARLukZ9",
+          "type": "Asset",
+          "createdAt": "2025-11-27T23:46:18.106Z",
+          "updatedAt": "2025-11-27T23:46:18.106Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 5,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "im-vestor gif",
+          "description": "",
+          "file": {
+            "url": "//videos.ctfassets.net/SPACE_ID/pa7B5MJI1Z2GACARLukZ9/70950068241e1d419914335822178bd0/im-vestor.mp4",
+            "details": {
+              "size": 5203039
+            },
+            "fileName": "im-vestor.mp4",
+            "contentType": "video/mp4"
+          }
+        }
+      }
+    ]
+  }
+}

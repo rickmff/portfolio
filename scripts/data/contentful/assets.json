@@ -1,0 +1,1144 @@
+{
+  "sys": {
+    "type": "Array"
+  },
+  "total": 26,
+  "skip": 0,
+  "limit": 1000,
+  "items": [
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "13YGbNhT5qF9YOZCYnqZRo",
+        "type": "Asset",
+        "createdAt": "2025-11-27T21:47:11.745Z",
+        "updatedAt": "2025-11-28T23:09:41.143Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 12,
+        "revision": 3,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "HudRest gif",
+        "description": "",
+        "file": {
+          "url": "//videos.ctfassets.net/SPACE_ID/13YGbNhT5qF9YOZCYnqZRo/d7a6c976be718cf104af33d08a680665/hudrest.mp4",
+          "details": {
+            "size": 8621274
+          },
+          "fileName": "hudrest.mp4",
+          "contentType": "video/mp4"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "4iGzXlqszKwDcebcyzf0kc",
+        "type": "Asset",
+        "createdAt": "2025-02-03T19:04:15.863Z",
+        "updatedAt": "2025-11-28T01:57:59.468Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 21,
+        "revision": 5,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "BarBoost",
+        "description": "https://www.barboost.pt/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/4iGzXlqszKwDcebcyzf0kc/7b24a80f142da884881fadd40aeb3ddb/barboost.png",
+          "details": {
+            "size": 935742,
+            "image": {
+              "width": 1896,
+              "height": 935
+            }
+          },
+          "fileName": "barboost.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "6xFHygh6iyY55gRr0ZFGEy",
+        "type": "Asset",
+        "createdAt": "2025-11-28T01:57:18.595Z",
+        "updatedAt": "2025-11-28T01:57:18.595Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 7,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Barboost gif",
+        "description": "Barboost gif",
+        "file": {
+          "url": "//videos.ctfassets.net/SPACE_ID/6xFHygh6iyY55gRr0ZFGEy/b2783c3c71399c68d9dbc1e0fc11da21/barboost.mp4",
+          "details": {
+            "size": 30512085
+          },
+          "fileName": "barboost.mp4",
+          "contentType": "video/mp4"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "6rpxll1Jc9A2yGqp53c92w",
+        "type": "Asset",
+        "createdAt": "2025-11-28T01:50:45.559Z",
+        "updatedAt": "2025-11-28T01:50:45.559Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 5,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Renato Renault gif",
+        "description": "Renato Renault gif",
+        "file": {
+          "url": "//videos.ctfassets.net/SPACE_ID/6rpxll1Jc9A2yGqp53c92w/4663bc5dd7ca1d17665b90706cc20e58/renaultrenato.mp4",
+          "details": {
+            "size": 28672293
+          },
+          "fileName": "renaultrenato.mp4",
+          "contentType": "video/mp4"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "58X6KTiP9oVTreuD1bDlCw",
+        "type": "Asset",
+        "createdAt": "2025-11-28T01:50:01.016Z",
+        "updatedAt": "2025-11-28T01:50:01.016Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 4,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Renato Renault",
+        "description": "Renato Renault",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/58X6KTiP9oVTreuD1bDlCw/f8af85e417c5f760f617709b2dd857cc/renatoranault.png",
+          "details": {
+            "size": 982880,
+            "image": {
+              "width": 1898,
+              "height": 938
+            }
+          },
+          "fileName": "renatoranault.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "2lk19IsQxwdxcFuU9x4USa",
+        "type": "Asset",
+        "createdAt": "2025-11-28T01:44:08.320Z",
+        "updatedAt": "2025-11-28T01:44:08.320Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 4,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "try gif",
+        "description": "try gif",
+        "file": {
+          "url": "//videos.ctfassets.net/SPACE_ID/2lk19IsQxwdxcFuU9x4USa/e007fbe1c33817e65dc77e9ba811631b/try.mp4",
+          "details": {
+            "size": 19869974
+          },
+          "fileName": "try.mp4",
+          "contentType": "video/mp4"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "46qXMwfobtFYvVUfhg1fMa",
+        "type": "Asset",
+        "createdAt": "2025-11-28T01:15:44.531Z",
+        "updatedAt": "2025-11-28T01:15:44.531Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 5,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Sunny Pools gif",
+        "description": "Sunny Pools gif",
+        "file": {
+          "url": "//videos.ctfassets.net/SPACE_ID/46qXMwfobtFYvVUfhg1fMa/aa5e6f6e55186da97f69a914124482fd/sunnypools.mp4",
+          "details": {
+            "size": 38039479
+          },
+          "fileName": "sunnypools.mp4",
+          "contentType": "video/mp4"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "54PLCFhWFuPsDi4qi77eFS",
+        "type": "Asset",
+        "createdAt": "2025-11-28T00:49:44.561Z",
+        "updatedAt": "2025-11-28T00:49:44.561Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 5,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Pizza Rita",
+        "description": "pizzarita",
+        "file": {
+          "url": "//videos.ctfassets.net/SPACE_ID/54PLCFhWFuPsDi4qi77eFS/f92e8f5b0708be54a14d8b152b07860f/pizzarita.mp4",
+          "details": {
+            "size": 21107441
+          },
+          "fileName": "pizzarita.mp4",
+          "contentType": "video/mp4"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "5TM91Tc6sg5jiCYt1RJw6Z",
+        "type": "Asset",
+        "createdAt": "2025-11-28T00:10:32.614Z",
+        "updatedAt": "2025-11-28T00:10:32.614Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 5,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "100diasdecodigo gif",
+        "description": "100diasdecodigo",
+        "file": {
+          "url": "//videos.ctfassets.net/SPACE_ID/5TM91Tc6sg5jiCYt1RJw6Z/c33bbbc1fcb7edef63aa40e22d9491ff/100diasdecodigo.mp4",
+          "details": {
+            "size": 15840525
+          },
+          "fileName": "100diasdecodigo.mp4",
+          "contentType": "video/mp4"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "pa7B5MJI1Z2GACARLukZ9",
+        "type": "Asset",
+        "createdAt": "2025-11-27T23:46:18.106Z",
+        "updatedAt": "2025-11-27T23:46:18.106Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 5,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "im-vestor gif",
+        "description": "",
+        "file": {
+          "url": "//videos.ctfassets.net/SPACE_ID/pa7B5MJI1Z2GACARLukZ9/70950068241e1d419914335822178bd0/im-vestor.mp4",
+          "details": {
+            "size": 5203039
+          },
+          "fileName": "im-vestor.mp4",
+          "contentType": "video/mp4"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "1ICADIsHP5Xlsn0WfZeoWL",
+        "type": "Asset",
+        "createdAt": "2025-11-27T22:01:27.356Z",
+        "updatedAt": "2025-11-27T23:04:01.580Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 18,
+        "revision": 3,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "V Arena gif",
+        "description": "",
+        "file": {
+          "url": "//videos.ctfassets.net/SPACE_ID/1ICADIsHP5Xlsn0WfZeoWL/c2e8d684baccfb60295298aca0c8e36a/v-arena-gif.mp4",
+          "details": {
+            "size": 11903643
+          },
+          "fileName": "v-arena-gif.mp4",
+          "contentType": "video/mp4"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "6VSMKcruSwYp6RPyKUP87i",
+        "type": "Asset",
+        "createdAt": "2025-11-27T17:22:28.290Z",
+        "updatedAt": "2025-11-27T22:36:21.482Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 8,
+        "revision": 2,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "HudRest",
+        "description": "https://www.hudrest.com/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/6VSMKcruSwYp6RPyKUP87i/728130639411a25fad0a94919c1e852c/hudrest-og.png",
+          "details": {
+            "size": 161196,
+            "image": {
+              "width": 1860,
+              "height": 891
+            }
+          },
+          "fileName": "hudrest-og.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "1wA7ZkKyZFg2J1ghGyaF6T",
+        "type": "Asset",
+        "createdAt": "2025-06-11T15:13:41.928Z",
+        "updatedAt": "2025-06-11T15:13:41.928Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 5,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Ryori",
+        "description": "https://www.ryorirestaurante.com/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/1wA7ZkKyZFg2J1ghGyaF6T/b5aca326a39174bcd39a2f70269d9717/image.png",
+          "details": {
+            "size": 885362,
+            "image": {
+              "width": 1611,
+              "height": 804
+            }
+          },
+          "fileName": "image.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "4jngdESq2rSQWI4d1xB9oS",
+        "type": "Asset",
+        "createdAt": "2025-06-11T15:12:26.071Z",
+        "updatedAt": "2025-06-11T15:12:26.071Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 5,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "V Arena",
+        "description": "https://www.v-arena.com/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/4jngdESq2rSQWI4d1xB9oS/61eb0417609ac1e731ac8146e0d52078/image.png",
+          "details": {
+            "size": 813431,
+            "image": {
+              "width": 1892,
+              "height": 922
+            }
+          },
+          "fileName": "image.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "2hgWCVn05kCHlABfJpoSpt",
+        "type": "Asset",
+        "createdAt": "2025-03-21T18:22:46.937Z",
+        "updatedAt": "2025-03-21T18:26:05.530Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 9,
+        "revision": 2,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "XTORIA",
+        "description": "https://xtoria.vercel.app/en",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/2hgWCVn05kCHlABfJpoSpt/26e6c30e33944d7953ff0394b769f08f/image.png",
+          "details": {
+            "size": 1420614,
+            "image": {
+              "width": 1493,
+              "height": 873
+            }
+          },
+          "fileName": "image.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "nD4JNFNe4Ua0MHVVfyNIf",
+        "type": "Asset",
+        "createdAt": "2025-02-03T18:56:33.333Z",
+        "updatedAt": "2025-03-21T18:18:39.018Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 12,
+        "revision": 3,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Im-Vestor",
+        "description": "https://www.im-vestor.com/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/nD4JNFNe4Ua0MHVVfyNIf/f2cef2b87b1d7aed9e68813e5555d0c8/image.png",
+          "details": {
+            "size": 125918,
+            "image": {
+              "width": 1329,
+              "height": 801
+            }
+          },
+          "fileName": "image.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "2UxE1kAqImrybz0WGjJd9r",
+        "type": "Asset",
+        "createdAt": "2024-07-31T11:51:35.646Z",
+        "updatedAt": "2025-02-03T19:06:25.782Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 15,
+        "revision": 5,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Try",
+        "description": "https://try.com.br/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/2UxE1kAqImrybz0WGjJd9r/e11a26eb98e091fa68b3ecbc0b8cf52c/Screenshot_2025-02-03_190602.png",
+          "details": {
+            "size": 263451,
+            "image": {
+              "width": 1722,
+              "height": 831
+            }
+          },
+          "fileName": "Screenshot 2025-02-03 190602.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "7afyJBPyauoMbldonzCun4",
+        "type": "Asset",
+        "createdAt": "2024-08-01T09:15:22.843Z",
+        "updatedAt": "2024-08-01T09:15:22.843Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 11,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "MPI Tributação",
+        "description": "https://mpi-tributacao.vercel.app",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/7afyJBPyauoMbldonzCun4/4c3588db952dfb78051f9b3b5a0fca89/image.png",
+          "details": {
+            "size": 95673,
+            "image": {
+              "width": 1098,
+              "height": 618
+            }
+          },
+          "fileName": "image.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "HmUBiQYw1QLASdmqEM9Ls",
+        "type": "Asset",
+        "createdAt": "2024-08-01T09:10:31.006Z",
+        "updatedAt": "2024-08-01T09:10:31.006Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 12,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Sunny Pools",
+        "description": "https://www.sunnypoolsusa.com/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/HmUBiQYw1QLASdmqEM9Ls/a76328cd923f65bc25e7543b71908610/image.png",
+          "details": {
+            "size": 2034010,
+            "image": {
+              "width": 1504,
+              "height": 846
+            }
+          },
+          "fileName": "image.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "6jYnEuXpFnvUNr4fz1Q8nc",
+        "type": "Asset",
+        "createdAt": "2024-07-31T20:40:49.913Z",
+        "updatedAt": "2024-07-31T21:30:50.522Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 8,
+        "revision": 2,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Estancia Bahia",
+        "description": "https://www.estanciabahia.com.br/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/6jYnEuXpFnvUNr4fz1Q8nc/1a1ec8e74ca3fd8063e6fdc664d71076/114976206-f84de880-9e5b-11eb-86d7-adc1a9a79a46.png",
+          "details": {
+            "size": 123008,
+            "image": {
+              "width": 1132,
+              "height": 636
+            }
+          },
+          "fileName": "114976206-f84de880-9e5b-11eb-86d7-adc1a9a79a46.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "219iWfhkEIE6YkHThN7gGE",
+        "type": "Asset",
+        "createdAt": "2024-07-31T20:34:37.278Z",
+        "updatedAt": "2024-07-31T21:30:45.862Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 10,
+        "revision": 2,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Rebrac",
+        "description": "https://www.rebrac.com.br/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/219iWfhkEIE6YkHThN7gGE/805389c1a84fa17dfb6d675cac9fc058/image.png",
+          "details": {
+            "size": 968073,
+            "image": {
+              "width": 1717,
+              "height": 966
+            }
+          },
+          "fileName": "image.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "2S7v1GDkJalSZ08Hb7CGYJ",
+        "type": "Asset",
+        "createdAt": "2024-07-31T20:37:35.830Z",
+        "updatedAt": "2024-07-31T21:30:40.948Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 10,
+        "revision": 2,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Pizza da Rita",
+        "description": "https://www.pizzarita.com.br/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/2S7v1GDkJalSZ08Hb7CGYJ/d5e3fa1fad5ccbd2de77b355350ff689/image.png",
+          "details": {
+            "size": 2065931,
+            "image": {
+              "width": 1717,
+              "height": 966
+            }
+          },
+          "fileName": "image.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "6YvT1toa1W8mCPDSP3bVce",
+        "type": "Asset",
+        "createdAt": "2024-07-31T20:38:41.712Z",
+        "updatedAt": "2024-07-31T21:30:33.532Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 8,
+        "revision": 2,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Doutor Dental",
+        "description": "https://www.clinicadoutordental.com.br/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/6YvT1toa1W8mCPDSP3bVce/665aeb952e3c9033f48b9d383399b71e/Screenshot_2024-07-31_at_11.21.32.png",
+          "details": {
+            "size": 735906,
+            "image": {
+              "width": 1626,
+              "height": 915
+            }
+          },
+          "fileName": "Screenshot_2024-07-31_at_11.21.32.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "6rWI4NbDZbgChRXtWVxlLj",
+        "type": "Asset",
+        "createdAt": "2024-07-31T20:39:50.375Z",
+        "updatedAt": "2024-07-31T20:44:59.823Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 11,
+        "revision": 2,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "Warren",
+        "description": "https://warren.com.br/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/6rWI4NbDZbgChRXtWVxlLj/eda31f6912960cd9dd800575a273a68c/17-warren.png",
+          "details": {
+            "size": 4580321,
+            "image": {
+              "width": 2924,
+              "height": 1644
+            }
+          },
+          "fileName": "17-warren.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "5UWaa2VKEJ6vcJzuYkWcxy",
+        "type": "Asset",
+        "createdAt": "2024-07-31T19:39:42.863Z",
+        "updatedAt": "2024-07-31T19:39:42.863Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 7,
+        "revision": 1,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "100DiasdeCodigo",
+        "description": "https://www.100diasdecodigo.dev/",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/5UWaa2VKEJ6vcJzuYkWcxy/e0452bacb806efabc468697c6b203860/Screenshot_2024-07-31_at_11.15.58.png",
+          "details": {
+            "size": 1130903,
+            "image": {
+              "width": 1898,
+              "height": 959
+            }
+          },
+          "fileName": "Screenshot 2024-07-31 at 11.15.58.png",
+          "contentType": "image/png"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "tags": [],
+        "concepts": []
+      },
+      "sys": {
+        "space": {
+          "sys": {
+            "type": "Link",
+            "linkType": "Space",
+            "id": "SPACE_ID"
+          }
+        },
+        "id": "4Q6SnbZTJCXoyH83EioqHO",
+        "type": "Asset",
+        "createdAt": "2024-06-25T22:56:34.233Z",
+        "updatedAt": "2024-07-08T17:51:51.729Z",
+        "environment": {
+          "sys": {
+            "id": "master",
+            "type": "Link",
+            "linkType": "Environment"
+          }
+        },
+        "publishedVersion": 7,
+        "revision": 2,
+        "locale": "en-US"
+      },
+      "fields": {
+        "title": "hero",
+        "description": "",
+        "file": {
+          "url": "//images.ctfassets.net/SPACE_ID/4Q6SnbZTJCXoyH83EioqHO/431966774cec125c9fd1072d1d1edff7/hero.png",
+          "details": {
+            "size": 3805855,
+            "image": {
+              "width": 2912,
+              "height": 1632
+            }
+          },
+          "fileName": "hero.png",
+          "contentType": "image/png"
+        }
+      }
+    }
+  ]
+}
