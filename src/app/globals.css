@@ -173,6 +173,9 @@ a {
   scrollbar-width: none;
   overscroll-behavior-x: contain;
 }
+.strip.is-wheeling {
+  scroll-snap-type: none;
+}
 .strip::-webkit-scrollbar {
   display: none;
 }
