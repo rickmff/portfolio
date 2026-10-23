@@ -1,0 +1,16 @@
+[
+ {
+  "id": 1,
+  "slug": "hello-world",
+  "title": "Hello, world",
+  "excerpt": "Why I rebuilt my site from scratch.",
+  "body": "This is a sample post. Edit or delete it in the backoffice.\n\n## A heading\n\nSome **markdown** with `code`."
+ },
+ {
+  "id": 2,
+  "slug": "draft-post",
+  "title": "A draft you can finish",
+  "excerpt": "",
+  "body": "Drafts stay hidden until you publish them."
+ }
+]

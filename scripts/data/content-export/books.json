@@ -1,0 +1,380 @@
+[
+ {
+  "id": 1,
+  "title": "Contos",
+  "synopsis": "Uma seleção dos contos mais conhecidos de Edgar Allan Poe, o mestre do horror psicológico e o inventor do conto policial. Narradores pouco confiáveis, casas que parecem vivas e enigmas resolvidos pela pura lógica.",
+  "notes": "### 1. **O Gato Preto** (*The Black Cat*)\n\n*\"A culpa e o alcoolismo transformam um homem em assassino, mas o miado de um gato selado na parede revela seu crime.\"*\n\n### 2. **O Coração Denunciador** (*The Tell-Tale Heart*)\n\n*\"Um assassino tenta provar sua sanidade, mas o som de um coração imaginário o faz confessar.\"*\n\n### 3. **A Queda da Casa de Usher** (*The Fall of the House of Usher*)\n\n*\"A decadência física e mental da família Usher culmina no colapso literal da mansão.\"*\n\n### 4. **O Barril de Amontillado** (*The Cask of Amontillado*)\n\n*\"Montresor atrai Fortunato para as catacumbas e o sepulta vivo em busca de vingança.\"*\n\n### 5. **Berenice**\n\n*\"A obsessão dental leva Egaeus a roubar os dentes de sua noiva, que ainda estava viva.\"*\n\n### 6. **O Poço e o Pêndulo** (*The Pit and the Pendulum*)\n\n*\"Entre lâminas mortais e um abismo sem fim, a salvação chega nos últimos segundos.\"*\n\n### 7. **A Máscara da Morte Rubra** (*The Masque of the Red Death*)\n\n*\"Nenhuma muralha protege o príncipe Próspero e seus convidados da própria Morte.\"*\n\n### 8. **William Wilson**\n\n*\"Ao tentar matar seu doppelgänger, William descobre que destruiu a si mesmo.\"*\n\n### 9. **O Escaravelho de Ouro** (*The Gold-Bug*)\n\n*\"Um enigma criptografado leva a um tesouro pirata enterrado.\"*\n\n### 10. **A Carta Roubada** (*The Purloined Letter*)\n\n*\"O detetive Dupin encontra uma carta valiosa onde ninguém esperava: à vista de todos.\"*\n\n### 11. **O Retrato Oval** (*The Oval Portrait*)\n\n*\"A beleza da arte suga a vida da modelo, fundindo a realidade e a pintura.\"*\n\n### 12. **Ligeia**\n\n*\"A misteriosa Ligeia parece ressuscitar, tomando o corpo da nova esposa do narrador.\"*\n\n### 13. **O Homem da Multidão** (*The Man of the Crowd*)\n\n*\"Um homem segue um estranho sem destino pela cidade, encontrando apenas o vazio.\"*\n\n### 14. **A Verdade Sobre o Caso do Sr. Valdemar** (*The Facts in the Case of M. Valdemar*)\n\n*\"Um moribundo hipnotizado antes da morte permanece entre a vida e a decomposição.\"*\n\n### 15. **Morella**\n\n*\"A esposa morre, mas sua alma parece renascer na filha, trazendo horror ao pai.\"*",
+  "note": ""
+ },
+ {
+  "id": 2,
+  "title": "A Sutil Arte de Ligar o Foda-se",
+  "synopsis": "Mark Manson vai contra a autoajuda do pensamento positivo: em vez de tentar se importar com tudo, a vida melhora quando você escolhe com cuidado as poucas coisas que realmente merecem a sua energia.",
+  "notes": "- Não dá para se importar com tudo, a energia é limitada. A questão é **escolher com o que se importar**\n- Querer uma experiência positiva o tempo todo já é uma experiência negativa (**lei do esforço reverso**)\n- A dor faz parte. Felicidade vem de **resolver problemas**, não de não tê-los\n- Que dor você está disposto a sentir? O que você quer é definido pelo sacrifício que aceita fazer\n- Você não é especial. Aceitar isso tira o peso de ter que ser extraordinário o tempo todo\n- **Valores ruins**: prazer, sucesso material, sempre estar certo, ser positivo sempre\n- **Valores bons**: honestidade, responsabilidade, humildade, curiosidade\n- Culpa e responsabilidade são coisas diferentes. Nem tudo é culpa sua, mas tudo o que acontece com você é responsabilidade sua\n- Desconfie das próprias certezas, a gente está errado sobre muita coisa\n- Saber dizer não é o que dá valor ao sim\n- Pensar na morte ajuda a colocar o resto em perspectiva",
+  "note": ""
+ },
+ {
+  "id": 3,
+  "title": "Inabalável",
+  "synopsis": "Tony Robbins entrevistou grandes nomes do mercado financeiro para montar um guia prático de independência financeira: como funcionam as taxas, os juros compostos e a alocação de ativos, e como montar uma carteira que aguente qualquer cenário.",
+  "notes": "- **Juros compostos** são a força mais importante: começar cedo vale mais que começar com muito\n- Taxas pequenas destroem o patrimônio no longo prazo. Sempre olhar quanto se paga de taxa\n- Ninguém consegue prever o mercado de forma consistente, nem os profissionais\n- **Fundos de índice** de baixo custo batem a maioria dos fundos ativos\n- **Alocação de ativos** é a decisão mais importante: dividir entre segurança e crescimento\n- Rebalancear a carteira periodicamente\n- Crises e quedas fazem parte do ciclo, não são o fim. Quem não vende no pânico se recupera\n- **Carteira para todas as estações** (Ray Dalio): montar algo que aguente inflação, deflação, crescimento e recessão\n- Ter uma reserva de emergência antes de assumir risco\n- Definir um número: quanto é preciso para ser livre financeiramente\n- Automatizar os aportes para não depender de força de vontade",
+  "note": ""
+ },
+ {
+  "id": 4,
+  "title": "A Arte da Guerra",
+  "synopsis": "O tratado militar chinês atribuído a Sun Tzu, escrito há mais de dois mil anos. Treze capítulos curtos sobre estratégia, planejamento e conhecimento do terreno, que até hoje são lidos como lições de liderança e negócios.",
+  "notes": "- \"Conheça o inimigo e conheça a si mesmo, e você não temerá o resultado de cem batalhas\"\n- A **suprema arte da guerra** é vencer sem lutar\n- Toda guerra é baseada no **engano**: quando for capaz, finja ser incapaz\n- A vitória é decidida antes da batalha, no **planejamento**\n- Os cinco fatores: caminho (moral), clima, terreno, comando e disciplina\n- Guerras longas desgastam até quem vence. Rapidez importa\n- Atacar onde o inimigo não está preparado, aparecer onde não é esperado\n- Ser como a água: se adaptar à forma do terreno\n- Nunca encurralar totalmente o inimigo, deixe uma saída\n- O bom general cria a situação certa em vez de depender dos soldados\n- Saber quando lutar e quando não lutar",
+  "note": ""
+ },
+ {
+  "id": 5,
+  "title": "Hamlet",
+  "synopsis": "O príncipe da Dinamarca recebe a visita do fantasma do pai, que lhe revela um crime e exige vingança. Dividido entre a dúvida e o dever, Hamlet finge a loucura enquanto a corte de Elsinore se enche de desconfiança.",
+  "notes": "- **Ser ou não ser**: a dúvida paralisa mais do que o medo\n- Hamlet pensa demais e age de menos, e a demora custa caro a todos\n- A loucura fingida serve de máscara para dizer verdades\n- **A peça dentro da peça**: usar a arte para revelar a culpa (\"the play's the thing\")\n- Polônio: \"sê fiel a ti mesmo\", conselho bom dito por alguém que não o segue\n- A corrupção no topo contamina todo o reino (\"há algo de podre no reino da Dinamarca\")\n- Ofélia é a maior vítima do jogo dos outros\n- Vingança gera mais vingança: no final, quase ninguém sobra\n- A caveira de Yorick: todos acabam iguais diante da morte\n- \"O resto é silêncio\"",
+  "note": ""
+ },
+ {
+  "id": 6,
+  "title": "O Pequeno Príncipe",
+  "synopsis": "Um aviador cai no deserto do Saara e conhece um pequeno príncipe vindo de um asteroide distante. Entre desenhos de carneiros e histórias de planetas estranhos, uma fábula sobre amizade, amor e o olhar das crianças sobre o mundo dos adultos.",
+  "notes": "- \"O essencial é invisível aos olhos, só se vê bem com o coração\"\n- \"Tu te tornas eternamente responsável por aquilo que cativas\"\n- Os adultos só entendem números, esqueceram como é ser criança\n- **A rosa**: o que a torna única é o tempo que se dedicou a ela\n- **A raposa**: cativar é criar laços, e criar laços é se arriscar a sofrer\n- Cada planeta é um tipo de adulto: o rei, o vaidoso, o bêbado, o empresário, o acendedor de lampiões, o geógrafo\n- O empresário conta estrelas para possuí-las, mas não aproveita nenhuma\n- Os baobás: problemas pequenos têm que ser arrancados cedo, antes de crescerem\n- É preciso suportar duas ou três larvas se quiser conhecer as borboletas\n- O deserto é bonito porque esconde um poço em algum lugar",
+  "note": ""
+ },
+ {
+  "id": 7,
+  "title": "1984",
+  "synopsis": "Em um superestado totalitário vigiado pelo Grande Irmão, Winston Smith trabalha reescrevendo a história para o Partido. Quando ele começa a duvidar e a guardar pensamentos proibidos, descobre o preço de querer ser livre.",
+  "notes": "regra do partido\n\ncontrolar o passado é controlar o futuro\n\n.ministério da verdade reescreve a história\n\n.quem controla a memória controla a realidade\n\nnovilíngua\n\nreduzir as palavras para reduzir o pensamento\n\n.sem palavra para rebelião, não existe rebelião\n\n.duplipensar: aceitar duas ideias contraditórias ao mesmo tempo\n\nvigilância\n\no grande irmão está de olho em você\n\n.teletela em todo lugar\n\n.medo constante gera obediência\n\n.crianças denunciando os pais\n\nódio\n\ndois minutos de ódio\n\n.um inimigo externo une as pessoas\n\n.guerra permanente mantém a ordem\n\no fim\n\n.liberdade é poder dizer que 2 + 2 = 4\n\n.o partido não quer obediência, quer que você ame o grande irmão\n\n.quarto 101: o medo de cada um usado contra ele",
+  "note": ""
+ },
+ {
+  "id": 8,
+  "title": "Mente Milionária",
+  "synopsis": "T. Harv Eker defende que a relação com o dinheiro é programada desde a infância, e que esse \"modelo financeiro\" interno determina os resultados. O livro compara o jeito de pensar de ricos e pobres e propõe exercícios para reprogramar essa mentalidade.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 9,
+  "title": "Pai Rico, Pai Pobre",
+  "synopsis": "Robert Kiyosaki conta o que aprendeu sobre dinheiro com dois pais: o seu, educado e com bom emprego, e o pai de um amigo, empresário sem diploma. A diferença entre ativos e passivos é o ponto de partida para repensar trabalho, dívidas e investimentos.",
+  "notes": "- Tenho de aprender a poupar dinheiro e nao gastar tudo o que recebo\n- Antes de comprar alguma coisa, devo pensar se preciso mesmo dela\n- Quero aprender a investir para fazer o meu dinheiro crescer\n- Nao devo depender apenas de um salario, posso procurar outras formas de ganhar dinheiro\n- Tenho de aprender mais sobre dinheiro para tomar melhores decisoes\n- O mais importante nao e ganhar muito dinheiro, mas saber usa-lo bem\n- Quero comecar a pensar mais no meu futuro e nao apenas no que posso comprar hoje\n- Devo evitar gastar dinheiro so para impressionar os outros\n- E importante ter objetivos financeiros e trabalhar para os alcancar\n- Quero aprender a distinguir aquilo que me da dinheiro daquilo que me faz gastar dinheiro\n- Devo ter cuidado com as dividas e evitar pedir dinheiro sem necessidade\n- Em vez de gastar tudo em coisas que perdem valor, devo pensar em investir no meu futuro\n- Tenho de perceber que ficar rico nao acontece de um dia para o outro\n- Devo aproveitar o meu tempo para aprender coisas que me possam ajudar a ganhar mais dinheiro\n- Nao devo ter medo de aprender coisas novas sobre investimentos\n- Quero deixar de trabalhar apenas para pagar contas e comecar a construir uma vida com mais liberdade financeira\n- Devo ter paciencia, porque os resultados levam tempo\n- E importante aprender com os meus erros e nao desistir quando alguma coisa corre mal\n- Quero tomar melhores decisoes com o dinheiro que tenho, mesmo que seja pouco\n- A minha mentalidade sobre o dinheiro pode fazer muita diferenca no meu futuro",
+  "note": ""
+ },
+ {
+  "id": 10,
+  "title": "As 16 Leis do Sucesso",
+  "synopsis": "Fruto de anos de entrevistas com empresários do início do século XX, o curso de Napoleon Hill organiza em dezesseis lições os hábitos que, segundo ele, separam quem realiza de quem só deseja: propósito definido, autoconfiança, iniciativa e persistência.",
+  "notes": "- **Mente mestra**: juntar pessoas com um mesmo objetivo multiplica a capacidade de cada um\n- **Objetivo principal definido**: sem um alvo claro, todo esforço se dispersa\n- **Autoconfiança** se constrói, não se nasce com ela\n- **Hábito de poupar**: guardar parte do que se ganha dá liberdade de escolha\n- **Iniciativa e liderança**: fazer sem precisar que mandem\n- **Imaginação**: toda conquista começa como uma ideia\n- **Entusiasmo** contagia e move as pessoas ao redor\n- **Autocontrole**: quem não controla a si mesmo não controla nada\n- **Fazer mais do que é pago para fazer**\n- **Personalidade agradável** abre mais portas que talento\n- **Pensamento preciso**: separar fatos de opiniões\n- **Concentração** em uma coisa de cada vez\n- **Cooperação** em vez de competição\n- **Aproveitar o fracasso**: toda derrota traz a semente de uma vantagem equivalente\n- **Tolerância** com quem pensa diferente\n- **Regra de ouro**: tratar os outros como gostaria de ser tratado",
+  "note": ""
+ },
+ {
+  "id": 11,
+  "title": "Percy Jackson (coleção)",
+  "synopsis": "Percy é um garoto de doze anos com dislexia e déficit de atenção que vive se metendo em encrenca, até descobrir que é filho de um deus grego. No Acampamento Meio-Sangue, ele parte em missões pelos Estados Unidos, onde os monstros e deuses do Olimpo continuam bem vivos.",
+  "notes": "- O que parecia defeito (dislexia, TDAH) era sinal de outra natureza: o cérebro feito para o grego antigo e o instinto de batalha\n- **Lealdade** é a grande força e também a grande fraqueza do Percy\n- Os deuses são poderosos, mas falhos, egoístas e ausentes como pais\n- A mitologia grega recontada no mundo moderno: o Olimpo no Empire State, o Mundo Inferior em Los Angeles\n- Annabeth: inteligência e planejamento valem tanto quanto força\n- Grover: coragem não é não ter medo\n- Luke mostra como o ressentimento com os pais pode ser usado por alguém pior\n- **Profecias** se cumprem, mas nunca do jeito que se espera\n- Os semideuses não reconhecidos: ser ignorado machuca mais que ser odiado\n- Escolhas importam mais que origem",
+  "note": ""
+ },
+ {
+  "id": 12,
+  "title": "Diário de um Banana",
+  "synopsis": "Greg Heffley começa o ensino fundamental registrando no diário (que ele insiste em chamar de \"agenda\") seus planos para ficar popular. Ilustrado com os rabiscos do próprio Greg, é uma comédia sobre a escola, a família e o melhor amigo que não liga para nada disso.",
+  "notes": "- Greg quer ser popular a qualquer custo, e quase sempre o plano dá errado\n- Rowley é o oposto: não tenta ser legal e por isso acaba sendo\n- **O queijo**: a regra da escola que ninguém questiona e todo mundo teme\n- Os irmãos: Rodrick atormenta, Manny é protegido pelos pais\n- Greg quase nunca assume a culpa pelos próprios erros\n- O humor vem de mostrar o egoísmo de forma honesta\n- Amizade vale mais que status\n- As ilustrações contam metade da história",
+  "note": ""
+ },
+ {
+  "id": 13,
+  "title": "Steve Jobs",
+  "synopsis": "A biografia autorizada de Steve Jobs, escrita por Walter Isaacson a partir de mais de quarenta entrevistas com ele e com amigos, familiares, rivais e colegas. Da garagem em Los Altos ao iPhone, o retrato de um gênio difícil que mudou várias indústrias.",
+  "notes": "- **Campo de distorção da realidade**: fazer as pessoas acreditarem que o impossível é possível\n- Foco é dizer não para mil boas ideias\n- **Simplicidade** é a sofisticação máxima\n- Integração de ponta a ponta: hardware e software juntos, controlando a experiência inteira\n- Atenção aos detalhes até onde ninguém vê (a parte de dentro do Mac)\n- Os produtos certos nascem na interseção entre **tecnologia e humanidades**\n- Ser demitido da Apple foi o melhor que aconteceu: NeXT e Pixar\n- Contratar só jogadores de nível A, eles atraem outros A\n- O lado ruim: grosseria, controle e dificuldade em lidar com as pessoas\n- As pessoas não sabem o que querem até você mostrar a elas\n- Pensar diferente: \"os loucos que pensam que podem mudar o mundo são os que o mudam\"",
+  "note": ""
+ },
+ {
+  "id": 14,
+  "title": "As 48 Leis do Poder",
+  "synopsis": "Robert Greene reúne três mil anos de história, de cortes reais a golpistas, em 48 leis sobre como o poder é conquistado, mantido e perdido. Um manual frio e cheio de exemplos, tão útil para usar quanto para se defender.",
+  "notes": "- **Lei 1**: nunca ofusque o mestre\n- **Lei 3**: oculte suas intenções\n- **Lei 4**: diga sempre menos do que o necessário\n- **Lei 5**: a reputação é a base do poder, proteja-a\n- **Lei 6**: chame atenção a qualquer preço\n- **Lei 9**: vença pelas ações, não pela discussão\n- **Lei 15**: aniquile totalmente o inimigo\n- **Lei 16**: use a ausência para aumentar o respeito\n- **Lei 18**: não se isole, o isolamento é perigoso\n- **Lei 25**: recrie-se\n- **Lei 28**: seja ousado\n- **Lei 29**: planeje até o fim\n- **Lei 30**: faça parecer fácil\n- **Lei 33**: descubra o ponto fraco de cada um\n- **Lei 38**: pense como quiser, mas comporte-se como os outros\n- **Lei 48**: seja como a água, sem forma\n\n.ler como defesa: entender o jogo para não ser usado nele",
+  "note": ""
+ },
+ {
+  "id": 15,
+  "title": "The Champion's Mind",
+  "synopsis": "Sports psychologist Jim Afremow draws on his work with Olympians and professional athletes to show how champions think: building confidence, staying focused under pressure, bouncing back from setbacks and keeping the routines that make peak performance repeatable.",
+  "notes": "- **Mental Toughness**:\n  - Michael Phelps' example despite early career struggles and injuries\n  - Used challenges as fuel for success, maintaining a positive mindset under pressure\n  - Mental toughness is built through overcoming adversity and staying positive\n  - Practicing \"mental resets\" during setbacks, focusing on the next task, not the mistake\n- **Visualization**:\n  - Mental rehearsal helps her stay prepared and confident during competition\n  - Visualization isn't just imagining success… it's about mentally rehearsing every scenario\n  - Practicing \"positive mental imagery\" regularly imagining success, but also visualizing how to handle adversity and unexpected situations\n- **Confidence**:\n  - Kobe Bryant built confidence through years of preparation not just natural talent\n  - Confidence comes from consistent preparation and trusting your abilities\n  - Affirmations and visualization to reinforce confidence. Affirmations, especially when paired with physical preparation, help solidify self-belief\n- **Focus**:\n  - Tiger Woods blocks out all distractions, staying fully immersed in the present moment during tournaments\n  - Practices mental focus to avoid mistakes and remain calm under pressure\n  - Staying focused on the task at hand and blocking out distractions is essential for peak performance\n  - **Focus drills**, where athletes practice staying in the present moment, such as focusing only on one thing for a set time or completing tasks in intervals to train concentration\n- **Motivation**:\n  - Usain Bolt's motivation was driven by a desire to break records and continuously improve\n  - Motivation should come from the desire to push your limits and improve, not just from winning against others but comparing you today from you yesterday\n  - Set **personal performance goals** rather than just external ones.\n- **Routine and Consistency**:\n  - Serena Williams maintains a strict daily routine with specific warm-ups, exercises, and mental drills\n  - Consistency in training was key to her long-term success\n  - Success isn't just about talent; it's about maintaining a consistent routine over time\n  - Build routines that include both physical training and mental exercises, making them part of their daily life rather than only training during designated sessions",
+  "note": ""
+ },
+ {
+  "id": 16,
+  "title": "12 Regras para a Vida",
+  "synopsis": "O psicólogo Jordan Peterson combina mitologia, neurociência, religião e casos clínicos em doze regras para encontrar ordem e sentido em meio ao caos da vida, da postura do corpo à forma de falar com as pessoas.",
+  "notes": "### regra 1\n\ncostas eretas, ombros para trás\n\n- lagostas\n- cérebro primitivo\n- serotonina\n- hierarquia de dominância\n- confronte a incerteza do mundo voluntariamente, com fé e coragem\n\n### regra 2\n\ncuide de si mesmo como cuidaria de alguém sob sua responsabilidade\n\n- não tomar o remédio\n- caos e ordem\n- de sentido à vida\n- fortaleça o individual\n\n### regra 3\n\nseja amigo de pessoas que queiram o melhor para você\n\n- drogas\n- use senso crítico\n- media dos 5\n\n### regra 4\n\ncompare a si mesmo com quem você foi ontem, não com quem outra pessoa é hoje\n\n- domar o crítico interno\n- voce é tirano ou negocia com si mesmo?\n- reduza o espectro do olhar\n- ache a real razão do pensamento\n\n### regra 5\n\nnão deixe que seus filhos façam algo que faça você deixar de gostar deles\n\n- crianças mal criadas\n- use sabiamente da violência\n\n### regra 6\n\ndeixe sua casa em perfeita ordem antes de criticar o mundo\n\n- serial killers\n- comece pequeno\n- seja racional\n- não enfeite o que não precisa (primitividade)\n\n### regra 7\n\nbusque o que é significativo, não o que é conveniente\n\n- não troque o presente pelo futuro\n- adão e eva\n- significado > momento\n\n### regra 8\n\ndiga a verdade. ou, pelo menos, não minta\n\n- verdade é o princípio da ordem\n- manipulações vem da inverdade\n- não se deixe iludir por mentiras internas, busque a essência\n\n### regra 9\n\npresuma que a pessoa com quem está conversando possa saber algo que você não sabe\n\n- seja genuíno nas conversas (sem o filtro social)\n- descubra por si mesmo\n- escutar tem outro significado (sem julgar)\n\n### regra 10\n\nseja preciso no que diz\n\n- seja preciso nas suas ideias para não se afogar na complexidade do mundo\n- nunca subestime o poder destrutivo dos pecados da omissão\n- trabalhe com a realidade, sem fazer suposições e afirmações sem exatidão\n- confronte o caos com a exatidão do ser\n\n### regra 11\n\nnão incomode as crianças quando estão andando de skate\n\n- perigo (viver no limite) gera progresso\n- não limite os outros, isso pode prejudicar toda a sua evolução\n- não se deve acreditar nos \"autoproclamados juizes da raça humana\"\n- patriarcado: tem mais coisas boas do que se imagina\n- ideias tem consequências (marx)\n- diferenças entre homens e mulheres são naturais\n- não seja insuficientemente agressivo, às vezes é necessário se impor\n\n### regra 12\n\nacaricie um gato ao encontrar um na rua\n\n- aceite que o SER tem seus sofrimentos e suas limitações, sem isso ele não seria SER\n- tire algum momento do seu dia para reestabelecer a força do seus propósitos, seja fazendo algo que gosta ou apenas não fazendo o esperado",
+  "note": ""
+ },
+ {
+  "id": 17,
+  "title": "The Obstacle Is the Way",
+  "synopsis": "Drawing on Marcus Aurelius and the Stoics, Ryan Holiday shows how history's great figures turned the problems in front of them into the path forward, through the discipline of perception, action and will.",
+  "notes": "The book is inspired by **Stoic philosophy** and explains that **setbacks, frustration, fear and failure are not interruptions to your life — they are the raw material for progress**.\n\nInstead of asking\n\n> \"How do I get rid of this problem?\"\n>\n> the book teaches you to ask\n>\n> \"How can I use this problem?\"\n\nThe whole mindset is organized into a very practical framework:\n\n### 1. Perception\n\nYou learn to:\n\n- stop exaggerating problems in your head\n- separate facts from emotions\n- reframe obstacles as neutral events\n\nIn practice: most suffering comes not from what happens, but from how you interpret it.\n\n### 2. Action\n\nYou learn to:\n\n- focus only on what is controllable\n- break obstacles into small, executable steps\n- act even when conditions are not perfect\n\nThe book strongly pushes the idea that **waiting for clarity or confidence is a trap** — clarity comes from doing.\n\n### 3. Will\n\nYou learn to:\n\n- accept what you cannot change\n- remain steady under pressure\n- use hardship to build emotional endurance\n\nThis part is about long-term resilience, not short-term motivation.\n\n---\n\nObstacles are not only challenges to overcome —\n\nthey are **the exact training ground that develops your skills, character and leverage**.\n\nIn short:\n\n> The thing you want to avoid is usually the thing that makes you better, stronger and more capable.",
+  "note": ""
+ },
+ {
+  "id": 18,
+  "title": "O Homem do Castelo Alto",
+  "synopsis": "Nos Estados Unidos de 1962, quem venceu a Segunda Guerra foram o Eixo: o país está dividido entre a Alemanha nazista e o Japão. Entre comerciantes, espiões e um romance proibido que imagina outro desfecho para a guerra, Philip K. Dick questiona o que é real.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 19,
+  "title": "Roube como um Artista",
+  "synopsis": "Um manifesto curto e ilustrado de Austin Kleon sobre criatividade na era digital: nada é original, toda obra nasce de influências, e o segredo está em copiar bem, misturar referências e mostrar o próprio trabalho.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 20,
+  "title": "The Hard Thing About Hard Things",
+  "synopsis": "Ben Horowitz, co-founder of Andreessen Horowitz, skips the startup cheerleading and writes about the parts nobody prepares you for: layoffs, firing friends, near-bankruptcy and the lonely job of being the CEO when there is no easy answer.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 21,
+  "title": "A Revolta de Atlas",
+  "synopsis": "Em uns Estados Unidos em decadência, os industriais e inventores mais brilhantes estão desaparecendo um a um. Dagny Taggart tenta salvar a ferrovia da família enquanto procura entender quem está por trás disso. O romance que resume a filosofia de Ayn Rand.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 22,
+  "title": "Iludidos pelo Acaso",
+  "synopsis": "Nassim Taleb, ex-trader e matemático, mostra como confundimos sorte com habilidade, especialmente nos mercados. O primeiro livro da série que deu origem a \"A Lógica do Cisne Negro\", sobre como o acaso molda resultados muito mais do que admitimos.",
+  "notes": "- Confundimos **sorte com habilidade**, principalmente quando o resultado é bom\n- **Viés de sobrevivência**: só vemos os traders que deram certo, não os milhares que quebraram\n- **Histórias alternativas**: julgar uma decisão pelo que poderia ter acontecido, não só pelo que aconteceu\n- A roleta-russa: ganhar 10 milhões com 1 chance em 6 de morrer não é uma boa decisão, mesmo que você ganhe\n- Quanto mais você olha para os resultados, mais ruído e menos sinal enxerga\n- **Eventos raros** são subestimados até acontecerem\n- O problema da indução: mil cisnes brancos não provam que não existe cisne negro\n- Falsificar é mais útil que confirmar (Popper)\n- Ser **cético** com as próprias teorias\n- Assimetria: o que importa é o tamanho do ganho ou da perda, não só a probabilidade",
+  "note": ""
+ },
+ {
+  "id": 23,
+  "title": "O Andar do Bêbado",
+  "synopsis": "O físico Leonard Mlodinow conta a história da probabilidade, de Cardano a Bayes, para mostrar como o acaso governa muito mais da nossa vida (carreira, investimentos, esportes) do que estamos dispostos a admitir.",
+  "notes": "- O hemisfério direito do cérebro está mais ligado ao instinto primitivo, enquanto o hemisfério esquerdo é mais ligado ao racional.\n- Para aumentar a chance de vencer a aleatoriedade devemos utilizar da repetição.\n- **Erro de viés de disponibilidade**: quando usamos como base nossas memórias mais vividas para tomar uma decisão (i.e. elas são mais \"disponíveis para nós\"). Não necessariamente o que nós mais vivemos reflete a realidade.\n- **Lei da combinação de probabilidades**: evento A e evento B são independentes (SEM relação entre si), logo a probabilidade dos 2 ocorrerem é o produto de A\\*B. Se quisermos a probabilidade de A ou B, somamos A + B.\n- Girolamo Cardano foi um dos pais da teoria da probabilidade.\n- **Regra de Cardano**: em um processo aleatório, a probabilidade de algo ocorrer é sua proporção perante todas as outras possíveis saídas. Todas essas saídas somadas são chamadas espaço amostral.\n- Resultados de curto prazo são extremamente falhos para comprovar habilidade.\n- Qualquer dispositivo artificial está fadado a ser tendencioso (como um dado), pois o ser humano não tem acesso a perfeição.\n- \"O caos completo é, ironicamente, um tipo de perfeição\".\n- **Teoria dos Grandes Números (teorema de Bernoulli)**: os resultados refletem as probabilidades subjacentes quando executados em larga escala.\n- **Teoria dos Pequenos Números**: uma amostra pequena provavelmente não reflete as probabilidades subjacentes.\n- Não deveríamos avaliar as ações humanas com base no resultado, mas nas suas habilidades (análise fundamentalista).\n- Um evento **NÃO** tem mais ou menos chance de acontecer por já ter acontecido recentemente.\n- Existe uma diferença entre a chance de que vários eventos ocorram porque são fruto de algo, da chance de que algo ocorra porque é fruto de vários eventos (teorias da conspiração).\n- Segundo a teoria de Bayes, a probabilidade de A ocorrer se B ocorrer geralmente é diferente da probabilidade de B ocorrer se A ocorrer.\n- Medições sempre trazem consigo incertezas.\n- Uma curva normal de desvio padrão (i.e. distribuição normal, lei do erros) é uma característica de um processo aleatório.\n- Boa parte da ordem que encontramos na natureza esconde uma desordem subjacente.\n- O ser humano não consegue entender a aleatoriedade.\n- Na vida real, temos certa ilusão de controle, mas o acaso determina muito mais do que percebemos.\n- **Viés da confirmação**: sempre tentamos provar que nossas ideias estão certas, nunca erradas.\n- Noções pré concebidas podem levar a acreditarmos que um padrão não é aleatório, mesmo que seja.\n- Devemos dar mais importância a nossa impressão sobre alguém, do que seus resultados.\n- Subestimamos o acaso tanto na vida de pessoas bem sucedidas quanto nas mau sucedidas.\n\nPrimeira lei da probabilidade: A probabilidade de que 2 eventos nunca podem ocorrer com maior probabilidade de que a probabilidade que cada evento ocorra individualmente.",
+  "note": ""
+ },
+ {
+  "id": 24,
+  "title": "Como me Tornei Estúpido",
+  "synopsis": "Antoine tem 25 anos, é inteligente demais e infeliz por isso. Cansado de pensar, ele decide se tornar estúpido e tenta de tudo, do alcoolismo ao mercado financeiro. Uma sátira curta e afiada de Martin Page sobre conformismo.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 25,
+  "title": "Eram os Deuses Astronautas?",
+  "synopsis": "O best-seller de 1968 em que Erich von Däniken sugere que monumentos antigos, como as pirâmides e as linhas de Nazca, seriam vestígios de visitas extraterrestres. Uma das obras mais populares e mais contestadas da pseudoarqueologia.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 26,
+  "title": "Leonardo da Vinci",
+  "synopsis": "Walter Isaacson se baseia nas milhares de páginas dos cadernos de Leonardo para retratar o homem por trás da Mona Lisa: um curioso incansável que ligava arte, anatomia, engenharia e observação da natureza.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 27,
+  "title": "Crime e Castigo",
+  "synopsis": "Raskólnikov, um ex-estudante miserável em São Petersburgo, convence-se de que certos homens extraordinários têm o direito de transgredir a moral. Dostoiévski acompanha o que acontece na mente dele quando decide pôr a teoria à prova.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 28,
+  "title": "Armas, Germes e Aço",
+  "synopsis": "Por que foram os europeus que conquistaram as Américas, e não o contrário? Jared Diamond responde com geografia, agricultura, domesticação de animais e doenças, num livro que venceu o Pulitzer ao reler 13 mil anos de história humana.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 29,
+  "title": "O Homem e seus Símbolos",
+  "synopsis": "O último projeto de Carl Jung, pensado para o público leigo: uma introdução ilustrada ao inconsciente, aos sonhos, aos arquétipos e aos símbolos que se repetem em mitos, religiões e na arte.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 30,
+  "title": "A Metamorfose",
+  "synopsis": "Certa manhã, Gregor Samsa acorda transformado em um inseto monstruoso. A novela de Kafka acompanha a reação dele e da família, que depende do seu salário, numa das histórias mais estranhas e marcantes da literatura.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 31,
+  "title": "Como Fazer Amigos e Influenciar Pessoas",
+  "synopsis": "O clássico de 1936 de Dale Carnegie sobre relações humanas: princípios simples (se interessar pelos outros, lembrar nomes, evitar críticas) para criar conexões, convencer sem brigar e liderar sem gerar ressentimento.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 32,
+  "title": "O Quarto Reich",
+  "synopsis": "",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 33,
+  "title": "Sociedade do Cansaço",
+  "synopsis": "Um ensaio curto do filósofo Byung-Chul Han: deixamos a sociedade disciplinar das proibições e entramos na sociedade do desempenho, em que cada um explora a si mesmo até o esgotamento, a depressão e o burnout.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 34,
+  "title": "O Príncipe",
+  "synopsis": "Escrito em 1513 por Nicolau Maquiavel, um manual direto sobre como conquistar e manter o poder, baseado em como os governantes realmente agem, e não em como deveriam agir. O texto que deu origem ao adjetivo \"maquiavélico\".",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 35,
+  "title": "Dedique-se de Coração",
+  "synopsis": "Howard Schultz conta como transformou uma pequena loja de grãos de café em Seattle na Starbucks, e como tentou construir uma empresa grande sem perder os valores, o cuidado com os funcionários e a experiência do cliente.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 36,
+  "title": "Uma Breve História do Tempo",
+  "synopsis": "Stephen Hawking explica para leigos as grandes questões da cosmologia: o Big Bang, os buracos negros, a natureza do tempo e a busca por uma teoria que unifique a física. Um dos livros de divulgação científica mais vendidos de todos os tempos.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 37,
+  "title": "101 Perguntas e Respostas para Investidores Iniciantes",
+  "synopsis": "Um guia em formato de perguntas e respostas para quem está começando a investir: renda fixa, ações, fundos, riscos e os primeiros passos para organizar as finanças.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 38,
+  "title": "Mais Esperto que o Diabo",
+  "synopsis": "Escrito em 1938 e guardado pela família de Napoleon Hill por mais de setenta anos, o livro é uma entrevista imaginária com o Diabo, que revela como mantém as pessoas presas ao medo, à indecisão e ao hábito de \"ficar à deriva\".",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 39,
+  "title": "A Marca da Vitória",
+  "synopsis": "As memórias de Phil Knight, fundador da Nike: de vender tênis japoneses no porta-malas do carro até criar uma das marcas mais conhecidas do mundo, com todas as dívidas, brigas e quase falências do caminho.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 40,
+  "title": "Meditações",
+  "synopsis": "Os cadernos pessoais do imperador romano Marco Aurélio, escritos para si mesmo durante campanhas militares. Reflexões estoicas sobre o dever, a morte, a natureza e o controle das próprias reações.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 41,
+  "title": "Sobre a Brevidade da Vida",
+  "synopsis": "Numa carta a seu amigo Paulino, Sêneca argumenta que a vida não é curta, nós é que a desperdiçamos. Um texto estoico curto sobre o tempo, a ocupação inútil e a arte de viver no presente.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 42,
+  "title": "O Momento Decisivo",
+  "synopsis": "Jonah Lehrer usa a neurociência para explicar como o cérebro decide, de pilotos e jogadores de pôquer a quarterbacks, e quando vale a pena confiar na emoção ou na razão.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 43,
+  "title": "A Insustentável Leveza do Ser",
+  "synopsis": "Praga, 1968. As vidas de Tomas, Tereza, Sabina e Franz se cruzam durante a Primavera de Praga e a invasão soviética. Milan Kundera mistura romance e filosofia para pensar o peso e a leveza das nossas escolhas.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 44,
+  "title": "Breves Respostas para Grandes Questões",
+  "synopsis": "O último livro de Stephen Hawking responde a dez grandes perguntas: Deus existe? Como tudo começou? Vamos sobreviver na Terra? A inteligência artificial vai nos superar? Ciência e opinião pessoal de um dos maiores físicos do século.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 45,
+  "title": "Acredite, Estou Mentindo",
+  "synopsis": "Ryan Holiday, ex-estrategista de marketing, revela como manipulava blogs e a imprensa online para criar notícias do nada, e expõe a economia de cliques que faz a mídia publicar primeiro e checar depois.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 46,
+  "title": "Predictably Irrational",
+  "synopsis": "Behavioural economist Dan Ariely uses clever experiments to show that our bad decisions aren't random: we overvalue free things, anchor on arbitrary numbers and cheat a little, in ways that are predictable and therefore fixable.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 47,
+  "title": "Guerra e Paz",
+  "synopsis": "A epopeia de Tolstói acompanha cinco famílias da aristocracia russa durante as guerras napoleônicas, entre bailes em São Petersburgo e campos de batalha como Austerlitz e Borodinó. Um romance sobre história, amor e o sentido da vida.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 48,
+  "title": "O Algoritmo Mestre",
+  "synopsis": "Pedro Domingos apresenta as cinco grandes escolas do aprendizado de máquina (simbolistas, conexionistas, evolucionistas, bayesianos e analogistas) e a busca por um único algoritmo capaz de aprender qualquer coisa a partir de dados.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 49,
+  "title": "O Mínimo que Você Precisa Saber para Não Ser um Idiota",
+  "synopsis": "Uma coletânea de artigos de Olavo de Carvalho publicados na imprensa ao longo de duas décadas, sobre cultura, política, educação e a vida intelectual brasileira.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 50,
+  "title": "O Capital",
+  "synopsis": "A obra central de Karl Marx analisa o funcionamento do capitalismo: a mercadoria, o trabalho, a mais-valia e a acumulação de capital. Um dos livros mais influentes, e debatidos, da economia e da política modernas.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 51,
+  "title": "O Fim da Infância",
+  "synopsis": "Imensas naves alienígenas aparecem sobre as principais cidades da Terra, e seus ocupantes, os Senhores Supremos, acabam com as guerras e a fome. Mas ninguém sabe o que eles querem. Um clássico da ficção científica de Arthur C. Clarke.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 52,
+  "title": "Outliers",
+  "synopsis": "Malcolm Gladwell investiga o que está por trás de pessoas fora da curva, dos Beatles a Bill Gates, e mostra como a época, a cultura, as oportunidades e as famosas dez mil horas de prática pesam tanto quanto o talento.",
+  "notes": "",
+  "note": ""
+ },
+ {
+  "id": 53,
+  "title": "A Revolução dos Bichos",
+  "synopsis": "Cansados da exploração, os animais da Granja do Solar expulsam o fazendeiro e passam a governar a si mesmos sob o lema de que todos são iguais. A fábula de George Orwell sobre o que acontece com as revoluções depois da vitória.",
+  "notes": "- Os animais expulsam o humano para acabar com a exploração, e no fim os porcos viram o próprio humano\n- \"Todos os animais são iguais, mas alguns são mais iguais que os outros\"\n- Os **sete mandamentos** vão sendo reescritos aos poucos, e ninguém lembra da versão original\n- **Garganta** (Squealer) é a propaganda: convence os outros de que o pior é o melhor\n- **Sansão**: trabalhador leal e esforçado (\"trabalharei mais\"), usado até não servir mais\n- **Bola-de-Neve** vira o inimigo culpado de tudo depois de expulso\n- **Napoleão** usa os cães (força) para tomar o poder\n- Benjamin, o burro, vê tudo e não faz nada\n- As ovelhas repetem slogans e abafam qualquer discussão\n- A falta de educação e memória dos outros animais é o que permite a tirania\n- Paralelo direto com a revolução russa e o stalinismo",
+  "note": ""
+ },
+ {
+  "id": 54,
+  "title": "Never Split the Difference",
+  "synopsis": "Former FBI hostage negotiator Chris Voss turns lessons from kidnappings and standoffs into a negotiation playbook for everyday life: tactical empathy, mirroring, labelling emotions and getting to \"that's right\".",
+  "notes": "",
+  "note": ""
+ }
+]
