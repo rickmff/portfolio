@@ -1,3 +1,4 @@
+import { Arrow } from "@/components/Arrow";
 import Link from "next/link";
 import { BookShelf } from "@/components/BookShelf";
 import { CursorArrow } from "@/components/CursorArrow";
@@ -56,7 +57,7 @@ export default async function Home() {
             centered
           />
           <p style={{ textAlign: "center", margin: "32px 0 0", fontSize: 13 }}>
-            <Link href="/books" className="link-muted">{t.home.allBooks}</Link>
+            <Link href="/books" className="link-muted with-arrow">{t.home.allBooks} <Arrow /></Link>
           </p>
         </section>
       ) : null}
@@ -67,7 +68,7 @@ export default async function Home() {
         </div>
         <WritingList posts={posts} t={t} />
         <p style={{ textAlign: "center", margin: "32px 0 0", fontSize: 13 }}>
-          <Link href="/blog" className="link-muted">{t.home.allWriting}</Link>
+          <Link href="/blog" className="link-muted with-arrow">{t.home.allWriting} <Arrow /></Link>
         </p>
       </section>
     </>

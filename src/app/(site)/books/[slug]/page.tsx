@@ -1,3 +1,4 @@
+import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -40,8 +41,8 @@ export default async function BookPage({ params }: Props) {
         <p className="muted" style={{ margin: "12px 0 0" }}>{b.author}</p>
         {b.readUrl ? (
           <p style={{ margin: "28px 0 0", fontSize: 13 }}>
-            <a href={b.readUrl} className="book-read" target="_blank" rel="noopener noreferrer">
-              {t.books.readFree}
+            <a href={b.readUrl} className="book-read with-arrow" target="_blank" rel="noopener noreferrer">
+              {t.books.readFree} <Arrow dir="out" />
             </a>
           </p>
         ) : null}
@@ -63,7 +64,7 @@ export default async function BookPage({ params }: Props) {
         ) : null}
 
         <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>
-          <Link href="/books" className="link-muted">{t.books.all}</Link>
+          <Link href="/books" className="link-muted with-arrow"><Arrow dir="left" /> {t.books.all}</Link>
         </p>
       </div>
     </article>

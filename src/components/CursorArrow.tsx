@@ -1,5 +1,6 @@
 "use client";
 
+import { Arrow } from "./Arrow";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -35,7 +36,7 @@ export function CursorArrow({ section, strip }: { section: string; strip: string
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Where the arrow sits relative to the cursor for each direction.
-    const OFFSET: Record<Dir, [number, number]> = { down: [-7, 26], right: [22, -11], left: [-36, -11] };
+    const OFFSET: Record<Dir, [number, number]> = { down: [-6, 22], right: [18, -6], left: [-30, -6] };
 
     const frame = () => {
       const [ox, oy] = OFFSET[dir];
@@ -64,8 +65,8 @@ export function CursorArrow({ section, strip }: { section: string; strip: string
         const [ox, oy] = OFFSET[dir];
         cx = x + ox;
         cy = y + oy;
-        arrow.classList.add("is-on");
       }
+      flash();
       setDir(inStrip(e.target) ? lastDir : "down");
       run();
     };
@@ -73,8 +74,16 @@ export function CursorArrow({ section, strip }: { section: string; strip: string
     const pageScrolled = () => {
       if (over) setDir(inStrip(document.elementFromPoint(x, y)) ? lastDir : "down");
     };
+    // Shows while the cursor or the carousel moves, then gets out of the way.
+    let idle: ReturnType<typeof setTimeout> | undefined;
+    const flash = () => {
+      arrow.classList.add("is-on");
+      clearTimeout(idle);
+      idle = setTimeout(() => arrow.classList.remove("is-on"), 650);
+    };
     const leave = () => {
       over = false;
+      clearTimeout(idle);
       arrow.classList.remove("is-on");
     };
 
@@ -91,6 +100,7 @@ export function CursorArrow({ section, strip }: { section: string; strip: string
       if (s.scrollLeft >= s.scrollWidth - s.clientWidth - 2) lastDir = "left";
       if (s.scrollLeft <= 2) lastDir = "right";
       if (dir !== "down") setDir(lastDir);
+      if (over) flash();
     };
 
     sec.addEventListener("pointermove", move);
@@ -99,6 +109,7 @@ export function CursorArrow({ section, strip }: { section: string; strip: string
     window.addEventListener("scroll", pageScrolled, { passive: true });
     return () => {
       window.removeEventListener("scroll", pageScrolled);
+      clearTimeout(idle);
       cancelAnimationFrame(raf);
       sec.removeEventListener("pointermove", move);
       sec.removeEventListener("pointerleave", leave);
@@ -109,9 +120,7 @@ export function CursorArrow({ section, strip }: { section: string; strip: string
   if (!mounted) return null;
   return createPortal(
     <span ref={el} className="cursor-arrow" data-dir="down" aria-hidden="true">
-      <svg width="14" height="22" viewBox="0 0 14 22" fill="none">
-        <path d="M7 1v19M1 14l6 6 6-6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
+      <Arrow dir="down" solid />
     </span>,
     document.body,
   );

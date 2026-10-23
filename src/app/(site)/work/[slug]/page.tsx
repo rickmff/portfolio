@@ -1,3 +1,4 @@
+import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,8 +27,8 @@ export default async function ProjectPage({ params }: Props) {
         <h1>{p.title}</h1>
         {p.summary ? <p className="muted" style={{ maxWidth: 520, margin: "24px auto 0" }}>{p.summary}</p> : null}
         <p style={{ display: "flex", gap: 24, justifyContent: "center", margin: "28px 0 0", fontSize: 13 }}>
-          {p.liveUrl ? <a href={p.liveUrl} className="link-muted">{t.work.visit}</a> : null}
-          {p.repoUrl ? <a href={p.repoUrl} className="link-muted">{t.work.source}</a> : null}
+          {p.liveUrl ? <a href={p.liveUrl} className="link-muted with-arrow">{t.work.visit} <Arrow dir="out" /></a> : null}
+          {p.repoUrl ? <a href={p.repoUrl} className="link-muted with-arrow">{t.work.source} <Arrow dir="out" /></a> : null}
         </p>
       </header>
       <div className="wrap">
@@ -36,7 +37,7 @@ export default async function ProjectPage({ params }: Props) {
         </div>
         <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(p.body) }} />
         <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>
-          <Link href="/#work" className="link-muted">{t.work.all}</Link>
+          <Link href="/#work" className="link-muted with-arrow"><Arrow dir="left" /> {t.work.all}</Link>
         </p>
       </div>
     </article>

@@ -462,12 +462,40 @@ a {
   width: 32px;
 }
 
+/* The site's single arrow (src/components/Arrow.tsx) */
+.arrow {
+  display: inline-block;
+  flex: none;
+  width: 0.85em;
+  height: 0.85em;
+  vertical-align: -0.08em;
+  transform: rotate(var(--arrow-rotate, 0deg));
+  transition: transform 0.5s var(--ease);
+}
+.with-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+.with-arrow:hover .arrow[data-dir="right"],
+a:hover .arrow[data-dir="right"] {
+  transform: translateX(3px);
+}
+.with-arrow:hover .arrow[data-dir="left"] {
+  transform: translateX(-3px) rotate(180deg);
+}
+.with-arrow:hover .arrow[data-dir="out"],
+a:hover .arrow[data-dir="out"] {
+  transform: translate(2px, -2px) rotate(-45deg);
+}
+
 /* Down arrow between the hero and the work strip */
 .scroll-cue {
   display: block;
   width: fit-content;
-  margin: -16px auto 0;
-  padding: 10px;
+  /* Sits inside the heading's gap so the heading-to-carousel spacing stays 40px. */
+  margin: -36px auto 12px;
+  padding: 4px;
   color: var(--faint);
   transition:
     color 0.4s var(--ease),
@@ -481,24 +509,26 @@ a {
 }
 /* Room under the arrow so the projects arrive after it, not with it. */
 #work-strip {
-  margin-top: 40vh;
   scroll-margin-top: 15vh;
 }
 .scroll-cue:hover {
   color: var(--ink);
 }
-.scroll-cue svg {
+.scroll-cue {
+  font-size: 16px;
+}
+.scroll-cue .arrow {
   display: block;
   animation: cue 2.6s var(--ease-soft) infinite;
 }
 @keyframes cue {
   0%,
   100% {
-    transform: translateY(-3px);
+    transform: translateY(-3px) rotate(90deg);
     opacity: 0.55;
   }
   50% {
-    transform: translateY(5px);
+    transform: translateY(5px) rotate(90deg);
     opacity: 1;
   }
 }
@@ -510,23 +540,28 @@ a {
   left: 0;
   z-index: 50;
   pointer-events: none;
-  color: var(--ink);
+  font-size: 15px;
   opacity: 0;
-  transition: opacity 0.5s var(--ease-soft);
+  transition: opacity 0.25s var(--ease-soft);
   will-change: transform;
 }
 .cursor-arrow.is-on {
-  opacity: 0.7;
+  opacity: 1;
+  transition-duration: 0.15s;
 }
-.cursor-arrow svg {
+.cursor-arrow .arrow {
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.18));
+}
+.cursor-arrow .arrow {
   display: block;
-  transition: transform 0.6s var(--ease);
+  transform: rotate(var(--cursor-rotate, 90deg));
+  transition: transform 0.7s var(--ease);
 }
-.cursor-arrow[data-dir="right"] svg {
-  transform: rotate(-90deg);
+.cursor-arrow[data-dir="right"] {
+  --cursor-rotate: 0deg;
 }
-.cursor-arrow[data-dir="left"] svg {
-  transform: rotate(90deg);
+.cursor-arrow[data-dir="left"] {
+  --cursor-rotate: 180deg;
 }
 
 /* Hover preview of a post (src/components/PostLink.tsx) */

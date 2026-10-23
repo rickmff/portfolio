@@ -1,5 +1,6 @@
 "use client";
 
+import { Arrow } from "@/components/Arrow";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -182,8 +183,8 @@ function Detail({ book }: { book: ShelfBook }) {
       </p>
       {book.note ? <p className="shelf-detail-note">{book.note}</p> : null}
       <p style={{ margin: "16px 0 0", fontSize: 13 }}>
-        <Link href={`/books/${book.slug}`} className="link-muted">
-          {t.books.openBook}
+        <Link href={`/books/${book.slug}`} className="link-muted with-arrow">
+          {t.books.openBook} <Arrow />
         </Link>
       </p>
     </div>
