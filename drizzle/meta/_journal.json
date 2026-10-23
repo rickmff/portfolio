@@ -43,6 +43,13 @@
       "when": 1792758981791,
       "tag": "0005_drop_certificates",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792759074902,
+      "tag": "0006_harness",
+      "breakpoints": true
     }
   ]
 }

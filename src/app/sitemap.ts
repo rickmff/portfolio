@@ -11,6 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: site },
     { url: `${site}/books` },
     { url: `${site}/blog` },
+    { url: `${site}/harness` },
     ...projects.map((p) => ({ url: `${site}/work/${p.slug}`, lastModified: p.updatedAt })),
     ...books.map((b) => ({ url: `${site}${bookHref(b)}`, lastModified: b.updatedAt })),
     ...posts.map((p) => ({ url: `${site}/blog/${p.slug}`, lastModified: p.updatedAt })),

@@ -4,7 +4,7 @@ import { db, schema } from "@/db";
 import { slugify } from "./markdown";
 import { SETTING_KEYS, type SettingKey, type SiteSettings } from "./settings";
 
-const { projects, books, posts, settings } = schema;
+const { projects, books, posts, settings, harness } = schema;
 
 export async function getSettings(): Promise<SiteSettings> {
   const rows = await db.select().from(settings);
@@ -28,6 +28,14 @@ export async function getProject(slug: string) {
     .from(projects)
     .where(and(eq(projects.slug, slug), eq(projects.published, true)));
   return row ?? null;
+}
+
+export function getHarness() {
+  return db.select().from(harness).orderBy(asc(harness.sort), asc(harness.id));
+}
+
+export async function hasHarness() {
+  return (await db.select({ id: harness.id }).from(harness).limit(1)).length > 0;
 }
 
 /** Book pages are addressed by a slug of the title, so there is nothing extra to keep in sync. */

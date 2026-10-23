@@ -1127,3 +1127,54 @@ a {
 .about h2 + h3 {
   margin-top: 0.8em;
 }
+
+/* Harness */
+.harness-group + .harness-group {
+  margin-top: 64px;
+}
+.harness-group h2.eyebrow {
+  margin: 0 0 8px;
+  font-weight: 400;
+}
+.harness ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.harness-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 24px;
+  padding-block: 16px;
+  border-top: 1px solid var(--line);
+}
+.harness li:last-child .harness-item {
+  border-bottom: 1px solid var(--line);
+}
+.harness-name {
+  font-size: 15px;
+}
+.harness-name span {
+  color: var(--faint);
+  font-size: 12px;
+  transition: color 0.2s var(--ease);
+}
+.harness-item:hover .harness-name span {
+  color: var(--ink);
+}
+.harness-desc {
+  grid-column: 1;
+  font-size: 13px;
+  color: var(--muted);
+}
+.harness-host {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  color: var(--faint);
+}
+@media (max-width: 640px) {
+  .harness-host {
+    display: none;
+  }
+}

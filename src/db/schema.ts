@@ -84,5 +84,17 @@ export const settings = pgTable("settings", {
 });
 
 export type Project = typeof projects.$inferSelect;
+/** The /harness page: the tools, services and setup behind the work, grouped by category. */
+export const harness = pgTable("harness", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 160 }).notNull(),
+  url: text("url").notNull(),
+  description: text("description").notNull().default(""),
+  category: varchar("category", { length: 80 }).notNull().default(""),
+  sort: integer("sort").notNull().default(0),
+  ...timestamps,
+});
+
 export type Book = typeof books.$inferSelect;
+export type HarnessItem = typeof harness.$inferSelect;
 export type Post = typeof posts.$inferSelect;

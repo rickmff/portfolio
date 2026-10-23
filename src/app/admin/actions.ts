@@ -14,7 +14,7 @@ import { saveUpload } from "@/lib/uploads";
 
 export type FormState = { error?: string; ok?: boolean } | undefined;
 
-const { projects, books, posts, settings } = schema;
+const { projects, books, posts, settings, harness } = schema;
 
 const optionalText = z
   .string()
@@ -217,6 +217,37 @@ export async function uploadImage(fd: FormData): Promise<{ url?: string; error?:
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Upload failed." };
   }
+}
+
+/* Harness */
+
+const harnessSchema = z.object({
+  name: z.string().trim().min(1, "required"),
+  url: z.url("Link must be a URL"),
+  description: z.string().trim(),
+  category: z.string().trim(),
+  sort: z.coerce.number().int(),
+});
+
+export async function saveHarnessItem(_: FormState, fd: FormData): Promise<FormState> {
+  await requireAdmin();
+  const id = Number(fd.get("id")) || null;
+  try {
+    const values = harnessSchema.parse(fields(fd));
+    if (id) await db.update(harness).set(values).where(eq(harness.id, id));
+    else await db.insert(harness).values(values);
+  } catch (e) {
+    return fail(e);
+  }
+  refreshSite();
+  redirect("/admin/harness");
+}
+
+export async function deleteHarnessItem(id: number) {
+  await requireAdmin();
+  await db.delete(harness).where(eq(harness.id, id));
+  refreshSite();
+  redirect("/admin/harness");
 }
 
 /* Settings */
