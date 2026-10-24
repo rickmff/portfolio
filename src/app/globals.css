@@ -1243,6 +1243,68 @@ html.is-leaving main {
   transition: none;
 }
 
+/* The work strip arrives card by card: each slides in from the right, its frame wipes open from
+   the bottom while the picture settles from a slight zoom, then the title line follows. */
+.strip.sr {
+  opacity: 1;
+  transform: none;
+}
+.strip.sr .strip-item {
+  --d: calc(var(--sr-delay, 0ms) + var(--i, 0) * 140ms);
+  opacity: 0;
+  transform: translateX(90px);
+  transition:
+    opacity 1.1s var(--ease) var(--d),
+    transform 1.5s var(--ease) var(--d);
+}
+.strip.sr .frame {
+  clip-path: inset(100% 0 0 0 round 10px);
+  transition:
+    transform 0.6s var(--ease),
+    clip-path 1.3s var(--ease) calc(var(--d) + 120ms);
+}
+.strip.sr .frame-view {
+  transform: scale(1.14);
+  transition:
+    opacity 0.6s var(--ease-soft),
+    transform 1.9s var(--ease) calc(var(--d) + 120ms);
+}
+.strip.sr .strip-meta {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.9s var(--ease) calc(var(--d) + 500ms),
+    transform 1.1s var(--ease) calc(var(--d) + 500ms);
+}
+.strip.sr.sr-in .strip-item,
+.strip.sr.sr-in .strip-meta {
+  opacity: 1;
+  transform: none;
+}
+.strip.sr.sr-in .frame-view {
+  transform: none;
+}
+.strip.sr.sr-in .frame {
+  clip-path: inset(0 0 0 0 round 10px);
+}
+.strip.sr.sr-instant,
+.strip.sr.sr-instant * {
+  transition: none;
+}
+@media (scripting: none), (prefers-reduced-motion: reduce) {
+  .strip.sr .strip-item,
+  .strip.sr .strip-meta {
+    opacity: 1;
+    transform: none;
+  }
+  .strip.sr .frame-view {
+    transform: none;
+  }
+  .strip.sr .frame {
+    clip-path: none;
+  }
+}
+
 /* Height + fade open/close (book details on the shelf). Not ".collapse": Tailwind owns that name (visibility: collapse). */
 .fold {
   display: grid;

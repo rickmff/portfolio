@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import type { Project } from "@/db/schema";
 import { useDict } from "@/lib/i18n/client";
 
@@ -143,6 +143,7 @@ function WorkCard({
     <div
       ref={card}
       className="strip-item"
+      style={{ "--i": i } as CSSProperties}
       data-view={view}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
@@ -281,7 +282,9 @@ export function WorkStrip({ projects }: { projects: Project[] }) {
   if (projects.length === 0)
     return <p className="muted wrap">{t.home.noProjects}</p>;
   return (
-    <div className="strip" ref={strip}>
+    // Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
+    // at load; ScrollReveal adds "sr-in". Without JS or with reduced motion the CSS shows them.
+    <div className="strip sr" ref={strip}>
       {projects.map((p, i) => (
         <WorkCard key={p.id} project={p} index={i} />
       ))}

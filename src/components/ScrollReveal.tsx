@@ -48,6 +48,11 @@ export function ScrollReveal() {
       for (const el of document.querySelectorAll(TARGETS)) {
         if (seen.has(el)) continue;
         seen.add(el);
+        if (el.classList.contains("sr")) {
+          // Rendered hidden on the server (the work strip): it always plays its entrance.
+          io.observe(el);
+          continue;
+        }
         const r = el.getBoundingClientRect();
         if (r.top < window.innerHeight && r.bottom > 0) {
           // Already on screen when the script runs: it was painted visible, so leave it that way.
