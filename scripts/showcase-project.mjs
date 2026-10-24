@@ -8,7 +8,8 @@
 //     [--mobile-url https://example.com/demo]   (the page the phone shows and installs; default: the url)
 //     [--site https://example.com]   (the address shown in the outro; a Wayback Machine url shows its original)
 //     [--icon path/or/url.png]   (the app icon when the site has none, or a better one)
-// Writes showcase.mp4 (60 fps, H.264) and showcase.webp (poster, first frame) into --out.
+// Writes showcase.mp4 (60 fps, H.264) and showcase.webp (poster, first frame) into --out, and prints
+// mobileAt: the second the phone part starts, for the project's showcaseMobileAt.
 // Filming runs on virtual time like capture-project.mjs, so every animation comes out at 60 fps.
 // Needs ffmpeg on PATH and a Chromium for Playwright.
 import { execFileSync } from "node:child_process";
@@ -553,7 +554,8 @@ const phoneFrame = async (screen, pos = centre) =>
     ]),
   );
 
-// Mobile scroll.
+// Mobile scroll. The card's "Mobile" button jumps here.
+const mobileAt = +(n / FPS).toFixed(2);
 const mobFiles = mobRec.files;
 for (const f of mobFiles.slice(0, mobFrames)) await phoneFrame(await pageScreen(f));
 
@@ -719,6 +721,7 @@ console.log(
       installable: id.installable,
       icon: Boolean(id.icon),
       seconds: +seconds.toFixed(1),
+      mobileAt,
       crf,
       size: `${((await stat(mp4)).size / 1048576).toFixed(1)} MB`,
       files: files.filter((f) => f.startsWith("showcase")),

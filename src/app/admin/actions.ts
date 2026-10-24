@@ -92,6 +92,7 @@ const projectSchema = z.object({
   removeCover: checkbox,
   removeMobile: checkbox,
   removeShowcase: checkbox,
+  showcaseMobileAt: z.preprocess((v) => (v === "" || v == null ? null : v), z.coerce.number().min(0).nullable()),
 });
 
 export async function saveProject(_: FormState, fd: FormData): Promise<FormState> {

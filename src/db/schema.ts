@@ -1,6 +1,7 @@
 import {
   boolean,
   integer,
+  real,
   jsonb,
   pgEnum,
   pgTable,
@@ -46,6 +47,8 @@ export const projects = pgTable("projects", {
   /** 16:9 showcase film (desktop window, phone, outro) and its first frame; the card plays it on hover. */
   showcaseUrl: text("showcase_url"),
   showcasePosterUrl: text("showcase_poster_url"),
+  /** Second where the film's phone part starts; the card's "Mobile" button jumps there. */
+  showcaseMobileAt: real("showcase_mobile_at"),
   liveUrl: text("live_url"),
   repoUrl: text("repo_url"),
   tint: varchar("tint", { length: 9 }).notNull().default("#F1F0EB"),

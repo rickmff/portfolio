@@ -1,0 +1,1 @@
+ALTER TABLE "projects" ADD COLUMN "showcase_mobile_at" real;

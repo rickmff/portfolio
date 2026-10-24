@@ -74,6 +74,11 @@ export default async function EditProject({ params }: { params: Promise<{ id: st
             <input type="file" name="showcasePoster" accept="image/jpeg,image/png,image/webp,image/avif" />
             <small>The film&apos;s first frame (showcase.webp).</small>
           </label>
+          <label className="adm-field">
+            <span>Phone part starts at (seconds)</span>
+            <input type="number" name="showcaseMobileAt" step="0.01" min="0" defaultValue={p?.showcaseMobileAt ?? ""} />
+            <small>mobileAt from the script. Shows the Desktop · Mobile buttons on the card.</small>
+          </label>
         </Row>
         <Row>
           <div className="adm-field">

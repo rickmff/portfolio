@@ -107,10 +107,13 @@ function WorkCard({
 }) {
   const t = useDict();
   const card = useRef<HTMLDivElement>(null);
-  // A showcase film already covers desktop and phone, so it replaces the two views.
+  // A showcase film already covers desktop and phone, so it replaces the two views: its
+  // "Mobile" button jumps the film to the phone part instead.
   const showcase = p.showcaseUrl;
-  const hasMobile =
-    !showcase && Boolean(p.coverMobileUrl || p.previewMobileUrl);
+  const mobileAt = showcase ? p.showcaseMobileAt : null;
+  const hasMobile = showcase
+    ? mobileAt != null
+    : Boolean(p.coverMobileUrl || p.previewMobileUrl);
   const [view, setView] = useState<View>("desktop");
   const [active, setActive] = useState(false);
 
@@ -130,9 +133,15 @@ function WorkCard({
     return () => io.disconnect();
   }, []);
 
+  // The film starts from the part that matches the chosen view.
+  useEffect(() => {
+    const v = card.current?.querySelector<HTMLVideoElement>("video[data-showcase]");
+    if (v && mobileAt != null) v.currentTime = view === "mobile" ? mobileAt : 0;
+  }, [view, mobileAt]);
+
   useEffect(() => {
     card.current?.querySelectorAll("video").forEach((v) => {
-      const on = active && v.dataset.view === view;
+      const on = active && (v.dataset.showcase != null || v.dataset.view === view);
       v.classList.toggle("is-playing", on);
       if (on) v.play().catch(() => {});
       else v.pause();
@@ -144,7 +153,7 @@ function WorkCard({
       ref={card}
       className="strip-item"
       style={{ "--i": i } as CSSProperties}
-      data-view={view}
+      data-view={showcase ? "desktop" : view}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
     >
@@ -168,12 +177,17 @@ function WorkCard({
             ) : null}
             <video
               className="frame-preview"
-              data-view="desktop"
+              data-showcase=""
               src={showcase}
               muted
-              loop
+              loop={mobileAt == null}
               playsInline
               preload="none"
+              // In the mobile view the film loops over its phone part.
+              onEnded={(e) => {
+                e.currentTarget.currentTime = view === "mobile" ? (mobileAt ?? 0) : 0;
+                e.currentTarget.play().catch(() => {});
+              }}
             />
           </div>
         ) : (
@@ -218,7 +232,7 @@ function WorkCard({
             ) : null}
           </div>
         )}
-        {hasMobile ? (
+        {hasMobile && !showcase ? (
           <div className="frame-view frame-mobile">
             <div className="phone">
               {p.coverMobileUrl ? (
