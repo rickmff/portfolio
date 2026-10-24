@@ -4,6 +4,7 @@
 // site's icon and the app opening; and it ends on the phone beside the name, a tagline and the URL.
 //   node scripts/showcase-project.mjs https://example.com [--out capture/example] [--tagline "…"]
 //     [--accent "#16A34A"] [--desktop 22] [--pause 1.6] [--wait 3] [--no-pwa] [--cookie NEXT_LOCALE=en]
+//     [--hide ".cookie-panel"] [--name "Site name"]
 //     [--mobile-url https://example.com/demo]   (the page the phone shows and installs; default: the url)
 // Writes showcase.mp4 (60 fps, H.264) and showcase.webp (poster, first frame) into --out.
 // Filming runs on virtual time like capture-project.mjs, so every animation comes out at 60 fps.
@@ -26,6 +27,8 @@ const { values: opt, positionals } = parseArgs({
     wait: { type: "string", default: "3" },
     "no-pwa": { type: "boolean", default: false },
     cookie: { type: "string", multiple: true },
+    hide: { type: "string", multiple: true },
+    name: { type: "string" },
     "mobile-url": { type: "string" },
   },
 });
@@ -56,7 +59,15 @@ const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 const easeOut = (t) => 1 - (1 - t) ** 3;
 const clamp01 = (t) => Math.max(0, Math.min(1, t));
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-const consent = /^(accept|accept all|allow all|agree|i agree|ok|got it|aceitar|aceitar todos|aceito|concordo|entendi|permitir)$/i;
+const consent =
+  /^(accept|accept all|accept cookies|allow all|agree|i agree|ok|okay|got it|close|dismiss|save|save preferences|save settings|reject|reject all|decline|deny|necessary only|accept necessary|aceitar|aceitar todos|aceito|concordo|entendi|permitir|fechar|recusar|rejeitar|salvar|salvar preferências|apenas necessários)$/i;
+// Consent tools that sit on every frame unless hidden, plus whatever --hide adds.
+const HIDE = [
+  "#onetrust-banner-sdk", "#onetrust-consent-sdk", "#CybotCookiebotDialog", ".cc-window", ".cky-consent-container",
+  "#usercentrics-root", "#didomi-host", ".osano-cm-window", "[id*='cookie-banner' i]", "[class*='cookie-banner' i]",
+  "[id*='cookie-consent' i]", "[class*='cookie-consent' i]", "[aria-label*='cookie' i][role='dialog']",
+  ...[].concat(opt.hide ?? []),
+];
 const FONT = "-apple-system, 'SF Pro Display', 'Helvetica Neue', Inter, Arial, sans-serif";
 
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
@@ -111,7 +122,7 @@ async function openPage(context, target = url) {
     if (e.name !== "TimeoutError") throw e;
   });
   await page.addStyleTag({
-    content: `html,body{scroll-behavior:auto!important;scroll-snap-type:none!important;scrollbar-width:none!important}::-webkit-scrollbar{display:none!important}`,
+    content: `html,body{scroll-behavior:auto!important;scroll-snap-type:none!important;scrollbar-width:none!important}::-webkit-scrollbar{display:none!important}${HIDE.join(",")}{display:none!important}`,
   });
   for (const frame of page.frames()) {
     const button = frame.getByRole("button", { name: consent }).first();
@@ -131,7 +142,10 @@ async function openPage(context, target = url) {
     window.__film.to(0);
     window.__film.lock = true;
   });
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 50));
+  // Freeze time just ahead of the page's clock. Pages that fake Date themselves can sit behind it,
+  // so fall back to a little ahead of real time.
+  const now = await page.evaluate(() => Date.now());
+  await page.clock.pauseAt(now + 50).catch(() => page.clock.pauseAt(Date.now() + 2000));
   return page;
 }
 
@@ -199,7 +213,15 @@ async function stopsOf(page) {
 
 /** Films a scroll through the page within `budget` seconds, dropping the most crowded stops first. */
 async function filmScroll(rec, page, budget, { pause, firstRest }) {
-  const { stops, vh } = await stopsOf(page);
+  const { stops: found, vh } = await stopsOf(page);
+  // Pages with few marked-up sections still get a stop about every screen.
+  const stops = [found[0]];
+  for (const y of found.slice(1)) {
+    const prev = stops.at(-1);
+    const extra = Math.floor((y - prev) / (vh * 1.1));
+    for (let k = 1; k <= extra; k++) stops.push(Math.round(prev + ((y - prev) * k) / (extra + 1)));
+    stops.push(y);
+  }
   const travel = (a, b) => Math.min(2.4, Math.max(0.9, (Math.abs(b - a) / vh) * 1.0));
   const duration = (s) => firstRest + s.slice(1).reduce((t, y, i) => t + travel(s[i], y) + pause, 0);
   let plan = stops;
@@ -208,6 +230,9 @@ async function filmScroll(rec, page, budget, { pause, firstRest }) {
     plan = plan.filter((_, i) => i !== gaps.sort((a, b) => a[1] - b[1])[0][0]);
   }
   const quick = duration(plan) > budget;
+  // A short page lingers longer on each stop rather than finishing early.
+  if (!quick && plan.length > 1 && duration(plan) < budget * 0.75)
+    pause = Math.min(3, pause + (budget * 0.75 - duration(plan)) / (plan.length - 1));
   await rec.rest(firstRest);
   for (let i = 1; i < plan.length; i++) {
     await rec.glide(plan[i - 1], plan[i], quick ? (budget - firstRest) / (plan.length - 1) - 0.4 : travel(plan[i - 1], plan[i]));
@@ -226,7 +251,7 @@ async function identity(page, pageUrl = url) {
       return el ? new URL(el.getAttribute("href"), location.href).href : "";
     };
     return {
-      title: m('meta[property="og:site_name"]') || document.title.split(/[|·–—-]/)[0].trim(),
+      title: m('meta[property="og:site_name"]') || document.title.split(/\s[|·–—-]\s/)[0].trim(),
       description: m('meta[property="og:description"]') || m('meta[name="description"]'),
       theme: m('meta[name="theme-color"]'),
       manifest: href('link[rel="manifest"]'),
@@ -256,7 +281,7 @@ async function identity(page, pageUrl = url) {
     icon = await sharp(Buffer.from(buf)).resize(256, 256, { fit: "cover" }).png().toBuffer().catch(() => null);
     if (icon) break;
   }
-  const name = manifest?.short_name || manifest?.name || info.title || new URL(pageUrl).hostname.replace(/^www\./, "");
+  const name = (pageUrl === url && opt.name) || manifest?.short_name || manifest?.name || info.title || new URL(pageUrl).hostname.replace(/^www\./, "");
   const accent = opt.accent || manifest?.theme_color || info.theme || "#16A34A";
   const firstSentence = (info.description.match(/^[^.!?]+[.!?]?/)?.[0] ?? "").trim();
   return { name, accent, icon, tagline: opt.tagline || firstSentence, installable: Boolean(manifest) };
