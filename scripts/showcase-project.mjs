@@ -6,11 +6,13 @@
 //     [--accent "#16A34A"] [--desktop 22] [--pause 1.6] [--wait 3] [--no-pwa] [--cookie NEXT_LOCALE=en]
 //     [--hide ".cookie-panel"] [--name "Site name"]
 //     [--mobile-url https://example.com/demo]   (the page the phone shows and installs; default: the url)
+//     [--site https://example.com]   (the address shown in the outro; a Wayback Machine url shows its original)
+//     [--icon path/or/url.png]   (the app icon when the site has none, or a better one)
 // Writes showcase.mp4 (60 fps, H.264) and showcase.webp (poster, first frame) into --out.
 // Filming runs on virtual time like capture-project.mjs, so every animation comes out at 60 fps.
 // Needs ffmpeg on PATH and a Chromium for Playwright.
 import { execFileSync } from "node:child_process";
-import { mkdir, readdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { parseArgs } from "node:util";
 import { chromium } from "playwright";
@@ -30,6 +32,8 @@ const { values: opt, positionals } = parseArgs({
     hide: { type: "string", multiple: true },
     name: { type: "string" },
     "mobile-url": { type: "string" },
+    site: { type: "string" },
+    icon: { type: "string" },
   },
 });
 const url = positionals[0];
@@ -52,7 +56,10 @@ const PHONE = { w: 432, h: 904, bezel: 15, r: 66 };
 PHONE.sw = PHONE.w - PHONE.bezel * 2;
 PHONE.sh = PHONE.h - PHONE.bezel * 2;
 
-const host = new URL(url).hostname.replace(/^www\./, "");
+// An archived page (web.archive.org/web/<timestamp>[if_]/<original>) is shown under its original address.
+const unwrap = (u) => u.match(/^https?:\/\/web\.archive\.org\/web\/\d+[a-z_]*\/(.+)$/)?.[1] ?? u;
+const siteHost = (u) => new URL(/^https?:/.test(unwrap(u)) ? unwrap(u) : `https://${unwrap(u)}`).hostname.replace(/^www\./, "");
+const host = siteHost(opt.site ?? url);
 const out = path.resolve(opt.out ?? path.join("capture", host.split(".")[0]));
 const raw = path.join(out, "showcase-frames");
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
@@ -272,19 +279,29 @@ async function identity(page, pageUrl = url) {
       ).href
     : "";
   let icon = null;
-  for (const src of [info.touchIcon, best, info.icon]) {
+  for (const src of [opt.icon, info.touchIcon, best, info.icon]) {
     if (!src) continue;
-    const buf = await fetch(src, { signal: AbortSignal.timeout(10_000) })
-      .then((r) => (r.ok ? r.arrayBuffer() : null))
-      .catch(() => null);
+    const buf = await (/^https?:/.test(src)
+      ? fetch(src, { signal: AbortSignal.timeout(10_000) }).then((r) => (r.ok ? r.arrayBuffer() : null))
+      : readFile(src)
+    ).catch(() => null);
     if (!buf) continue;
     icon = await sharp(Buffer.from(buf)).resize(256, 256, { fit: "cover" }).png().toBuffer().catch(() => null);
     if (icon) break;
   }
-  const name = (pageUrl === url && opt.name) || manifest?.short_name || manifest?.name || info.title || new URL(pageUrl).hostname.replace(/^www\./, "");
-  const accent = opt.accent || manifest?.theme_color || info.theme || "#16A34A";
+  const name = (pageUrl === url && opt.name) || manifest?.short_name || manifest?.name || info.title || siteHost(pageUrl);
+  // A white or black theme-color is a background, not a brand colour: it would vanish on the outro.
+  const accent = opt.accent || [manifest?.theme_color, info.theme].find(isColourful) || "#16A34A";
   const firstSentence = (info.description.match(/^[^.!?]+[.!?]?/)?.[0] ?? "").trim();
   return { name, accent, icon, tagline: opt.tagline || firstSentence, installable: Boolean(manifest) };
+}
+
+function isColourful(c) {
+  const hex = c?.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i)?.[1];
+  if (!hex) return false;
+  const [r, g, b] = (hex.length === 3 ? [...hex].map((h) => h + h) : hex.match(/../g)).map((h) => parseInt(h, 16) / 255);
+  const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return lum > 0.06 && lum < 0.85;
 }
 
 /* Drawing helpers (SVG rendered by sharp). */
@@ -554,7 +571,7 @@ if (app.installable && !opt["no-pwa"]) {
       <text x="${SCREEN.w - 40}" y="74" text-anchor="end" font-family="${FONT}" font-size="32" font-weight="600" fill="#007aff">Add</text>
       <rect x="40" y="130" width="${SCREEN.w - 80}" height="200" rx="24" fill="#fff"/>
       <text x="${70 + 120 + 30}" y="215" font-family="${FONT}" font-size="34" fill="#111">${esc(app.name.slice(0, 22))}</text>
-      <text x="${70 + 120 + 30}" y="265" font-family="${FONT}" font-size="28" fill="#8a8a8e">${esc(new URL(mobileUrl).hostname.replace(/^www\./, ""))}</text>
+      <text x="${70 + 120 + 30}" y="265" font-family="${FONT}" font-size="28" fill="#8a8a8e">${esc(siteHost(opt.site ?? mobileUrl))}</text>
       <text x="60" y="400" font-family="${FONT}" font-size="26" fill="#8a8a8e">An icon will be added to your Home Screen so you</text>
       <text x="60" y="436" font-family="${FONT}" font-size="26" fill="#8a8a8e">can quickly access this website.</text>`,
     ),
