@@ -1,0 +1,2 @@
+- **[Copper · App Sorocaba Award](https://www.linkedin.com/feed/update/urn:li:activity:6597088980259393536/ "preview:/media/b515d243-3e6f-45d7-898b-9daa645bf45f.webp")** (2019) — The best website of the year for the agencies in Sorocaba and the region.
+- **[Gold · Tech Innovation Award](https://www.linkedin.com/in/rickmff/overlay/1602538714221/single-media-viewer/?profileId=ACoAACmaiHcBd54yI-rzRQ1PGXZMUSDfp4OEU8s)** (2018) — The CEV 'Fonoaudiologia' Council awards the best software.
