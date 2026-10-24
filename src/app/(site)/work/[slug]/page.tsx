@@ -1,6 +1,6 @@
 import { Arrow } from "@/components/Arrow";
+import { ProjectCover } from "@/components/ProjectCover";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProject } from "@/lib/data";
@@ -32,9 +32,12 @@ export default async function ProjectPage({ params }: Props) {
         </p>
       </header>
       <div className="wrap">
-        <div className="frame" style={{ aspectRatio: "16 / 9", background: p.tint, marginBottom: 80 }}>
-          {p.coverUrl ? <Image src={p.coverUrl} alt={p.title} fill sizes="(max-width: 1100px) 100vw, 1000px" priority /> : null}
-        </div>
+        <ProjectCover
+          poster={p.showcasePosterUrl || p.coverUrl}
+          video={p.showcaseUrl || (p.previewUrl && /\.(mp4|webm|mov)(\?|$)/i.test(p.previewUrl) ? p.previewUrl : null)}
+          title={p.title}
+          tint={p.tint}
+        />
         <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(p.body) }} />
         <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>
           <Link href="/#work" className="link-muted with-arrow"><Arrow dir="left" /> {t.work.all}</Link>

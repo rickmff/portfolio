@@ -244,6 +244,7 @@ a {
   transition: opacity 0.4s ease;
 }
 .strip-item:hover .frame-preview,
+.project-cover:hover .frame-preview,
 .frame-preview.is-playing {
   opacity: 1;
 }
