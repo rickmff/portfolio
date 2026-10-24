@@ -816,6 +816,48 @@ a:hover .arrow[data-dir="out"] {
 .prose a:hover {
   text-decoration-color: var(--ink);
 }
+/* Links with a hover preview (Markdown: [text](url "preview:/media/image.webp")) */
+.has-preview {
+  position: relative;
+}
+.link-preview {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  width: 300px;
+  padding: 6px;
+  border-radius: 12px;
+  background: var(--bg, #fff);
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.06),
+    0 24px 48px -16px rgb(0 0 0 / 0.3);
+  opacity: 0;
+  transform: translate(-50%, 8px) scale(0.97);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+  transition:
+    opacity 0.35s var(--ease-soft),
+    transform 0.5s var(--ease);
+  z-index: 20;
+}
+.link-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 0;
+}
+.has-preview:hover .link-preview,
+.has-preview:focus-visible .link-preview {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+@media (hover: none) {
+  .link-preview {
+    display: none;
+  }
+}
+
 
 /* Lists, including GitHub task lists */
 .prose ul,

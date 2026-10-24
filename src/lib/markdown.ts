@@ -35,6 +35,13 @@ const md = new Marked(
       table(token) {
         return `<div class="table-wrap">${Renderer.prototype.table.call(this, token)}</div>`;
       },
+      // A link titled "preview:<image url>" shows that image on hover, like the award posts on About.
+      link(token) {
+        const preview = token.title?.match(/^preview:(\S+)$/)?.[1];
+        if (!preview) return Renderer.prototype.link.call(this, token);
+        const text = this.parser.parseInline(token.tokens);
+        return `<a href="${token.href}" class="has-preview" target="_blank" rel="noopener noreferrer">${text}<span class="link-preview" aria-hidden="true"><img src="${preview}" alt="" loading="lazy" /></span></a>`;
+      },
       // An image with a title ![alt](src "caption") gets a caption. Spans, because images sit inside <p>.
       image({ href, title, text }) {
         const img = `<img src="${href}" alt="${text}" loading="lazy" />`;
