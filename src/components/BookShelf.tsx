@@ -159,8 +159,8 @@ export function BookShelf({
 /** Opens and closes by animating its height and opacity, so content below glides instead of jumping. */
 function Collapse({ open, children }: { open: boolean; children: React.ReactNode }) {
   return (
-    <div className={`collapse${open ? " is-open" : ""}`} aria-hidden={!open}>
-      <div className="collapse-inner">{children}</div>
+    <div className={`fold${open ? " is-open" : ""}`} aria-hidden={!open}>
+      <div className="fold-inner">{children}</div>
     </div>
   );
 }
