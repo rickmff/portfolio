@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from "react";
 import type { Project } from "@/db/schema";
 import { useDict } from "@/lib/i18n/client";
 
@@ -35,7 +35,7 @@ function useWheelToHorizontal() {
           snapping = false;
           return;
         }
-        el.scrollLeft += diff * 0.06;
+        el.scrollLeft += diff * 0.05;
         frame = requestAnimationFrame(step);
       };
       frame = requestAnimationFrame(step);
@@ -79,7 +79,7 @@ function useWheelToHorizontal() {
             : e.deltaY;
       el.classList.add("is-wheeling");
       snapping = false;
-      target = clamp(target + px * 1.1);
+      target = clamp(target + px * 0.85);
       animate();
       clearTimeout(settle);
       settle = setTimeout(snapToNearest, 260);
@@ -97,6 +97,22 @@ function useWheelToHorizontal() {
 
 type View = "desktop" | "mobile";
 
+/** A monitor and a phone, drawn in the text colour. */
+const VIEW_ICON: Record<View, ReactNode> = {
+  desktop: (
+    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+      <rect x="1.5" y="2.5" width="13" height="8.5" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M6 14h4M8 11v3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  ),
+  mobile: (
+    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+      <rect x="4.5" y="1.5" width="7" height="13" rx="1.6" fill="none" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M7 12.2h2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  ),
+};
+
 /** Plays the clip of the visible view while the card is hovered, or on touch screens while it sits mostly in view. */
 function WorkCard({
   project: p,
@@ -107,13 +123,13 @@ function WorkCard({
 }) {
   const t = useDict();
   const card = useRef<HTMLDivElement>(null);
-  // A showcase film already covers desktop and phone, so it replaces the two views: its
-  // "Mobile" button jumps the film to the phone part instead.
+  // A showcase film with a phone part covers both views: its "Mobile" button jumps the film
+  // there. Without one, "Mobile" shows the separate phone capture, if there is one.
   const showcase = p.showcaseUrl;
   const mobileAt = showcase ? p.showcaseMobileAt : null;
-  const hasMobile = showcase
-    ? mobileAt != null
-    : Boolean(p.coverMobileUrl || p.previewMobileUrl);
+  const jumps = mobileAt != null;
+  const phoneClip = !jumps && Boolean(p.coverMobileUrl || p.previewMobileUrl);
+  const hasMobile = jumps || phoneClip;
   const [view, setView] = useState<View>("desktop");
   const [active, setActive] = useState(false);
 
@@ -136,24 +152,31 @@ function WorkCard({
   // The film starts from the part that matches the chosen view.
   useEffect(() => {
     const v = card.current?.querySelector<HTMLVideoElement>("video[data-showcase]");
-    if (v && mobileAt != null) v.currentTime = view === "mobile" ? mobileAt : 0;
+    if (!v || mobileAt == null) return;
+    const at = view === "mobile" ? mobileAt : 0;
+    // With preload="none" nothing is loaded yet, and some browsers drop a seek made before the
+    // metadata arrives, so seek again once it does.
+    if (v.readyState >= 1) v.currentTime = at;
+    else v.addEventListener("loadedmetadata", () => (v.currentTime = at), { once: true });
   }, [view, mobileAt]);
 
   useEffect(() => {
     card.current?.querySelectorAll("video").forEach((v) => {
-      const on = active && (v.dataset.showcase != null || v.dataset.view === view);
+      const on =
+        active &&
+        (v.dataset.showcase != null ? jumps || view === "desktop" : v.dataset.view === view);
       v.classList.toggle("is-playing", on);
       if (on) v.play().catch(() => {});
       else v.pause();
     });
-  }, [active, view]);
+  }, [active, view, jumps]);
 
   return (
     <div
       ref={card}
       className="strip-item"
       style={{ "--i": i } as CSSProperties}
-      data-view={showcase ? "desktop" : view}
+      data-view={jumps ? "desktop" : view}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
     >
@@ -232,7 +255,7 @@ function WorkCard({
             ) : null}
           </div>
         )}
-        {hasMobile && !showcase ? (
+        {phoneClip ? (
           <div className="frame-view frame-mobile">
             <div className="phone">
               {p.coverMobileUrl ? (
@@ -278,6 +301,7 @@ function WorkCard({
                 aria-pressed={view === v}
                 onClick={() => setView(v)}
               >
+                {VIEW_ICON[v]}
                 {t.home[v]}
               </button>
             ))}

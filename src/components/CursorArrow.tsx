@@ -90,15 +90,19 @@ export function CursorArrow({ section, strip }: { section: string; strip: string
     // The carousel's own scroll position tells which way it is going, wheel or trackpad alike.
     const s = sec.querySelector<HTMLElement>(`${strip} .strip`) ?? sec.querySelector<HTMLElement>(strip);
     let prev = s?.scrollLeft ?? 0;
+    // Snapping can rest a few px short of either end, so "at the end" has some slack.
+    const atEnd = (el: HTMLElement) => el.scrollLeft >= el.scrollWidth - el.clientWidth - 32;
+    const atStart = (el: HTMLElement) => el.scrollLeft <= 32;
     const scrolled = () => {
       if (!s) return;
       const d = s.scrollLeft - prev;
       prev = s.scrollLeft;
-      if (Math.abs(d) < 0.5) return;
-      lastDir = d > 0 ? "right" : "left";
-      // At the far end only going back makes sense, and at the start only going forward.
-      if (s.scrollLeft >= s.scrollWidth - s.clientWidth - 2) lastDir = "left";
-      if (s.scrollLeft <= 2) lastDir = "right";
+      // At the far end only going back makes sense, and at the start only going forward. Checked
+      // before the small-step filter: the eased glide reaches either end in sub-pixel steps.
+      if (atEnd(s)) lastDir = "left";
+      else if (atStart(s)) lastDir = "right";
+      else if (Math.abs(d) >= 0.5) lastDir = d > 0 ? "right" : "left";
+      else return;
       if (dir !== "down") setDir(lastDir);
       if (over) flash();
     };
