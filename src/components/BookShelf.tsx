@@ -1,5 +1,6 @@
 "use client";
 
+import { Arrow } from "@/components/Arrow";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -158,8 +159,8 @@ export function BookShelf({
 /** Opens and closes by animating its height and opacity, so content below glides instead of jumping. */
 function Collapse({ open, children }: { open: boolean; children: React.ReactNode }) {
   return (
-    <div className={`collapse${open ? " is-open" : ""}`} aria-hidden={!open}>
-      <div className="collapse-inner">{children}</div>
+    <div className={`fold${open ? " is-open" : ""}`} aria-hidden={!open}>
+      <div className="fold-inner">{children}</div>
     </div>
   );
 }
@@ -182,8 +183,8 @@ function Detail({ book }: { book: ShelfBook }) {
       </p>
       {book.note ? <p className="shelf-detail-note">{book.note}</p> : null}
       <p style={{ margin: "16px 0 0", fontSize: 13 }}>
-        <Link href={`/books/${book.slug}`} className="link-muted">
-          {t.books.openBook}
+        <Link href={`/books/${book.slug}`} className="link-muted with-arrow">
+          {t.books.openBook} <Arrow />
         </Link>
       </p>
     </div>

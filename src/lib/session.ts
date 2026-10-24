@@ -9,8 +9,13 @@ function secret() {
   return new TextEncoder().encode(s);
 }
 
-export async function createSessionToken() {
-  return new SignJWT({ role: "admin" })
+/** The one Google account allowed into /admin. */
+export function adminEmail() {
+  return (process.env.ADMIN_EMAIL || "rickmff@gmail.com").trim().toLowerCase();
+}
+
+export async function createSessionToken(email: string) {
+  return new SignJWT({ role: "admin", email })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(`${MAX_AGE}s`)
@@ -20,8 +25,9 @@ export async function createSessionToken() {
 export async function verifySessionToken(token: string | undefined) {
   if (!token) return false;
   try {
-    const { payload } = await jwtVerify(token, secret());
-    return payload.role === "admin";
+    const { payload } = await jwtVerify(token, secret(), { algorithms: ["HS256"] });
+    // Changing ADMIN_EMAIL signs out sessions of the previous account.
+    return payload.role === "admin" && payload.email === adminEmail();
   } catch {
     return false;
   }
@@ -34,3 +40,18 @@ export const sessionCookieOptions = {
   path: "/",
   maxAge: MAX_AGE,
 };
+
+/** Short-lived state for the Google round trip: CSRF state, nonce, PKCE verifier and where to land. */
+export async function createOAuthState(data: { state: string; nonce: string; verifier: string; next: string }) {
+  return new SignJWT(data).setProtectedHeader({ alg: "HS256" }).setIssuedAt().setExpirationTime("10m").sign(secret());
+}
+
+export async function readOAuthState(token: string | undefined) {
+  if (!token) return null;
+  try {
+    const { payload } = await jwtVerify(token, secret(), { algorithms: ["HS256"] });
+    return payload as unknown as { state: string; nonce: string; verifier: string; next: string };
+  } catch {
+    return null;
+  }
+}

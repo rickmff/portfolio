@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { deleteHarnessItem, saveHarnessItem } from "@/app/admin/actions";
 import { AdminForm, DeleteButton } from "@/components/admin/AdminForm";
-import { Area, Row, Text } from "@/components/admin/Fields";
+import { Area, Row, Text, TranslationFields } from "@/components/admin/Fields";
 import { db, schema } from "@/db";
 
 export default async function EditHarnessItem({ params }: { params: Promise<{ id: string }> }) {
@@ -33,6 +33,13 @@ export default async function EditHarnessItem({ params }: { params: Promise<{ id
           />
           <Text name="sort" label="Order" type="number" defaultValue={h?.sort ?? 0} />
         </Row>
+        <TranslationFields
+          value={h?.translations}
+          fields={[
+            { name: "description", label: "What you use it for", rows: 2 },
+            { name: "category", label: "Category" },
+          ]}
+        />
       </AdminForm>
     </>
   );

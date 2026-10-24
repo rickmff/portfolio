@@ -1,3 +1,4 @@
+import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
 import { getHarness } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
@@ -38,7 +39,7 @@ export default async function HarnessPage() {
                 <li key={i.id}>
                   <a href={i.url} target="_blank" rel="noopener noreferrer" className="harness-item">
                     <span className="harness-name">
-                      {i.name} <span aria-hidden="true">↗</span>
+                      {i.name} <Arrow dir="out" />
                     </span>
                     {i.description ? <span className="harness-desc">{i.description}</span> : null}
                     <span className="harness-host mono">{host(i.url)}</span>

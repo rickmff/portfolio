@@ -1,7 +1,7 @@
 // Fills an empty database with sample content so the site has something to show,
 // and backfills book covers and book pages on every boot.
 import { db, schema } from "../src/db";
-import { importBooks, syncBookCovers, syncBookPages } from "./import-books";
+import { importBooks, syncBookCovers, syncBookPages, syncTranslations } from "./import-books";
 
 async function main() {
   const covers = await syncBookCovers();
@@ -11,6 +11,8 @@ async function main() {
   if (existing.length) {
     const pages = await syncBookPages();
     if (pages) console.log(`books: filled ${pages} synopsis/notes/link fields`);
+    const translated = await syncTranslations();
+    if (translated) console.log(`books: added translations to ${translated} books`);
     console.log("database already has content, skipping seed");
     process.exit(0);
   }
@@ -26,10 +28,11 @@ async function main() {
   console.log(`books: ${await importBooks()} imported from Notion export`);
   await syncBookCovers();
   await syncBookPages();
+  await syncTranslations();
 
   const day = 86_400_000;
   await db.insert(schema.posts).values([
-    { slug: "hello-world", title: "Hello, world", excerpt: "Why I rebuilt my site from scratch.", body: "This is a sample post. Edit or delete it in the backoffice.\n\n## A heading\n\nSome **markdown** with `code`.", tags: "meta", published: true, publishedAt: new Date(Date.now() - day) },
+    { slug: "hello-world", title: "Hello, world", excerpt: "Why I rebuilt my site from scratch.", body: "This is a sample post. Edit or delete it with the portfolio-content skill.\n\n## A heading\n\nSome **markdown** with `code`.", tags: "meta", published: true, publishedAt: new Date(Date.now() - day) },
     { slug: "draft-post", title: "A draft you can finish", excerpt: "", body: "Drafts stay hidden until you publish them.", published: false },
   ]);
 

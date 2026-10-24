@@ -1,3 +1,5 @@
+import { MarkdownField } from "./MarkdownField";
+
 type Base = { name: string; label: string; hint?: string };
 
 export function Text({
@@ -85,4 +87,55 @@ export function ImageField({ label, current }: { label: string; current?: string
 
 export function Row({ children }: { children: React.ReactNode }) {
   return <div className="adm-row">{children}</div>;
+}
+
+type TrField = { name: string; label: string; rows?: number; markdown?: boolean };
+const LANGS = [
+  { code: "en", label: "English" },
+  { code: "pt", label: "Português" },
+] as const;
+
+/**
+ * English and Portuguese versions of a row's text fields, saved into its translations. Each one
+ * replaces the field above for visitors in that language; left empty, the field above shows.
+ */
+export function TranslationFields({
+  fields,
+  value,
+}: {
+  fields: TrField[];
+  value?: Partial<Record<"en" | "pt", Record<string, string>>> | null;
+}) {
+  return (
+    <div className="adm-tr">
+      {LANGS.map((l) => {
+        const filled = fields.filter((f) => value?.[l.code]?.[f.name]).length;
+        return (
+          <details key={l.code} className="adm-tr-lang" open={filled > 0}>
+            <summary>
+              {l.label} version <small>{filled ? `${filled}/${fields.length} filled` : "empty, shows the text above"}</small>
+            </summary>
+            {fields.map((f) =>
+              f.markdown ? (
+                <MarkdownField
+                  key={f.name}
+                  name={`tr.${l.code}.${f.name}`}
+                  label={`${f.label} (${l.label})`}
+                  defaultValue={value?.[l.code]?.[f.name] ?? ""}
+                />
+              ) : (
+                <Area
+                  key={f.name}
+                  name={`tr.${l.code}.${f.name}`}
+                  label={`${f.label} (${l.label})`}
+                  defaultValue={value?.[l.code]?.[f.name]}
+                  rows={f.rows ?? 1}
+                />
+              ),
+            )}
+          </details>
+        );
+      })}
+    </div>
+  );
 }

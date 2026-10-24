@@ -7,8 +7,8 @@ import { markedHighlight } from "marked-highlight";
 
 /**
  * Full GitHub-flavoured Markdown: tables, task lists, strikethrough, footnotes, heading ids,
- * `> [!NOTE]` callouts and highlighted code blocks. Shared by the site and the admin preview,
- * so what you see in the editor is what gets published.
+ * `> [!NOTE]` callouts and highlighted code blocks. The single renderer for every page,
+ * so any local preview matches what gets published.
  */
 const md = new Marked(
   { gfm: true, breaks: false },

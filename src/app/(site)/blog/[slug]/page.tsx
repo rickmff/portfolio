@@ -1,3 +1,4 @@
+import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,7 +45,7 @@ export default async function PostPage({ params }: Props) {
       <div className="wrap">
         <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(post.body) }} />
         <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>
-          <Link href="/blog" className="link-muted">{t.blog.all}</Link>
+          <Link href="/blog" className="link-muted with-arrow"><Arrow dir="left" /> {t.blog.all}</Link>
         </p>
       </div>
     </article>

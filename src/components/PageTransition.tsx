@@ -25,7 +25,7 @@ function internalPath(a: HTMLAnchorElement) {
   if (a.target || a.hasAttribute("download")) return null;
   const url = new URL(a.href, location.href);
   if (url.origin !== location.origin) return null;
-  if (/^\/(admin|media|_next|rss\.xml)/.test(url.pathname)) return null;
+  if (/^\/(admin|api|media|_next|rss\.xml)/.test(url.pathname)) return null;
   return url;
 }
 

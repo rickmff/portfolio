@@ -6,12 +6,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db, schema } from "@/db";
-import { checkPassword, requireAdmin } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/markdown";
-import { SESSION_COOKIE, createSessionToken, sessionCookieOptions } from "@/lib/session";
-import { SETTING_KEYS } from "@/lib/settings";
+import { SESSION_COOKIE } from "@/lib/session";
+import { SETTING_KEYS, TRANSLATED_SETTINGS, type SettingKey } from "@/lib/settings";
 import { type BookDetails, type BookHit, bookDetails, searchBooks } from "@/lib/book-lookup";
 import { saveRemoteImage, saveUpload } from "@/lib/uploads";
+import type { Translations } from "@/db/schema";
 
 export type FormState = { error?: string; ok?: boolean } | undefined;
 
@@ -25,6 +26,9 @@ const hex = z.string().regex(/^#[0-9a-fA-F]{6}$/, "Colours must be hex, like #1F
 const checkbox = z.preprocess((v) => v === "on", z.boolean());
 const optionalInt = (min: number, max: number) =>
   z.preprocess((v) => (v === "" || v == null ? null : Number(v)), z.number().int().min(min).max(max).nullable());
+
+/** Screen recordings run larger than images. */
+const CLIP = { maxMb: 40 };
 
 function fields(fd: FormData) {
   return Object.fromEntries([...fd.entries()].filter(([, v]) => typeof v === "string"));
@@ -41,17 +45,29 @@ function refreshSite() {
   revalidatePath("/", "layout");
 }
 
-/* Auth */
-
-export async function login(_: FormState, fd: FormData): Promise<FormState> {
-  const password = String(fd.get("password") ?? "");
-  // Constant-ish delay blunts online guessing a little; put Caddy rate limiting in front for more.
-  await new Promise((r) => setTimeout(r, 400));
-  if (!(await checkPassword(password))) return { error: "Wrong password." };
-  (await cookies()).set(SESSION_COOKIE, await createSessionToken(), sessionCookieOptions);
-  const next = String(fd.get("next") ?? "");
-  redirect(next.startsWith("/admin") ? next : "/admin");
+/**
+ * Reads the `tr.<locale>.<field>` inputs into the row's translations, keeping fields the form
+ * does not show. An emptied input removes that override, so the base field shows again.
+ */
+function withTranslations(fd: FormData, current: Translations = {}): Translations {
+  const out: Translations = { en: { ...current.en }, pt: { ...current.pt } };
+  for (const [key, value] of fd.entries()) {
+    const m = /^tr\.(en|pt)\.(\w+)$/.exec(key);
+    if (!m || typeof value !== "string") continue;
+    const [, locale, field] = m as unknown as [string, "en" | "pt", string];
+    if (value.trim()) out[locale]![field] = value.trim();
+    else delete out[locale]![field];
+  }
+  return Object.fromEntries(Object.entries(out).filter(([, v]) => Object.keys(v ?? {}).length)) as Translations;
 }
+
+async function currentTranslations(table: typeof projects | typeof books | typeof posts | typeof harness, id: number | null) {
+  if (!id) return {};
+  const [row] = await db.select({ t: table.translations }).from(table).where(eq(table.id, id));
+  return row?.t ?? {};
+}
+
+/* Auth */
 
 export async function logout() {
   (await cookies()).delete(SESSION_COOKIE);
@@ -74,20 +90,37 @@ const projectSchema = z.object({
   sort: z.coerce.number().int(),
   published: checkbox,
   removeCover: checkbox,
+  removeMobile: checkbox,
+  removeShowcase: checkbox,
 });
 
 export async function saveProject(_: FormState, fd: FormData): Promise<FormState> {
   await requireAdmin();
   const id = Number(fd.get("id")) || null;
   try {
-    const { removeCover, ...data } = projectSchema.parse(fields(fd));
-    const values = { ...data, slug: slugify(data.slug || data.title) };
+    const { removeCover, removeMobile, removeShowcase, ...data } = projectSchema.parse(fields(fd));
+    const values = {
+      ...data,
+      slug: slugify(data.slug || data.title),
+      translations: withTranslations(fd, await currentTranslations(projects, id)),
+    };
     const cover = await saveUpload(fd.get("cover"));
     const coverUrl = cover ?? (removeCover ? null : undefined);
+    // An uploaded clip wins over a typed preview URL.
+    values.previewUrl = (await saveUpload(fd.get("preview"), CLIP)) ?? values.previewUrl;
+    const mobile = {
+      coverMobileUrl: (await saveUpload(fd.get("coverMobile"))) ?? (removeMobile ? null : undefined),
+      previewMobileUrl: (await saveUpload(fd.get("previewMobile"), CLIP)) ?? (removeMobile ? null : undefined),
+      showcaseUrl: (await saveUpload(fd.get("showcase"), CLIP)) ?? (removeShowcase ? null : undefined),
+      showcasePosterUrl: (await saveUpload(fd.get("showcasePoster"))) ?? (removeShowcase ? null : undefined),
+    };
     if (id) {
-      await db.update(projects).set({ ...values, ...(coverUrl !== undefined && { coverUrl }) }).where(eq(projects.id, id));
+      await db
+        .update(projects)
+        .set({ ...values, ...(coverUrl !== undefined && { coverUrl }), ...mobile })
+        .where(eq(projects.id, id));
     } else {
-      await db.insert(projects).values({ ...values, coverUrl: cover });
+      await db.insert(projects).values({ ...values, coverUrl: cover, ...mobile });
     }
   } catch (e) {
     return fail(e);
@@ -127,7 +160,8 @@ export async function saveBook(_: FormState, fd: FormData): Promise<FormState> {
   await requireAdmin();
   const id = Number(fd.get("id")) || null;
   try {
-    const { removeCover, ...values } = bookSchema.parse(fields(fd));
+    const { removeCover, ...data } = bookSchema.parse(fields(fd));
+    const values = { ...data, translations: withTranslations(fd, await currentTranslations(books, id)) };
     const remote = String(fd.get("coverRemote") ?? "").trim();
     const cover = (await saveUpload(fd.get("cover"))) ?? (remote ? await saveRemoteImage(remote) : null);
     const coverUrl = cover ?? (removeCover ? null : undefined);
@@ -213,6 +247,7 @@ export async function savePost(_: FormState, fd: FormData): Promise<FormState> {
     const values = {
       ...data,
       slug: slugify(data.slug || data.title),
+      translations: withTranslations(fd, await currentTranslations(posts, id)),
       // Publishing without a date means "now".
       publishedAt: data.published ? (data.publishedAt ?? new Date()) : data.publishedAt,
       ...(bannerUrl !== undefined && { bannerUrl }),
@@ -258,7 +293,10 @@ export async function saveHarnessItem(_: FormState, fd: FormData): Promise<FormS
   await requireAdmin();
   const id = Number(fd.get("id")) || null;
   try {
-    const values = harnessSchema.parse(fields(fd));
+    const values = {
+      ...harnessSchema.parse(fields(fd)),
+      translations: withTranslations(fd, await currentTranslations(harness, id)),
+    };
     if (id) await db.update(harness).set(values).where(eq(harness.id, id));
     else await db.insert(harness).values(values);
   } catch (e) {
@@ -279,7 +317,17 @@ export async function deleteHarnessItem(id: number) {
 
 export async function saveSettings(_: FormState, fd: FormData): Promise<FormState> {
   await requireAdmin();
-  const rows = Object.keys(SETTING_KEYS).map((key) => ({ key, value: String(fd.get(key) ?? "").trim() }));
+  const rows: { key: string; value: string }[] = [];
+  for (const key of Object.keys(SETTING_KEYS) as SettingKey[]) {
+    if (!TRANSLATED_SETTINGS.includes(key)) {
+      rows.push({ key, value: String(fd.get(key) ?? "").trim() });
+      continue;
+    }
+    // English is the site default, so it is also the plain key every language falls back to.
+    const en = String(fd.get(`${key}:en`) ?? "").trim();
+    const pt = String(fd.get(`${key}:pt`) ?? "").trim();
+    rows.push({ key, value: en || pt }, { key: `${key}:en`, value: en }, { key: `${key}:pt`, value: pt });
+  }
   for (const row of rows) {
     await db.insert(settings).values(row).onConflictDoUpdate({ target: settings.key, set: { value: row.value } });
   }

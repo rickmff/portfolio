@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { deleteBook, saveBook } from "@/app/admin/actions";
 import { AdminForm, DeleteButton } from "@/components/admin/AdminForm";
 import { BookLookup } from "@/components/admin/BookLookup";
-import { Area, Check, Color, ImageField, Row, Select, Text } from "@/components/admin/Fields";
+import { Area, Check, Color, ImageField, Row, Select, Text, TranslationFields } from "@/components/admin/Fields";
 import { MarkdownField } from "@/components/admin/MarkdownField";
 import { bookHref } from "@/lib/books";
 import { db, schema } from "@/db";
@@ -53,6 +53,15 @@ export default async function EditBook({ params }: { params: Promise<{ id: strin
         {b?.notesGenerated ? (
           <p className="adm-flag">These notes were drafted for you in your style, not written by you. Rewrite them and untick the box below.</p>
         ) : null}
+        <TranslationFields
+          value={b?.translations}
+          fields={[
+            { name: "title", label: "Title" },
+            { name: "note", label: "Your note", rows: 3 },
+            { name: "synopsis", label: "Synopsis", rows: 4 },
+            { name: "notes", label: "Reading notes", markdown: true },
+          ]}
+        />
         <Check name="notesGenerated" label="Notes are a generated draft" defaultChecked={b?.notesGenerated ?? false} />
         <Text name="readUrl" label="Free edition link" defaultValue={b?.readUrl} hint="Only public-domain or official free editions." />
         <Row>

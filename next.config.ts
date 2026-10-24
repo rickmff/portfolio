@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   // Uploads are content-addressed (random names, never rewritten), so optimised copies can live long.
   images: { minimumCacheTTL: 31_536_000 },
   experimental: {
-    serverActions: { bodySizeLimit: "8mb" },
+    serverActions: { bodySizeLimit: "42mb" },
   },
 };
 

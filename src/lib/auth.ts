@@ -1,5 +1,4 @@
 import "server-only";
-import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SESSION_COOKIE, verifySessionToken } from "./session";
@@ -14,13 +13,15 @@ export async function requireAdmin() {
   if (!(await isAdmin())) redirect("/admin/login");
 }
 
-/**
- * ADMIN_PASSWORD_HASH is a base64-encoded bcrypt hash (see `pnpm hash-password`), because raw
- * bcrypt hashes contain `$`, which .env loaders and Docker Compose try to expand. A raw hash still works.
- */
-export async function checkPassword(password: string) {
-  const value = process.env.ADMIN_PASSWORD_HASH;
-  if (!value) return false;
-  const hash = value.startsWith("$2") ? value : Buffer.from(value, "base64").toString("utf8");
-  return bcrypt.compare(password, hash);
+export function googleConfigured() {
+  return Boolean(
+    process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET && (process.env.SESSION_SECRET?.length ?? 0) >= 32,
+  );
 }
+
+/** Google must send the user back to exactly this URL, so it comes from SITE_URL, not the request (Caddy proxies). */
+export function googleRedirectUri() {
+  return `${(process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, "")}/admin/auth/callback`;
+}
+
+export const OAUTH_COOKIE = "pf_oauth";

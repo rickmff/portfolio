@@ -641,3 +641,33 @@
   font-size: 11px;
   color: #777;
 }
+
+/* English / Portuguese versions */
+.adm-tr {
+  display: grid;
+  gap: 10px;
+}
+.adm-tr-lang {
+  border: 1px solid var(--adm-line, #e4e2dc);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.adm-tr-lang[open] {
+  padding-bottom: 16px;
+}
+.adm-tr-lang > summary {
+  cursor: pointer;
+  font-weight: 500;
+  list-style-position: outside;
+}
+.adm-tr-lang > summary small {
+  margin-left: 8px;
+  font-weight: 400;
+  opacity: 0.6;
+}
+.adm-tr-lang[open] > summary {
+  margin-bottom: 12px;
+}
+.adm-tr-lang .adm-field + .adm-field {
+  margin-top: 12px;
+}

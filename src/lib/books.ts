@@ -3,10 +3,10 @@ import type { ShelfBook } from "@/components/BookShelf";
 import { DICTS, type Dict } from "./i18n/dict";
 import { slugify } from "./markdown";
 
-export function toShelfBook(b: Book): ShelfBook {
+export function toShelfBook(b: Book & { slug?: string }): ShelfBook {
   return {
     id: b.id,
-    slug: slugify(b.title),
+    slug: b.slug ?? slugify(b.title),
     title: b.title,
     author: b.author,
     status: b.status,
@@ -48,4 +48,4 @@ export function latestRead(books: Book[], limit = HOME_SHELF_SIZE) {
     .slice(0, limit);
 }
 
-export const bookHref = (b: Pick<Book, "title">) => `/books/${slugify(b.title)}`;
+export const bookHref = (b: Pick<Book, "title"> & { slug?: string }) => `/books/${b.slug ?? slugify(b.title)}`;

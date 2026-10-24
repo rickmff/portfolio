@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { deletePost, savePost } from "@/app/admin/actions";
 import { AdminForm, DeleteButton } from "@/components/admin/AdminForm";
-import { Area, Check, ImageField, Row, Text } from "@/components/admin/Fields";
+import { Area, Check, ImageField, Row, Text, TranslationFields } from "@/components/admin/Fields";
 import { MarkdownField } from "@/components/admin/MarkdownField";
 import { db, schema } from "@/db";
 
@@ -37,6 +37,14 @@ export default async function EditPost({ params }: { params: Promise<{ id: strin
         <Area name="excerpt" label="Excerpt" defaultValue={p?.excerpt} rows={2} hint="Used in RSS and link previews." />
         <ImageField label="Banner (wide, about 2:1; also shown when hovering the post on the blog list)" current={p?.bannerUrl} />
         <MarkdownField name="body" label="Body" defaultValue={p?.body} />
+        <TranslationFields
+          value={p?.translations}
+          fields={[
+            { name: "title", label: "Title" },
+            { name: "excerpt", label: "Excerpt", rows: 2 },
+            { name: "body", label: "Body", markdown: true },
+          ]}
+        />
         <Row>
           <Text name="tags" label="Tags" defaultValue={p?.tags} placeholder="infra, product" />
           <Text name="publishedAt" label="Publish date" type="datetime-local" defaultValue={toLocalInput(p?.publishedAt)} hint="A future date schedules the post." />
