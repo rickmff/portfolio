@@ -144,6 +144,11 @@ a {
 .hero h1 strong {
   font-weight: 500;
 }
+.hero-by {
+  margin: 28px 0 0;
+  font-size: 13px;
+  color: var(--faint);
+}
 .dot {
   display: inline-block;
   width: 6px;

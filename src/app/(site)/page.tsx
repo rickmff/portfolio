@@ -28,6 +28,18 @@ export default async function Home() {
       <section className="wrap hero">
         <p className="eyebrow hero-in" style={{ margin: 0 }}>{settings.role}</p>
         <HeroLines text={settings.hero} />
+        {settings.heroBy ? (
+          <p className="hero-by hero-after">
+            —{" "}
+            {settings.heroByUrl ? (
+              <a href={settings.heroByUrl} target="_blank" rel="noopener noreferrer" className="link-muted">
+                {settings.heroBy}
+              </a>
+            ) : (
+              settings.heroBy
+            )}
+          </p>
+        ) : null}
         {settings.now ? (
           <p className="muted hero-after" style={{ margin: "48px auto 0", maxWidth: 420, fontSize: 13 }}>
             {t.home.now} — {settings.now}

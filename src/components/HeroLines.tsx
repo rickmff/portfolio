@@ -32,21 +32,27 @@ export function HeroLines({ text }: { text: string }) {
     return () => ro.disconnect();
   }, []);
 
-  // **bold** segments keep their emphasis; every word becomes its own span.
-  const words = text
-    .split(/(\*\*[^*]+\*\*)/g)
-    .flatMap((part) => {
-      const bold = part.startsWith("**") && part.endsWith("**");
-      return (bold ? part.slice(2, -2) : part).split(/\s+/).filter(Boolean).map((w) => ({ w, bold }));
-    });
+  // **bold** segments keep their emphasis; every word becomes its own span. A word that touches
+  // the segment before it (the comma in "**problems**,") is glued on without a space.
+  const parts = text.split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
+  const words = parts.flatMap((part, p) => {
+    const bold = part.startsWith("**") && part.endsWith("**");
+    const inner = bold ? part.slice(2, -2) : part;
+    const touches = p > 0 && !/^\s/.test(inner) && !/\s$/.test(parts[p - 1]);
+    return inner
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w, i) => ({ w, bold, glue: i === 0 && touches }));
+  });
 
   return (
     <h1 ref={ref} className="hero-lines">
       <span className="sr-only">{text.replace(/\*\*/g, "")}</span>
       <span aria-hidden="true">
-        {words.map(({ w, bold }, i) => (
+        {words.map(({ w, bold, glue }, i) => (
           <span key={i}>
-            <span className="hl-w">{bold ? <strong>{w}</strong> : w}</span>{" "}
+            {i > 0 && !glue ? " " : null}
+            <span className="hl-w">{bold ? <strong>{w}</strong> : w}</span>
           </span>
         ))}
       </span>

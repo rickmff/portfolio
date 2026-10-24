@@ -6,6 +6,8 @@ export const SETTING_KEYS = {
     fallback:
       "I make software that feels **considered** — products, platforms and the small details between them.",
   },
+  heroBy: { label: "Hero quote author (only when the hero sentence is a quote)", fallback: "" },
+  heroByUrl: { label: "Hero quote source URL (optional)", fallback: "" },
   now: { label: "Now (what you are working on)", fallback: "" },
   email: { label: "Contact email", fallback: "" },
   github: { label: "GitHub URL", fallback: "https://github.com/rickmff" },
