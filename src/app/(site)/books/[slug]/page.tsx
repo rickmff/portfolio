@@ -2,15 +2,19 @@ import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { Book3D } from "@/components/Book3D";
 import { BookPreview } from "@/components/BookPreview";
+import { BookQuote } from "@/components/BookQuote";
 import { NotesReveal } from "@/components/NotesReveal";
 import { ReadLink } from "@/components/ReadingProgress";
 import { statusLabel } from "@/lib/books";
 import { getBookBySlug } from "@/lib/data";
-import { getEditions } from "@/lib/editions";
+import { getEditions, type GutenbergEdition } from "@/lib/editions";
+import { getGutenbergBook } from "@/lib/gutenberg";
 import { getDict } from "@/lib/i18n/server";
 import { renderMarkdown } from "@/lib/markdown";
+import { containsQuote } from "@/lib/quote-highlight";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +70,15 @@ export default async function BookPage({ params }: Props) {
             {ed.preview ? <BookPreview id={ed.preview.id} title={b.title} /> : null}
           </div>
         ) : null}
+        {b.quote ? (
+          <BookQuote quote={b.quote} source={b.quoteSource} className="book-quote">
+            {ed.read.length ? (
+              <Suspense fallback={null}>
+                <FindInBook slug={slug} editions={ed.read} quotes={[b.quote, b.translations.en?.quote, b.translations.pt?.quote]} label={t.quotes.findInBook} />
+              </Suspense>
+            ) : null}
+          </BookQuote>
+        ) : null}
       </header>
 
       <div className="wrap">
@@ -89,4 +102,33 @@ export default async function BookPage({ params }: Props) {
       </div>
     </article>
   );
+}
+
+/**
+ * Links straight to the reader page that holds the quote, highlighted. Streams in after the page,
+ * since it needs the full text; when the quote is not in any free edition, nothing shows.
+ */
+async function FindInBook({
+  slug,
+  editions,
+  quotes,
+  label,
+}: {
+  slug: string;
+  editions: GutenbergEdition[];
+  quotes: (string | undefined)[];
+  label: string;
+}) {
+  for (const [e, edition] of editions.entries()) {
+    const book = await getGutenbergBook(edition.id).catch(() => null);
+    const i = book?.pages.findIndex((page) => containsQuote(page.html, quotes)) ?? -1;
+    if (i >= 0) {
+      return (
+        <Link href={`/books/${slug}/read?${e ? `e=${e}&` : ""}p=${i + 1}#quote`} className="link-muted with-arrow">
+          {label} <Arrow />
+        </Link>
+      );
+    }
+  }
+  return null;
 }

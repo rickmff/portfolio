@@ -149,6 +149,8 @@ const bookSchema = z.object({
   synopsis: z.string().trim(),
   notes: z.string().trim(),
   notesGenerated: checkbox,
+  quote: z.string().trim(),
+  quoteSource: z.string().trim(),
   readUrl: optionalText.pipe(z.url("Free edition link must be a URL").nullable()),
   color: hex,
   ink: hex,

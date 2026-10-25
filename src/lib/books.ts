@@ -17,6 +17,8 @@ export function toShelfBook(b: Book & { slug?: string }): ShelfBook {
     coverUrl: b.coverUrl,
     thickness: b.thickness,
     note: b.note,
+    quote: b.quote,
+    quoteSource: b.quoteSource,
   };
 }
 

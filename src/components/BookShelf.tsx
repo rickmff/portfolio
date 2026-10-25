@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { navigateWithTransition, prefetchFull } from "@/components/PageTransition";
+import { BookQuote } from "@/components/BookQuote";
 import type { BookStatus } from "@/db/schema";
 import { statusLabel } from "@/lib/books";
 import { useDict } from "@/lib/i18n/client";
@@ -22,6 +23,8 @@ export type ShelfBook = {
   coverUrl: string | null;
   thickness: number;
   note: string;
+  quote: string;
+  quoteSource: string;
 };
 
 export type Shelf = { label?: string; books: ShelfBook[] };
@@ -181,11 +184,20 @@ function Detail({ book }: { book: ShelfBook }) {
         {book.author} · {statusLabel(book, t)}
         {book.rating ? ` · ${"●".repeat(book.rating)}${"○".repeat(5 - book.rating)}` : ""}
       </p>
+      {book.quote ? <BookQuote quote={book.quote} source={book.quoteSource} className="shelf-quote" /> : null}
       {book.note ? <p className="shelf-detail-note">{book.note}</p> : null}
       <p style={{ margin: "16px 0 0", fontSize: 13 }}>
         <Link href={`/books/${book.slug}`} className="link-muted with-arrow">
           {t.books.openBook} <Arrow />
         </Link>
+        {book.quote ? (
+          <>
+            <span className="shelf-detail-sep" aria-hidden="true" />
+            <Link href={`/quotes#${book.slug}`} className="link-muted with-arrow">
+              {t.quotes.link} <Arrow />
+            </Link>
+          </>
+        ) : null}
       </p>
     </div>
   );

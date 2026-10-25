@@ -75,6 +75,10 @@ export const books = pgTable("books", {
   notes: text("notes").notNull().default(""),
   /** True when the notes were drafted for the owner rather than written by them. */
   notesGenerated: boolean("notes_generated").notNull().default(false),
+  /** The book's best-known line, highlighted on the shelf, the book page and /quotes. */
+  quote: text("quote").notNull().default(""),
+  /** Where the quote sits in the book, e.g. "Act III, Scene 1" or "Chapter 21". */
+  quoteSource: text("quote_source").notNull().default(""),
   /** A free, legal edition (public domain) to read online. */
   readUrl: text("read_url"),
   /** Spine thickness in px, roughly page count / 10. */

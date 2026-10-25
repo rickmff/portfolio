@@ -49,6 +49,14 @@ export default async function EditBook({ params }: { params: Promise<{ id: strin
         </Row>
         <Area name="note" label="Your note" defaultValue={b?.note} rows={4} hint="Shown on the Books page under the 3D book." />
         <Area name="synopsis" label="Synopsis" defaultValue={b?.synopsis} rows={4} hint="Spoiler-free. Shown on the book page above your notes." />
+        <Area
+          name="quote"
+          label="Quote"
+          defaultValue={b?.quote}
+          rows={3}
+          hint="The book's most famous line, word for word. Highlighted when the book is picked off the shelf, on the book page and on /quotes."
+        />
+        <Text name="quoteSource" label="Where it is" defaultValue={b?.quoteSource} hint="Optional, e.g. Act III, Scene 1 or Chapter 21." />
         <MarkdownField name="notes" label="Reading notes (hidden until the reader clicks Reveal)" defaultValue={b?.notes ?? ""} />
         {b?.notesGenerated ? (
           <p className="adm-flag">These notes were drafted for you in your style, not written by you. Rewrite them and untick the box below.</p>
@@ -59,6 +67,8 @@ export default async function EditBook({ params }: { params: Promise<{ id: strin
             { name: "title", label: "Title" },
             { name: "note", label: "Your note", rows: 3 },
             { name: "synopsis", label: "Synopsis", rows: 4 },
+            { name: "quote", label: "Quote", rows: 3 },
+            { name: "quoteSource", label: "Where it is" },
             { name: "notes", label: "Reading notes", markdown: true },
           ]}
         />

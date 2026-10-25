@@ -7,6 +7,7 @@ import { getBookBySlug } from "@/lib/data";
 import { readableEditions } from "@/lib/editions";
 import { getGutenbergBook, type ReaderBook } from "@/lib/gutenberg";
 import { getDict } from "@/lib/i18n/server";
+import { highlightQuote } from "@/lib/quote-highlight";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +46,9 @@ export default async function ReadPage({ params, searchParams }: Props) {
   const p = Math.min(Math.max(int(q.p, 1), 1), total);
   const href = (page: number, ed = e) => `/books/${slug}/read?${ed ? `e=${ed}&` : ""}p=${page}`;
   const source = `https://www.gutenberg.org/ebooks/${edition.id}`;
+  // The book's quote is highlighted wherever it falls, in whichever language the edition is.
+  const quotes = [b.quote, b.translations.en?.quote, b.translations.pt?.quote];
+  const text = book ? highlightQuote(book.pages[p - 1].html, quotes).html : "";
 
   return (
     <article className="section reader">
@@ -88,7 +92,7 @@ export default async function ReadPage({ params, searchParams }: Props) {
                 </ol>
               </details>
             ) : null}
-            <div className="prose reader-text" lang={edition.lang} dangerouslySetInnerHTML={{ __html: book.pages[p - 1].html }} />
+            <div className="prose reader-text" lang={edition.lang} dangerouslySetInnerHTML={{ __html: text }} />
             <nav className="reader-pager mono">
               {p > 1 ? (
                 <Link href={href(p - 1)} className="with-arrow" rel="prev">
