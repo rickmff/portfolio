@@ -74,7 +74,7 @@ export default async function Home() {
             initialOpen={shelf[0].id}
             centered
           />
-          <p style={{ textAlign: "center", margin: "32px 0 0", fontSize: 13 }}>
+          <p className="section-more">
             <Link href="/books" className="link-muted with-arrow">{t.home.allBooks} <Arrow /></Link>
           </p>
         </section>
@@ -85,7 +85,7 @@ export default async function Home() {
           <h2>{t.home.writing}</h2>
         </div>
         <WritingList posts={posts} t={t} />
-        <p style={{ textAlign: "center", margin: "32px 0 0", fontSize: 13 }}>
+        <p className="section-more">
           <Link href="/blog" className="link-muted with-arrow">{t.home.allWriting} <Arrow /></Link>
         </p>
       </section>
