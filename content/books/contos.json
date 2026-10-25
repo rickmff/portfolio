@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "title": "Contos",
+  "translations": {
+    "en": {
+      "title": "Tales"
+    }
+  },
+  "coverUrl": "/media/1359e514-4056-43c0-aa3a-63865b02ebb5.jpg",
+  "color": "#382828",
+  "ink": "#FFFFFF"
+}

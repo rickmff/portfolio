@@ -57,6 +57,7 @@ Fields: `title`, `slug`, `excerpt` (one sentence, used in RSS, previews and the 
 3. Ask: publish now, schedule (date) or keep as draft.
 4. Write title, excerpt and body in both languages; `POST $API/posts`.
    Quotes go inside the paragraph, not as blockquotes: the lead-in sentence, then the quote in quotation marks, then its source in parentheses, e.g. `(*The Way to Wealth*, 1758)`. Don't illustrate a quote with a portrait of the person quoted.
+   No visible credit lines: no "Banner: …" note at the top and no "Image: author, license" in captions. Keep the source and license of each image in `content/blog/credits.json` instead. Because nothing is credited on the page, use only public-domain or CC0 images, or your own diagrams and screenshots; skip CC BY / CC BY-SA images, which require visible attribution.
 5. To publish now, set `publishedAt` about 2 hours in the past. The site hides posts whose `publishedAt` is later than the server's clock, and a time of "exactly now" can stay hidden for about an hour (timezone offset). Check that `/blog/<slug>` returns 200.
 
 ### About (/about)

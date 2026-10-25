@@ -90,7 +90,7 @@ const en = {
     empty: "Nothing published yet.",
   },
   work: { visit: "Visit", source: "Source", more: "More work" },
-  about: { eyebrow: "About" },
+  about: { eyebrow: "About", projects: "Projects", cv: "Download CV" },
   harness: { eyebrow: "Harness", title: "The tools and setup I build with.", empty: "Coming soon." },
   language: "Language",
 };
@@ -168,7 +168,7 @@ const pt: Dict = {
     empty: "Nada publicado ainda.",
   },
   work: { visit: "Visitar", source: "Código", more: "Mais projetos" },
-  about: { eyebrow: "Sobre" },
+  about: { eyebrow: "Sobre", projects: "Projetos", cv: "Baixar CV" },
   harness: { eyebrow: "Harness", title: "As ferramentas e o setup com que eu construo.", empty: "Em breve." },
   language: "Idioma",
 };

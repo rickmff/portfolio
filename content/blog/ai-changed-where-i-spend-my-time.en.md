@@ -1,5 +1,3 @@
-Banner: Johannes Vermeer, *The Geographer* (c. 1668–1669), Städel Museum. A man, his instruments and the decision none of them makes for him. {{credit:banner}}
-
 Almost all the code that lands in my projects now goes through a model before it goes through me. And I've never worked this much with my head. AI didn't shrink the work: it moved the bottleneck from the keyboard to the decision. Typing got cheap. Deciding what's worth writing got expensive.
 
 ## Fast on new code, slow on old code
@@ -16,7 +14,7 @@ Brian Kernighan warned back in the 70s where the hard work lives: "Everyone know
 
 With AI, writing costs almost nothing. What's left is reading, understanding and fixing, which is exactly the hard part.
 
-![A 1947 page from the Harvard Mark II logbook with a moth taped to it, the first recorded "bug"](img:bug "The first documented bug, 1947: someone had to find it. {{credit:bug}}")
+![A 1947 page from the Harvard Mark II logbook with a moth taped to it, the first recorded "bug"](img:bug "The first documented bug, 1947: someone had to find it")
 
 My routine changed accordingly. I used to open the editor and start typing. Now I open a 300-line diff and have to decide, line by line, whether it's what I wanted. Reviewing well means knowing what the code should look like before you see what it does look like.
 
@@ -26,8 +24,6 @@ Brooks again, in 1986, long before any language model: "The hardest single part 
 
 The model does exactly what you asked, including when you asked wrong. A vague prompt comes back as plausible, generic code. A prompt with context, constraints and an example of the result comes back very close to what I'd have written.
 
-![The IBM System/360, the project Fred Brooks managed at IBM](img:system360 "IBM System/360, the project behind Brooks's essays. {{credit:system360}}")
-
 A concrete example: when I ask for "an export endpoint", I get something generic. When I write "export this month's invoices as CSV, account owner only, streamed so it doesn't blow up memory, using the same date format as the current report", I get something that goes into the project with few changes. The difference is in the text, not in the model.
 
 ## Where I don't let AI decide
@@ -36,7 +32,7 @@ In 1960, J. C. R. Licklider imagined a partnership between people and computers 
 
 The model writes with the same confidence when it's right and when it's wrong, and it's easy to mistake confidence for correctness. That's why setting the goal and judging the result stays with me.
 
-![Diagram: the person sets goals, criteria and evaluation; the model drafts, searches and tries alternatives](img:goals "Licklider's split, applied to my day. Illustration by the author")
+![Diagram: the person sets goals, criteria and evaluation; the model drafts, searches and tries alternatives](img:goals "Licklider's split, applied to my day")
 
 In practice I keep three rules. I design the database schema and service boundaries first, because mistakes there cost months. Auth, permissions and anything that touches money, I read line by line. And code I can't explain doesn't ship, no matter how green the tests are.
 

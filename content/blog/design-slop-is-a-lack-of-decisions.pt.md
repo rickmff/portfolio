@@ -1,5 +1,3 @@
-Banner: Georges Seurat, *Um Domingo à Tarde na Ilha de La Grande Jatte* (1884–1886), Art Institute of Chicago. Milhares de pontos, nenhum colocado por acaso. {{credit:banner}}
-
 Esta semana postei um vídeo de 12 segundos limpando o menu do Menu Online, o cardápio digital que construí para restaurantes. Não mudei cor, fonte nem layout. Mudei seis números de espaçamento. O menu passou de "feito por IA" para "feito por alguém". Este post é sobre isso: design slop não é culpa da IA, é falta de decisão.
 
 ## O que é design slop
@@ -18,7 +16,7 @@ Oscar Wilde escreveu, da prisão, uma frase que descreve um modelo de linguagem 
 
 O modelo aprendeu com milhões de sites e escolhe o que é mais provável. As escolhas mais seguras, as que funcionam em qualquer lugar e não incomodam ninguém, são as mais comuns. Sem direção, ele mira no centro, e o centro é a média de todo mundo.
 
-![Diagrama: sem direção, as saídas do modelo se concentram no centro da distribuição; decisões explícitas empurram para fora](img:converge "Sem direção, tudo cai no centro. Ilustração do autor")
+![Diagrama: sem direção, as saídas do modelo se concentram no centro da distribuição; decisões explícitas empurram para fora](img:converge "Sem direção, tudo cai no centro")
 
 É por isso que tantos SaaS lançados com IA parecem irmãos. Não é falta de talento do modelo; é que ninguém disse a ele o que tornava aquele produto diferente.
 
