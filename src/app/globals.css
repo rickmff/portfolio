@@ -406,37 +406,18 @@ a {
   display: flex;
   gap: 12px;
 }
-/* Under the section heading: the scroll arrow, then (once the projects are on screen) the
-   Desktop · Mobile switch in the same spot, with a full var(--head-gap) above and below. */
+/* Under the section heading: the Desktop · Mobile switch, with a full var(--head-gap)
+   above and below. */
 .strip-lead {
-  display: grid;
-  justify-items: center;
+  display: flex;
+  justify-content: center;
   align-items: center;
   margin: 0 auto var(--head-gap);
   min-height: 24px;
 }
-.strip-lead > * {
-  grid-area: 1 / 1;
-}
 .strip-toggle {
   justify-content: center;
   gap: 20px;
-  opacity: 0;
-  transform: translateY(-6px);
-  pointer-events: none;
-  transition:
-    opacity 0.9s var(--ease-soft) 0.25s,
-    transform 0.9s var(--ease) 0.25s;
-}
-.strip-lead.is-arrived .strip-toggle {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-}
-.strip-lead.is-arrived .scroll-cue {
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
 }
 .view-toggle button {
   display: inline-flex;
@@ -857,17 +838,6 @@ a:hover .arrow[data-dir="out"] {
   transform: translate(2px, -2px) rotate(-45deg);
 }
 
-/* Down arrow between the hero and the work strip */
-.scroll-cue {
-  display: block;
-  width: fit-content;
-  padding: 4px;
-  color: var(--faint);
-  transition:
-    color 0.4s var(--ease),
-    opacity 0.9s var(--ease-soft),
-    transform 0.9s var(--ease);
-}
 /* The strip keeps 24px under its cards; take it off the section gap. */
 #work {
   padding-bottom: calc(var(--section-gap) - 24px);
@@ -894,63 +864,6 @@ a:hover .arrow[data-dir="out"] {
   text-align: center;
   font-size: 13px;
 }
-/* Room under the arrow so the projects arrive after it, not with it. */
-#work-strip {
-  scroll-margin-top: 15vh;
-}
-.scroll-cue:hover {
-  color: var(--ink);
-}
-.scroll-cue {
-  font-size: 16px;
-}
-.scroll-cue .arrow {
-  display: block;
-  animation: cue 2.6s var(--ease-soft) infinite;
-}
-@keyframes cue {
-  0%,
-  100% {
-    transform: translateY(-3px) rotate(90deg);
-    opacity: 0.55;
-  }
-  50% {
-    transform: translateY(5px) rotate(90deg);
-    opacity: 1;
-  }
-}
-
-/* Arrow trailing the cursor in the work section (src/components/CursorArrow.tsx) */
-.cursor-arrow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 50;
-  pointer-events: none;
-  font-size: 15px;
-  opacity: 0;
-  transition: opacity 0.25s var(--ease-soft);
-  will-change: transform;
-}
-.cursor-arrow.is-on {
-  opacity: 1;
-  transition-duration: 0.15s;
-}
-.cursor-arrow .arrow {
-  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.18));
-}
-.cursor-arrow .arrow {
-  display: block;
-  transform: rotate(var(--cursor-rotate, 90deg));
-  transition: transform 0.7s var(--ease);
-}
-.cursor-arrow[data-dir="right"] {
-  --cursor-rotate: 0deg;
-}
-.cursor-arrow[data-dir="left"] {
-  --cursor-rotate: 180deg;
-}
-
 /* Hover preview of a post (src/components/PostLink.tsx) */
 .post-peek {
   position: fixed;

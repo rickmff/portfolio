@@ -2,7 +2,6 @@ import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookShelf } from "@/components/BookShelf";
-import { CursorArrow } from "@/components/CursorArrow";
 import { HeroLines } from "@/components/HeroLines";
 import { WorkStrip } from "@/components/WorkStrip";
 import { WritingList } from "@/components/WritingList";
@@ -59,9 +58,8 @@ export default async function Home() {
           <h2>{t.home.latestWork}</h2>
         </div>
         <div id="work-strip">
-          <WorkStrip projects={projects} cue />
+          <WorkStrip projects={projects} />
         </div>
-        {projects.length ? <CursorArrow section="#work" strip="#work-strip" /> : null}
       </section>
 
       {shelf.length ? (
