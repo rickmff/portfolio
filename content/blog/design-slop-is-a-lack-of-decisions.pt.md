@@ -14,10 +14,7 @@ No meu menu, o slop não estava na cor. Estava na densidade: miniaturas pequenas
 
 ## Por que a IA converge para o mesmo lugar
 
-Oscar Wilde escreveu, da prisão, uma frase que descreve um modelo de linguagem melhor do que muito manual técnico:
-
-> "Most people are other people. Their thoughts are some one else's opinions, their lives a mimicry, their passions a quotation."
-> Oscar Wilde, *De Profundis* (1905)
+Oscar Wilde escreveu, da prisão, uma frase que descreve um modelo de linguagem melhor do que muito manual técnico: "Most people are other people. Their thoughts are some one else's opinions, their lives a mimicry, their passions a quotation." (*De Profundis*, 1905).
 
 O modelo aprendeu com milhões de sites e escolhe o que é mais provável. As escolhas mais seguras, as que funcionam em qualquer lugar e não incomodam ninguém, são as mais comuns. Sem direção, ele mira no centro, e o centro é a média de todo mundo.
 
@@ -27,10 +24,7 @@ O modelo aprendeu com milhões de sites e escolhe o que é mais provável. As es
 
 ## O conserto começa no espaçamento
 
-Dieter Rams resumiu a filosofia dele no título de um livro:
-
-> "Weniger, aber besser." (Less, but better.)
-> Dieter Rams, *Weniger, aber besser* (1995)
+Dieter Rams resumiu a filosofia dele no título de um livro: "Weniger, aber besser" ("menos, porém melhor"), de 1995.
 
 No vídeo, mexi só em espaçamento e proporção. O padding foi de 6 para 16, a miniatura de 44 para 64 pixels, o espaço entre linhas de 4 para 14 e o raio dos cantos de 2 para 10. Nenhum elemento novo entrou na tela. Saiu ruído.
 
@@ -40,10 +34,7 @@ Esse tipo de ajuste importa porque a primeira impressão acontece antes da leitu
 
 ## Um detalhe que só você teria
 
-Charles e Ray Eames diziam:
-
-> "The details are not the details. They make the product."
-> Charles e Ray Eames
+Charles e Ray Eames diziam: "The details are not the details. They make the product."
 
 Espaçamento tira o slop. O detalhe dá identidade. No Menu Online, isso veio do contexto real dos restaurantes: fundo creme com textura de linho, tons que lembram o WhatsApp, onde os pedidos chegam, e fotos de comida de verdade em vez de ilustração genérica.
 
@@ -55,10 +46,7 @@ Na prática, eu peço à IA a estrutura e decido eu mesmo três coisas antes de 
 
 Mais respiro tem custo: no vídeo, o mesmo celular passa a mostrar menos pratos por tela. Para quem já sabe o que quer pedir, densidade pode ser melhor. E num MVP que ainda está validando se alguém quer o produto, polir espaçamento antes da hora é otimizar a coisa errada.
 
-Steve Jobs disse isso em 2003, falando do iPod:
-
-> "Design is how it works."
-> Steve Jobs, *The New York Times Magazine* (2003)
+Steve Jobs disse isso em 2003, falando do iPod: "Design is how it works." (*The New York Times Magazine*).
 
 Slop não é feio; é genérico. E o genérico some na hora em que alguém toma decisões sobre como o produto funciona para quem usa. A IA entrega o rascunho em minutos. As decisões continuam sendo suas.
 

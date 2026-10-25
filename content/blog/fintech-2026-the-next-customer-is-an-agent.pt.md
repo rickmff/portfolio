@@ -4,23 +4,15 @@ Em 2026, abrir uma conta digital ou mandar dinheiro em segundos deixou de impres
 
 ## Finança continua cara
 
-Walter Bagehot, editor da *The Economist*, abriu seu livro sobre o mercado financeiro de Londres com uma frase que continua atual:
-
-> "Money will not manage itself, and Lombard street has a great deal of money to manage."
-> Walter Bagehot, *Lombard Street* (1873)
+Walter Bagehot, editor da *The Economist*, abriu seu livro sobre o mercado financeiro de Londres com uma frase que continua atual: "Money will not manage itself, and Lombard street has a great deal of money to manage." (*Lombard Street*, 1873).
 
 Gerir dinheiro dos outros sempre custou caro, e por muito tempo esse custo mudou pouco, mesmo com computador, internet e celular. Foi essa margem parada que abriu espaço para tanta fintech nascer: fazer o mesmo serviço com menos agência, menos papel e menos intermediário.
-
-![Retrato de Walter Bagehot](img:bagehot "Walter Bagehot, autor de Lombard Street. {{credit:bagehot}}")
 
 Quem vende online sente isso em cada cobrança. Em um SaaS, a taxa do meio de pagamento é uma das primeiras linhas da planilha de custos, e ela muda bastante conforme o método que o cliente escolhe.
 
 ## Em 2026, a vantagem está nos trilhos
 
-Adam Smith já explicava, em 1776, de onde vem a riqueza:
-
-> "The division of labour, however, so far as it can be introduced, occasions, in every art, a proportionable increase of the productive powers of labour."
-> Adam Smith, *A Riqueza das Nações* (1776)
+Adam Smith já explicava, em 1776, de onde vem a riqueza: "The division of labour, however, so far as it can be introduced, occasions, in every art, a proportionable increase of the productive powers of labour." (*A Riqueza das Nações*).
 
 O caso mais claro dessa divisão em pagamentos é o Pix. O Banco Central construiu os trilhos, obrigou os grandes bancos a participar e deixou que cada fintech competisse no que constrói em cima. Em pouco tempo, pagar com Pix virou hábito no Brasil inteiro.
 
@@ -30,10 +22,7 @@ A lição para quem constrói produto é que uma infraestrutura pública e abert
 
 ## O próximo cliente é um agente
 
-Arthur C. Clarke escreveu uma das leis mais citadas sobre tecnologia:
-
-> "Any sufficiently advanced technology is indistinguishable from magic."
-> Arthur C. Clarke, *Profiles of the Future* (1973)
+Arthur C. Clarke escreveu uma das leis mais citadas sobre tecnologia: "Any sufficiently advanced technology is indistinguishable from magic." (*Profiles of the Future*, 1973).
 
 Um agente que compra sozinho parece mágica, e é exatamente isso que preocupa um banco. Os sistemas de pagamento foram feitos supondo que uma pessoa está clicando em "comprar". Em 2025, o Google lançou o AP2, um protocolo aberto para agentes pagarem, com uma resposta simples: *mandates*, contratos digitais assinados que provam o que a pessoa autorizou, com limites de preço e prazo, e o carrinho exato que ela aprovou.
 
@@ -43,10 +32,7 @@ No dia a dia, isso parece com: "compra a passagem mais barata para Lisboa na sex
 
 ## Quem fiscaliza o agente
 
-O poeta romano Juvenal fez, há quase dois mil anos, a pergunta que todo regulador de IA vai repetir:
-
-> "Quis custodiet ipsos custodes?" (Quem vigia os próprios vigias?)
-> Juvenal, *Sátiras*
+O poeta romano Juvenal fez, há quase dois mil anos, a pergunta que todo regulador de IA vai repetir: "Quis custodiet ipsos custodes?", ou "quem vigia os próprios vigias?" (*Sátiras*).
 
 Se agentes passam a mover dinheiro, alguém precisa conferir os agentes, e as regras atuais foram pensadas para sistemas que mudam pouco e são validados uma vez. A tendência natural é que o próprio regulador passe a usar agentes para vigiar agentes, com auditorias de fora para fechar o ciclo.
 

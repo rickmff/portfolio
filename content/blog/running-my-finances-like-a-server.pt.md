@@ -4,38 +4,23 @@ Tenho um VPS rodando meus projetos e um SaaS que depende dele. Nenhum dos dois f
 
 ## Custo fixo é infraestrutura
 
-Benjamin Franklin resumiu, em 1758, o problema que todo dono de servidor conhece:
-
-> "Beware of little expences; a small leak will sink a great ship."
-> Benjamin Franklin, *The Way to Wealth* (1758)
-
-![Retrato de Benjamin Franklin](img:franklin "Benjamin Franklin. {{credit:franklin}}")
+Benjamin Franklin resumiu, em 1758, o problema que todo dono de servidor conhece: "Beware of little expences; a small leak will sink a great ship." (*The Way to Wealth*).
 
 Aluguel, contas, assinaturas e ferramentas são o que precisa estar de pé todo mês, como os serviços do servidor. E é aí que moram os vazamentos pequenos: o plano anual que renovou sozinho, a ferramenta que testei uma vez, o domínio que não uso mais. Uma vez por trimestre eu faço com as assinaturas o que faço com containers parados: listo tudo e desligo o que não uso.
 
 ## Reserva de emergência é redundância
 
-Charles Dickens colocou na boca do Sr. Micawber a regra de orçamento mais famosa da literatura:
-
-> "Annual income twenty pounds, annual expenditure nineteen nineteen and six, result happiness."
-> Charles Dickens, *David Copperfield* (1850)
+Charles Dickens colocou na boca do Sr. Micawber a regra de orçamento mais famosa da literatura: "Annual income twenty pounds, annual expenditure nineteen nineteen and six, result happiness." (*David Copperfield*, 1850).
 
 A frase seguinte do personagem é a mesma conta com seis pence a mais de gasto, e o resultado vira "misery". A diferença entre as duas é minúscula. É por isso que a margem importa.
-
-![Ilustração do Sr. Micawber, personagem de David Copperfield](img:micawber "Sr. Micawber, de David Copperfield. {{credit:micawber}}")
 
 Ninguém sobe produção sem backup, e a reserva é o backup da vida. Para quem é autônomo ou vive de projetos, ela permite recusar um trabalho ruim ou atravessar um mês fraco sem pânico. Eu defino a minha em meses de custo fixo, não num valor redondo, porque é esse custo que precisa continuar rodando.
 
 ## Automatize o caminho feliz
 
-Benjamin Graham, o professor de Warren Buffett, escreveu no livro mais famoso sobre investimento:
-
-> "The investor's chief problem — and even his worst enemy — is likely to be himself."
-> Benjamin Graham, *The Intelligent Investor*
+Benjamin Graham, o professor de Warren Buffett, escreveu no livro mais famoso sobre investimento: "The investor's chief problem — and even his worst enemy — is likely to be himself." (*The Intelligent Investor*).
 
 O maior risco do meu dinheiro não é o mercado, sou eu num dia cansado, decidindo na hora se guardo ou gasto. A saída é tirar essa decisão do dia a dia.
-
-![Retrato de Benjamin Graham](img:graham "Benjamin Graham. {{credit:graham}}")
 
 Na minha rotina isso virou duas regras. No dia em que a renda entra, uma parte vai sozinha para a reserva e para investimentos, antes que eu veja o saldo. E quando a renda sobe, o percentual automático sobe junto, antes que o padrão de gasto suba primeiro. Disciplina manual falha; agendamento não esquece.
 

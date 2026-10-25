@@ -4,10 +4,7 @@ Every month a new model claims to be the best in the world. And almost every mon
 
 ## The model thinks, the harness acts
 
-In 1836, Thomas Carlyle wrote a line that fits people and, today, agents:
-
-> "Nowhere do you find him without Tools; without Tools he is nothing, with Tools he is all."
-> Thomas Carlyle, *Sartor Resartus* (1836)
+In 1836, Thomas Carlyle wrote a line that fits people and, today, agents: "Nowhere do you find him without Tools; without Tools he is nothing, with Tools he is all." (*Sartor Resartus*).
 
 A model on its own takes text in and puts text out. What turns that into work is the loop around it: call the model, run the action it asked for, return the result and call it again.
 
@@ -17,10 +14,7 @@ That's exactly what I see in Claude Code: it reads a file, runs the tests, reads
 
 ## Automate what doesn't need thinking
 
-In 1911, the mathematician Alfred North Whitehead wrote:
-
-> "Civilization advances by extending the number of important operations which we can perform without thinking about them."
-> Alfred North Whitehead, *An Introduction to Mathematics* (1911)
+In 1911, the mathematician Alfred North Whitehead wrote: "Civilization advances by extending the number of important operations which we can perform without thinking about them." (*An Introduction to Mathematics*).
 
 A good harness does that for the agent. It doesn't have to rediscover how the project works every session, because it's already written down.
 
@@ -30,10 +24,7 @@ Mine has three parts. An instructions file at the repo root, with conventions, b
 
 ## Trust, but verify
 
-Ronald Reagan popularized a Russian proverb when signing a disarmament treaty with Gorbachev in 1987:
-
-> "Trust, but verify."
-> Ronald Reagan (1987)
+Ronald Reagan popularized a Russian proverb when signing a disarmament treaty with Gorbachev in 1987: "Trust, but verify."
 
 It's the best description I know of how to set up an agent. The tools a model gets matter as much as the model: clear commands, short outputs and explicit limits make an average model look good, and confusing tools make a good model look lost.
 
@@ -43,10 +34,7 @@ In practice, the most important part of my harness is permissions. The agent can
 
 ## When it's not worth it
 
-In 2019, Rich Sutton opened a famous essay like this:
-
-> "The biggest lesson that can be read from 70 years of AI research"
-> Rich Sutton, *The Bitter Lesson* (2019)
+In 2019, Rich Sutton opened a famous essay like this: "The biggest lesson that can be read from 70 years of AI research" (*The Bitter Lesson*).
 
 The lesson, in his words, is that general methods that use more computation end up beating solutions packed with built-in human knowledge. The classic example is chess, where brute-force search overtook years of hand-written heuristics.
 

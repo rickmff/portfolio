@@ -4,10 +4,7 @@ Todo mês sai um modelo novo que promete ser o melhor do mundo. E quase todo mê
 
 ## O modelo pensa, o harness age
 
-Thomas Carlyle escreveu, em 1836, uma frase que serve para pessoas e, hoje, para agentes:
-
-> "Nowhere do you find him without Tools; without Tools he is nothing, with Tools he is all."
-> Thomas Carlyle, *Sartor Resartus* (1836)
+Thomas Carlyle escreveu, em 1836, uma frase que serve para pessoas e, hoje, para agentes: "Nowhere do you find him without Tools; without Tools he is nothing, with Tools he is all." (*Sartor Resartus*).
 
 Um modelo sozinho só recebe texto e devolve texto. Quem transforma isso em trabalho é o loop em volta: chamar o modelo, executar a ação que ele pediu, devolver o resultado e chamar de novo.
 
@@ -17,10 +14,7 @@ Um modelo sozinho só recebe texto e devolve texto. Quem transforma isso em trab
 
 ## Automatizar o que não precisa de pensamento
 
-O matemático Alfred North Whitehead escreveu, em 1911:
-
-> "Civilization advances by extending the number of important operations which we can perform without thinking about them."
-> Alfred North Whitehead, *An Introduction to Mathematics* (1911)
+O matemático Alfred North Whitehead escreveu, em 1911: "Civilization advances by extending the number of important operations which we can perform without thinking about them." (*An Introduction to Mathematics*).
 
 Um bom harness faz isso pelo agente. Ele não precisa redescobrir a cada sessão como o projeto funciona, porque isso já está escrito.
 
@@ -30,10 +24,7 @@ No meu caso são três peças. Um arquivo de instruções na raiz do repositóri
 
 ## Confie, mas verifique
 
-Ronald Reagan popularizou um provérbio russo ao assinar um tratado de desarmamento com Gorbachev, em 1987:
-
-> "Trust, but verify."
-> Ronald Reagan (1987)
+Ronald Reagan popularizou um provérbio russo ao assinar um tratado de desarmamento com Gorbachev, em 1987: "Trust, but verify."
 
 É a melhor descrição que conheço de como configurar um agente. A ferramenta que o modelo recebe importa tanto quanto o modelo: comandos claros, saídas curtas e limites explícitos fazem um modelo médio parecer bom, e ferramentas confusas fazem um modelo bom parecer perdido.
 
@@ -43,10 +34,7 @@ Na prática, a parte mais importante do meu harness são as permissões. O agent
 
 ## Quando isso não vale
 
-Em 2019, Rich Sutton abriu um ensaio famoso assim:
-
-> "The biggest lesson that can be read from 70 years of AI research"
-> Rich Sutton, *The Bitter Lesson* (2019)
+Em 2019, Rich Sutton abriu um ensaio famoso assim: "The biggest lesson that can be read from 70 years of AI research" (*The Bitter Lesson*).
 
 A lição, segundo ele, é que os métodos gerais que aproveitam mais computação acabam vencendo as soluções cheias de conhecimento humano embutido. O exemplo clássico é o xadrez, em que a busca em força bruta superou anos de heurísticas escritas à mão.
 
