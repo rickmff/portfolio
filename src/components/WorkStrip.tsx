@@ -349,6 +349,40 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
     if (hasMobile && matchMedia("(max-width: 600px)").matches) setView("mobile");
   }, [hasMobile]);
 
+  // Slot width: as large as the screen allows (a 16:9 card no taller than 62% of it), with the
+  // first screen showing k whole slots and half of the next, whatever the viewport.
+  useLayoutEffect(() => {
+    const el = strip.current;
+    if (!el) return;
+    const fit = () => {
+      const cs = getComputedStyle(el);
+      const pad = parseFloat(cs.paddingLeft);
+      const gap = parseFloat(cs.columnGap) || 0;
+      const room = el.clientWidth - pad;
+      const max = (window.innerHeight * 0.62 * 16) / 9;
+      let k = 1;
+      const slot = () => (room - k * gap) / (k + 0.5);
+      while (slot() > max && k < 6) k++;
+      el.style.setProperty("--slot-w", `${slot()}px`);
+    };
+    fit();
+    // The cards slide in from the right; snapping that ran during the slide lands a little off
+    // the start, so settle back onto it once the first card is in place.
+    const settle = (e: TransitionEvent) => {
+      if (e.target === el.firstElementChild && e.propertyName === "transform" && el.scrollLeft < 200)
+        el.scrollTo({ left: 0 });
+    };
+    el.addEventListener("transitionend", settle);
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    window.addEventListener("resize", fit);
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("transitionend", settle);
+      window.removeEventListener("resize", fit);
+    };
+  }, [strip]);
+
   // While the cards morph between Desktop and Mobile, keep the one in the middle in the middle.
   const morphed = useRef(view);
   useLayoutEffect(() => {
@@ -372,7 +406,13 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
     const end = performance.now() + 1400;
     let frame = 0;
     const step = () => {
-      el.scrollLeft = anchor.offsetLeft + anchor.offsetWidth / 2 - el.clientWidth / 2;
+      // The end cards rest against the padding (see .strip-item:first-child in the CSS).
+      el.scrollLeft =
+        anchor === items[0]
+          ? 0
+          : anchor === items.at(-1)
+            ? el.scrollWidth
+            : anchor.offsetLeft + anchor.offsetWidth / 2 - el.clientWidth / 2;
       if (performance.now() < end) frame = requestAnimationFrame(step);
       else el.classList.remove("is-morphing");
     };
