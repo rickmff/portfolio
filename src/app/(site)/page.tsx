@@ -3,7 +3,6 @@ import Link from "next/link";
 import { BookShelf } from "@/components/BookShelf";
 import { CursorArrow } from "@/components/CursorArrow";
 import { HeroLines } from "@/components/HeroLines";
-import { ScrollCue } from "@/components/ScrollCue";
 import { WorkStrip } from "@/components/WorkStrip";
 import { WritingList } from "@/components/WritingList";
 import { readAndReading, toShelfBook } from "@/lib/books";
@@ -51,9 +50,8 @@ export default async function Home() {
         <div className="wrap section-head center">
           <h2>{t.home.latestWork}</h2>
         </div>
-        {projects.length ? <ScrollCue target="#work-strip" label={t.home.latestWork} /> : null}
         <div id="work-strip">
-          <WorkStrip projects={projects} />
+          <WorkStrip projects={projects} cue />
         </div>
         {projects.length ? <CursorArrow section="#work" strip="#work-strip" /> : null}
       </section>
