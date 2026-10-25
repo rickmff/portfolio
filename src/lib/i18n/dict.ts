@@ -19,6 +19,8 @@ const en = {
     mobile: "Mobile",
     play: "Play",
     pause: "Pause",
+    previousProject: "Previous project",
+    nextProject: "Next project",
   },
   books: {
     eyebrow: "Library",
@@ -97,6 +99,8 @@ const pt: Dict = {
     mobile: "Mobile",
     play: "Reproduzir",
     pause: "Pausar",
+    previousProject: "Projeto anterior",
+    nextProject: "Próximo projeto",
   },
   books: {
     eyebrow: "Biblioteca",
