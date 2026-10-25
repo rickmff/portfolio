@@ -303,13 +303,14 @@ a {
 }
 .frame-control circle {
   fill: none;
-  stroke-width: 1;
+  stroke-width: 1.6;
 }
 .frame-control-track {
-  stroke: rgb(255 255 255 / 0.18);
+  stroke: rgb(255 255 255 / 0.22);
 }
 .frame-control-ring {
   stroke: #fff;
+  stroke-linecap: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   transform: rotate(-90deg);
