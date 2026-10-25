@@ -2,11 +2,12 @@ import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
 import { getHarness } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
+import { metaFor } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getDict();
-  return { title: t.harness.eyebrow, description: t.harness.title };
+  return metaFor({ title: t.harness.eyebrow, description: t.harness.title, path: "/harness" });
 }
 
 const host = (url: string) => {

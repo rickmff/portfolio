@@ -1,4 +1,5 @@
 import { Arrow } from "@/components/Arrow";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BookShelf } from "@/components/BookShelf";
 import { CursorArrow } from "@/components/CursorArrow";
@@ -8,8 +9,14 @@ import { WritingList } from "@/components/WritingList";
 import { HOME_SHELF_SIZE, readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
+import { metaFor } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export async function generateMetadata(): Promise<Metadata> {
+  const [meta, s] = await Promise.all([metaFor({ path: "/", type: "profile" }), getSettings()]);
+  // Absolute, or the layout's template would append the name a second time.
+  return { ...meta, title: { absolute: `${s.name} — ${s.role}` } };
+}
 
 export default async function Home() {
   const [settings, projects, books, posts, t] = await Promise.all([
