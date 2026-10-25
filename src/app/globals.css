@@ -2039,6 +2039,49 @@ button.book-read {
   margin-top: 0.8em;
 }
 
+/* Older experience entries sit in <details class="see-more">, behind a quiet "See more" toggle. */
+.about details.see-more {
+  margin: 1.4em 0 0;
+  padding: 0;
+  border: 0;
+}
+.about details.see-more summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+.about details.see-more summary::-webkit-details-marker {
+  display: none;
+}
+.about details.see-more summary::after {
+  content: "+";
+  font-size: 13px;
+}
+.about details.see-more summary:hover {
+  color: var(--ink);
+}
+.about details.see-more[open] summary {
+  margin-bottom: 0;
+}
+.about details.see-more[open] summary::after {
+  content: "−";
+}
+.about details.see-more .less,
+.about details.see-more[open] .more {
+  display: none;
+}
+.about details.see-more[open] .less {
+  display: inline;
+}
+
 /* Harness */
 .harness-group + .harness-group {
   margin-top: 64px;
