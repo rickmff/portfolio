@@ -1,0 +1,1 @@
+Ten years of shipping software taught me that code is the means, not the point. Now that AI agents write much of it, my job is the part they can't do: framing the problem, shaping the system and holding the quality bar. [I write about](/blog) how that works in practice.
