@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { BookQuote } from "@/components/BookQuote";
 import { bookHref, onShelf } from "@/lib/books";
 import { getBooks } from "@/lib/data";

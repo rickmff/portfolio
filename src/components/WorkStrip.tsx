@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Arrow } from "./Arrow";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from "react";
 import type { Project } from "@/db/schema";
 import { useDict } from "@/lib/i18n/client";

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/JsonLd";
 import { getSettings } from "@/lib/data";
-import { getDict } from "@/lib/i18n/server";
+import { getDict, getLocale } from "@/lib/i18n/server";
 import { renderMarkdown } from "@/lib/markdown";
-import { breadcrumbs, metaFor, PERSON_ID, PROFILE_IMAGE, SITE_URL } from "@/lib/seo";
+import { breadcrumbs, localeUrl, metaFor, PERSON_ID, PROFILE_IMAGE } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AboutPage() {
-  const [settings, t] = await Promise.all([getSettings(), getDict()]);
+  const [settings, t, locale] = await Promise.all([getSettings(), getDict(), getLocale()]);
   if (!settings.about) notFound();
   return (
     <article className="section">
@@ -20,13 +20,14 @@ export default async function AboutPage() {
         graph={[
           {
             "@type": "ProfilePage",
-            "@id": `${SITE_URL}/about`,
-            url: `${SITE_URL}/about`,
+            "@id": localeUrl(locale, "/about"),
+            url: localeUrl(locale, "/about"),
+            inLanguage: locale === "pt" ? "pt-BR" : "en",
             name: `${t.about.eyebrow} — ${settings.name}`,
             mainEntity: { "@id": PERSON_ID },
             about: { "@id": PERSON_ID },
           },
-          breadcrumbs([{ name: settings.name, path: "/" }, { name: t.about.eyebrow, path: "/about" }]),
+          breadcrumbs(locale, [{ name: settings.name, path: "/" }, { name: t.about.eyebrow, path: "/about" }]),
         ]}
       />
       <header className="wrap page-title reveal">

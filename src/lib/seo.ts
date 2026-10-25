@@ -1,6 +1,7 @@
 import "server-only";
 import type { Metadata } from "next";
 import { getSettings } from "./data";
+import { type Locale, localePath } from "./i18n/dict";
 import { getLocale } from "./i18n/server";
 import type { SiteSettings } from "./settings";
 
@@ -12,7 +13,18 @@ export const WEBSITE_ID = `${SITE_URL}/#website`;
 export const PROFILE_IMAGE = "/profile.jpg";
 
 /** Uploads and covers are stored as site-relative paths; structured data wants full URLs. */
-export const absoluteUrl = (url: string) => (/^https?:\/\//.test(url) ? url : `${SITE_URL}${url.startsWith("/") ? "" : "/"}${url}`);
+export const absoluteUrl = (url: string) =>
+  /^https?:\/\//.test(url) ? url : url === "/" ? SITE_URL : `${SITE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+
+/** The full URL of `path` in `locale` (Portuguese pages live under /pt). */
+export const localeUrl = (locale: Locale, path: string) => absoluteUrl(localePath(locale, path));
+
+/** hreflang links for a page that exists in both languages. */
+export const languageAlternates = (path: string) => ({
+  en: path,
+  "pt-BR": localePath("pt", path),
+  "x-default": path,
+});
 
 export const profiles = (s: SiteSettings) => [s.github, s.linkedin, s.twitter].filter(Boolean);
 
@@ -41,25 +53,30 @@ type PageMeta = {
  * `openGraph` wholesale when a page sets them, so every page builds the full set here
  * (the RSS link included) instead of relying on the layout's.
  */
-export function pageMeta(settings: SiteSettings, locale: string, p: PageMeta): Metadata {
+export function pageMeta(settings: SiteSettings, locale: Locale, p: PageMeta): Metadata {
   const description = p.description || settings.bio;
   const images = [{ url: p.image ? absoluteUrl(p.image) : `${SITE_URL}/og` }];
   const site = handle(settings.twitter);
   const title = p.title ?? `${settings.name} — ${settings.role}`;
+  const canonical = p.path && localePath(locale, p.path);
   return {
     ...(p.title && { title: p.title }),
     description,
-    alternates: { ...(p.path && { canonical: p.path }), types: { "application/rss+xml": "/rss.xml" } },
+    alternates: {
+      ...(p.path && { canonical, languages: languageAlternates(p.path) }),
+      types: { "application/rss+xml": "/rss.xml" },
+    },
     openGraph: {
       type: p.type ?? "website",
-      ...(p.path && { url: p.path }),
+      ...(canonical && { url: canonical }),
       siteName: settings.name,
       locale: locale === "pt" ? "pt_BR" : "en_US",
+      alternateLocale: locale === "pt" ? "en_US" : "pt_BR",
       title,
       description,
       images,
       ...(p.type === "article" && {
-        authors: [`${SITE_URL}/about`],
+        authors: [localeUrl(locale, "/about")],
         publishedTime: p.publishedTime?.toISOString(),
         modifiedTime: p.modifiedTime?.toISOString(),
         tags: p.tags,
@@ -101,7 +118,7 @@ export function personSchema(s: SiteSettings) {
   };
 }
 
-export function websiteSchema(s: SiteSettings, locale: string) {
+export function websiteSchema(s: SiteSettings, locale: Locale) {
   return {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
@@ -114,7 +131,7 @@ export function websiteSchema(s: SiteSettings, locale: string) {
   };
 }
 
-export const breadcrumbs = (items: { name: string; path: string }[]) => ({
+export const breadcrumbs = (locale: Locale, items: { name: string; path: string }[]) => ({
   "@type": "BreadcrumbList",
-  itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, item: absoluteUrl(it.path) })),
+  itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, item: localeUrl(locale, it.path) })),
 });

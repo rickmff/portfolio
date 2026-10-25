@@ -1,14 +1,15 @@
 "use client";
 
 import { Arrow } from "@/components/Arrow";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { navigateWithTransition, prefetchFull } from "@/components/PageTransition";
 import { BookQuote } from "@/components/BookQuote";
 import type { BookStatus } from "@/db/schema";
 import { statusLabel } from "@/lib/books";
-import { useDict } from "@/lib/i18n/client";
+import { localePath } from "@/lib/i18n/dict";
+import { useDict, useLocale } from "@/lib/i18n/client";
 
 export type ShelfBook = {
   id: number;
@@ -59,11 +60,12 @@ export function BookShelf({
   const selected = all.find((b) => b.id === open) ?? null;
   const router = useRouter();
   const t = useDict();
+  const locale = useLocale();
 
   // The open book is one click from its page, so load that page in the background.
   useEffect(() => {
-    if (selected) prefetchFull(router, `/books/${selected.slug}`);
-  }, [router, selected]);
+    if (selected) prefetchFull(router, localePath(locale, `/books/${selected.slug}`));
+  }, [router, selected, locale]);
 
   const move = (dir: 1 | -1) => {
     const i = all.findIndex((b) => b.id === open);
@@ -107,7 +109,7 @@ export function BookShelf({
                         aria-pressed={isOpen}
                         aria-label={isOpen ? t.books.openPageFor(b.title) : t.books.by(b.title, b.author)}
                         title={isOpen ? t.books.clickAgain : undefined}
-                        onClick={() => (isOpen ? navigateWithTransition(router, `/books/${b.slug}`) : setOpen(b.id))}
+                        onClick={() => (isOpen ? navigateWithTransition(router, localePath(locale, `/books/${b.slug}`)) : setOpen(b.id))}
                         style={
                           {
                             "--w": `${COVER_W}px`,

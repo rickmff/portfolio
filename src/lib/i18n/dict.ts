@@ -3,6 +3,21 @@ import type { BookStatus } from "@/db/schema";
 export const LOCALES = ["en", "pt"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const LOCALE_COOKIE = "lang";
+/** Request header the middleware sets from the URL: `/pt/...` is Portuguese, everything else English. */
+export const LOCALE_HEADER = "x-locale";
+export const DEFAULT_LOCALE: Locale = "en";
+
+/** The URL of `path` in `locale`: English stays unprefixed, Portuguese lives under `/pt`. */
+export function localePath(locale: Locale, path: string) {
+  if (locale === DEFAULT_LOCALE || !path.startsWith("/") || path.startsWith("//")) return path;
+  return path === "/" ? "/pt" : path.startsWith("/?") || path.startsWith("/#") ? `/pt${path.slice(1)}` : `/pt${path}`;
+}
+
+/** Splits a visible pathname into its language and the path the app routes on. */
+export function splitLocale(pathname: string): { locale: Locale; path: string } {
+  if (pathname === "/pt" || pathname.startsWith("/pt/")) return { locale: "pt", path: pathname.slice(3) || "/" };
+  return { locale: DEFAULT_LOCALE, path: pathname };
+}
 
 const en = {
   intl: "en",

@@ -1,6 +1,6 @@
 import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Book3D } from "@/components/Book3D";
