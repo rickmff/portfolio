@@ -1,7 +1,7 @@
 // Records a project's site for the Latest Work carousel, on desktop and on a phone: a smooth scroll
 // clip that rests on each section, a cover that matches the clip's first frame, and the page meta.
 //   node scripts/capture-project.mjs https://example.com [--out capture/example] [--device both|desktop|mobile]
-//     [--pause 1.2] [--max 22] [--wait 2]
+//     [--pause 1.2] [--max 22] [--wait 2] [--lang en]   (en by default, pt, or any; see pin-language.mjs)
 // Writes desktop/{cover.webp,preview.mp4} (4:5, fills the card), mobile/{cover.webp,preview.mp4}
 // (390×844 phone screen, shown in a phone frame), thumbnail.webp (the site's og:image on the card
 // colour, 4:5, when the site has one) and meta.json.
@@ -15,6 +15,7 @@ import path from "node:path";
 import { parseArgs } from "node:util";
 import { chromium } from "playwright";
 import sharp from "sharp";
+import { ensureLanguage, languageContext, presetLanguage } from "./pin-language.mjs";
 
 const { values: opt, positionals } = parseArgs({
   allowPositionals: true,
@@ -23,6 +24,7 @@ const { values: opt, positionals } = parseArgs({
     device: { type: "string", default: "both" },
     pause: { type: "string", default: "1.2" },
     max: { type: "string", default: "22" },
+    lang: { type: "string", default: "en" },
     wait: { type: "string", default: "2" },
   },
 });
@@ -78,9 +80,10 @@ async function capture(name) {
   await rm(dir, { recursive: true, force: true });
   await mkdir(frames, { recursive: true });
 
-  const page = await browser.newPage({ ...context, reducedMotion: "no-preference", colorScheme: "light" });
+  const page = await browser.newPage({ ...context, ...languageContext(opt.lang), reducedMotion: "no-preference", colorScheme: "light" });
   // Real time while loading; paused and stepped frame by frame once filming starts.
   await page.clock.install();
+  await presetLanguage(page, url, opt.lang);
   // Sites that keep polling never reach network idle; loaded is enough for those.
   await page.goto(url, { waitUntil: "networkidle", timeout: 45_000 }).catch(async (e) => {
     if (e.name !== "TimeoutError") throw e;
@@ -96,6 +99,7 @@ async function capture(name) {
     const button = frame.getByRole("button", { name: consent }).first();
     if (await button.isVisible().catch(() => false)) await button.click({ timeout: 2000 }).catch(() => {});
   }
+  await ensureLanguage(page, opt.lang);
 
   // Walk the page once so lazy images load and one-shot reveal animations have played.
   await page.evaluate(async () => {

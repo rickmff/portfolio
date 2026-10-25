@@ -4,6 +4,7 @@
 //   node scripts/showcase-project.mjs https://example.com [--out capture/example] [--device both|desktop|mobile]
 //     [--desktop 22] [--mobile 16] [--wait 3] [--cookie NEXT_LOCALE=en] [--hide ".cookie-panel"]
 //     [--mobile-url https://example.com/demo]   (the page the phone shows; default: the url)
+//     [--lang en]   (the language to film in: en by default, pt, or any; see pin-language.mjs)
 // Writes showcase.mp4 + showcase.webp (desktop film and poster, the project's showcaseUrl and
 // showcasePosterUrl) and mobile.mp4 + mobile.webp (previewMobileUrl and coverMobileUrl).
 // Filming runs on virtual time like capture-project.mjs, so every animation comes out at 60 fps.
@@ -14,6 +15,7 @@ import path from "node:path";
 import { parseArgs } from "node:util";
 import { chromium } from "playwright";
 import sharp from "sharp";
+import { ensureLanguage, languageContext, presetLanguage } from "./pin-language.mjs";
 
 const { values: opt, positionals } = parseArgs({
   allowPositionals: true,
@@ -22,6 +24,7 @@ const { values: opt, positionals } = parseArgs({
     device: { type: "string", default: "both" },
     desktop: { type: "string", default: "22" },
     mobile: { type: "string", default: "16" },
+    lang: { type: "string", default: "en" },
     wait: { type: "string", default: "3" },
     cookie: { type: "string", multiple: true },
     hide: { type: "string", multiple: true },
@@ -81,7 +84,7 @@ const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PAT
 
 /** Loads the page on a controllable clock, clears banners, plays every reveal once, then freezes time. */
 async function openPage(context, target = url) {
-  const page = await browser.newPage({ ...context, reducedMotion: "no-preference", colorScheme: "light" });
+  const page = await browser.newPage({ ...context, ...languageContext(opt.lang), reducedMotion: "no-preference", colorScheme: "light" });
   await page.clock.install();
   // While filming, only the script scrolls: the page's own scroll guides, snapping and smooth
   // scrollers are muted, and the script's position is put back before every frame.
@@ -120,7 +123,8 @@ async function openPage(context, target = url) {
       },
     });
   });
-  // Sites that pick the language from the visitor's location can be pinned with --cookie NAME=VALUE.
+  await presetLanguage(page, target, opt.lang);
+  // Sites that keep the language somewhere else can be pinned with --cookie NAME=VALUE.
   for (const c of [].concat(opt.cookie ?? [])) {
     const [name, ...rest] = c.split("=");
     await page.context().addCookies([{ name, value: rest.join("="), url: target }]);
@@ -135,6 +139,7 @@ async function openPage(context, target = url) {
     const button = frame.getByRole("button", { name: consent }).first();
     if (await button.isVisible().catch(() => false)) await button.click({ timeout: 2000 }).catch(() => {});
   }
+  await ensureLanguage(page, opt.lang);
   await page.evaluate(async () => {
     const step = innerHeight * 0.6;
     for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
