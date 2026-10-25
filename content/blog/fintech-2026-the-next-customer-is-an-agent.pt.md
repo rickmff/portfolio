@@ -1,5 +1,3 @@
-Banner: J. M. W. Turner, *O Temerário* (1839), National Gallery. Um navio de guerra antigo rebocado por um barco a vapor: o velho sistema levado pelo novo. {{credit:banner}}
-
 Em 2026, abrir uma conta digital ou mandar dinheiro em segundos deixou de impressionar alguém. A vantagem das fintechs saiu do aplicativo bonito e foi para os trilhos por baixo dele. E o próximo cliente dessas empresas talvez nem seja uma pessoa: vai ser um agente de IA comprando em nome dela. Quem vencer essa fase vai vender confiança, não interface.
 
 ## Finança continua cara
@@ -16,7 +14,7 @@ Adam Smith já explicava, em 1776, de onde vem a riqueza: "The division of labou
 
 O caso mais claro dessa divisão em pagamentos é o Pix. O Banco Central construiu os trilhos, obrigou os grandes bancos a participar e deixou que cada fintech competisse no que constrói em cima. Em pouco tempo, pagar com Pix virou hábito no Brasil inteiro.
 
-![Logotipo do Pix, o sistema de pagamentos instantâneos do Banco Central do Brasil](img:pix "Pix, infraestrutura pública de pagamentos. {{credit:pix}}")
+![Logotipo do Pix, o sistema de pagamentos instantâneos do Banco Central do Brasil](img:pix "Pix, infraestrutura pública de pagamentos")
 
 A lição para quem constrói produto é que uma infraestrutura pública e aberta muda o jogo para todo mundo ao mesmo tempo. Dividir a conta do jantar, pagar o café pelo QR code ou receber de um cliente às 23h de domingo virou trivial. Quando isso vira trivial, o diferencial de uma fintech passa a ser o que ela constrói em cima.
 
@@ -26,7 +24,7 @@ Arthur C. Clarke escreveu uma das leis mais citadas sobre tecnologia: "Any suffi
 
 Um agente que compra sozinho parece mágica, e é exatamente isso que preocupa um banco. Os sistemas de pagamento foram feitos supondo que uma pessoa está clicando em "comprar". Em 2025, o Google lançou o AP2, um protocolo aberto para agentes pagarem, com uma resposta simples: *mandates*, contratos digitais assinados que provam o que a pessoa autorizou, com limites de preço e prazo, e o carrinho exato que ela aprovou.
 
-![Diagrama: a pessoa assina um mandato com limites, o agente compra dentro deles e o pagamento é liberado com prova](img:mandates "Como um mandato limita o que o agente pode pagar. Ilustração do autor")
+![Diagrama: a pessoa assina um mandato com limites, o agente compra dentro deles e o pagamento é liberado com prova](img:mandates "Como um mandato limita o que o agente pode pagar")
 
 No dia a dia, isso parece com: "compra a passagem mais barata para Lisboa na sexta, até 150 euros". O agente pesquisa, compra e o banco consegue provar que aquilo foi autorizado. Para quem desenvolve, a fintech do futuro se parece menos com um app e mais com uma API de autorização, limites e prova.
 
@@ -35,8 +33,6 @@ No dia a dia, isso parece com: "compra a passagem mais barata para Lisboa na sex
 O poeta romano Juvenal fez, há quase dois mil anos, a pergunta que todo regulador de IA vai repetir: "Quis custodiet ipsos custodes?", ou "quem vigia os próprios vigias?" (*Sátiras*).
 
 Se agentes passam a mover dinheiro, alguém precisa conferir os agentes, e as regras atuais foram pensadas para sistemas que mudam pouco e são validados uma vez. A tendência natural é que o próprio regulador passe a usar agentes para vigiar agentes, com auditorias de fora para fechar o ciclo.
-
-![Fachada do Bank of England, em Londres](img:boe "Bank of England, em Threadneedle Street. {{credit:boe}}")
 
 Para quem programa, isso tem cara conhecida: limite por agente, log de cada decisão e trilha de auditoria. É o mesmo cuidado que a gente já tem com rate limit e logs num servidor, só que agora com dinheiro de verdade passando por ali.
 
