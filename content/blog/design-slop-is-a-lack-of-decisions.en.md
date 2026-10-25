@@ -1,5 +1,3 @@
-Banner: Georges Seurat, *A Sunday Afternoon on the Island of La Grande Jatte* (1884–1886), Art Institute of Chicago. Thousands of dots, none placed by accident. {{credit:banner}}
-
 This week I posted a 12-second video cleaning up the menu in Menu Online, the digital menu I built for restaurants. I didn't change colors, fonts or layout. I changed six spacing numbers. The menu went from "made by AI" to "made by someone". That's what this post is about: design slop isn't AI's fault, it's a lack of decisions.
 
 ## What design slop is
@@ -18,7 +16,7 @@ Oscar Wilde wrote, from prison, a line that describes a language model better th
 
 The model learned from millions of websites and picks what's most likely. The safest choices, the ones that work anywhere and bother no one, are the most common. Without direction it aims for the middle, and the middle is everyone's average.
 
-![Diagram: without direction, model outputs cluster at the center of the distribution; explicit decisions push them outward](img:converge "Without direction, everything lands in the middle. Illustration by the author")
+![Diagram: without direction, model outputs cluster at the center of the distribution; explicit decisions push them outward](img:converge "Without direction, everything lands in the middle")
 
 That's why so many SaaS products launched with AI look like siblings. It isn't a lack of talent in the model; nobody told it what made that product different.
 

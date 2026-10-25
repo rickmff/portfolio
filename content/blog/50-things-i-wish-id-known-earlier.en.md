@@ -1,5 +1,3 @@
-Banner: Pieter Bruegel the Elder, *The Tower of Babel* (1563), Kunsthistorisches Museum, Vienna. A huge build that falls apart once its parts stop understanding each other. {{credit:banner}}
-
 This is the list I wish someone had handed me when I started putting SaaS products on my own VPS. None of these ideas is new, but most of us only take them seriously after they break in production: the bug that never happens on your laptop, the deploy that takes the app down for a few seconds, the customer who gets charged twice.
 
 It's 50 backend concepts, grouped by theme. Each one comes with an everyday analogy when it helps, a snippet in Node and Postgres, and at the end the solution I'd pick today and why. You don't have to read it in one go: it works better as a guide to come back to when the problem shows up.
@@ -575,7 +573,7 @@ A breaker around calls to an external service. If it fails too much, the circuit
 - **Open:** fails immediately (or returns a fallback) for X seconds.
 - **Half-open:** lets one test call through. If it works, it closes; if it fails, it opens again.
 
-![Circuit breaker diagram: closed, open and half-open, with the four transitions between them](img:breaker-en "The three states of a circuit breaker. Illustration by the author")
+![Circuit breaker diagram: closed, open and half-open, with the four transitions between them](img:breaker-en "The three states of a circuit breaker")
 
 Green is normal operation, red protects the app while the service is sick, and yellow decides whether it has recovered.
 

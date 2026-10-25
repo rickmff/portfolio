@@ -1,5 +1,3 @@
-Banner: J. M. W. Turner, *The Fighting Temeraire* (1839), National Gallery. An old warship towed by a steam tug: the old system carried by the new. {{credit:banner}}
-
 In 2026, opening a digital account or sending money in seconds no longer impresses anyone. The fintech advantage moved from the pretty app to the rails underneath it. And the next customer of these companies may not even be a person: it will be an AI agent buying on someone's behalf. Whoever wins that phase will be selling trust, not interface.
 
 ## Finance is still expensive
@@ -16,7 +14,7 @@ Adam Smith explained in 1776 where wealth comes from: "The division of labour, h
 
 The clearest case of that division in payments is Pix, Brazil's instant payment system. The central bank built the rails, required the large banks to join and let every fintech compete on what it builds on top. In a short time, paying with Pix became a habit across the whole country.
 
-![Pix logo, the Central Bank of Brazil's instant payment system](img:pix "Pix, a public payment infrastructure. {{credit:pix}}")
+![Pix logo, the Central Bank of Brazil's instant payment system](img:pix "Pix, a public payment infrastructure")
 
 The lesson for product builders is that an open, public infrastructure changes the game for everyone at once. Splitting a dinner bill, paying for coffee with a QR code or getting paid by a client at 11 pm on a Sunday became trivial. Once that's trivial, a fintech's edge is whatever it builds on top.
 
@@ -26,7 +24,7 @@ Arthur C. Clarke wrote one of the most quoted laws about technology: "Any suffic
 
 An agent that buys on its own looks like magic, and that's exactly what worries a bank. Payment systems were built assuming a person is clicking "buy". In 2025, Google launched AP2, an open protocol for agents to pay, with a simple answer: *mandates*, signed digital contracts that prove what the person authorized, with price and time limits, and the exact cart they approved.
 
-![Diagram: the person signs a mandate with limits, the agent buys within them and the payment is released with proof](img:mandates "How a mandate limits what an agent can pay. Illustration by the author")
+![Diagram: the person signs a mandate with limits, the agent buys within them and the payment is released with proof](img:mandates "How a mandate limits what an agent can pay")
 
 Day to day, it looks like: "buy the cheapest flight to Lisbon on Friday, up to 150 euros". The agent searches, buys, and the bank can prove it was authorized. For developers, the fintech of the future looks less like an app and more like an API for authorization, limits and proof.
 
@@ -35,8 +33,6 @@ Day to day, it looks like: "buy the cheapest flight to Lisbon on Friday, up to 1
 The Roman poet Juvenal asked, almost two thousand years ago, the question every AI regulator will repeat: "Quis custodiet ipsos custodes?", or "who will guard the guards themselves?" (*Satires*).
 
 If agents start moving money, someone has to check the agents, and today's rules were designed for systems that change little and are validated once. The natural direction is for regulators to use agents to watch agents, with outside audits to close the loop.
-
-![Facade of the Bank of England in London](img:boe "The Bank of England on Threadneedle Street. {{credit:boe}}")
 
 For developers this looks familiar: per-agent limits, a log of every decision and an audit trail. It's the same care we already take with rate limits and logs on a server, except now real money is flowing through it.
 

@@ -1,5 +1,3 @@
-Banner: Pieter Bruegel, o Velho, *A Torre de Babel* (1563), Kunsthistorisches Museum, Viena. Uma obra enorme que desanda quando as partes deixam de se entender. {{credit:banner}}
-
 Esta é a lista que eu queria ter recebido quando comecei a colocar SaaS no meu próprio VPS. Nenhum desses conceitos é novo, mas a maioria a gente só leva a sério depois que dá errado em produção: o bug que não acontece no notebook, o deploy que derruba o app por alguns segundos, a cobrança que sai em dobro.
 
 São 50 conceitos de backend, agrupados por tema. Cada um vem com uma analogia do dia a dia quando ajuda, um trecho de código em Node e Postgres e, no fim, a solução que eu usaria hoje e o porquê. Não precisa ler de uma vez: vale mais como guia para consultar quando o problema aparecer.
@@ -575,7 +573,7 @@ Um disjuntor em volta das chamadas a um serviço externo. Se ele falha demais, o
 - **Aberto:** falha imediatamente (ou devolve um fallback) por X segundos.
 - **Meio-aberto:** deixa passar uma chamada de teste. Deu certo, fecha; falhou, abre de novo.
 
-![Diagrama do circuit breaker: fechado, aberto e meio-aberto, com as quatro transições entre eles](img:breaker-pt "Os três estados de um circuit breaker. Ilustração do autor")
+![Diagrama do circuit breaker: fechado, aberto e meio-aberto, com as quatro transições entre eles](img:breaker-pt "Os três estados de um circuit breaker")
 
 Verde é a operação normal, vermelho protege o app enquanto o serviço está doente, e amarelo decide se ele já se recuperou.
 
