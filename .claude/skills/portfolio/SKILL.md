@@ -1,6 +1,6 @@
 ---
 name: portfolio
-description: Manage the content of rickmff's portfolio (novo.rickmff.com): projects, books, blog, about and harness. Asks which section to edit, interviews for the content, then formats, translates (EN/PT), captures project videos and publishes through the content API.
+description: Manage the content of rickmff's portfolio (novo.rickmff.com): projects, books, blog, about and harness. Asks which section to edit, interviews for the content, then formats, translates (EN/PT), captures project videos, publishes through the content API and finishes with a merged PR that records the changed content in the repo.
 ---
 
 # Portfolio content
@@ -81,3 +81,17 @@ Errors come back as `{"error", "issues"}` with 400 (fix the fields), 401 (token)
 - Changes are live immediately. Check the page with `curl -s -H 'Accept-Language: en' <page>` and `-H 'Accept-Language: pt-BR'`, or open it, and give the user the link (https://novo.rickmff.com/...).
 - Deleting is permanent: confirm with the user first, naming the item.
 - Don't commit captures (`capture/` is git-ignored) and never commit the token.
+
+## 6. Pull request and merge (last step, every time content changed)
+
+The repo keeps a copy of what is published, so every content change ends with a merged PR. Skip this only when nothing was created, edited or deleted.
+1. Save what changed under `content/`, using the exact body you sent to the API:
+   - Blog: `content/blog/<slug>.en.md` and `<slug>.pt.md` (sources), `content/blog/payloads/<slug>.json` (the POST/PATCH body), diagrams you drew in `content/blog/images/`, and new `/media` URLs and image credits in `content/blog/media.json` and `credits.json`.
+   - Projects, books, harness: `content/<collection>/<slug>.json`. Settings (about, hero, role, now): `content/settings.json` with the keys you changed merged in.
+   - Deleted item: remove its file.
+   - Never write the token, captures or downloaded originals there. The repo copy is a record only: the site reads from the database, so it doesn't change the live page.
+2. Work on the session's assigned branch, or on `content/<short-topic>` when there is none. Fetch `main` first, commit with a message that names the items (e.g. "Blog: add design-slop post, update AI post"), and push.
+3. Open a PR to `main` titled after the change. In the body, list each item with its live link and whether it was added, edited or deleted. Follow the session's PR attribution rules.
+4. Merge it yourself (merge commit) once it is mergeable: no conflict, and any checks that ran are green. If something blocks it, fix it, or tell the user what is blocking it. A PR with only `content/` files needs no review.
+5. Tell the user in one line: the live links and the merged PR link.
+
