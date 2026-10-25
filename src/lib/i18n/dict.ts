@@ -17,6 +17,8 @@ const en = {
     noProjects: "No projects yet.",
     desktop: "Desktop",
     mobile: "Mobile",
+    play: "Play",
+    pause: "Pause",
   },
   books: {
     eyebrow: "Library",
@@ -93,6 +95,8 @@ const pt: Dict = {
     noProjects: "Nenhum projeto ainda.",
     desktop: "Desktop",
     mobile: "Mobile",
+    play: "Reproduzir",
+    pause: "Pausar",
   },
   books: {
     eyebrow: "Biblioteca",

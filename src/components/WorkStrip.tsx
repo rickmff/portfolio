@@ -114,7 +114,7 @@ const VIEW_ICON: Record<View, ReactNode> = {
   ),
 };
 
-/** Plays the clip of the visible view while the card is hovered, or on touch screens while it sits mostly in view. */
+/** Plays the clip of the visible view while the card is hovered, or on touch screens from its corner button. */
 function WorkCard({
   project: p,
   index: i,
@@ -134,16 +134,15 @@ function WorkCard({
   // The carousel's switch picks the view; a project with no mobile clip stays on desktop.
   const view: View = jumps || phoneClip ? chosen : "desktop";
   const [active, setActive] = useState(false);
+  // Paused from the corner button; cleared when the pointer leaves the card.
+  const [held, setHeld] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const ring = useRef<SVGCircleElement>(null);
+  const t = useDict();
 
-  useEffect(() => {
-    const el = card.current;
-    if (!el || !matchMedia("(hover: none)").matches) return;
-    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), {
-      threshold: 0.6,
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  // On touch screens nothing plays by itself: the corner button, always shown, plays and pauses.
+  const [touch, setTouch] = useState(false);
+  useEffect(() => setTouch(matchMedia("(hover: none)").matches), []);
 
   // The film starts from the part that matches the chosen view.
   useEffect(() => {
@@ -157,15 +156,36 @@ function WorkCard({
   }, [view, mobileAt]);
 
   useEffect(() => {
+    let current: HTMLVideoElement | null = null;
     card.current?.querySelectorAll("video").forEach((v) => {
-      const on =
-        active &&
-        (v.dataset.showcase != null ? jumps || view === "desktop" : v.dataset.view === view);
+      const shown = v.dataset.showcase != null ? jumps || view === "desktop" : v.dataset.view === view;
+      const on = active && shown;
+      if (on) current = v;
       v.classList.toggle("is-playing", on);
-      if (on) v.play().catch(() => {});
+      if (on && !held) v.play().catch(() => {});
       else v.pause();
     });
-  }, [active, view, jumps]);
+    const v = current as HTMLVideoElement | null;
+    if (!v) return setPlaying(false);
+
+    // The ring under the corner button follows the clip's progress, frame by frame.
+    let frame = 0;
+    const tick = () => {
+      const c = ring.current;
+      if (c && v.duration) c.style.strokeDashoffset = String(1 - v.currentTime / v.duration);
+      frame = requestAnimationFrame(tick);
+    };
+    const sync = () => setPlaying(!v.paused);
+    v.addEventListener("play", sync);
+    v.addEventListener("pause", sync);
+    sync();
+    tick();
+    return () => {
+      cancelAnimationFrame(frame);
+      v.removeEventListener("play", sync);
+      v.removeEventListener("pause", sync);
+    };
+  }, [active, view, jumps, held]);
 
   return (
     <div
@@ -173,8 +193,12 @@ function WorkCard({
       className="strip-item"
       style={{ "--i": i } as CSSProperties}
       data-view={jumps ? "desktop" : view}
-      onMouseEnter={() => setActive(true)}
-      onMouseLeave={() => setActive(false)}
+      onMouseEnter={() => !touch && setActive(true)}
+      onMouseLeave={() => {
+        if (touch) return;
+        setActive(false);
+        setHeld(false);
+      }}
     >
       <Link
         href={`/work/${p.slug}`}
@@ -278,6 +302,24 @@ function WorkCard({
           </div>
         ) : null}
       </Link>
+      {/* Outside the link, so pausing doesn't open the project. */}
+      <button
+        type="button"
+        className={`frame-control${touch || (active && (playing || held)) ? " is-shown" : ""}`}
+        aria-label={playing ? t.home.pause : t.home.play}
+        tabIndex={touch || active ? 0 : -1}
+        onClick={() => (touch ? setActive((a) => !a) : setHeld((h) => !h))}
+      >
+        <svg viewBox="0 0 36 36" aria-hidden="true">
+          <circle className="frame-control-track" cx="18" cy="18" r="17" />
+          <circle ref={ring} className="frame-control-ring" cx="18" cy="18" r="17" pathLength="1" />
+          {!playing ? (
+            <path d="M14.5 12.5v11l9-5.5z" fill="currentColor" />
+          ) : (
+            <path d="M14 12.5v11M22 12.5v11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          )}
+        </svg>
+      </button>
       <div className="strip-meta">
         <Link href={`/work/${p.slug}`}>
           <span
