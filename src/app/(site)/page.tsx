@@ -60,7 +60,7 @@ export default async function Home() {
           <h2>{t.home.latestWork}</h2>
         </div>
         <div id="work-strip">
-          <WorkStrip projects={projects} />
+          <WorkStrip projects={projects} hideAtTop />
         </div>
       </section>
 

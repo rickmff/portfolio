@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Arrow } from "./Arrow";
 import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Project } from "@/db/schema";
 import { useDict } from "@/lib/i18n/client";
@@ -9,8 +10,8 @@ import { useDict } from "@/lib/i18n/client";
 const isVideo = (url: string) => /\.(mp4|webm|mov)(\?|$)/i.test(url);
 
 /**
- * While the pointer is over the strip, the vertical wheel moves the carousel sideways with
- * inertia, then eases onto the nearest project. At either end the wheel goes back to the page.
+ * Shift + wheel over the strip moves the carousel sideways with inertia, then eases onto the
+ * nearest project. A plain wheel scrolls the page; sideways trackpad swipes stay native.
  */
 function useWheelToHorizontal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -35,7 +36,8 @@ function useWheelToHorizontal() {
           snapping = false;
           return;
         }
-        el.scrollLeft += diff * 0.05;
+        // At least a pixel a frame: smaller steps can be rounded away, and the glide would never land.
+        el.scrollLeft += Math.sign(diff) * Math.max(1, Math.abs(diff) * 0.05);
         frame = requestAnimationFrame(step);
       };
       frame = requestAnimationFrame(step);
@@ -60,23 +62,20 @@ function useWheelToHorizontal() {
     };
 
     const onWheel = (e: WheelEvent) => {
-      // Sideways trackpad swipes and pinch-zoom keep their native behaviour.
-      if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || max() <= 0)
-        return;
+      // Only Shift + wheel; pinch-zoom and plain scrolling are left alone.
+      if (!e.shiftKey || e.ctrlKey || max() <= 0) return;
+      // Some browsers already turn Shift + wheel into a sideways delta.
+      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
       if (!frame) target = el.scrollLeft;
-      if (
-        (target <= 1 && e.deltaY < 0) ||
-        (target >= max() - 1 && e.deltaY > 0)
-      )
-        return;
+      if ((target <= 1 && delta < 0) || (target >= max() - 1 && delta > 0)) return;
       e.preventDefault();
       e.stopPropagation(); // keep the page's smooth scroller out of it
       const px =
         e.deltaMode === 1
-          ? e.deltaY * 32
+          ? delta * 32
           : e.deltaMode === 2
-            ? e.deltaY * el.clientWidth
-            : e.deltaY;
+            ? delta * el.clientWidth
+            : delta;
       el.classList.add("is-wheeling");
       snapping = false;
       target = clamp(target + px * 0.85);
@@ -327,9 +326,20 @@ function WorkCard({
   );
 }
 
-/** The carousel, with one Desktop · Mobile switch for all of its cards. */
-export function WorkStrip({ projects }: { projects: Project[] }) {
+/**
+ * The carousel, with one Desktop · Mobile switch for all of its cards. With `hideAtTop` the
+ * switch stays out of sight while the page is at the very top, where the scroll arrow shows.
+ */
+export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]; hideAtTop?: boolean }) {
   const strip = useWheelToHorizontal();
+  const [atTop, setAtTop] = useState(hideAtTop);
+  useEffect(() => {
+    if (!hideAtTop) return;
+    const update = () => setAtTop(window.scrollY < 8);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [hideAtTop]);
   const t = useDict();
   // One switch for the whole carousel. It opens on the visitor's own kind of screen.
   const [view, setView] = useState<View>("desktop");
@@ -374,12 +384,42 @@ export function WorkStrip({ projects }: { projects: Project[] }) {
     };
   }, [view, strip]);
 
+  // Previous / next buttons, each greyed out at its end of the strip.
+  const [ends, setEnds] = useState({ start: true, end: false });
+  useEffect(() => {
+    const el = strip.current;
+    if (!el) return;
+    const update = () =>
+      setEnds({
+        start: el.scrollLeft <= 1,
+        end: el.scrollLeft >= el.scrollWidth - el.clientWidth - 1,
+      });
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      el.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [strip]);
+  const step = (dir: 1 | -1) => {
+    const el = strip.current;
+    if (!el) return;
+    const items = [...el.children] as HTMLElement[];
+    const centre = el.scrollLeft + el.clientWidth / 2;
+    const offset = (item: HTMLElement) => item.offsetLeft + item.offsetWidth / 2 - centre;
+    // Skip the card already (nearly) in the middle.
+    const next =
+      dir > 0 ? items.find((item) => offset(item) > 40) : items.findLast((item) => offset(item) < -40);
+    if (next) el.scrollTo({ left: el.scrollLeft + offset(next), behavior: "smooth" });
+  };
+
   if (projects.length === 0)
     return <p className="muted wrap">{t.home.noProjects}</p>;
   return (
     <>
       {hasMobile ? (
-        <div className="strip-lead">
+        <div className={`strip-lead${hideAtTop && atTop ? " is-hidden" : ""}`} inert={hideAtTop && atTop}>
           <div className="view-toggle strip-toggle" role="group" aria-label={t.home.latestWork}>
             {(["desktop", "mobile"] as const).map((v) => (
               <button
@@ -395,12 +435,32 @@ export function WorkStrip({ projects }: { projects: Project[] }) {
           </div>
         </div>
       ) : null}
-      {/* Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
-          at load; ScrollReveal adds "sr-in". Without JS or with reduced motion the CSS shows them. */}
-      <div className="strip sr" ref={strip}>
-        {projects.map((p, i) => (
-          <WorkCard key={p.id} project={p} index={i} view={view} />
-        ))}
+      <div className="strip-wrap" data-view={view}>
+        <button
+          type="button"
+          className="strip-nav strip-nav-prev"
+          aria-label={t.home.previous}
+          disabled={ends.start}
+          onClick={() => step(-1)}
+        >
+          <Arrow dir="left" />
+        </button>
+        <button
+          type="button"
+          className="strip-nav strip-nav-next"
+          aria-label={t.home.next}
+          disabled={ends.end}
+          onClick={() => step(1)}
+        >
+          <Arrow dir="right" />
+        </button>
+        {/* Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
+            at load; ScrollReveal adds "sr-in". Without JS or with reduced motion the CSS shows them. */}
+        <div className="strip sr" ref={strip}>
+          {projects.map((p, i) => (
+            <WorkCard key={p.id} project={p} index={i} view={view} />
+          ))}
+        </div>
       </div>
     </>
   );
