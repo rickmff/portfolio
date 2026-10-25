@@ -1,0 +1,54 @@
+{
+  "settings": {
+    "about": "Ten years of shipping software taught me that code is the means, not the point. Now that AI agents write much of it, my job is the part they can't do: framing the problem, shaping the system and holding the quality bar. [I write about](/blog) how that works in practice.\n\n## Experience\n\n### Booking.com <small>Mar – Oct 2026</small>\n\n*Senior Software Engineer*\n\nOne of the world's largest online travel platforms.\n\n### TLS <small>Mar 2023</small>\n\n*Senior Front-end Developer*\n\nThe visa and consular services partner trusted by governments around the world.\n\n### Try <small>Apr 2022</small>\n\n*Senior Front-end Developer*\n\nSão Paulo design and research studio shaping products for brands like Avenue and Genial Investimentos.\n\n<details class=\"see-more\">\n<summary><span class=\"more\">See more</span><span class=\"less\">See less</span></summary>\n\n### Warren <small>Nov 2021</small>\n\n*Front-end Developer*\n\nMajor investment brokerage platform serving thousands of investors worldwide.\n\n### Valtech <small>May 2020</small>\n\n*Front-end Developer*\n\nSeveral major international brands and products: mail marketing, landing pages, and blogs.\n\n### Kombi <small>Jun 2019</small>\n\n*Front-end Developer & Designer UX*\n\nFocusing on SEO, UI, and front-end development of e-commerce platforms, landing pages, and blogs.\n\n### ProBrain <small>Jun 2018</small>\n\n*Front-end Developer & Designer UI / UX*\n\nPlatform to carry the games and content for the clients to have the best experience.\n\n### ProBrain <small>Dec 2017</small>\n\n*Intern Game Developer*\n\nDevelopment of games for pedagogical professionals and clients.\n\n</details>\n\n## Awards\n\n- **[Copper · App Sorocaba Award](https://www.linkedin.com/feed/update/urn:li:activity:6597088980259393536/ \"preview:/media/b515d243-3e6f-45d7-898b-9daa645bf45f.webp\")** (2019) — The best website of the year for the agencies in Sorocaba and the region.\n- **[Gold · Tech Innovation Award](https://www.linkedin.com/in/rickmff/overlay/1602538714221/single-media-viewer/?profileId=ACoAACmaiHcBd54yI-rzRQ1PGXZMUSDfp4OEU8s \"preview:/media/cbeb5e82-8da7-4b85-9eb5-9bdbba7db0cf.webp\")** (2018) — The CEV 'Fonoaudiologia' Council awards the best software.\n",
+    "name": null,
+    "role": null,
+    "bio": null,
+    "email": null,
+    "github": null,
+    "linkedin": null,
+    "location": null
+  },
+  "projects": [
+    {
+      "slug": "menu-online",
+      "title": "Menu Online",
+      "year": 2026,
+      "summary": "A digital menu for restaurants that turns orders into ready-to-send WhatsApp messages, with no commission.",
+      "stack": "Next.js · Turso · Clerk · Stripe · Claude",
+      "liveUrl": "https://menuonline.site"
+    },
+    {
+      "slug": "hudrest",
+      "title": "HudRest",
+      "year": 2025,
+      "summary": "Websites, bookings and an AI menu for independent restaurants, for a flat weekly price and no commission.",
+      "stack": "",
+      "liveUrl": "https://hudrest.com/"
+    },
+    {
+      "slug": "im-vestor",
+      "title": "Im-Vestor",
+      "year": 2025,
+      "summary": "A marketplace that matches entrepreneurs with investors and takes them from first contact to a meeting.",
+      "stack": "",
+      "liveUrl": "https://www.im-vestor.com/"
+    },
+    {
+      "slug": "v-arena",
+      "title": "V Arena",
+      "year": 2025,
+      "summary": "The website of a V Rising community server: build creator, command generator, raids and regional leaderboards.",
+      "stack": "",
+      "liveUrl": "https://www.v-arena.com/"
+    },
+    {
+      "slug": "try",
+      "title": "Try",
+      "year": 2022,
+      "summary": "The bilingual website of Try, a São Paulo design and research studio, built in Next.js with a headless CMS.",
+      "stack": "",
+      "liveUrl": "https://www.try.com.br/"
+    }
+  ]
+}
