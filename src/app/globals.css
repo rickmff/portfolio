@@ -213,7 +213,8 @@ a {
   scrollbar-width: none;
   overscroll-behavior-x: contain;
 }
-.strip.is-wheeling {
+.strip.is-wheeling,
+.strip.is-morphing {
   scroll-snap-type: none;
   scroll-behavior: auto;
 }
@@ -226,7 +227,9 @@ a {
   --frame-h: calc(var(--frame-w) * 9 / 16);
   flex: none;
   width: var(--frame-w);
-  transition: width 0.7s var(--ease);
+  /* Desktop ⇄ Mobile: width and height morph together, card after card. */
+  --morph: 0.9s var(--ease) calc(var(--i, 0) * 45ms);
+  transition: width var(--morph);
   scroll-snap-align: center;
   display: flex;
   flex-direction: column;
@@ -235,10 +238,13 @@ a {
 .frame {
   position: relative;
   display: block;
-  aspect-ratio: 16 / 9;
+  height: var(--frame-h);
   overflow: hidden;
   border-radius: 10px;
-  transition: transform 0.6s var(--ease);
+  transition:
+    transform 0.6s var(--ease),
+    height var(--morph),
+    border-radius var(--morph);
 }
 .frame img {
   width: 100%;
@@ -278,7 +284,7 @@ a {
   --frame-h: calc(var(--frame-w) * 16 / 9);
 }
 .strip-item[data-view="mobile"] .frame {
-  aspect-ratio: 9 / 16;
+  border-radius: 14px;
 }
 .frame-control {
   position: absolute;
@@ -305,7 +311,8 @@ a {
   transition:
     opacity 0.35s var(--ease-soft),
     transform 0.6s var(--ease),
-    translate 0.6s var(--ease);
+    translate 0.6s var(--ease),
+    top var(--morph);
 }
 .frame-control.is-shown {
   opacity: 1;
@@ -346,12 +353,32 @@ a {
 .frame-view {
   position: absolute;
   inset: 0;
-  transition: opacity 0.6s var(--ease-soft);
+  transition:
+    opacity 0.7s var(--ease-soft) calc(var(--i, 0) * 45ms + 0.1s),
+    scale 0.9s var(--ease) calc(var(--i, 0) * 45ms),
+    filter 0.7s var(--ease-soft) calc(var(--i, 0) * 45ms);
 }
+/* The outgoing capture blurs and eases back while the incoming one settles in. */
 .strip-item[data-view="mobile"] .frame-desktop,
 .strip-item[data-view="desktop"] .frame-mobile {
   opacity: 0;
+  scale: 1.06;
+  filter: blur(8px);
   pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .strip-item,
+  .frame,
+  .frame-view,
+  .frame-control {
+    --morph: 0s;
+    transition-duration: 0s;
+    transition-delay: 0s;
+  }
+  .frame-view {
+    filter: none !important;
+    scale: none !important;
+  }
 }
 /* On Mobile the frame itself is 9:16 and the reel fills it edge to edge. */
 .frame-mobile {
