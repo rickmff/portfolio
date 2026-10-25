@@ -423,6 +423,106 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
     };
   }, [view, strip]);
 
+  // Cards cut off at an edge step the carousel when clicked, and the hairline under it shows
+  // (and drags) the position.
+  const track = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = strip.current;
+    const bar = track.current;
+    if (!el || !bar) return;
+    const items = () => [...el.children] as HTMLElement[];
+    const peekOf = (item: HTMLElement) => {
+      const s = el.getBoundingClientRect();
+      const r = (item.querySelector(".frame") ?? item).getBoundingClientRect();
+      if (r.right > s.right + 2 && r.left < s.right) return "next";
+      if (r.left < s.left - 2 && r.right > s.left) return "prev";
+      return null;
+    };
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const total = el.scrollWidth;
+      bar.style.setProperty("--thumb-w", String(Math.min(1, el.clientWidth / total)));
+      bar.style.setProperty("--thumb-x", String(el.scrollLeft / total));
+      bar.hidden = total <= el.clientWidth + 1;
+      for (const item of items()) {
+        const peek = peekOf(item);
+        item.classList.toggle("is-peek", peek !== null);
+        if (peek) item.dataset.peek = peek;
+        else delete item.dataset.peek;
+      }
+    };
+    const schedule = () => (frame ||= requestAnimationFrame(update));
+
+    // Moves by one card, landing it where the snap would.
+    const step = (dir: 1 | -1) => {
+      const list = items();
+      const centre = el.scrollLeft + el.clientWidth / 2;
+      const current = list.reduce((a, b) =>
+        Math.abs(b.offsetLeft + b.offsetWidth / 2 - centre) < Math.abs(a.offsetLeft + a.offsetWidth / 2 - centre) ? b : a,
+      );
+      const next = list[Math.min(list.length - 1, Math.max(0, list.indexOf(current) + dir))];
+      el.scrollTo({ left: next.offsetLeft + next.offsetWidth / 2 - el.clientWidth / 2, behavior: "smooth" });
+    };
+    const onClick = (e: MouseEvent) => {
+      const item = (e.target as Element).closest<HTMLElement>(".strip-item");
+      // Keyboard activation (detail 0) still opens the project.
+      if (!item || e.detail === 0 || (e.target as Element).closest(".frame-control")) return;
+      const peek = peekOf(item);
+      if (!peek) return;
+      e.preventDefault();
+      e.stopPropagation();
+      step(peek === "next" ? 1 : -1);
+    };
+
+    // Dragging the hairline moves the strip directly (snapping off), then eases onto a card.
+    let drag: { x: number; left: number } | null = null;
+    const ratio = () => el.scrollWidth / bar.clientWidth;
+    const onDown = (e: PointerEvent) => {
+      const thumb = bar.querySelector<HTMLElement>(".strip-thumb")!.getBoundingClientRect();
+      const box = bar.getBoundingClientRect();
+      el.classList.add("is-wheeling");
+      // A press off the thumb first brings the thumb's middle to the pointer.
+      if (e.clientX < thumb.left || e.clientX > thumb.right)
+        el.scrollLeft = (e.clientX - box.left - thumb.width / 2) * ratio();
+      drag = { x: e.clientX, left: el.scrollLeft };
+      bar.setPointerCapture(e.pointerId);
+      bar.classList.add("is-dragging");
+    };
+    const onMove = (e: PointerEvent) => {
+      if (drag) el.scrollLeft = drag.left + (e.clientX - drag.x) * ratio();
+    };
+    const onUp = () => {
+      if (!drag) return;
+      drag = null;
+      bar.classList.remove("is-dragging");
+      el.classList.remove("is-wheeling"); // snapping back on settles onto the nearest card
+    };
+
+    update();
+    el.addEventListener("scroll", schedule, { passive: true });
+    el.addEventListener("click", onClick, true);
+    bar.addEventListener("pointerdown", onDown);
+    bar.addEventListener("pointermove", onMove);
+    bar.addEventListener("pointerup", onUp);
+    bar.addEventListener("pointercancel", onUp);
+    const ro = new ResizeObserver(schedule);
+    ro.observe(el);
+    // The entrance and the Desktop/Mobile morph move the cards without scrolling.
+    el.addEventListener("transitionend", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      ro.disconnect();
+      el.removeEventListener("scroll", schedule);
+      el.removeEventListener("click", onClick, true);
+      el.removeEventListener("transitionend", schedule);
+      bar.removeEventListener("pointerdown", onDown);
+      bar.removeEventListener("pointermove", onMove);
+      bar.removeEventListener("pointerup", onUp);
+      bar.removeEventListener("pointercancel", onUp);
+    };
+  }, [strip, projects.length]);
+
   if (projects.length === 0)
     return <p className="muted wrap">{t.home.noProjects}</p>;
   return (
@@ -450,6 +550,9 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
         {projects.map((p, i) => (
           <WorkCard key={p.id} project={p} index={i} view={view} />
         ))}
+      </div>
+      <div className="strip-track" ref={track} aria-hidden="true">
+        <div className="strip-thumb" />
       </div>
     </>
   );

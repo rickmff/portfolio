@@ -203,12 +203,15 @@ a {
 }
 
 /* Work strip */
+.strip,
+.strip-track {
+  --gap: 32px;
+  --pad: max(24px, calc((100vw - 1100px) / 2));
+}
 .strip {
   /* Card slots are sized so the first screen always ends on a card cut in half: one full slot
      (or more on wide, short screens) plus half of the next. WorkStrip measures the real width
      and sets --slot-w; this is the one-full-slot value for before it runs. */
-  --gap: 32px;
-  --pad: max(24px, calc((100vw - 1100px) / 2));
   --slot-w: calc((100vw - var(--pad) - var(--gap)) / 1.5);
   display: flex;
   gap: var(--gap);
@@ -237,10 +240,50 @@ a {
   scroll-snap-align: end;
 }
 @media (max-width: 640px) {
-  .strip {
+  .strip,
+  .strip-track {
     --gap: 16px;
     --pad: 16px;
   }
+}
+/* A card cut off at either edge is a step: clicking it moves the carousel that way. */
+.strip-item.is-peek .frame {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='13' fill='%23fff' fill-opacity='.85'/%3E%3Cpath d='M11 8.5l5.5 5.5-5.5 5.5' fill='none' stroke='%230a0a0a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 14 14, e-resize;
+}
+.strip-item.is-peek[data-peek="prev"] .frame {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='13' fill='%23fff' fill-opacity='.85'/%3E%3Cpath d='M17 8.5L11.5 14l5.5 5.5' fill='none' stroke='%230a0a0a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 14 14, w-resize;
+}
+/* A hairline under the cards: the darker part is the stretch on screen. Click or drag it. */
+.strip-track {
+  position: relative;
+  height: 24px;
+  margin: -12px var(--pad) 0;
+  cursor: pointer;
+  touch-action: none;
+}
+.strip-track::before,
+.strip-thumb {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 1px;
+  translate: 0 -50%;
+}
+.strip-track::before {
+  right: 0;
+  background: var(--faint);
+  opacity: 0.3;
+}
+.strip-thumb {
+  width: calc(var(--thumb-w, 0.3) * 100%);
+  left: calc(var(--thumb-x, 0) * 100%);
+  background: var(--muted);
+  transition: height 0.2s var(--ease);
+}
+.strip-track:hover .strip-thumb,
+.strip-track.is-dragging .strip-thumb {
+  height: 2px;
 }
 .strip-item {
   /* Frame size: 16:9 for the desktop film; a 9:16 reel when the carousel is on Mobile. */
@@ -881,7 +924,8 @@ a:hover .arrow[data-dir="out"] {
 
 /* The strip keeps 24px under its cards; take it off the section gap. */
 #work {
-  padding-bottom: calc(var(--section-gap) - 24px);
+  /* ...and the progress hairline under it, so the gap is counted from the line. */
+  padding-bottom: calc(var(--section-gap) - 36px);
 }
 /* On the home page the open (lifted, slightly forward) book is what the eye reads as the
    top of the shelf, so it is that book's top that sits var(--head-gap) under the title. */
