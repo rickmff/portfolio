@@ -5,11 +5,12 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { Book3D } from "@/components/Book3D";
 import { BookPreview } from "@/components/BookPreview";
+import { BookShelf } from "@/components/BookShelf";
 import { BookQuote } from "@/components/BookQuote";
 import { NotesReveal } from "@/components/NotesReveal";
 import { ReadLink } from "@/components/ReadingProgress";
-import { statusLabel } from "@/lib/books";
-import { getBookBySlug } from "@/lib/data";
+import { statusLabel, toShelfBook } from "@/lib/books";
+import { getBookBySlug, getBooks } from "@/lib/data";
 import { getEditions, type GutenbergEdition } from "@/lib/editions";
 import { getGutenbergBook } from "@/lib/gutenberg";
 import { getDict } from "@/lib/i18n/server";
@@ -29,7 +30,11 @@ export default async function BookPage({ params }: Props) {
   const { slug } = await params;
   const b = await getBookBySlug(slug);
   if (!b) notFound();
-  const [t, ed] = await Promise.all([getDict(), getEditions(b)]);
+  const [t, ed, all] = await Promise.all([getDict(), getEditions(b), getBooks()]);
+  // The books page's first shelf (reading, then read), without the book on this page.
+  const others = [...all.filter((o) => o.status === "reading"), ...all.filter((o) => o.status === "read")]
+    .filter((o) => o.id !== b.id)
+    .map(toShelfBook);
   return (
     <article className="section">
       <header className="wrap book-head reveal">
@@ -95,11 +100,16 @@ export default async function BookPage({ params }: Props) {
             <NotesReveal html={renderMarkdown(b.notes)} />
           </section>
         ) : null}
-
-        <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>
-          <Link href="/books" className="link-muted with-arrow"><Arrow dir="left" /> {t.books.all}</Link>
-        </p>
       </div>
+
+      {others.length ? (
+        <section id="more-books" className="wrap" style={{ marginTop: 160 }}>
+          <div className="section-head center">
+            <h2>{t.books.more}</h2>
+          </div>
+          <BookShelf shelves={[{ books: others }]} initialOpen={others[0].id} centered />
+        </section>
+      ) : null}
     </article>
   );
 }

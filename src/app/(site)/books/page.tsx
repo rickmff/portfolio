@@ -19,8 +19,8 @@ export default async function BooksPage() {
   // Reading and read share the first shelf, the current book leading.
   const shelves = [
     { label: t.books.readAndReading, books: [...byStatus("reading"), ...byStatus("read")] },
-    // "next" was folded into the waitlist and is no longer a shelf.
-    ...BOOK_STATUSES.filter((s) => s !== "reading" && s !== "read" && s !== "next").map((s) => ({
+    // "next" was folded into the waitlist, and abandoned books ("Put down") are not shown.
+    ...BOOK_STATUSES.filter((s) => !["reading", "read", "next", "abandoned"].includes(s)).map((s) => ({
       label: t.books.status[s],
       books: byStatus(s),
     })),
