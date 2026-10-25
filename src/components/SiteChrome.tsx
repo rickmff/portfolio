@@ -12,7 +12,6 @@ export function SiteHeader({ settings, harness = false, t }: { settings: SiteSet
         {settings.name}
       </Link>
       <nav aria-label="Main">
-        <Link href="/#work" className="link-muted">{t.nav.work}</Link>
         <Link href="/books" className="link-muted">{t.nav.books}</Link>
         <Link href="/blog" className="link-muted">{t.nav.writing}</Link>
         {harness ? <Link href="/harness" className="link-muted">{t.nav.harness}</Link> : null}

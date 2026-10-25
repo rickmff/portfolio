@@ -3,7 +3,6 @@ import { CursorArrow } from "@/components/CursorArrow";
 import { ProjectCover } from "@/components/ProjectCover";
 import { WorkStrip } from "@/components/WorkStrip";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProject, getPublishedProjects } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
@@ -42,9 +41,6 @@ export default async function ProjectPage({ params }: Props) {
           tint={p.tint}
         />
         <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(p.body) }} />
-        <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>
-          <Link href="/#work" className="link-muted with-arrow"><Arrow dir="left" /> {t.work.all}</Link>
-        </p>
       </div>
       {others.length ? (
         <section id="more-work" style={{ marginTop: 160 }}>
