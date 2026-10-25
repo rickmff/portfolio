@@ -1,5 +1,4 @@
 import { Arrow } from "@/components/Arrow";
-import { CursorArrow } from "@/components/CursorArrow";
 import { JsonLd } from "@/components/JsonLd";
 import { ProjectCover } from "@/components/ProjectCover";
 import { WorkStrip } from "@/components/WorkStrip";
@@ -85,7 +84,6 @@ export default async function ProjectPage({ params }: Props) {
           <div id="more-work-strip">
             <WorkStrip projects={others} />
           </div>
-          <CursorArrow section="#more-work" strip="#more-work-strip" />
         </section>
       ) : null}
     </article>

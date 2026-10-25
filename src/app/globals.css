@@ -864,37 +864,6 @@ a:hover .arrow[data-dir="out"] {
   text-align: center;
   font-size: 13px;
 }
-/* Arrow trailing the cursor in the work section (src/components/CursorArrow.tsx) */
-.cursor-arrow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 50;
-  pointer-events: none;
-  font-size: 15px;
-  opacity: 0;
-  transition: opacity 0.25s var(--ease-soft);
-  will-change: transform;
-}
-.cursor-arrow.is-on {
-  opacity: 1;
-  transition-duration: 0.15s;
-}
-.cursor-arrow .arrow {
-  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.18));
-}
-.cursor-arrow .arrow {
-  display: block;
-  transform: rotate(var(--cursor-rotate, 90deg));
-  transition: transform 0.7s var(--ease);
-}
-.cursor-arrow[data-dir="right"] {
-  --cursor-rotate: 0deg;
-}
-.cursor-arrow[data-dir="left"] {
-  --cursor-rotate: 180deg;
-}
-
 /* Hover preview of a post (src/components/PostLink.tsx) */
 .post-peek {
   position: fixed;
