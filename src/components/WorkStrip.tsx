@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Arrow } from "./Arrow";
 import Link from "next/link";
-import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Project } from "@/db/schema";
 import { useDict } from "@/lib/i18n/client";
 
@@ -344,6 +344,40 @@ export function WorkStrip({ projects, cue = false }: { projects: Project[]; cue?
   useEffect(() => {
     if (hasMobile && matchMedia("(max-width: 600px)").matches) setView("mobile");
   }, [hasMobile]);
+
+  // While the cards morph between Desktop and Mobile, keep the one in the middle in the middle.
+  const morphed = useRef(view);
+  useLayoutEffect(() => {
+    const el = strip.current;
+    if (!el || morphed.current === view) return;
+    morphed.current = view;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const items = [...el.children] as HTMLElement[];
+    const centre = el.scrollLeft + el.clientWidth / 2;
+    const anchor = items.reduce<HTMLElement | undefined>(
+      (a, b) =>
+        !a ||
+        Math.abs(b.offsetLeft + b.offsetWidth / 2 - centre) <
+          Math.abs(a.offsetLeft + a.offsetWidth / 2 - centre)
+          ? b
+          : a,
+      undefined,
+    );
+    if (!anchor) return;
+    el.classList.add("is-morphing");
+    const end = performance.now() + 1400;
+    let frame = 0;
+    const step = () => {
+      el.scrollLeft = anchor.offsetLeft + anchor.offsetWidth / 2 - el.clientWidth / 2;
+      if (performance.now() < end) frame = requestAnimationFrame(step);
+      else el.classList.remove("is-morphing");
+    };
+    frame = requestAnimationFrame(step);
+    return () => {
+      cancelAnimationFrame(frame);
+      el.classList.remove("is-morphing");
+    };
+  }, [view, strip]);
 
   useEffect(() => {
     const el = strip.current;

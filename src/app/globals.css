@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
 :root {
+  /* Home rhythm: between sections, from a section title to its content, and from the
+     content to its "All …" link. */
+  --section-gap: 240px;
+  --head-gap: 48px;
+  --more-gap: 48px;
   --bg: #ffffff;
   --surface: #f6f6f4;
   --ink: #0a0a0a;
@@ -128,7 +133,7 @@ a {
 
 /* Hero */
 .hero {
-  padding-block: 200px 160px;
+  padding-block: 200px var(--section-gap);
   text-align: center;
 }
 .hero h1,
@@ -167,20 +172,25 @@ a {
   }
 }
 @media (max-width: 640px) {
+  :root {
+    --section-gap: 160px;
+    --head-gap: 40px;
+    --more-gap: 40px;
+  }
   .hero {
-    padding-block: 120px 140px;
+    padding-top: 120px;
   }
 }
 
 /* Section heading */
 .section {
-  padding-bottom: 200px;
+  padding-bottom: var(--section-gap);
 }
 .section-head {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 40px;
+  margin-bottom: var(--head-gap);
   font-size: 13px;
 }
 .section-head h2 {
@@ -198,11 +208,13 @@ a {
   gap: 32px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  margin-top: -12px;
   padding: 12px max(24px, calc((100% - 1100px) / 2)) 24px;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
 }
-.strip.is-wheeling {
+.strip.is-wheeling,
+.strip.is-morphing {
   scroll-snap-type: none;
   scroll-behavior: auto;
 }
@@ -215,7 +227,9 @@ a {
   --frame-h: calc(var(--frame-w) * 9 / 16);
   flex: none;
   width: var(--frame-w);
-  transition: width 0.7s var(--ease);
+  /* Desktop ⇄ Mobile: width and height morph together, card after card. */
+  --morph: 0.9s var(--ease) calc(var(--i, 0) * 45ms);
+  transition: width var(--morph);
   scroll-snap-align: center;
   display: flex;
   flex-direction: column;
@@ -224,10 +238,13 @@ a {
 .frame {
   position: relative;
   display: block;
-  aspect-ratio: 16 / 9;
+  height: var(--frame-h);
   overflow: hidden;
   border-radius: 10px;
-  transition: transform 0.6s var(--ease);
+  transition:
+    transform 0.6s var(--ease),
+    height var(--morph),
+    border-radius var(--morph);
 }
 .frame img {
   width: 100%;
@@ -267,7 +284,7 @@ a {
   --frame-h: calc(var(--frame-w) * 16 / 9);
 }
 .strip-item[data-view="mobile"] .frame {
-  aspect-ratio: 9 / 16;
+  border-radius: 14px;
 }
 .frame-control {
   position: absolute;
@@ -294,7 +311,8 @@ a {
   transition:
     opacity 0.35s var(--ease-soft),
     transform 0.6s var(--ease),
-    translate 0.6s var(--ease);
+    translate 0.6s var(--ease),
+    top var(--morph);
 }
 .frame-control.is-shown {
   opacity: 1;
@@ -335,12 +353,32 @@ a {
 .frame-view {
   position: absolute;
   inset: 0;
-  transition: opacity 0.6s var(--ease-soft);
+  transition:
+    opacity 0.7s var(--ease-soft) calc(var(--i, 0) * 45ms + 0.1s),
+    scale 0.9s var(--ease) calc(var(--i, 0) * 45ms),
+    filter 0.7s var(--ease-soft) calc(var(--i, 0) * 45ms);
 }
+/* The outgoing capture blurs and eases back while the incoming one settles in. */
 .strip-item[data-view="mobile"] .frame-desktop,
 .strip-item[data-view="desktop"] .frame-mobile {
   opacity: 0;
+  scale: 1.06;
+  filter: blur(8px);
   pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .strip-item,
+  .frame,
+  .frame-view,
+  .frame-control {
+    --morph: 0s;
+    transition-duration: 0s;
+    transition-delay: 0s;
+  }
+  .frame-view {
+    filter: none !important;
+    scale: none !important;
+  }
 }
 /* On Mobile the frame itself is 9:16 and the reel fills it edge to edge. */
 .frame-mobile {
@@ -360,12 +398,12 @@ a {
 }
 /* Under the section heading: the scroll arrow, then (once the projects are on screen) the
    Desktop · Mobile switch in the same spot. Sits inside the heading's gap, so the
-   heading-to-carousel spacing stays 40px. */
+   heading-to-carousel spacing stays var(--head-gap). */
 .strip-lead {
   display: grid;
   justify-items: center;
   align-items: center;
-  margin: -36px auto 12px;
+  margin: calc(4px - var(--head-gap)) auto calc(var(--head-gap) - 28px);
   min-height: 24px;
 }
 .strip-lead > * {
@@ -818,6 +856,24 @@ a:hover .arrow[data-dir="out"] {
     color 0.4s var(--ease),
     opacity 0.9s var(--ease-soft),
     transform 0.9s var(--ease);
+}
+/* The strip keeps 24px under its cards; take it off the section gap. */
+#work {
+  padding-bottom: calc(var(--section-gap) - 24px);
+}
+/* On the home page the shelf starts at the head gap, with just enough room for a
+   lifted book. */
+#books .shelf-row {
+  margin-top: -20px;
+  padding-top: 20px;
+}
+.section .year-row:last-child {
+  padding-bottom: 0;
+}
+.section-more {
+  margin: var(--more-gap) 0 0;
+  text-align: center;
+  font-size: 13px;
 }
 /* Room under the arrow so the projects arrive after it, not with it. */
 #work-strip {
