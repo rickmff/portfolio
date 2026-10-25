@@ -210,8 +210,12 @@ a {
   display: none;
 }
 .strip-item {
+  /* Frame size: 16:9 for the desktop film; a 9:16 reel when the carousel is on Mobile. */
+  --frame-w: min(720px, 86vw);
+  --frame-h: calc(var(--frame-w) * 9 / 16);
   flex: none;
-  width: min(720px, 86vw);
+  width: var(--frame-w);
+  transition: width 0.7s var(--ease);
   scroll-snap-align: center;
   display: flex;
   flex-direction: column;
@@ -258,11 +262,17 @@ a {
 .strip-item {
   position: relative;
 }
+.strip-item[data-view="mobile"] {
+  --frame-w: min(320px, 62vw);
+  --frame-h: calc(var(--frame-w) * 16 / 9);
+}
+.strip-item[data-view="mobile"] .frame {
+  aspect-ratio: 9 / 16;
+}
 .frame-control {
   position: absolute;
   left: 14px;
-  /* The frame is 16:9 and as wide as the card. */
-  top: calc(min(720px, 86vw) * 9 / 16 - 14px - 36px);
+  top: calc(var(--frame-h) - 14px - 36px);
   width: 36px;
   height: 36px;
   padding: 0;
@@ -303,13 +313,14 @@ a {
 }
 .frame-control circle {
   fill: none;
-  stroke-width: 1;
+  stroke-width: 1.6;
 }
 .frame-control-track {
-  stroke: rgb(255 255 255 / 0.18);
+  stroke: rgb(255 255 255 / 0.22);
 }
 .frame-control-ring {
   stroke: #fff;
+  stroke-linecap: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   transform: rotate(-90deg);
@@ -331,22 +342,13 @@ a {
   opacity: 0;
   pointer-events: none;
 }
+/* On Mobile the frame itself is 9:16 and the reel fills it edge to edge. */
 .frame-mobile {
   display: grid;
-  place-items: center;
 }
 .reel {
   position: relative;
-  height: 88%;
-  aspect-ratio: 9 / 16;
   overflow: hidden;
-  border-radius: 8px;
-  background: rgb(0 0 0 / 0.06);
-  box-shadow: 0 24px 44px -20px rgb(0 0 0 / 0.4);
-  transition: transform 0.8s var(--ease);
-}
-.strip-item[data-view="desktop"] .reel {
-  transform: translateY(14px) scale(0.97);
 }
 .reel img,
 .reel video {

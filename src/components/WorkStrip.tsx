@@ -321,15 +321,7 @@ function WorkCard({
         </svg>
       </button>
       <div className="strip-meta">
-        <Link href={`/work/${p.slug}`}>
-          <span
-            className="mono"
-            style={{ color: "var(--faint)", marginRight: 12 }}
-          >
-            {String(i + 1).padStart(2, "0")}
-          </span>
-          {p.title}
-        </Link>
+        <Link href={`/work/${p.slug}`}>{p.title}</Link>
         <span className="muted">{p.year}</span>
       </div>
     </div>
