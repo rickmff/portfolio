@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Henrique Matos — CV</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono&display=swap" rel="stylesheet" />
+<style>
+  @page { size: A4; margin: 18mm 18mm 16mm; }
+  * { box-sizing: border-box; }
+  :root { --ink: #0a0a0a; --muted: #5f5f5f; --faint: #8a8a8a; --line: #e6e6e3; }
+  body { margin: 0; font-family: Geist, system-ui, sans-serif; font-weight: 400; font-size: 9.6pt; line-height: 1.5; color: var(--ink); }
+  a { color: inherit; text-decoration: none; }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; font-size: 7.6pt; letter-spacing: 0.04em; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+  h1 { margin: 0; font-weight: 300; font-size: 26pt; letter-spacing: -0.02em; line-height: 1.05; }
+  .role { margin: 6px 0 0; color: var(--muted); text-transform: uppercase; }
+  .links { text-align: right; color: var(--muted); line-height: 1.8; }
+  .intro { margin: 16px 0 0; font-size: 10.6pt; line-height: 1.55; max-width: 155mm; }
+  section { margin-top: 20px; }
+  h2 { margin: 0 0 4px; color: var(--faint); font-weight: 400; text-transform: uppercase; }
+  .item { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; padding: 9px 0; border-top: 1px solid var(--line); break-inside: avoid; }
+  .item:first-of-type { border-top: 0; }
+  .item h3 { margin: 0; font-size: 10.2pt; font-weight: 500; }
+  .item .date { color: var(--faint); text-align: right; white-space: nowrap; }
+  .item .sub { grid-column: 1 / -1; margin: 1px 0 0; color: var(--muted); }
+  .item p.desc { grid-column: 1 / -1; margin: 3px 0 0; color: #333; }
+  .skills { margin: 6px 0 0; color: #333; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Henrique Matos</h1>
+    <p class="role mono">Senior Software Engineer</p>
+  </div>
+  <div class="links mono">
+    <a href="https://rickmff.com">rickmff.com</a><br />
+    <a href="https://www.linkedin.com/in/rickmff/">linkedin.com/in/rickmff</a><br />
+    <a href="https://github.com/rickmff">github.com/rickmff</a>
+  </div>
+</header>
+
+<p class="intro">Ten years of shipping software taught me that code is the means, not the point. Now that AI agents write much of it, my job is the part they can't do: framing the problem, shaping the system and holding the quality bar.</p>
+
+<section>
+  <h2 class="mono">Experience</h2>
+  <div class="item"><h3>Booking.com</h3><span class="date mono">Mar – Oct 2026</span><p class="sub mono">Senior Software Engineer</p><p class="desc">One of the world's largest online travel platforms.</p></div>
+  <div class="item"><h3>TLS</h3><span class="date mono">Mar 2023</span><p class="sub mono">Senior Front-end Developer</p><p class="desc">The visa and consular services partner trusted by governments around the world.</p></div>
+  <div class="item"><h3>Try</h3><span class="date mono">Apr 2022</span><p class="sub mono">Senior Front-end Developer</p><p class="desc">São Paulo design and research studio shaping products for brands like Avenue and Genial Investimentos.</p></div>
+  <div class="item"><h3>Warren</h3><span class="date mono">Nov 2021</span><p class="sub mono">Front-end Developer</p><p class="desc">Major investment brokerage platform serving thousands of investors worldwide.</p></div>
+  <div class="item"><h3>Valtech</h3><span class="date mono">May 2020</span><p class="sub mono">Front-end Developer</p><p class="desc">Several major international brands and products: mail marketing, landing pages, and blogs.</p></div>
+  <div class="item"><h3>Kombi</h3><span class="date mono">Jun 2019</span><p class="sub mono">Front-end Developer &amp; UX Designer</p><p class="desc">Focusing on SEO, UI, and front-end development of e-commerce platforms, landing pages, and blogs.</p></div>
+  <div class="item"><h3>ProBrain</h3><span class="date mono">Jun 2018</span><p class="sub mono">Front-end Developer &amp; UI / UX Designer</p><p class="desc">Platform to carry the games and content for the clients to have the best experience.</p></div>
+  <div class="item"><h3>ProBrain</h3><span class="date mono">Dec 2017</span><p class="sub mono">Intern Game Developer</p><p class="desc">Development of games for pedagogical professionals and clients.</p></div>
+</section>
+
+<section>
+  <h2 class="mono">Selected projects</h2>
+  <div class="item"><h3><a href="https://menuonline.site">Menu Online</a></h3><span class="date mono">2026</span><p class="sub mono">menuonline.site · Next.js · Turso · Clerk · Stripe · Claude</p><p class="desc">A digital menu for restaurants that turns orders into ready-to-send WhatsApp messages, with no commission.</p></div>
+  <div class="item"><h3><a href="https://hudrest.com/">HudRest</a></h3><span class="date mono">2025</span><p class="sub mono">hudrest.com</p><p class="desc">Websites, bookings and an AI menu for independent restaurants, for a flat weekly price and no commission.</p></div>
+  <div class="item"><h3><a href="https://www.im-vestor.com/">Im-Vestor</a></h3><span class="date mono">2025</span><p class="sub mono">im-vestor.com</p><p class="desc">A marketplace that matches entrepreneurs with investors and takes them from first contact to a meeting.</p></div>
+  <div class="item"><h3><a href="https://www.v-arena.com/">V Arena</a></h3><span class="date mono">2025</span><p class="sub mono">v-arena.com</p><p class="desc">The website of a V Rising community server: build creator, command generator, raids and regional leaderboards.</p></div>
+  <div class="item"><h3><a href="https://www.try.com.br/">Try</a></h3><span class="date mono">2022</span><p class="sub mono">try.com.br</p><p class="desc">The bilingual website of Try, a São Paulo design and research studio, built in Next.js with a headless CMS.</p></div>
+</section>
+
+<section>
+  <h2 class="mono">Awards</h2>
+  <div class="item"><h3>Copper · App Sorocaba Award</h3><span class="date mono">2019</span><p class="desc">The best website of the year for the agencies in Sorocaba and the region.</p></div>
+  <div class="item"><h3>Gold · Tech Innovation Award</h3><span class="date mono">2018</span><p class="desc">The CEV 'Fonoaudiologia' Council awards the best software.</p></div>
+</section>
+
+<section>
+  <h2 class="mono">Expertise</h2>
+  <p class="skills">Software development · AI-assisted development · AI agents · Fullstack development · TypeScript · React · Next.js</p>
+</section>
+</body>
+</html>
