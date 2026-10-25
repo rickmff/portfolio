@@ -423,7 +423,7 @@ export function WorkStrip({ projects, cue = false }: { projects: Project[]; cue?
       ) : null}
       {/* Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
           at load; ScrollReveal adds "sr-in". Without JS or with reduced motion the CSS shows them. */}
-      <div className="strip sr" ref={strip} data-view={view}>
+      <div className="strip sr" ref={strip}>
         {projects.map((p, i) => (
           <WorkCard key={p.id} project={p} index={i} view={view} />
         ))}
