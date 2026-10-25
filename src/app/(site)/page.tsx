@@ -59,7 +59,7 @@ export default async function Home() {
           <h2>{t.home.latestWork}</h2>
         </div>
         <div id="work-strip">
-          <WorkStrip projects={projects} cue />
+          <WorkStrip projects={projects} />
         </div>
         {projects.length ? <CursorArrow section="#work" strip="#work-strip" /> : null}
       </section>

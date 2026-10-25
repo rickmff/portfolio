@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { Arrow } from "./Arrow";
 import Link from "next/link";
 import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Project } from "@/db/schema";
@@ -328,13 +327,9 @@ function WorkCard({
   );
 }
 
-/**
- * The carousel. With `cue`, a down arrow under the section heading points at it until the
- * projects are on screen; the Desktop · Mobile switch then takes the arrow's place.
- */
-export function WorkStrip({ projects, cue = false }: { projects: Project[]; cue?: boolean }) {
+/** The carousel, with one Desktop · Mobile switch for all of its cards. */
+export function WorkStrip({ projects }: { projects: Project[] }) {
   const strip = useWheelToHorizontal();
-  const [arrived, setArrived] = useState(!cue);
   const t = useDict();
   // One switch for the whole carousel. It opens on the visitor's own kind of screen.
   const [view, setView] = useState<View>("desktop");
@@ -379,46 +374,25 @@ export function WorkStrip({ projects, cue = false }: { projects: Project[]; cue?
     };
   }, [view, strip]);
 
-  useEffect(() => {
-    const el = strip.current;
-    if (!cue || !el) return;
-    const io = new IntersectionObserver(([e]) => setArrived(e.isIntersecting), { threshold: 0.85 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [cue, strip]);
-
   if (projects.length === 0)
     return <p className="muted wrap">{t.home.noProjects}</p>;
   return (
     <>
-      {cue || hasMobile ? (
-        <div className={`strip-lead${arrived ? " is-arrived" : ""}`}>
-          {cue ? (
-            <a
-              href="#work-strip"
-              className="scroll-cue"
-              aria-label={t.home.latestWork}
-              tabIndex={arrived ? -1 : 0}
-            >
-              <Arrow dir="down" />
-            </a>
-          ) : null}
-          {hasMobile ? (
-            <div className="view-toggle strip-toggle" role="group" aria-label={t.home.latestWork}>
-              {(["desktop", "mobile"] as const).map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  aria-pressed={view === v}
-                  tabIndex={arrived ? 0 : -1}
-                  onClick={() => setView(v)}
-                >
-                  {VIEW_ICON[v]}
-                  {t.home[v]}
-                </button>
-              ))}
-            </div>
-          ) : null}
+      {hasMobile ? (
+        <div className="strip-lead">
+          <div className="view-toggle strip-toggle" role="group" aria-label={t.home.latestWork}>
+            {(["desktop", "mobile"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                aria-pressed={view === v}
+                onClick={() => setView(v)}
+              >
+                {VIEW_ICON[v]}
+                {t.home[v]}
+              </button>
+            ))}
+          </div>
         </div>
       ) : null}
       {/* Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
