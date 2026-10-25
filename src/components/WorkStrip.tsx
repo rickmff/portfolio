@@ -117,11 +117,12 @@ const VIEW_ICON: Record<View, ReactNode> = {
 function WorkCard({
   project: p,
   index: i,
+  view: chosen,
 }: {
   project: Project;
   index: number;
+  view: View;
 }) {
-  const t = useDict();
   const card = useRef<HTMLDivElement>(null);
   // "Mobile" shows the project's own mobile clip (a 9:16 reel). Older showcase films without one
   // carry a phone part instead, and their "Mobile" button jumps the film there.
@@ -129,15 +130,9 @@ function WorkCard({
   const phoneClip = Boolean(p.coverMobileUrl || p.previewMobileUrl);
   const mobileAt = showcase && !phoneClip ? p.showcaseMobileAt : null;
   const jumps = mobileAt != null;
-  const hasMobile = jumps || phoneClip;
-  const [view, setView] = useState<View>("desktop");
+  // The carousel's switch picks the view; a project with no mobile clip stays on desktop.
+  const view: View = jumps || phoneClip ? chosen : "desktop";
   const [active, setActive] = useState(false);
-
-  // Open on the visitor's own kind of screen.
-  useEffect(() => {
-    if (hasMobile && matchMedia("(max-width: 600px)").matches)
-      setView("mobile");
-  }, [hasMobile]);
 
   useEffect(() => {
     const el = card.current;
@@ -292,23 +287,7 @@ function WorkCard({
           </span>
           {p.title}
         </Link>
-        {hasMobile ? (
-          <span className="view-toggle" role="group" aria-label={p.title}>
-            {(["desktop", "mobile"] as const).map((v) => (
-              <button
-                key={v}
-                type="button"
-                aria-pressed={view === v}
-                onClick={() => setView(v)}
-              >
-                {VIEW_ICON[v]}
-                {t.home[v]}
-              </button>
-            ))}
-          </span>
-        ) : (
-          <span className="muted">{p.year}</span>
-        )}
+        <span className="muted">{p.year}</span>
       </div>
     </div>
   );
@@ -317,15 +296,36 @@ function WorkCard({
 export function WorkStrip({ projects }: { projects: Project[] }) {
   const strip = useWheelToHorizontal();
   const t = useDict();
+  // One switch for the whole carousel. It opens on the visitor's own kind of screen.
+  const [view, setView] = useState<View>("desktop");
+  const hasMobile = projects.some(
+    (p) => p.coverMobileUrl || p.previewMobileUrl || (p.showcaseUrl && p.showcaseMobileAt != null),
+  );
+  useEffect(() => {
+    if (hasMobile && matchMedia("(max-width: 600px)").matches) setView("mobile");
+  }, [hasMobile]);
+
   if (projects.length === 0)
     return <p className="muted wrap">{t.home.noProjects}</p>;
   return (
-    // Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
-    // at load; ScrollReveal adds "sr-in". Without JS or with reduced motion the CSS shows them.
-    <div className="strip sr" ref={strip}>
-      {projects.map((p, i) => (
-        <WorkCard key={p.id} project={p} index={i} />
-      ))}
-    </div>
+    <>
+      {hasMobile ? (
+        <div className="view-toggle strip-toggle" role="group" aria-label={t.home.latestWork}>
+          {(["desktop", "mobile"] as const).map((v) => (
+            <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>
+              {VIEW_ICON[v]}
+              {t.home[v]}
+            </button>
+          ))}
+        </div>
+      ) : null}
+      {/* Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
+          at load; ScrollReveal adds "sr-in". Without JS or with reduced motion the CSS shows them. */}
+      <div className="strip sr" ref={strip}>
+        {projects.map((p, i) => (
+          <WorkCard key={p.id} project={p} index={i} view={view} />
+        ))}
+      </div>
+    </>
   );
 }

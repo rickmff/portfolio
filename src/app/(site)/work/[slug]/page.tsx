@@ -1,9 +1,10 @@
 import { Arrow } from "@/components/Arrow";
+import { CursorArrow } from "@/components/CursorArrow";
 import { ProjectCover } from "@/components/ProjectCover";
+import { WorkStrip } from "@/components/WorkStrip";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProject } from "@/lib/data";
+import { getProject, getPublishedProjects } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
 import { renderMarkdown } from "@/lib/markdown";
 
@@ -17,9 +18,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const p = await getProject((await params).slug);
+  const [p, all, t] = await Promise.all([getProject((await params).slug), getPublishedProjects(), getDict()]);
   if (!p) notFound();
-  const t = await getDict();
+  // The landing's carousel, without the project on this page.
+  const others = all.filter((o) => o.id !== p.id);
   return (
     <article className="section">
       <header className="wrap page-title reveal">
@@ -39,10 +41,18 @@ export default async function ProjectPage({ params }: Props) {
           tint={p.tint}
         />
         <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(p.body) }} />
-        <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>
-          <Link href="/#work" className="link-muted with-arrow"><Arrow dir="left" /> {t.work.all}</Link>
-        </p>
       </div>
+      {others.length ? (
+        <section id="more-work" style={{ marginTop: 160 }}>
+          <div className="wrap section-head center">
+            <h2>{t.work.more}</h2>
+          </div>
+          <div id="more-work-strip">
+            <WorkStrip projects={others} />
+          </div>
+          <CursorArrow section="#more-work" strip="#more-work-strip" />
+        </section>
+      ) : null}
     </article>
   );
 }
