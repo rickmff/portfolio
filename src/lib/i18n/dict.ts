@@ -58,6 +58,13 @@ const en = {
     reveal: "Reveal notes",
     hide: "Hide again",
   },
+  quotes: {
+    eyebrow: "Quotes",
+    title: "One line from every book I read, the one that stayed.",
+    link: "All quotes",
+    findInBook: "Find it in the book",
+    empty: "No quotes yet.",
+  },
   blog: {
     eyebrow: "Writing",
     title: "Notes on software, products and self‑hosting.",
@@ -126,6 +133,13 @@ const pt: Dict = {
     spoilers: "Spoilers · escondido",
     reveal: "Revelar notas",
     hide: "Esconder de novo",
+  },
+  quotes: {
+    eyebrow: "Citações",
+    title: "Uma frase de cada livro que eu li, a que ficou.",
+    link: "Todas as citações",
+    findInBook: "Encontrar no livro",
+    empty: "Nenhuma citação ainda.",
   },
   blog: {
     eyebrow: "Textos",

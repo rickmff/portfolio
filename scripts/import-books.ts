@@ -8,6 +8,7 @@ import { and, eq, isNull } from "drizzle-orm";
 import { db, schema } from "../src/db";
 import type { Translations } from "../src/db/schema";
 import { bookPages } from "./data/book-pages";
+import { bookQuotes } from "./data/quotes";
 import { bookTranslations } from "./data/translations";
 import books from "./data/books.json";
 
@@ -79,6 +80,27 @@ export async function syncTranslations() {
       await db.update(t).set({ translations: merged }).where(eq(t.id, row.id));
       n++;
     }
+  }
+  return n;
+}
+
+/**
+ * Gives each read book its best-known line from data/quotes.ts, with the English version in its
+ * translations. Only books whose quote is still empty are touched, so backoffice edits stick.
+ */
+export async function syncQuotes() {
+  const { books: t } = schema;
+  const rows = await db
+    .select({ id: t.id, title: t.title, translations: t.translations })
+    .from(t)
+    .where(eq(t.quote, ""));
+  let n = 0;
+  for (const q of bookQuotes) {
+    const row = rows.find((r) => r.title === q.title);
+    if (!row) continue;
+    const translations: Translations = { ...row.translations, en: { ...q.en, ...row.translations.en } };
+    await db.update(t).set({ quote: q.quote, quoteSource: q.source, translations }).where(eq(t.id, row.id));
+    n++;
   }
   return n;
 }

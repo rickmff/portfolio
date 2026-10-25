@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Arrow } from "@/components/Arrow";
 import { BookShelf } from "@/components/BookShelf";
 import { toShelfBook } from "@/lib/books";
 import { getBooks } from "@/lib/data";
@@ -28,6 +30,11 @@ export default async function BooksPage() {
       <section className="wrap page-title reveal">
         <p className="eyebrow" style={{ margin: 0 }}>{t.books.eyebrow}</p>
         <h1>{t.books.title}</h1>
+        <p style={{ margin: "28px 0 0", fontSize: 13 }}>
+          <Link href="/quotes" className="link-muted with-arrow">
+            {t.quotes.link} <Arrow />
+          </Link>
+        </p>
       </section>
       <section className="wrap section">
         <BookShelf shelves={shelves} initialOpen={books.find((b) => b.status === "reading")?.id} />

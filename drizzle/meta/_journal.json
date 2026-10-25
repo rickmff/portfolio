@@ -92,6 +92,13 @@
       "when": 1792900000000,
       "tag": "0012_showcase_mobile_at",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1793000000000,
+      "tag": "0013_book_quote",
+      "breakpoints": true
     }
   ]
 }
