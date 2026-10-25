@@ -210,8 +210,18 @@ a {
   scroll-snap-type: x mandatory;
   margin-top: -12px;
   padding: 12px max(24px, calc((100% - 1100px) / 2)) 24px;
+  transition: gap 0.9s var(--ease);
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+}
+/* The narrower 9:16 reels get more air between them. */
+.strip[data-view="mobile"] {
+  gap: 64px;
+}
+@media (max-width: 640px) {
+  .strip[data-view="mobile"] {
+    gap: 40px;
+  }
 }
 .strip.is-wheeling,
 .strip.is-morphing {
@@ -367,6 +377,7 @@ a {
   pointer-events: none;
 }
 @media (prefers-reduced-motion: reduce) {
+  .strip,
   .strip-item,
   .frame,
   .frame-view,
