@@ -213,55 +213,6 @@ a {
   scrollbar-width: none;
   overscroll-behavior-x: contain;
 }
-/* Previous / next, centred on the frames' height at the edges of the middle card's slot. */
-.strip-wrap {
-  --nav-h: calc(min(720px, 86vw) * 9 / 16);
-  position: relative;
-}
-.strip-wrap[data-view="mobile"] {
-  --nav-h: calc(min(320px, 62vw) * 16 / 9);
-}
-.strip-nav {
-  position: absolute;
-  z-index: 2;
-  top: calc(var(--nav-h) / 2 - 22px);
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  font-size: 16px;
-  transition:
-    opacity 0.35s var(--ease-soft),
-    transform 0.4s var(--ease),
-    top 0.9s var(--ease);
-}
-/* Sits over the white page as much as over a clip, so it takes a little more tint. */
-.strip-wrap .strip-nav {
-  background:
-    radial-gradient(120% 80% at 30% 0%, rgb(255 255 255 / 0.5), rgb(255 255 255 / 0) 60%),
-    linear-gradient(160deg, rgb(255 255 255 / 0.28), rgb(255 255 255 / 0.08)),
-    rgb(24 24 24 / 0.42);
-}
-.strip-nav-prev {
-  left: max(12px, calc(50% - min(720px, 86vw) / 2 - 22px));
-}
-.strip-nav-next {
-  right: max(12px, calc(50% - min(720px, 86vw) / 2 - 22px));
-}
-.strip-nav .arrow {
-  filter: drop-shadow(0 0 1px rgb(0 0 0 / 0.3));
-}
-.strip-nav:hover:not(:disabled) {
-  transform: scale(1.06);
-}
-.strip-nav:disabled {
-  opacity: 0;
-  pointer-events: none;
-}
-.strip-nav:focus-visible {
-  outline: 1px solid var(--ink);
-  outline-offset: 2px;
-}
 .strip.is-wheeling,
 .strip.is-morphing {
   scroll-snap-type: none;
@@ -340,10 +291,9 @@ a {
 .strip-item[data-view="mobile"] .frame {
   border-radius: 14px;
 }
-/* Glass buttons over the carousel (play/pause, previous/next): a frosted, slightly saturated
-   blur of what is behind, a faint top highlight and a hairline edge. */
-.frame-control,
-.strip-nav {
+/* Glass button over the carousel (play/pause): a frosted, slightly saturated blur of what is
+   behind, a faint top highlight and a hairline edge. */
+.frame-control {
   padding: 0;
   border: 0;
   border-radius: 50%;

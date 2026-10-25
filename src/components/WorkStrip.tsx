@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Arrow } from "./Arrow";
 import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Project } from "@/db/schema";
 import { useDict } from "@/lib/i18n/client";
@@ -384,36 +383,6 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
     };
   }, [view, strip]);
 
-  // Previous / next buttons, each greyed out at its end of the strip.
-  const [ends, setEnds] = useState({ start: true, end: false });
-  useEffect(() => {
-    const el = strip.current;
-    if (!el) return;
-    const update = () =>
-      setEnds({
-        start: el.scrollLeft <= 1,
-        end: el.scrollLeft >= el.scrollWidth - el.clientWidth - 1,
-      });
-    update();
-    el.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      el.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, [strip]);
-  const step = (dir: 1 | -1) => {
-    const el = strip.current;
-    if (!el) return;
-    const items = [...el.children] as HTMLElement[];
-    const centre = el.scrollLeft + el.clientWidth / 2;
-    const offset = (item: HTMLElement) => item.offsetLeft + item.offsetWidth / 2 - centre;
-    // Skip the card already (nearly) in the middle.
-    const next =
-      dir > 0 ? items.find((item) => offset(item) > 40) : items.findLast((item) => offset(item) < -40);
-    if (next) el.scrollTo({ left: el.scrollLeft + offset(next), behavior: "smooth" });
-  };
-
   if (projects.length === 0)
     return <p className="muted wrap">{t.home.noProjects}</p>;
   return (
@@ -435,32 +404,12 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
           </div>
         </div>
       ) : null}
-      <div className="strip-wrap" data-view={view}>
-        <button
-          type="button"
-          className="strip-nav strip-nav-prev"
-          aria-label={t.home.previous}
-          disabled={ends.start}
-          onClick={() => step(-1)}
-        >
-          <Arrow dir="left" />
-        </button>
-        <button
-          type="button"
-          className="strip-nav strip-nav-next"
-          aria-label={t.home.next}
-          disabled={ends.end}
-          onClick={() => step(1)}
-        >
-          <Arrow dir="right" />
-        </button>
-        {/* Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
-            at load; ScrollReveal adds "sr-in". Without JS or with reduced motion the CSS shows them. */}
-        <div className="strip sr" ref={strip}>
-          {projects.map((p, i) => (
-            <WorkCard key={p.id} project={p} index={i} view={view} />
-          ))}
-        </div>
+      {/* Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
+          at load; ScrollReveal adds "sr-in". Without JS or with reduced motion the CSS shows them. */}
+      <div className="strip sr" ref={strip}>
+        {projects.map((p, i) => (
+          <WorkCard key={p.id} project={p} index={i} view={view} />
+        ))}
       </div>
     </>
   );
