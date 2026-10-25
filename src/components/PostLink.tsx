@@ -12,14 +12,13 @@ type Props = {
   banner: string | null;
   meta: string;
   excerpt: string;
-  tags: string[];
 };
 
 /**
  * A post on the writing list. On hover (pointer devices only) a small card trails the cursor
- * with the banner, reading time, date and tags.
+ * with the banner, reading time, date and excerpt.
  */
-export function PostLink({ href, title, month, banner, meta, excerpt, tags }: Props) {
+export function PostLink({ href, title, month, banner, meta, excerpt }: Props) {
   const card = useRef<HTMLSpanElement>(null);
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -65,7 +64,6 @@ export function PostLink({ href, title, month, banner, meta, excerpt, tags }: Pr
         <span className="post-peek-body">
           <span className="post-peek-meta">{meta}</span>
           {excerpt ? <span className="post-peek-excerpt">{excerpt}</span> : null}
-          {tags.length ? <span className="post-peek-tags">{tags.map((t) => `#${t}`).join("  ")}</span> : null}
         </span>
       </span>
     </span>

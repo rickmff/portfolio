@@ -917,8 +917,7 @@ a:hover .arrow[data-dir="out"] {
   gap: 8px;
   padding: 12px 14px 14px;
 }
-.post-peek-meta,
-.post-peek-tags {
+.post-peek-meta {
   font-family: var(--font-geist-mono), monospace;
   font-size: 10px;
   letter-spacing: 0.06em;
