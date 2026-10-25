@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BookShelf } from "@/components/BookShelf";
 import { HeroLines } from "@/components/HeroLines";
 import { WorkStrip } from "@/components/WorkStrip";
+import { ScrollCue } from "@/components/ScrollCue";
 import { WritingList } from "@/components/WritingList";
 import { HOME_SHELF_SIZE, readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
@@ -51,6 +52,7 @@ export default async function Home() {
             {t.home.now} — {settings.now}
           </p>
         ) : null}
+        {projects.length ? <ScrollCue href="#work-strip" label={t.home.latestWork} /> : null}
       </section>
 
       <section id="work" className="section">

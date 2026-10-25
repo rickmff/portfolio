@@ -864,6 +864,57 @@ a:hover .arrow[data-dir="out"] {
   text-align: center;
   font-size: 13px;
 }
+/* Down arrow at the foot of the screen, only while the page is at the top
+   (src/components/ScrollCue.tsx). */
+.scroll-cue {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  z-index: 20;
+  padding: 8px;
+  font-size: 16px;
+  color: var(--faint);
+  opacity: 0;
+  translate: -50% 10px;
+  pointer-events: none;
+  transition:
+    color 0.4s var(--ease),
+    opacity 0.6s var(--ease-soft),
+    translate 0.8s var(--ease);
+}
+.scroll-cue.is-shown {
+  opacity: 1;
+  translate: -50% 0;
+  pointer-events: auto;
+}
+.scroll-cue:hover {
+  color: var(--ink);
+}
+.scroll-cue .arrow {
+  display: block;
+  animation: cue 2.6s var(--ease-soft) infinite;
+}
+@keyframes cue {
+  0%,
+  100% {
+    transform: translateY(-3px) rotate(90deg);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(5px) rotate(90deg);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue .arrow {
+    animation: none;
+    transform: rotate(90deg);
+  }
+}
+/* The arrow's target: land with some room above the projects. */
+#work-strip {
+  scroll-margin-top: 15vh;
+}
 /* Hover preview of a post (src/components/PostLink.tsx) */
 .post-peek {
   position: fixed;
