@@ -423,9 +423,11 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
     };
   }, [view, strip]);
 
-  // Cards cut off at an edge step the carousel when clicked, and the hairline under it shows
-  // (and drags) the position.
+  // Cards cut off at an edge step the carousel when clicked; above it, a counter steps it with
+  // − and +, and a hairline shows (and drags) the position.
   const track = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState(0);
+  const stepBy = useRef<(dir: 1 | -1) => void>(() => {});
   useEffect(() => {
     const el = strip.current;
     const bar = track.current;
@@ -438,8 +440,23 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
       if (r.left < s.left - 2 && r.right > s.left) return "prev";
       return null;
     };
+    // The card being looked at: the first at the start, the last at the end, else the one in the middle.
+    const currentIndex = () => {
+      const list = items();
+      if (el.scrollLeft <= 1) return 0;
+      if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 1) return list.length - 1;
+      const centre = el.scrollLeft + el.clientWidth / 2;
+      let best = 0;
+      list.forEach((b, i) => {
+        const a = list[best];
+        if (Math.abs(b.offsetLeft + b.offsetWidth / 2 - centre) < Math.abs(a.offsetLeft + a.offsetWidth / 2 - centre))
+          best = i;
+      });
+      return best;
+    };
     let frame = 0;
     const update = () => {
+      setPos(currentIndex());
       frame = 0;
       const total = el.scrollWidth;
       bar.style.setProperty("--thumb-w", String(Math.min(1, el.clientWidth / total)));
@@ -457,13 +474,10 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
     // Moves by one card, landing it where the snap would.
     const step = (dir: 1 | -1) => {
       const list = items();
-      const centre = el.scrollLeft + el.clientWidth / 2;
-      const current = list.reduce((a, b) =>
-        Math.abs(b.offsetLeft + b.offsetWidth / 2 - centre) < Math.abs(a.offsetLeft + a.offsetWidth / 2 - centre) ? b : a,
-      );
-      const next = list[Math.min(list.length - 1, Math.max(0, list.indexOf(current) + dir))];
+      const next = list[Math.min(list.length - 1, Math.max(0, currentIndex() + dir))];
       el.scrollTo({ left: next.offsetLeft + next.offsetWidth / 2 - el.clientWidth / 2, behavior: "smooth" });
     };
+    stepBy.current = step;
     const onClick = (e: MouseEvent) => {
       const item = (e.target as Element).closest<HTMLElement>(".strip-item");
       // Keyboard activation (detail 0) still opens the project.
@@ -544,15 +558,38 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
           </div>
         </div>
       ) : null}
+      {projects.length > 1 ? (
+        <div className="strip-count">
+          <button
+            type="button"
+            aria-label={t.home.previousProject}
+            disabled={pos === 0}
+            onClick={() => stepBy.current(-1)}
+          >
+            −
+          </button>
+          <span aria-live="polite">
+            {pos + 1}/{projects.length}
+          </span>
+          <button
+            type="button"
+            aria-label={t.home.nextProject}
+            disabled={pos === projects.length - 1}
+            onClick={() => stepBy.current(1)}
+          >
+            +
+          </button>
+        </div>
+      ) : null}
+      <div className="strip-track" ref={track} aria-hidden="true">
+        <div className="strip-thumb" />
+      </div>
       {/* Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
           at load; ScrollReveal adds "sr-in". Without JS or with reduced motion the CSS shows them. */}
       <div className="strip sr" ref={strip}>
         {projects.map((p, i) => (
           <WorkCard key={p.id} project={p} index={i} view={view} />
         ))}
-      </div>
-      <div className="strip-track" ref={track} aria-hidden="true">
-        <div className="strip-thumb" />
       </div>
     </>
   );

@@ -253,11 +253,11 @@ a {
 .strip-item.is-peek[data-peek="prev"] .frame {
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='13' fill='%23fff' fill-opacity='.85'/%3E%3Cpath d='M17 8.5L11.5 14l5.5 5.5' fill='none' stroke='%230a0a0a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 14 14, w-resize;
 }
-/* A hairline under the cards: the darker part is the stretch on screen. Click or drag it. */
+/* A hairline over the cards: the darker part is the stretch on screen. Click or drag it. */
 .strip-track {
   position: relative;
   height: 24px;
-  margin: -12px var(--pad) 0;
+  margin: 0 var(--pad) 20px;
   cursor: pointer;
   touch-action: none;
 }
@@ -284,6 +284,48 @@ a {
 .strip-track:hover .strip-thumb,
 .strip-track.is-dragging .strip-thumb {
   height: 2px;
+}
+/* 1/5 over the hairline, with − and + to step through the cards. */
+.strip-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.strip-count span {
+  min-width: 3.5ch;
+  text-align: center;
+}
+.strip-count button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+.strip-count button:hover:not(:disabled) {
+  color: var(--ink);
+}
+.strip-count button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.strip-count button:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 .strip-item {
   /* Frame size: 16:9 for the desktop film; a 9:16 reel when the carousel is on Mobile. */
@@ -924,8 +966,7 @@ a:hover .arrow[data-dir="out"] {
 
 /* The strip keeps 24px under its cards; take it off the section gap. */
 #work {
-  /* ...and the progress hairline under it, so the gap is counted from the line. */
-  padding-bottom: calc(var(--section-gap) - 36px);
+  padding-bottom: calc(var(--section-gap) - 24px);
 }
 /* On the home page the open (lifted, slightly forward) book is what the eye reads as the
    top of the shelf, so it is that book's top that sits var(--head-gap) under the title. */
