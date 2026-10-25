@@ -6,6 +6,12 @@ import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useRef,
 import type { Project } from "@/db/schema";
 import { useDict } from "@/lib/i18n/client";
 
+// What the cards really measure (see the slot maths in WorkStrip and .strip-item in the CSS), so
+// the browser picks a sharp enough copy on retina screens: one card plus half of the next is about
+// 60% of the width, a little over half on very wide screens; a 9:16 reel is at most about 47vh wide.
+const DESKTOP_SIZES = "(max-width: 1440px) 62vw, (max-width: 2400px) 52vw, 44vw";
+const MOBILE_SIZES = "(max-width: 640px) 62vw, 47vh";
+
 const isVideo = (url: string) => /\.(mp4|webm|mov)(\?|$)/i.test(url);
 
 /**
@@ -210,8 +216,8 @@ function WorkCard({
                 src={(p.showcasePosterUrl || p.coverUrl)!}
                 alt=""
                 fill
-                sizes="(max-width: 600px) 86vw, 720px"
-                quality={82}
+                sizes={DESKTOP_SIZES}
+                quality={85}
                 priority={i < 3}
               />
             ) : null}
@@ -237,8 +243,8 @@ function WorkCard({
                 src={p.coverUrl}
                 alt=""
                 fill
-                sizes="(max-width: 600px) 86vw, 720px"
-                quality={80}
+                sizes={DESKTOP_SIZES}
+                quality={85}
                 priority={i < 3}
               />
             ) : (
@@ -280,8 +286,8 @@ function WorkCard({
                   src={p.coverMobileUrl}
                   alt=""
                   fill
-                  sizes="(max-width: 600px) 40vw, 230px"
-                  quality={80}
+                  sizes={MOBILE_SIZES}
+                  quality={85}
                 />
               ) : null}
               {p.previewMobileUrl ? (
