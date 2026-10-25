@@ -6,7 +6,7 @@ import { HeroLines } from "@/components/HeroLines";
 import { ScrollCue } from "@/components/ScrollCue";
 import { WorkStrip } from "@/components/WorkStrip";
 import { WritingList } from "@/components/WritingList";
-import { latestRead, toShelfBook } from "@/lib/books";
+import { readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
 
@@ -21,7 +21,7 @@ export default async function Home() {
     getDict(),
   ]);
 
-  const shelf = latestRead(books);
+  const shelf = readAndReading(books);
 
   return (
     <>
@@ -61,7 +61,7 @@ export default async function Home() {
       {shelf.length ? (
         <section id="books" className="wrap section">
           <div className="section-head center">
-            <h2>{t.home.recentlyRead}</h2>
+            <h2>{t.books.readAndReading}</h2>
           </div>
           <BookShelf
             shelves={[{ books: shelf.map(toShelfBook) }]}

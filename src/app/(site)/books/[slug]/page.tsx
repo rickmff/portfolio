@@ -9,7 +9,7 @@ import { BookShelf } from "@/components/BookShelf";
 import { BookQuote } from "@/components/BookQuote";
 import { NotesReveal } from "@/components/NotesReveal";
 import { ReadLink } from "@/components/ReadingProgress";
-import { statusLabel, toShelfBook } from "@/lib/books";
+import { readAndReading, statusLabel, toShelfBook } from "@/lib/books";
 import { getBookBySlug, getBooks } from "@/lib/data";
 import { getEditions, type GutenbergEdition } from "@/lib/editions";
 import { getGutenbergBook } from "@/lib/gutenberg";
@@ -31,10 +31,8 @@ export default async function BookPage({ params }: Props) {
   const b = await getBookBySlug(slug);
   if (!b) notFound();
   const [t, ed, all] = await Promise.all([getDict(), getEditions(b), getBooks()]);
-  // The books page's first shelf (reading, then read), without the book on this page.
-  const others = [...all.filter((o) => o.status === "reading"), ...all.filter((o) => o.status === "read")]
-    .filter((o) => o.id !== b.id)
-    .map(toShelfBook);
+  // The "Read & reading" shelf, without the book on this page.
+  const others = readAndReading(all).filter((o) => o.id !== b.id).map(toShelfBook);
   return (
     <article className="section">
       <header className="wrap book-head reveal">

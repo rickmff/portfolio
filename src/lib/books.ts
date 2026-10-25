@@ -39,15 +39,10 @@ export function statusLabel(b: Pick<Book, "status" | "finishedYear">, t: Dict = 
   return t.books.status[b.status];
 }
 
-/** How many books the home page shelf shows. */
-export const HOME_SHELF_SIZE = 8;
-
-/** The first read books in the shelf order set in the backoffice (Books → drag to reorder). */
-export function latestRead(books: Book[], limit = HOME_SHELF_SIZE) {
-  return books
-    .filter((b) => b.status === "read")
-    .sort((a, b) => a.sort - b.sort || a.id - b.id)
-    .slice(0, limit);
+/** The "Read & reading" shelf: the current books first, then the read ones, in the shelf order set in the backoffice (Books → drag to reorder). */
+export function readAndReading<T extends Pick<Book, "status" | "sort" | "id">>(books: T[]) {
+  const ordered = [...books].sort((a, b) => a.sort - b.sort || a.id - b.id);
+  return [...ordered.filter((b) => b.status === "reading"), ...ordered.filter((b) => b.status === "read")];
 }
 
 export const bookHref = (b: Pick<Book, "title"> & { slug?: string }) => `/books/${b.slug ?? slugify(b.title)}`;
