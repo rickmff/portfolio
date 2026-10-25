@@ -34,7 +34,6 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
         {settings.twitter ? <a href={settings.twitter} className="link-muted">X</a> : null}
         {settings.discord ? <a href={settings.discord} className="link-muted">Discord</a> : null}
         {settings.email ? <a href={`mailto:${settings.email}`} className="link-muted">Email</a> : null}
-        <a href="/rss.xml" className="link-muted">RSS</a>
         <LanguageToggle />
       </span>
     </footer>
