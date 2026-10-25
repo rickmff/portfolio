@@ -16,16 +16,18 @@ export const MIME: Record<string, string> = {
   ".svg": "image/svg+xml",
   ".mp4": "video/mp4",
   ".webm": "video/webm",
+  ".pdf": "application/pdf",
 };
 
-/** Saves an uploaded image (or short MP4/WebM clip) and returns its public URL, or null when no file was sent. */
+/** Saves an uploaded image (or short MP4/WebM clip, or a PDF when `pdf` is set) and returns its public URL, or null when no file was sent. */
 export async function saveUpload(
   file: FormDataEntryValue | null,
-  opts: { maxMb?: number } = {},
+  opts: { maxMb?: number; pdf?: boolean } = {},
 ): Promise<string | null> {
   if (!(file instanceof File) || file.size === 0) return null;
   const ext = path.extname(file.name).toLowerCase();
-  if (!MIME[ext] || ext === ".svg") throw new Error("Upload a JPG, PNG, WebP, AVIF or GIF image, or an MP4/WebM clip.");
+  if (ext === ".pdf" ? !opts.pdf : !MIME[ext] || ext === ".svg")
+    throw new Error(opts.pdf ? "Upload a PDF." : "Upload a JPG, PNG, WebP, AVIF or GIF image, or an MP4/WebM clip.");
   // Vercel caps function request bodies at 4.5 MB.
   const maxMb = process.env.VERCEL ? 4 : (opts.maxMb ?? 8);
   if (file.size > maxMb * 1024 * 1024) throw new Error(`Files must be ${maxMb} MB or smaller.`);

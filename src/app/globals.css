@@ -2001,6 +2001,35 @@ button.book-read {
   }
 }
 
+/* About: the CV download under the name, quiet like the view toggle on the work strip. */
+.cv-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition:
+    color 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+.cv-button:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.cv-button svg {
+  transition: transform 0.25s var(--ease);
+}
+.cv-button:hover svg {
+  transform: translateY(2px);
+}
+
 /* About: experience entries stay compact. Each is "### Company <small>date</small>", then
    "*Role*" and a one-line description, so the role and description are styled by position. */
 .about h3 {
@@ -2038,6 +2067,9 @@ button.book-read {
 }
 .about h2 + h3 {
   margin-top: 0.8em;
+}
+.about > div:first-child > :first-child {
+  margin-top: 0;
 }
 
 /* Older experience entries sit in <details class="see-more">, behind a quiet "See more" toggle. */

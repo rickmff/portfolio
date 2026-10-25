@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/JsonLd";
-import { getSettings } from "@/lib/data";
+import { getPublishedProjects, getSettings } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
 import { renderMarkdown } from "@/lib/markdown";
 import { breadcrumbs, metaFor, PERSON_ID, PROFILE_IMAGE, SITE_URL } from "@/lib/seo";
@@ -12,8 +13,37 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AboutPage() {
-  const [settings, t] = await Promise.all([getSettings(), getDict()]);
+  const [settings, t, projects] = await Promise.all([getSettings(), getDict(), getPublishedProjects()]);
   if (!settings.about) notFound();
+  // Projects sit between Experience and Awards, listed like the awards: a quiet link that shows
+  // the project's frame on hover.
+  const [before, after = ""] = settings.about.split(/^(?=## Awards\b)/m);
+  const list = projects.length ? (
+    <>
+      <h2>{t.about.projects}</h2>
+      <ul>
+        {projects.map((p) => {
+          const preview = p.showcasePosterUrl || p.coverUrl;
+          return (
+            <li key={p.slug}>
+              <strong>
+                <Link href={`/work/${p.slug}`} className="has-preview">
+                  {p.title}
+                  {preview && (
+                    <span className="link-preview" aria-hidden="true">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={preview} alt="" loading="lazy" />
+                    </span>
+                  )}
+                </Link>
+              </strong>{" "}
+              ({p.year}){p.summary && <> — {p.summary}</>}
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  ) : null;
   return (
     <article className="section">
       <JsonLd
@@ -32,9 +62,21 @@ export default async function AboutPage() {
       <header className="wrap page-title reveal">
         <p className="eyebrow" style={{ margin: 0 }}>{t.about.eyebrow}</p>
         <h1>{settings.name}</h1>
+        {settings.cv && (
+          <a className="cv-button" href={settings.cv} download={`${settings.name.replace(/\s+/g, "-")}-CV.pdf`}>
+            {t.about.cv}
+            <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+              <path d="M8 2v9m0 0L4.5 7.5M8 11l3.5-3.5M3 14h10" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
+        )}
       </header>
       <div className="wrap">
-        <div className="prose about" dangerouslySetInnerHTML={{ __html: renderMarkdown(settings.about) }} />
+        <div className="prose about">
+          <div dangerouslySetInnerHTML={{ __html: renderMarkdown(before) }} />
+          {list}
+          {after && <div dangerouslySetInnerHTML={{ __html: renderMarkdown(after) }} />}
+        </div>
       </div>
     </article>
   );
