@@ -4,23 +4,15 @@ Hoje quase todo código que entra nos meus projetos passa por um modelo antes de
 
 ## Rápido no novo, lento no antigo
 
-Em 1975, Fred Brooks escreveu a lei mais citada da engenharia de software:
-
-> "Adding manpower to a late software project makes it later."
-> Fred Brooks, *The Mythical Man-Month* (1975)
+Em 1975, Fred Brooks escreveu a lei mais citada da engenharia de software: "Adding manpower to a late software project makes it later." (*The Mythical Man-Month*).
 
 A razão é que quem chega precisa aprender o contexto, e quem já está no projeto para de trabalhar para explicar. Um modelo de IA é o colega que chega todo dia sem lembrar de nada.
-
-![Fred Brooks, autor de The Mythical Man-Month](img:brooks "Fred Brooks. {{credit:brooks}}")
 
 No meu dia a dia é exatamente assim. Um script de migração ou um componente novo sai em minutos, porque não depende de história nenhuma. Uma mudança numa regra antiga do meu SaaS, que depende de decisões tomadas anos atrás, demora o mesmo tempo de sempre, só que agora eu gasto esse tempo explicando o contexto e lendo o que o modelo escreveu.
 
 ## O gargalo saiu do teclado
 
-Brian Kernighan avisou, ainda nos anos 70, onde mora o trabalho difícil:
-
-> "Everyone knows that debugging is twice as hard as writing a program in the first place."
-> Brian Kernighan e P. J. Plauger, *The Elements of Programming Style* (1978)
+Brian Kernighan avisou, ainda nos anos 70, onde mora o trabalho difícil: "Everyone knows that debugging is twice as hard as writing a program in the first place." (Brian Kernighan e P. J. Plauger, *The Elements of Programming Style*, 1978).
 
 Com IA, escrever quase não custa nada. O que sobra é ler, entender e consertar, que é justamente a parte difícil.
 
@@ -30,10 +22,7 @@ Minha rotina mudou de acordo. Antes eu abria o editor e começava a digitar. Hoj
 
 ## Especificar virou a habilidade principal
 
-Brooks de novo, em 1986, muito antes de qualquer modelo de linguagem:
-
-> "The hardest single part of building a software system is deciding precisely what to build."
-> Fred Brooks, *No Silver Bullet* (1986)
+Brooks de novo, em 1986, muito antes de qualquer modelo de linguagem: "The hardest single part of building a software system is deciding precisely what to build." (*No Silver Bullet*).
 
 O modelo faz exatamente o que você pediu, inclusive quando você pediu errado. Um pedido vago volta como código plausível e genérico. Um pedido com contexto, restrições e um exemplo do resultado volta muito perto do que eu escreveria.
 
@@ -43,10 +32,7 @@ Um exemplo concreto: quando peço "cria um endpoint de exportação", recebo alg
 
 ## Onde eu não deixo a IA decidir
 
-Em 1960, J. C. R. Licklider imaginou a parceria entre pessoas e computadores e deixou claro quem fazia o quê:
-
-> "Men will set the goals and supply the motivations"
-> J. C. R. Licklider, *Man-Computer Symbiosis* (1960)
+Em 1960, J. C. R. Licklider imaginou a parceria entre pessoas e computadores e deixou claro quem fazia o quê: "Men will set the goals and supply the motivations" (*Man-Computer Symbiosis*).
 
 O modelo escreve com a mesma confiança quando acerta e quando erra, e é fácil confundir confiança com correção. Por isso a parte de definir o objetivo e julgar o resultado continua comigo.
 

@@ -4,23 +4,15 @@ In 2026, opening a digital account or sending money in seconds no longer impress
 
 ## Finance is still expensive
 
-Walter Bagehot, editor of *The Economist*, opened his book on the London money market with a line that still holds:
-
-> "Money will not manage itself, and Lombard street has a great deal of money to manage."
-> Walter Bagehot, *Lombard Street* (1873)
+Walter Bagehot, editor of *The Economist*, opened his book on the London money market with a line that still holds: "Money will not manage itself, and Lombard street has a great deal of money to manage." (*Lombard Street*, 1873).
 
 Managing other people's money has always been expensive, and for a long time that cost barely moved, even with computers, the internet and phones. That stuck margin is what made room for so many fintechs: the same service with fewer branches, less paper and fewer middlemen.
-
-![Portrait of Walter Bagehot](img:bagehot "Walter Bagehot, author of Lombard Street. {{credit:bagehot}}")
 
 Anyone who sells online feels it on every charge. In a SaaS, the payment fee is one of the first lines on the cost sheet, and it varies a lot depending on the method the customer picks.
 
 ## In 2026, the edge is in the rails
 
-Adam Smith explained in 1776 where wealth comes from:
-
-> "The division of labour, however, so far as it can be introduced, occasions, in every art, a proportionable increase of the productive powers of labour."
-> Adam Smith, *The Wealth of Nations* (1776)
+Adam Smith explained in 1776 where wealth comes from: "The division of labour, however, so far as it can be introduced, occasions, in every art, a proportionable increase of the productive powers of labour." (*The Wealth of Nations*).
 
 The clearest case of that division in payments is Pix, Brazil's instant payment system. The central bank built the rails, required the large banks to join and let every fintech compete on what it builds on top. In a short time, paying with Pix became a habit across the whole country.
 
@@ -30,10 +22,7 @@ The lesson for product builders is that an open, public infrastructure changes t
 
 ## The next customer is an agent
 
-Arthur C. Clarke wrote one of the most quoted laws about technology:
-
-> "Any sufficiently advanced technology is indistinguishable from magic."
-> Arthur C. Clarke, *Profiles of the Future* (1973)
+Arthur C. Clarke wrote one of the most quoted laws about technology: "Any sufficiently advanced technology is indistinguishable from magic." (*Profiles of the Future*, 1973).
 
 An agent that buys on its own looks like magic, and that's exactly what worries a bank. Payment systems were built assuming a person is clicking "buy". In 2025, Google launched AP2, an open protocol for agents to pay, with a simple answer: *mandates*, signed digital contracts that prove what the person authorized, with price and time limits, and the exact cart they approved.
 
@@ -43,10 +32,7 @@ Day to day, it looks like: "buy the cheapest flight to Lisbon on Friday, up to 1
 
 ## Who watches the agent
 
-The Roman poet Juvenal asked, almost two thousand years ago, the question every AI regulator will repeat:
-
-> "Quis custodiet ipsos custodes?" (Who will guard the guards themselves?)
-> Juvenal, *Satires*
+The Roman poet Juvenal asked, almost two thousand years ago, the question every AI regulator will repeat: "Quis custodiet ipsos custodes?", or "who will guard the guards themselves?" (*Satires*).
 
 If agents start moving money, someone has to check the agents, and today's rules were designed for systems that change little and are validated once. The natural direction is for regulators to use agents to watch agents, with outside audits to close the loop.
 
