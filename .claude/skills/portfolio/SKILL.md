@@ -56,6 +56,7 @@ Fields: `title`, `slug`, `excerpt` (one sentence, used in RSS, previews and the 
 2. Ask for the banner image (a file path or URL). Upload it to `/media`. Images inside the post go to `/media` too.
 3. Ask: publish now, schedule (date) or keep as draft.
 4. Write title, excerpt and body in both languages; `POST $API/posts`.
+5. To publish now, set `publishedAt` about 2 hours in the past. The site hides posts whose `publishedAt` is later than the server's clock, and a time of "exactly now" can stay hidden for about an hour (timezone offset). Check that `/blog/<slug>` returns 200.
 
 ### About (/about)
 Setting `about` (English) and `about:pt`: Markdown. Format: a short intro paragraph, then `## Experience` with each job as `### Company <small>2023</small>`, then `*Role*` on its own line, then one short description paragraph; then `## Awards` as a bullet list `- **Place · Award** (date) — description`. No Stack or Certificates sections. `PATCH $API/settings {"about":"…","about:pt":"…"}`.
