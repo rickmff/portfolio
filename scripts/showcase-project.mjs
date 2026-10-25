@@ -40,6 +40,7 @@ const DEVICES = {
   desktop: {
     context: { viewport: { width: 1440, height: 810 }, deviceScaleFactor: 4 / 3 },
     seconds: Number(opt.desktop),
+    size: [1920, 1080],
     file: "showcase",
     target: url,
   },
@@ -53,6 +54,7 @@ const DEVICES = {
         "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
     },
     seconds: Number(opt.mobile),
+    size: [1080, 1920],
     file: "mobile",
     target: opt["mobile-url"] ?? url,
   },
@@ -229,7 +231,7 @@ async function filmScroll(rec, page, budget, { firstRest, lastRest, minSpeed = 0
 await mkdir(out, { recursive: true });
 const report = { url };
 for (const name of names) {
-  const { context, seconds, file, target } = DEVICES[name];
+  const { context, seconds, size, file, target } = DEVICES[name];
   const raw = path.join(out, `${file}-frames`);
   await rm(raw, { recursive: true, force: true });
   await mkdir(raw, { recursive: true });
@@ -240,12 +242,14 @@ for (const name of names) {
   if (bottom) await rec.glide(bottom, 0, 1.8);
   await page.close();
 
-  // H.264 needs even sides; the frames already are (1920×1080, 1080×1920).
+  // A fractional scale factor can round a screenshot a pixel short (1080×1919), which H.264
+  // refuses, so both the clip and the poster are scaled to the exact size.
   const mp4 = path.join(out, `${file}.mp4`);
   const encode = (crf) =>
     execFileSync("ffmpeg", [
       "-y", "-loglevel", "error",
       "-framerate", String(FPS), "-i", path.join(raw, "f%05d.jpg"),
+      "-vf", `scale=${size[0]}:${size[1]}:flags=lanczos`,
       "-c:v", "libx264", "-preset", "slow", "-crf", String(crf), "-pix_fmt", "yuv420p", "-profile:v", "high", "-r", String(FPS),
       "-an", "-movflags", "+faststart",
       mp4,
@@ -253,7 +257,7 @@ for (const name of names) {
   let crf = 20;
   encode(crf);
   while ((await stat(mp4)).size > 30 * 1024 * 1024 && crf < 32) encode((crf += 3));
-  await sharp(rec.files[0]).webp({ quality: 86 }).toFile(path.join(out, `${file}.webp`));
+  await sharp(rec.files[0]).resize(size[0], size[1], { fit: "fill" }).webp({ quality: 86 }).toFile(path.join(out, `${file}.webp`));
   await rm(raw, { recursive: true, force: true });
 
   const { width, height } = await sharp(path.join(out, `${file}.webp`)).metadata();
