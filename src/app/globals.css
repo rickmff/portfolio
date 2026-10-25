@@ -1458,6 +1458,10 @@ a:hover .arrow[data-dir="out"] {
 .prose details[open] summary {
   margin-bottom: 0.6em;
 }
+/* A run of collapsibles (e.g. a long list of topics) reads as one list, not separate boxes. */
+.prose details + details {
+  margin-top: -1em;
+}
 
 /* Footnotes */
 .prose sup a[data-footnote-ref] {

@@ -6,7 +6,8 @@ São 50 conceitos de backend, agrupados por tema. Cada um vem com uma analogia d
 
 Quase todo bug "que só acontece em produção" nasce aqui: duas requisições mexendo no mesmo dado ao mesmo tempo.
 
-### 1. Condições de corrida (race conditions)
+<details>
+<summary>1. Condições de corrida (race conditions)</summary>
 
 Duas operações concorrentes leem e escrevem o mesmo dado, e o resultado depende de quem chega primeiro.
 
@@ -25,7 +26,10 @@ if (r.rowCount === 0) throw new Error('Esgotado');
 
 > **Melhor solução:** empurrar a garantia para o banco, com um UPDATE condicional (`WHERE stock > 0`), uma constraint UNIQUE ou `SELECT ... FOR UPDATE` quando a lógica for mais complexa. **Por quê:** o banco executa cada escrita de forma atômica, então some a janela entre ler e escrever onde a outra requisição entra. Locks em memória do Node não resolvem, porque com duas instâncias cada uma tem a sua memória e o problema volta.
 
-### 2. Deadlocks
+</details>
+
+<details>
+<summary>2. Deadlocks</summary>
 
 Duas transações esperam uma pela outra para sempre. O Postgres detecta e mata uma delas com o erro `deadlock detected`.
 
@@ -42,7 +46,10 @@ Duas transações esperam uma pela outra para sempre. O Postgres detecta e mata 
 
 > **Melhor solução:** acessar e travar as linhas sempre na mesma ordem (por exemplo, ordenar os ids antes dos UPDATEs), manter as transações curtas e envolver a transação num retry automático para o erro `40P01`. **Por quê:** deadlock só nasce quando duas transações travam recursos em ordens opostas; com ordem fixa, uma apenas espera a outra. Como algum deadlock raro ainda pode surgir sob carga, o retry transforma o erro num atraso de milissegundos que o usuário nem percebe.
 
-### 3. Transações de banco de dados
+</details>
+
+<details>
+<summary>3. Transações de banco de dados</summary>
 
 Um grupo de operações que acontece por inteiro ou não acontece.
 
@@ -65,7 +72,10 @@ try {
 
 > **Melhor solução:** uma transação curta envolvendo só as escritas que precisam acontecer juntas, sem chamadas HTTP, envio de e-mail ou upload lá dentro; esses efeitos ficam para depois do COMMIT, via fila ou outbox. **Por quê:** enquanto está aberta, a transação segura locks e ocupa uma conexão do pool. Se houver dentro dela uma API que demora 10 segundos, outras requisições ficam bloqueadas e o pool esgota.
 
-### 4. Propriedades ACID
+</details>
+
+<details>
+<summary>4. Propriedades ACID</summary>
 
 As quatro garantias de uma transação:
 
@@ -78,7 +88,10 @@ As quatro garantias de uma transação:
 
 > **Melhor solução:** usar um banco ACID, como o Postgres, como única fonte da verdade, e tratar Redis, índices de busca e filas como cópias derivadas que podem ser reconstruídas. Some a isso backups automáticos e testados, guardados fora do VPS (pgBackRest ou `pg_dump` agendado). **Por quê:** se um cache ou fila perde dados, você reconstrói a partir do banco; se o banco perde, não há de onde recuperar. É a forma mais barata de nunca perder dados de cliente.
 
-### 5. Níveis de isolamento
+</details>
+
+<details>
+<summary>5. Níveis de isolamento</summary>
 
 Define quanto uma transação "enxerga" das outras que estão em andamento. Mais isolamento significa menos anomalias, porém mais conflitos e retries.
 
@@ -102,7 +115,10 @@ COMMIT;
 
 > **Melhor solução:** manter o Read Committed padrão na grande maioria das operações e subir para Serializable, com retry no erro `40001`, só onde há uma regra que envolve várias linhas (limites de plano, escalas, saldo agregado). **Por quê:** isolamento máximo em tudo gera mais conflitos, mais retries e menos throughput, sem ganho na maioria das telas. Nos poucos pontos com regras entre linhas, é exatamente o Serializable que impede anomalias que nenhum teste unitário pega.
 
-### 6. Bloqueio otimista
+</details>
+
+<details>
+<summary>6. Bloqueio otimista</summary>
 
 Não trava nada. Guarda uma coluna `version` e, na hora de salvar, confere se ninguém alterou antes. Se alterou, falha e o usuário ou o código tenta de novo. Ideal quando conflito é raro (perfil, documentos, configurações).
 
@@ -117,7 +133,10 @@ if (r.rowCount === 0) throw new ConflictError('Alterado por outra pessoa'); // H
 
 > **Melhor solução:** uma coluna `version` (ou `updated_at`) enviada junto com o formulário e conferida no `WHERE` do UPDATE, devolvendo HTTP 409 quando não bater, para a interface avisar o usuário e oferecer recarregar. **Por quê:** edições em tela têm conflito raro e longos intervalos em que a pessoa está pensando, e travar a linha durante esse tempo seria inviável. O custo é só uma coluna e um tratamento de erro, e nenhuma alteração alheia é sobrescrita em silêncio.
 
-### 7. Bloqueio pessimista
+</details>
+
+<details>
+<summary>7. Bloqueio pessimista</summary>
 
 Trava a linha no momento da leitura e os outros esperam. Ideal quando conflito é frequente ou caro (saldo, estoque, reservas).
 
@@ -134,11 +153,14 @@ COMMIT;  -- libera a linha
 
 > **Melhor solução:** `SELECT ... FOR UPDATE` dentro de uma transação curta para saldo, estoque, assentos e reservas, e `FOR UPDATE SKIP LOCKED` quando vários workers disputam itens de uma fila. **Por quê:** quando o conflito é provável, esperar a vez por alguns milissegundos sai mais barato que falhar e repetir várias vezes. A condição é a transação ser curta; um lock segurado por segundos vira fila de espera para o sistema inteiro.
 
+</details>
+
 ## Performance do banco
 
 A maioria das lentidões de um SaaS está no banco, e quase sempre se resolve com índice certo, menos queries e um pool bem dimensionado.
 
-### 8. Pool de conexões
+<details>
+<summary>8. Pool de conexões</summary>
 
 Abrir conexão com o banco é caro (handshake, autenticação, um processo novo no Postgres). O pool mantém N conexões abertas e empresta uma para cada query.
 
@@ -154,7 +176,10 @@ await pool.query('SELECT 1'); // pega e devolve a conexão automaticamente
 
 > **Melhor solução:** um pool por processo, dimensionado para que a soma de todas as instâncias fique abaixo do `max_connections` com folga para migrações e acesso manual, com timeout de aquisição curto; quando o número de instâncias crescer, PgBouncer em modo transaction. **Por quê:** cada conexão do Postgres é um processo que consome memória, e mais conexões não significa mais velocidade. Acima de algumas dezenas o banco perde tempo alternando entre elas, então um pool pequeno e bem usado costuma ser mais rápido que um grande.
 
-### 9. Consultas N+1
+</details>
+
+<details>
+<summary>9. Consultas N+1</summary>
 
 Busca uma lista (1 query) e depois faz uma query para cada item (N queries).
 
@@ -176,7 +201,10 @@ Em ORMs, use eager loading (`include` no Prisma, `with` no Drizzle). Em GraphQL,
 
 > **Melhor solução:** carregar relações em lote (JOIN, `WHERE id = ANY($1)` ou o eager loading do ORM), usar DataLoader em GraphQL e ligar o log de queries em desenvolvimento. **Por quê:** cada ida ao banco custa latência de rede, então 2 queries vencem 51 mesmo que cada uma seja rápida. O log em dev mostra o problema assim que ele nasce, antes de a tabela crescer e o endpoint ficar lento em produção.
 
-### 10. Índices de banco de dados
+</details>
+
+<details>
+<summary>10. Índices de banco de dados</summary>
 
 Uma estrutura (geralmente B-tree) que permite achar linhas sem ler a tabela inteira.
 
@@ -195,7 +223,10 @@ CREATE INDEX idx_jobs_pending ON jobs (run_at) WHERE status = 'pending';
 
 > **Melhor solução:** criar índices a partir das queries reais (via `pg_stat_statements` e EXPLAIN), com compostos na ordem dos filtros (igualdade primeiro, depois ordenação ou intervalo), e revisar de tempos em tempos os que nunca são usados em `pg_stat_user_indexes`. **Por quê:** o índice certo transforma segundos em milissegundos, mas índice sem uso só ocupa disco e deixa toda escrita mais lenta. Em SaaS multi-tenant, quase todo índice importante começa por `tenant_id`.
 
-### 11. Otimização de consultas
+</details>
+
+<details>
+<summary>11. Otimização de consultas</summary>
 
 Fazer o banco trabalhar menos. Checklist rápido:
 
@@ -214,7 +245,10 @@ SELECT * FROM events WHERE id > $1 ORDER BY id LIMIT 20;  -- $1 = último id da 
 
 > **Melhor solução:** ativar o `pg_stat_statements`, atacar primeiro as queries com maior tempo total (chamadas × duração) e validar cada mudança com EXPLAIN ANALYZE antes e depois. **Por quê:** a query que mais pesa raramente é a mais lenta; costuma ser uma rápida chamada milhares de vezes por minuto. Medir antes evita gastar horas otimizando algo que não muda nada no uso real do banco.
 
-### 12. EXPLAIN ANALYZE
+</details>
+
+<details>
+<summary>12. EXPLAIN ANALYZE</summary>
 
 Mostra o plano que o banco escolheu e quanto tempo cada etapa levou de verdade, porque executa a query.
 
@@ -234,11 +268,14 @@ O que procurar na saída:
 
 > **Melhor solução:** rodar `EXPLAIN (ANALYZE, BUFFERS)` numa base com volume parecido com o de produção (ou numa réplica), comparar linhas estimadas com reais e usar um visualizador como explain.dalibo.com para planos grandes. **Por quê:** o planejador escolhe caminhos diferentes conforme o tamanho das tabelas, então o plano numa base de dev com 100 linhas engana. Quando a estimativa erra muito, a causa costuma ser estatística desatualizada, e um simples `ANALYZE` resolve.
 
+</details>
+
 ## Integridade e evolução do schema
 
 Regras no banco protegem os dados mesmo quando o código erra; migrações bem feitas mudam essas regras sem derrubar o app.
 
-### 13. Restrições de chave estrangeira (FK)
+<details>
+<summary>13. Restrições de chave estrangeira (FK)</summary>
 
 Garantem que uma referência aponta para algo que existe. Não dá para criar fatura de um cliente inexistente.
 
@@ -258,7 +295,10 @@ Sem o índice na coluna filha, cada DELETE no pai faz um scan completo na tabela
 
 > **Melhor solução:** declarar FK em todas as relações, sempre com índice na coluna filha, usando `RESTRICT` como padrão e `CASCADE` só onde o filho realmente não faz sentido sem o pai. **Por quê:** o banco impede registros órfãos mesmo quando um script manual, um bug ou um job antigo passa por cima das regras do código. O índice evita que cada DELETE no pai varra a tabela filha inteira.
 
-### 14. Restrições de unicidade
+</details>
+
+<details>
+<summary>14. Restrições de unicidade</summary>
 
 Impedem duplicatas no nível do banco. É a única proteção real contra a corrida "verifica se existe, depois insere".
 
@@ -279,7 +319,10 @@ await db.query('INSERT INTO users (email) VALUES ($1) ON CONFLICT (email) DO NOT
 
 > **Melhor solução:** declarar a unicidade no banco (constraint ou índice único, parcial quando houver soft delete) e tratar a duplicata com `ON CONFLICT` ou capturando o erro `23505` para devolver uma mensagem amigável. **Por quê:** a checagem "já existe?" no código sempre perde para duas requisições simultâneas, e o resultado são contas ou assinaturas duplicadas. A constraint é a única garantia que vale ao mesmo tempo para todas as instâncias, scripts e jobs.
 
-### 15. Migrações de banco de dados
+</details>
+
+<details>
+<summary>15. Migrações de banco de dados</summary>
 
 Mudanças de schema versionadas como código, aplicadas em ordem e registradas numa tabela de controle.
 
@@ -292,7 +335,10 @@ Ferramentas: Prisma Migrate, Drizzle Kit, Knex, Flyway, golang-migrate. **Regra 
 
 > **Melhor solução:** migrações versionadas no repositório, revisadas no PR, rodadas automaticamente como um passo separado do deploy (antes de subir o código novo) e nunca editadas depois de aplicadas. **Por quê:** todo ambiente, do notebook à produção, fica com exatamente o mesmo schema, de forma reproduzível. Rodar como passo separado evita que várias instâncias tentem aplicar a mesma migração ao mesmo tempo no startup.
 
-### 16. Migrações sem downtime
+</details>
+
+<details>
+<summary>16. Migrações sem downtime</summary>
 
 Durante o deploy, a versão antiga e a nova do app rodam juntas. A migração precisa funcionar com as duas. O padrão é **expand, migrate, contract**.
 
@@ -311,11 +357,14 @@ Durante o deploy, a versão antiga e a nova do app rodam juntas. A migração pr
 
 > **Melhor solução:** seguir expand, migrate, contract, com `SET lock_timeout`, `CREATE INDEX CONCURRENTLY`, constraints `NOT VALID` seguidas de `VALIDATE` e backfill em lotes pequenos. **Por quê:** durante o deploy, a versão antiga e a nova do app rodam juntas, então cada passo precisa ser compatível com as duas. As opções de lock evitam o cenário clássico em que um ALTER simples enfileira todas as queries atrás dele e derruba o app por minutos.
 
+</details>
+
 ## Escalando o banco
 
 A ordem saudável costuma ser: índices, máquina maior, réplicas de leitura, particionamento e, só no fim, sharding.
 
-### 17. Réplicas de leitura
+<details>
+<summary>17. Réplicas de leitura</summary>
 
 Cópias do banco principal que só aceitam leitura. Escritas vão para o primário; relatórios, dashboards e buscas vão para as réplicas.
 
@@ -331,7 +380,10 @@ const relatorio = await replica.query('SELECT ... GROUP BY ...'); // leitura pes
 
 > **Melhor solução:** adicionar réplica só quando leituras pesadas (relatórios, exports, dashboards) começarem a atrapalhar o primário, roteando explicitamente apenas essas queries para ela. **Por quê:** réplica traz atraso de dados e mais um servidor para manter, atualizar e monitorar, e antes disso índices e um primário maior costumam resolver. Quando chegar a hora, ela ainda serve de base para failover e backups, o que ajuda a justificar o custo.
 
-### 18. Atraso de replicação (replication lag)
+</details>
+
+<details>
+<summary>18. Atraso de replicação (replication lag)</summary>
 
 A réplica recebe as mudanças com milissegundos, ou segundos sob carga, de atraso.
 
@@ -345,7 +397,10 @@ A réplica recebe as mudanças com milissegundos, ou segundos sob carga, de atra
 
 > **Melhor solução:** aplicar read-your-writes (ler do primário por alguns segundos depois que o usuário escreve), manter leituras críticas como saldo, permissões e pagamento sempre no primário, e alertar quando o lag passar de um limite. **Por quê:** o atraso continua existindo, mas desaparece exatamente onde o usuário perceberia ou onde um dado velho causaria erro. O alerta pega os casos em que a réplica ficou para trás por carga ou rede, antes de virar reclamação.
 
-### 19. Sharding de banco de dados
+</details>
+
+<details>
+<summary>19. Sharding de banco de dados</summary>
 
 Dividir os dados entre vários bancos independentes, cada um com uma fatia (por exemplo, por `tenant_id`). Serve para quando um único servidor não aguenta mais o volume de escrita.
 
@@ -362,7 +417,10 @@ await db.query('SELECT * FROM orders WHERE tenant_id = $1', [tid]);
 
 > **Melhor solução:** adiar o máximo possível e, se chegar lá, shardar por `tenant_id` com uma tabela de roteamento tenant → shard, ou usar o Citus para o Postgres fazer isso por você. **Por quê:** em SaaS quase toda query já filtra por tenant, então cada requisição fica dentro de um único shard, sem JOINs entre servidores. A tabela de roteamento permite mover um cliente grande para um shard dedicado sem redistribuir todos os outros.
 
-### 20. Particionamento
+</details>
+
+<details>
+<summary>20. Particionamento</summary>
 
 Dividir uma tabela grande em pedaços dentro do mesmo banco. O banco lê só as partições relevantes, e apagar dados antigos vira um `DROP` instantâneo.
 
@@ -384,11 +442,14 @@ DROP TABLE events_2025_10;
 
 > **Melhor solução:** particionar por mês (ou por semana, se o volume for alto) as tabelas que só crescem, como logs, eventos, auditoria e métricas, deixando o `pg_partman` criar as partições futuras e remover as antigas. **Por quê:** a retenção vira um `DROP` instantâneo em vez de um DELETE gigante que gera bloat e locks. As queries do dia a dia, que olham dados recentes, leem só uma ou duas partições pequenas.
 
+</details>
+
 ## Cache
 
 Cache troca consistência por velocidade; o trabalho difícil é decidir quando o dado guardado deixou de valer.
 
-### 21. Invalidação de cache
+<details>
+<summary>21. Invalidação de cache</summary>
 
 Saber quando o dado em cache ficou velho e removê-lo. Três estratégias comuns:
 
@@ -414,7 +475,10 @@ async function updateUser(id, data) {
 
 > **Melhor solução:** cache-aside com TTL curto (minutos) combinado com `DEL` da chave logo depois da escrita no banco, usando nomes de chave previsíveis (`entidade:id`). **Por quê:** o DEL resolve o caso normal na hora, e o TTL funciona como rede de segurança se alguma invalidação falhar ou for esquecida. Apagar em vez de atualizar evita que uma corrida grave no cache um valor mais velho que o do banco.
 
-### 22. Evicção no Redis
+</details>
+
+<details>
+<summary>22. Evicção no Redis</summary>
 
 Quando o Redis chega no `maxmemory`, a política de evicção decide o que jogar fora.
 
@@ -435,7 +499,10 @@ maxmemory-policy allkeys-lru
 
 > **Melhor solução:** rodar duas instâncias (podem ser dois containers no mesmo VPS): uma com `allkeys-lru` e sem persistência para cache, e outra com `noeviction` e AOF ligado para filas e locks. **Por quê:** cache e fila precisam de comportamentos opostos, porque um deve descartar dados para abrir espaço e o outro nunca pode perder um job. Numa instância só, ou o cache trava com erro de memória ou a fila perde jobs em silêncio.
 
-### 23. Estampidas de cache (cache stampede)
+</details>
+
+<details>
+<summary>23. Estampidas de cache (cache stampede)</summary>
 
 Uma chave muito acessada expira e milhares de requisições vão ao banco ao mesmo tempo para recriá-la.
 
@@ -470,7 +537,10 @@ async function getComLock(key, ttl, carregar, tentativas = 20) {
 
 > **Melhor solução:** TTL com jitter em todas as chaves e, nas chaves muito acessadas, lock de recálculo ou stale-while-revalidate (servir o valor antigo enquanto um único processo atualiza em background). **Por quê:** o jitter espalha as expirações no tempo, e o lock garante que só uma requisição vai ao banco para recriar a chave. Com stale-while-revalidate o usuário nunca espera o recálculo, o que é ideal para dashboards e páginas públicas.
 
-### 24. Cache distribuído
+</details>
+
+<details>
+<summary>24. Cache distribuído</summary>
 
 Cache compartilhado entre todas as instâncias do app (Redis, Memcached), em vez da memória local de cada processo.
 
@@ -486,11 +556,14 @@ Cache compartilhado entre todas as instâncias do app (Redis, Memcached), em vez
 
 > **Melhor solução:** usar o Redis como cache principal compartilhado entre as instâncias e deixar o cache local em memória só para dados quase imutáveis (configurações, feature flags, planos), com TTL de poucos segundos. **Por quê:** com várias instâncias, só um cache compartilhado garante que todas vejam o mesmo valor depois de uma invalidação. O cache local continua útil onde alguns segundos de atraso não fazem mal, e economiza idas ao Redis.
 
+</details>
+
 ## Resiliência
 
 A rede falha, APIs externas caem e clientes repetem requisições; estes seis padrões fazem o sistema aguentar isso sem duplicar cobranças nem cair junto.
 
-### 25. Idempotência
+<details>
+<summary>25. Idempotência</summary>
 
 Executar a mesma operação 2 ou 10 vezes dá o mesmo resultado que executar uma vez. GET, PUT e DELETE são idempotentes por definição; POST não é.
 
@@ -520,7 +593,10 @@ O Stripe usa exatamente este header `Idempotency-Key` na API dele.
 
 > **Melhor solução:** exigir um header `Idempotency-Key` em todo POST que cobra, cria recurso ou dispara envio, reservando a chave com UNIQUE no banco e guardando a resposta por 24 horas; no front, gerar a chave uma vez por intenção do usuário (por exemplo, ao abrir o checkout). **Por quê:** retries de rede, cliques duplos e reenvios passam a devolver a mesma resposta em vez de criar cobranças duplicadas. É a base que torna seguros todos os retries dos tópicos seguintes.
 
-### 26. Mecanismos de retry
+</details>
+
+<details>
+<summary>26. Mecanismos de retry</summary>
 
 Tentar de novo quando a falha é temporária: timeout, 502, 503, conexão recusada, deadlock. Nunca repita erros permanentes (400, 401, 404, validação), e só repita operações idempotentes.
 
@@ -539,7 +615,10 @@ async function comRetry(fn, maxTentativas = 5) {
 
 > **Melhor solução:** centralizar os retries num helper que só repete erros transitórios (timeout, 429, 502, 503, conexão recusada, deadlock), apenas em operações idempotentes, com limite de tentativas, backoff com jitter e respeito ao header `Retry-After`. **Por quê:** retry sem critério multiplica a carga justamente quando o serviço já está doente, e repetir um POST não idempotente pode duplicar efeitos. Com um helper único, a política fica igual em todo o código e fácil de ajustar.
 
-### 27. Backoff exponencial
+</details>
+
+<details>
+<summary>27. Backoff exponencial</summary>
 
 Esperar cada vez mais entre as tentativas (1 s, 2 s, 4 s, 8 s...) até um teto. Dá tempo para o serviço se recuperar em vez de bombardeá-lo.
 
@@ -550,7 +629,10 @@ const espera = (tentativa, base = 1000, teto = 30_000) =>
 
 > **Melhor solução:** backoff exponencial com base entre 100 ms e 1 s, teto (por exemplo 30 s) e número máximo de tentativas, ajustado ao contexto: poucas tentativas rápidas em requisições de usuário e mais tentativas espaçadas em jobs de fundo. **Por quê:** dá tempo para o serviço se recuperar sem bombardeá-lo e sem deixar ninguém esperando para sempre. Um usuário na tela não pode esperar minutos, mas um job pode tentar de novo por horas sem prejuízo.
 
-### 28. Jitter
+</details>
+
+<details>
+<summary>28. Jitter</summary>
 
 Aleatoriedade no tempo de espera. Sem jitter, mil clientes que falharam juntos tentam de novo juntos (no segundo 1, 2, 4...), criando picos sincronizados.
 
@@ -563,7 +645,10 @@ const esperaComJitter = (tentativa) => Math.random() * espera(tentativa);
 
 > **Melhor solução:** full jitter, ou seja, esperar um tempo aleatório entre 0 e o valor do backoff (`Math.random() * backoff`). **Por quê:** na análise conhecida da AWS sobre o tema, é a variante que melhor espalha as tentativas e a que gera menos trabalho total no servidor. Sem jitter, clientes que falharam juntos voltam juntos em ondas sincronizadas, e o serviço cai de novo justamente quando ia se recuperar.
 
-### 29. Circuit breakers
+</details>
+
+<details>
+<summary>29. Circuit breakers</summary>
 
 Um disjuntor em volta das chamadas a um serviço externo. Se ele falha demais, o circuito **abre** e as chamadas falham na hora, sem esperar timeout. Isso protege seu app e dá folga ao serviço doente.
 
@@ -592,7 +677,10 @@ const frete = await breaker.fire(cep);
 
 > **Melhor solução:** um breaker por dependência externa (gateway de pagamento, API de frete, provedor de e-mail, LLM), com timeout curto, fallback útil (valor em cache, mensagem amigável ou enfileirar para depois) e alerta quando o circuito abrir. **Por quê:** sem ele, uma API lenta prende conexões e workers esperando timeouts, e o seu app cai junto com ela. Com ele, a falha fica contida naquela funcionalidade e o resto do SaaS continua funcionando.
 
-### 30. Limitação de taxa (rate limiting)
+</details>
+
+<details>
+<summary>30. Limitação de taxa (rate limiting)</summary>
 
 Limitar quantas requisições um cliente faz por período. Protege contra abuso, brute force e o cliente "barulhento" que derruba os outros tenants. Algoritmos comuns: janela fixa, janela deslizante e token bucket (permite rajadas curtas).
 
@@ -610,11 +698,14 @@ No Nginx, dá para barrar antes de chegar no Node: `limit_req_zone $binary_remot
 
 > **Melhor solução:** duas camadas: limite por IP no Nginx ou Caddy para barrar abuso barato, e token bucket no Redis por tenant ou API key para aplicar os limites de cada plano, sempre respondendo 429 com `Retry-After` e headers de limite restante. **Por quê:** o proxy barra ataques e brute force antes de gastar CPU do Node, e o Redis garante o mesmo limite em todas as instâncias. Limitar por tenant impede que um cliente barulhento derrube os outros.
 
+</details>
+
 ## Infra e escala
 
 Num VPS, escale primeiro na vertical e use um proxy reverso com várias instâncias do app para aproveitar todos os núcleos.
 
-### 31. Balanceamento de carga
+<details>
+<summary>31. Balanceamento de carga</summary>
 
 Distribuir as requisições entre várias instâncias do app. Algoritmos: round-robin (um para cada), least connections (quem está mais livre) e hash por IP (mesmo cliente, mesma instância).
 
@@ -635,7 +726,10 @@ Mesmo num único VPS isso ajuda: o Node usa um núcleo por processo, então 4 pr
 
 > **Melhor solução:** um proxy (Nginx, Caddy ou Traefik) com `least_conn`, remoção automática de instâncias que falham e checagem ativa do endpoint de readiness (nativa no Caddy e no Traefik). **Por quê:** `least_conn` manda cada requisição para quem está mais livre, o que funciona melhor que round-robin quando algumas requisições demoram muito mais que outras. Tirar do rodízio quem falha faz com que um deploy ou uma instância travada não vire erro para o usuário.
 
-### 32. Escalabilidade horizontal
+</details>
+
+<details>
+<summary>32. Escalabilidade horizontal</summary>
 
 Adicionar mais instâncias ou máquinas. **Pré-requisito:** app stateless. Sessão no Redis ou JWT, uploads no S3/MinIO, nada importante no disco local ou na memória do processo.
 
@@ -649,7 +743,10 @@ docker compose up -d --scale app=4
 
 > **Melhor solução:** manter o app stateless desde o primeiro dia (sessões no Redis ou JWT, arquivos no S3 ou MinIO, nada importante no disco ou na memória do processo) e escalar adicionando containers atrás do proxy. **Por quê:** quando o tráfego crescer, adicionar capacidade vira um comando em vez de um refactor às pressas. Mesmo num único VPS, várias instâncias permitem deploy sem downtime, trocando uma de cada vez.
 
-### 33. Escalabilidade vertical
+</details>
+
+<details>
+<summary>33. Escalabilidade vertical</summary>
 
 Colocar mais CPU, RAM ou disco na mesma máquina, por exemplo, um VPS de 4 vCPU/8 GB passa para 16 vCPU/64 GB.
 
@@ -661,7 +758,10 @@ Para o banco de um SaaS pequeno ou médio, escalar na vertical é quase sempre o
 
 > **Melhor solução:** escalar na vertical primeiro, principalmente o banco, até o custo ou o limite da máquina começar a pesar, ajustando o Postgres ao novo hardware (`shared_buffers`, `work_mem`, `effective_cache_size`). **Por quê:** é o jeito mais simples e barato de ganhar capacidade, sem mudança de código nem complexidade distribuída. O cuidado é ter backups e um plano de restauração testado, porque continua sendo um ponto único de falha.
 
-### 34. Proxies reversos
+</details>
+
+<details>
+<summary>34. Proxies reversos</summary>
 
 Um servidor na frente das suas aplicações. Recebe as requisições da internet e repassa para dentro. Cuida de HTTPS, compressão, arquivos estáticos, rate limit e roteamento por domínio, e esconde as portas internas.
 
@@ -681,11 +781,14 @@ api.meusaas.com {
 
 > **Melhor solução:** Caddy, pelo HTTPS automático e configuração mínima, ou Traefik, se você quer descobrir containers pelos labels do Docker, ficando na frente de tudo com apenas as portas 80 e 443 abertas no firewall. **Por quê:** centraliza TLS, roteamento, compressão e limites num só lugar e esconde as portas internas do app, do banco e do Redis. Menos superfície exposta significa menos chance de alguém achar um Postgres ou Redis aberto na internet.
 
+</details>
+
 ## Processamento assíncrono
 
 Tudo que é lento ou pode falhar (e-mail, PDF, IA, integrações) sai da requisição HTTP e vai para uma fila processada por workers.
 
-### 35. Filas de mensagens
+<details>
+<summary>35. Filas de mensagens</summary>
 
 Um produtor coloca mensagens numa fila e consumidores processam no próprio ritmo. Desacopla quem pede de quem faz e absorve picos de tráfego.
 
@@ -707,7 +810,10 @@ Ferramentas: BullMQ (Redis), pg-boss (Postgres), RabbitMQ, NATS, SQS e Kafka (lo
 
 > **Melhor solução:** BullMQ se você já tem Redis, ou pg-boss se prefere manter tudo no Postgres; RabbitMQ ou Kafka só quando houver uma necessidade concreta, como vários serviços em linguagens diferentes ou volume muito alto de eventos. **Por quê:** os dois primeiros cobrem retries, atrasos, prioridades e agendamento sem subir mais um sistema no VPS. Cada peça a mais é algo para atualizar, monitorar e incluir no backup.
 
-### 36. Filas de cartas mortas (DLQ)
+</details>
+
+<details>
+<summary>36. Filas de cartas mortas (DLQ)</summary>
 
 Para onde vão as mensagens que falharam depois de todas as tentativas. Evita perder a mensagem e impede que uma mensagem "venenosa" fique em loop travando a fila.
 
@@ -728,7 +834,10 @@ No RabbitMQ e no SQS isso é configuração nativa (`x-dead-letter-exchange` e `
 
 > **Melhor solução:** todo job que esgota as tentativas vai para uma DLQ (no BullMQ, o próprio conjunto de jobs `failed` serve, desde que não seja apagado automaticamente), com alerta no Slack ou Discord e um comando ou botão para reprocessar depois da correção. **Por quê:** nenhuma falha some em silêncio e uma mensagem ruim não fica em loop travando a fila. O reprocessamento permite corrigir o bug e recuperar os jobs perdidos sem pedir nada ao cliente.
 
-### 37. Workers em segundo plano
+</details>
+
+<details>
+<summary>37. Workers em segundo plano</summary>
 
 Processos separados da API que consomem as filas e fazem o trabalho pesado: e-mails, PDFs, thumbnails, importação de CSV, chamadas a IA.
 
@@ -759,7 +868,10 @@ services:
 
 > **Melhor solução:** workers em containers próprios, usando a mesma imagem da API com outro comando, `concurrency` ajustada ao tipo de trabalho (alta para I/O, baixa para CPU) e graceful shutdown. **Por quê:** API e workers escalam separados, e um job pesado nunca rouba CPU de uma requisição HTTP. Com o desligamento gracioso, deploys não deixam jobs pela metade.
 
-### 38. Agendamento de tarefas
+</details>
+
+<details>
+<summary>38. Agendamento de tarefas</summary>
 
 Rodar tarefas em horários fixos ou recorrentes: cobrança mensal, relatório diário, limpeza de sessões expiradas, aviso de fim do trial.
 
@@ -780,11 +892,14 @@ Torne o job idempotente também: se rodar duas vezes, não pode cobrar duas veze
 
 > **Melhor solução:** agendar pela fila, com os jobs repetíveis do BullMQ ou o `schedule` do pg-boss, e escrever cada job agendado de forma idempotente. **Por quê:** a fila garante uma execução por horário mesmo com várias instâncias e sobrevive a restarts, ao contrário de um cron em memória. A idempotência cobre o caso raro de execução duplicada, para nunca haver cobrança em dobro.
 
+</details>
+
 ## Eventos e integrações
 
 Eventos deixam partes do sistema reagirem sem se conhecerem; webhooks são esses eventos cruzando a fronteira entre empresas, e por isso precisam de assinatura e deduplicação.
 
-### 39. Arquitetura orientada a eventos
+<details>
+<summary>39. Arquitetura orientada a eventos</summary>
 
 Um serviço avisa que algo aconteceu (sempre no passado: `pedido.pago`) e quem tiver interesse reage. O emissor não sabe quem está ouvindo.
 
@@ -804,7 +919,10 @@ bus.subscribe('pedido.pago', atualizarMetricas); // adicionado depois, sem tocar
 
 > **Melhor solução:** começar com eventos dentro de um monolito modular, usando fila e outbox, e só extrair serviços quando um módulo realmente precisar escalar ou ser implantado separado. **Por quê:** você ganha o desacoplamento (adicionar reações novas sem mexer no checkout) sem o custo de operar, versionar e depurar vários serviços. Para uma pessoa ou equipe pequena com um VPS, esse custo operacional é o que mais pesa.
 
-### 40. Verificação de webhooks
+</details>
+
+<details>
+<summary>40. Verificação de webhooks</summary>
 
 Garantir que o webhook veio de quem diz ter vindo e não de alguém forjando a requisição. O emissor assina o corpo com um segredo compartilhado (HMAC-SHA256); você recalcula a assinatura e compara.
 
@@ -830,7 +948,10 @@ Inclua um timestamp na assinatura e rejeite eventos com mais de 5 minutos, para 
 
 > **Melhor solução:** usar o SDK oficial do provedor (como `stripe.webhooks.constructEvent`) sobre o corpo cru da requisição; nos webhooks que o seu SaaS envia, assinar com HMAC-SHA256 incluindo um timestamp. **Por quê:** o SDK já valida assinatura e timestamp e faz a comparação em tempo constante, sem você reinventar criptografia. O erro mais comum é parsear o JSON antes de verificar, o que muda os bytes e faz toda assinatura falhar.
 
-### 41. Retries de webhooks
+</details>
+
+<details>
+<summary>41. Retries de webhooks</summary>
 
 **Quando você recebe:** o provedor reenvia se você não responder 2xx rapidamente. O mesmo evento pode chegar várias vezes e fora de ordem.
 
@@ -855,11 +976,14 @@ res.sendStatus(200);
 
 > **Melhor solução:** ao receber, gravar o evento pelo ID único, responder 200 em milissegundos e processar numa fila de forma idempotente, conferindo o estado atual em vez de confiar na ordem de chegada. **Por quê:** duplicatas viram no-op, o provedor nunca recebe timeout e eventos fora de ordem não sobrescrevem dados novos com antigos. Ao enviar, fila com backoff, histórico de entregas e botão de reenvio reduzem muito os chamados de suporte.
 
+</details>
+
 ## Sistemas distribuídos
 
 Quando os dados vivem em mais de um lugar, "tudo ou nada" deixa de ser gratuito; estes padrões recuperam garantias suficientes sem uma transação global.
 
-### 42. Consistência eventual
+<details>
+<summary>42. Consistência eventual</summary>
 
 Depois de uma mudança, nem todas as partes do sistema mostram o valor novo na hora, mas todas convergem em pouco tempo.
 
@@ -871,7 +995,10 @@ Depois de uma mudança, nem todas as partes do sistema mostram o valor novo na h
 
 > **Melhor solução:** aceitar consistência eventual onde o usuário não percebe (busca, métricas, contadores, e-mails, notificações) e manter consistência forte em dinheiro, permissões e limites de plano, mostrando estados como "processando" quando houver espera. **Por quê:** é nos dados de dinheiro e acesso que um valor velho causa prejuízo real ou falha de segurança. Nos demais, alguns segundos de atraso são invisíveis e permitem um sistema bem mais simples e rápido.
 
-### 43. Transações distribuídas
+</details>
+
+<details>
+<summary>43. Transações distribuídas</summary>
 
 Uma operação que precisa ser atômica em vários bancos ou serviços, por exemplo cobrar no serviço de pagamentos e reservar no serviço de estoque.
 
@@ -890,7 +1017,10 @@ Saga "Checkout"
 
 > **Melhor solução:** evitar, mantendo no mesmo Postgres os dados que precisam mudar juntos; quando envolver um serviço externo (um gateway de pagamento, por exemplo), usar uma saga com compensações e chave de idempotência em cada passo. **Por quê:** 2PC é frágil, lento e trava recursos se o coordenador cair, enquanto uma transação local é simples e confiável. A saga aceita que algo pode falhar no meio e já define como desfazer cada passo.
 
-### 44. Padrão Outbox
+</details>
+
+<details>
+<summary>44. Padrão Outbox</summary>
 
 Resolve o "salvei no banco, mas o evento não foi publicado" (ou o contrário). Em vez de publicar direto na fila, grava o evento numa tabela `outbox` **na mesma transação** do dado. Um processo separado lê a outbox e publica.
 
@@ -915,7 +1045,10 @@ Garante entrega "pelo menos uma vez", então os consumidores precisam ser idempo
 
 > **Melhor solução:** gravar o evento numa tabela outbox na mesma transação do dado e publicar com um relay usando `FOR UPDATE SKIP LOCKED`, limpando as linhas já publicadas periodicamente. **Por quê:** nenhum evento se perde e nenhum evento sai sem que o dado tenha sido salvo, sem precisar de nada além do Postgres que você já tem. Como a entrega é "pelo menos uma vez", os consumidores precisam ser idempotentes.
 
-### 45. CQRS
+</details>
+
+<details>
+<summary>45. CQRS</summary>
 
 Separar o modelo de **escrita** (commands: valida regras, grava normalizado) do modelo de **leitura** (queries: dados prontos para a tela, desnormalizados).
 
@@ -939,7 +1072,10 @@ const vendas = await db.query('SELECT * FROM dashboard_vendas WHERE tenant_id = 
 
 > **Melhor solução:** aplicar só onde dói: tabelas de leitura atualizadas por eventos, ou materialized views com `REFRESH MATERIALIZED VIEW CONCURRENTLY`, para os dashboards e relatórios pesados, deixando o resto do sistema com um modelo único. **Por quê:** você ganha leituras rápidas onde importa sem reescrever o domínio inteiro nem manter dois modelos para cada tela. CQRS completo só compensa quando leitura e escrita têm cargas e formatos muito diferentes.
 
-### 46. Event Sourcing
+</details>
+
+<details>
+<summary>46. Event Sourcing</summary>
 
 Em vez de guardar só o estado atual, guarda **todos os eventos** que aconteceram. O estado é calculado reproduzindo os eventos.
 
@@ -961,11 +1097,14 @@ const saldo = eventos.reduce((s, e) =>
 
 > **Melhor solução:** na maioria dos SaaS, não usar; manter tabelas normais e uma `audit_log` append-only que registra quem fez o quê, quando, e os valores antes e depois. **Por quê:** isso entrega a auditoria e o histórico que o negócio costuma pedir por uma fração da complexidade. Event sourcing de verdade só compensa onde o histórico é o próprio produto, como contabilidade, carteiras e ledgers.
 
+</details>
+
 ## Operação em produção
 
 Estes quatro fazem a diferença entre um deploy tranquilo e um incidente às 3 da manhã: segurar a carga, desligar com cuidado, saber quem está saudável e enxergar onde o tempo vai.
 
-### 47. Backpressure
+<details>
+<summary>47. Backpressure</summary>
 
 Quando o consumidor não dá conta, ele sinaliza ao produtor para desacelerar, em vez de acumular tudo na memória até estourar.
 
@@ -984,7 +1123,10 @@ Na API, devolver `429` ou `503` com `Retry-After` quando a fila interna está ch
 
 > **Melhor solução:** colocar limites em todo ponto (tamanho do pool, `concurrency` dos workers, streams em vez de carregar arquivos inteiros, tamanho máximo de filas em memória) e responder 429 ou 503 com `Retry-After` quando estiver cheio. **Por quê:** recusar cedo e de forma controlada é muito melhor que o processo morrer sem memória e derrubar todas as requisições em andamento. O cliente recebe um sinal claro para tentar depois, em vez de um timeout.
 
-### 48. Desligamento gracioso (graceful shutdown)
+</details>
+
+<details>
+<summary>48. Desligamento gracioso (graceful shutdown)</summary>
 
 Ao receber o sinal de parada (deploy, restart), o processo para de aceitar trabalho novo, termina o que está em andamento e fecha as conexões. Sem isso, ele morre no meio de uma requisição ou de um job.
 
@@ -1009,7 +1151,10 @@ process.on('SIGTERM', async () => {
 
 > **Melhor solução:** no SIGTERM, marcar o readiness como falho, esperar alguns segundos para o proxy parar de mandar tráfego, drenar requisições e jobs em andamento, fechar conexões e ter um timeout de segurança menor que o `stop_grace_period`. **Por quê:** deploys e restarts deixam de derrubar requisições e jobs no meio. Sem isso, cada deploy gera um pequeno pico de erros 502 e jobs repetidos que ninguém sabe explicar.
 
-### 49. Verificações de saúde (health checks)
+</details>
+
+<details>
+<summary>49. Verificações de saúde (health checks)</summary>
 
 Endpoints que dizem se a instância está viva e pronta. São dois tipos:
 
@@ -1042,7 +1187,10 @@ healthcheck:
 
 > **Melhor solução:** liveness simples e sem dependências para reiniciar processos travados, readiness checando banco e Redis para tirar a instância do balanceador, e um monitor rodando fora do VPS (Uptime Kuma em outra máquina ou um serviço de uptime) para avisar quando tudo cai. **Por quê:** cada um responde a uma pergunta diferente: o processo está vivo, a instância pode receber tráfego e o usuário consegue acessar. Misturar os dois primeiros causa reinícios em loop sempre que o banco oscila.
 
-### 50. Rastreamento distribuído (distributed tracing)
+</details>
+
+<details>
+<summary>50. Rastreamento distribuído (distributed tracing)</summary>
 
 Seguir uma requisição de ponta a ponta através de serviços, filas e bancos. Cada requisição ganha um **trace ID**, e cada etapa vira um **span** com início, duração e atributos. O resultado é uma cascata que mostra onde o tempo foi gasto.
 
@@ -1071,3 +1219,5 @@ new NodeSDK({
 O ID viaja entre serviços no header `traceparent` (padrão W3C). Para self-host: Jaeger, Grafana Tempo ou SigNoz. Grave o trace ID em cada linha de log para pular do log para o trace com um clique.
 
 > **Melhor solução:** OpenTelemetry com auto-instrumentação na API e nos workers, exportando para Grafana Tempo ou SigNoz no seu VPS, com o trace ID gravado em cada linha de log. **Por quê:** é o padrão aberto, sem lock-in de fornecedor, e já cobre HTTP, Express, Postgres e Redis sem mudar o código. Ligar log e trace pelo mesmo ID transforma a pergunta "por que esse checkout demorou?" em um clique.
+
+</details>
