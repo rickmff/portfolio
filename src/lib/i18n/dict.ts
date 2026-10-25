@@ -67,7 +67,7 @@ const en = {
   },
   blog: {
     eyebrow: "Writing",
-    title: "Notes on software, products and self‑hosting.",
+    title: "Notes on building software with AI, agents, products and self‑hosting.",
     minRead: (n: number) => `${n} min read`,
     all: "All writing",
     empty: "Nothing published yet.",
@@ -143,7 +143,7 @@ const pt: Dict = {
   },
   blog: {
     eyebrow: "Textos",
-    title: "Notas sobre software, produtos e self‑hosting.",
+    title: "Notas sobre construir software com IA, agentes, produtos e self‑hosting.",
     minRead: (n: number) => `${n} min de leitura`,
     all: "Todos os textos",
     empty: "Nada publicado ainda.",

@@ -5,11 +5,13 @@ import { BookShelf } from "@/components/BookShelf";
 import { readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
+import { metaFor } from "@/lib/seo";
 import { BOOK_STATUSES } from "@/db/schema";
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: (await getDict()).nav.books };
+  const t = await getDict();
+  return metaFor({ title: t.nav.books, description: t.books.title, path: "/books" });
 }
 
 export default async function BooksPage() {

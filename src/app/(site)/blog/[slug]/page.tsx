@@ -1,11 +1,19 @@
 import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
 import Image from "next/image";
+import { JsonLd } from "@/components/JsonLd";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPost } from "@/lib/data";
-import { getDict } from "@/lib/i18n/server";
+import { getPost, getSettings } from "@/lib/data";
+import { getDict, getLocale } from "@/lib/i18n/server";
 import { readingMinutes, renderMarkdown } from "@/lib/markdown";
+import { absoluteUrl, breadcrumbs, metaFor, PERSON_ID, SITE_URL, WEBSITE_ID } from "@/lib/seo";
+
+const tagList = (tags: string) =>
+  tags
+    .split(",")
+    .map((t) => t.trim())
+    .filter(Boolean);
 
 export const dynamic = "force-dynamic";
 
@@ -14,24 +22,57 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPost((await params).slug);
   if (!post) return {};
-  return {
+  return metaFor({
     title: post.title,
     description: post.excerpt,
-    ...(post.bannerUrl && { openGraph: { images: [post.bannerUrl] } }),
-  };
+    path: `/blog/${post.slug}`,
+    image: post.bannerUrl,
+    type: "article",
+    publishedTime: post.publishedAt,
+    modifiedTime: post.updatedAt,
+    tags: tagList(post.tags),
+  });
 }
-
 
 export default async function PostPage({ params }: Props) {
   const post = await getPost((await params).slug);
   if (!post) notFound();
-  const t = await getDict();
+  const [t, settings, locale] = await Promise.all([getDict(), getSettings(), getLocale()]);
+  const url = `${SITE_URL}/blog/${post.slug}`;
+  const minutes = readingMinutes(post.body);
   const date = new Intl.DateTimeFormat(t.intl, { day: "numeric", month: "long", year: "numeric" });
   return (
     <article className="section">
+      <JsonLd
+        graph={[
+          {
+            "@type": "BlogPosting",
+            "@id": `${url}#article`,
+            url,
+            mainEntityOfPage: url,
+            headline: post.title,
+            description: post.excerpt,
+            ...(post.bannerUrl && { image: absoluteUrl(post.bannerUrl) }),
+            datePublished: post.publishedAt?.toISOString(),
+            dateModified: post.updatedAt.toISOString(),
+            inLanguage: locale === "pt" ? "pt-BR" : "en",
+            keywords: tagList(post.tags),
+            wordCount: post.body.split(/\s+/).filter(Boolean).length,
+            timeRequired: `PT${minutes}M`,
+            author: { "@id": PERSON_ID },
+            publisher: { "@id": PERSON_ID },
+            isPartOf: [{ "@id": `${SITE_URL}/blog` }, { "@id": WEBSITE_ID }],
+          },
+          breadcrumbs([
+            { name: settings.name, path: "/" },
+            { name: t.blog.eyebrow, path: "/blog" },
+            { name: post.title, path: `/blog/${post.slug}` },
+          ]),
+        ]}
+      />
       <header className="wrap page-title reveal">
         <p className="eyebrow" style={{ margin: 0 }}>
-          {date.format(post.publishedAt!)} · {t.blog.minRead(readingMinutes(post.body))}
+          {date.format(post.publishedAt!)} · {t.blog.minRead(minutes)}
         </p>
         <h1>{post.title}</h1>
       </header>

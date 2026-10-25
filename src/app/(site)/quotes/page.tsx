@@ -4,11 +4,12 @@ import { BookQuote } from "@/components/BookQuote";
 import { bookHref, onShelf } from "@/lib/books";
 import { getBooks } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
+import { metaFor } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getDict();
-  return { title: t.quotes.eyebrow, description: t.quotes.title };
+  return metaFor({ title: t.quotes.eyebrow, description: t.quotes.title, path: "/quotes" });
 }
 
 export default async function QuotesPage() {

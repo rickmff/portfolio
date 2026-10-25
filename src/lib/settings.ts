@@ -1,6 +1,17 @@
 export const SETTING_KEYS = {
   name: { label: "Name", fallback: "Henrique Matos" },
   role: { label: "Role (small caps line)", fallback: "Fullstack developer" },
+  bio: {
+    label: "Short bio (one or two sentences — the description search engines, social cards and AI assistants use)",
+    fallback:
+      "Fullstack developer with ten years of shipping software, now focused on building software with AI and agents.",
+  },
+  knowsAbout: {
+    label: "Expertise (comma-separated topics you want to be known for)",
+    fallback: "Software development, AI-assisted development, AI agents, Fullstack development, TypeScript, React, Next.js",
+  },
+  worksFor: { label: "Current company (optional)", fallback: "" },
+  location: { label: "Location (optional, e.g. Lisbon, Portugal)", fallback: "" },
   hero: {
     label: "Hero sentence (wrap a word in **double asterisks** to emphasise it)",
     fallback:
@@ -21,4 +32,4 @@ export type SettingKey = keyof typeof SETTING_KEYS;
 export type SiteSettings = Record<SettingKey, string>;
 
 /** Settings with an English and a Portuguese version (`key:en`, `key:pt`). */
-export const TRANSLATED_SETTINGS: SettingKey[] = ["role", "hero", "now", "about"];
+export const TRANSLATED_SETTINGS: SettingKey[] = ["role", "bio", "hero", "now", "about"];

@@ -1,12 +1,14 @@
 import { Arrow } from "@/components/Arrow";
 import { CursorArrow } from "@/components/CursorArrow";
+import { JsonLd } from "@/components/JsonLd";
 import { ProjectCover } from "@/components/ProjectCover";
 import { WorkStrip } from "@/components/WorkStrip";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProject, getPublishedProjects } from "@/lib/data";
+import { getProject, getPublishedProjects, getSettings } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
 import { renderMarkdown } from "@/lib/markdown";
+import { absoluteUrl, breadcrumbs, metaFor, PERSON_ID, SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -14,16 +16,49 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = await getProject((await params).slug);
-  return p ? { title: p.title, description: p.summary } : {};
+  if (!p) return {};
+  return metaFor({ title: p.title, description: p.summary, path: `/work/${p.slug}`, image: p.showcasePosterUrl || p.coverUrl });
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const [p, all, t] = await Promise.all([getProject((await params).slug), getPublishedProjects(), getDict()]);
+  const [p, all, t, settings] = await Promise.all([
+    getProject((await params).slug),
+    getPublishedProjects(),
+    getDict(),
+    getSettings(),
+  ]);
   if (!p) notFound();
   // The landing's carousel, without the project on this page.
   const others = all.filter((o) => o.id !== p.id);
+  const url = `${SITE_URL}/work/${p.slug}`;
+  const image = p.showcasePosterUrl || p.coverUrl;
   return (
     <article className="section">
+      <JsonLd
+        graph={[
+          {
+            "@type": "CreativeWork",
+            "@id": `${url}#work`,
+            url,
+            name: p.title,
+            description: p.summary,
+            ...(image && { image: absoluteUrl(image) }),
+            dateCreated: String(p.year),
+            keywords: p.stack
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean),
+            creator: { "@id": PERSON_ID },
+            author: { "@id": PERSON_ID },
+            ...(p.liveUrl || p.repoUrl ? { sameAs: [p.liveUrl, p.repoUrl].filter(Boolean) } : {}),
+          },
+          breadcrumbs([
+            { name: settings.name, path: "/" },
+            { name: t.home.latestWork, path: "/#work" },
+            { name: p.title, path: `/work/${p.slug}` },
+          ]),
+        ]}
+      />
       <header className="wrap page-title reveal">
         <p className="eyebrow" style={{ margin: 0 }}>{p.year}</p>
         <h1>{p.title}</h1>
