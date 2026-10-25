@@ -268,24 +268,21 @@ a {
   display: grid;
   place-items: center;
 }
-.phone {
+.reel {
   position: relative;
-  height: 84%;
-  aspect-ratio: 390 / 844;
+  height: 88%;
+  aspect-ratio: 9 / 16;
   overflow: hidden;
-  border-radius: 24px;
-  background: #000;
-  box-shadow:
-    0 0 0 5px #111,
-    0 0 0 6px rgb(255 255 255 / 0.12),
-    0 28px 50px -18px rgb(0 0 0 / 0.45);
+  border-radius: 8px;
+  background: rgb(0 0 0 / 0.06);
+  box-shadow: 0 24px 44px -20px rgb(0 0 0 / 0.4);
   transition: transform 0.8s var(--ease);
 }
-.strip-item[data-view="desktop"] .phone {
+.strip-item[data-view="desktop"] .reel {
   transform: translateY(14px) scale(0.97);
 }
-.phone img,
-.phone video {
+.reel img,
+.reel video {
   object-position: top;
 }
 .view-toggle {
