@@ -289,10 +289,38 @@ a {
   display: flex;
   gap: 12px;
 }
+/* Under the section heading: the scroll arrow, then (once the projects are on screen) the
+   Desktop · Mobile switch in the same spot. Sits inside the heading's gap, so the
+   heading-to-carousel spacing stays 40px. */
+.strip-lead {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  margin: -36px auto 12px;
+  min-height: 24px;
+}
+.strip-lead > * {
+  grid-area: 1 / 1;
+}
 .strip-toggle {
   justify-content: center;
   gap: 20px;
-  margin: -16px 0 28px;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition:
+    opacity 0.9s var(--ease-soft) 0.25s,
+    transform 0.9s var(--ease) 0.25s;
+}
+.strip-lead.is-arrived .strip-toggle {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.strip-lead.is-arrived .scroll-cue {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
 }
 .view-toggle button {
   display: inline-flex;
@@ -715,19 +743,12 @@ a:hover .arrow[data-dir="out"] {
 .scroll-cue {
   display: block;
   width: fit-content;
-  /* Sits inside the heading's gap so the heading-to-carousel spacing stays 40px. */
-  margin: -36px auto 12px;
   padding: 4px;
   color: var(--faint);
   transition:
     color 0.4s var(--ease),
     opacity 0.9s var(--ease-soft),
     transform 0.9s var(--ease);
-}
-.scroll-cue.is-gone {
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
 }
 /* Room under the arrow so the projects arrive after it, not with it. */
 #work-strip {
