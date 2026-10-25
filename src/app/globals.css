@@ -407,13 +407,12 @@ a {
   gap: 12px;
 }
 /* Under the section heading: the scroll arrow, then (once the projects are on screen) the
-   Desktop · Mobile switch in the same spot. Sits inside the heading's gap, so the
-   heading-to-carousel spacing stays var(--head-gap). */
+   Desktop · Mobile switch in the same spot, with a full var(--head-gap) above and below. */
 .strip-lead {
   display: grid;
   justify-items: center;
   align-items: center;
-  margin: calc(4px - var(--head-gap)) auto calc(var(--head-gap) - 28px);
+  margin: 0 auto var(--head-gap);
   min-height: 24px;
 }
 .strip-lead > * {
@@ -873,11 +872,19 @@ a:hover .arrow[data-dir="out"] {
 #work {
   padding-bottom: calc(var(--section-gap) - 24px);
 }
-/* On the home page the shelf starts at the head gap, with just enough room for a
-   lifted book. */
+/* On the home page the open (lifted, slightly forward) book is what the eye reads as the
+   top of the shelf, so it is that book's top that sits var(--head-gap) under the title. */
 #books .shelf-row {
-  margin-top: -20px;
-  padding-top: 20px;
+  padding-top: 14px;
+}
+/* The hint under the shelf is folded away while a book is open, but a flex gap would
+   still be reserved for it above "All books". */
+#books .shelves {
+  gap: 0;
+}
+.section .year-row:first-child {
+  padding-top: 0;
+  border-top: 0;
 }
 .section .year-row:last-child {
   padding-bottom: 0;
