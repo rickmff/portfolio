@@ -819,6 +819,15 @@ a:hover .arrow[data-dir="out"] {
     opacity 0.9s var(--ease-soft),
     transform 0.9s var(--ease);
 }
+/* Extra air between the hero and Latest Work. */
+#work {
+  padding-top: 96px;
+}
+@media (max-width: 720px) {
+  #work {
+    padding-top: 56px;
+  }
+}
 /* Room under the arrow so the projects arrive after it, not with it. */
 #work-strip {
   scroll-margin-top: 15vh;
