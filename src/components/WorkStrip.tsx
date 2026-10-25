@@ -123,12 +123,12 @@ function WorkCard({
 }) {
   const t = useDict();
   const card = useRef<HTMLDivElement>(null);
-  // A showcase film with a phone part covers both views: its "Mobile" button jumps the film
-  // there. Without one, "Mobile" shows the separate phone capture, if there is one.
+  // "Mobile" shows the project's own mobile clip (a 9:16 reel). Older showcase films without one
+  // carry a phone part instead, and their "Mobile" button jumps the film there.
   const showcase = p.showcaseUrl;
-  const mobileAt = showcase ? p.showcaseMobileAt : null;
+  const phoneClip = Boolean(p.coverMobileUrl || p.previewMobileUrl);
+  const mobileAt = showcase && !phoneClip ? p.showcaseMobileAt : null;
   const jumps = mobileAt != null;
-  const phoneClip = !jumps && Boolean(p.coverMobileUrl || p.previewMobileUrl);
   const hasMobile = jumps || phoneClip;
   const [view, setView] = useState<View>("desktop");
   const [active, setActive] = useState(false);
@@ -257,13 +257,13 @@ function WorkCard({
         )}
         {phoneClip ? (
           <div className="frame-view frame-mobile">
-            <div className="phone">
+            <div className="reel">
               {p.coverMobileUrl ? (
                 <Image
                   src={p.coverMobileUrl}
                   alt=""
                   fill
-                  sizes="220px"
+                  sizes="(max-width: 600px) 40vw, 230px"
                   quality={80}
                 />
               ) : null}

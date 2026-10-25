@@ -67,7 +67,7 @@ export default async function EditProject({ params }: { params: Promise<{ id: st
               </>
             ) : null}
             <input type="file" name="showcase" accept="video/mp4,video/webm" />
-            <small>From scripts/showcase-project.mjs, up to 40 MB. Plays on the card instead of the desktop/mobile clips.</small>
+            <small>showcase.mp4 from scripts/showcase-project.mjs (the desktop site, full frame), up to 40 MB.</small>
           </div>
           <label className="adm-field">
             <span>Showcase poster</span>
@@ -75,14 +75,14 @@ export default async function EditProject({ params }: { params: Promise<{ id: st
             <small>The film&apos;s first frame (showcase.webp).</small>
           </label>
           <label className="adm-field">
-            <span>Phone part starts at (seconds)</span>
+            <span>Phone part starts at (seconds, older films)</span>
             <input type="number" name="showcaseMobileAt" step="0.01" min="0" defaultValue={p?.showcaseMobileAt ?? ""} />
-            <small>mobileAt from the script. Shows the Desktop · Mobile buttons on the card.</small>
+            <small>Only for older films with a phone part and no mobile clip below.</small>
           </label>
         </Row>
         <Row>
           <div className="adm-field">
-            <span>Mobile cover (phone screen, 390×844)</span>
+            <span>Mobile cover (9:16, mobile.webp)</span>
             {p?.coverMobileUrl ? (
               <div className="adm-image">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -99,7 +99,7 @@ export default async function EditProject({ params }: { params: Promise<{ id: st
             <span>Mobile clip</span>
             {p?.previewMobileUrl ? <small>Current: {p.previewMobileUrl}</small> : null}
             <input type="file" name="previewMobile" accept="video/mp4,video/webm" />
-            <small>Shown in a phone frame when the card is switched to mobile.</small>
+            <small>mobile.mp4, a 9:16 reel. Turns on the card&apos;s Desktop · Mobile buttons.</small>
           </label>
         </Row>
         <MarkdownField name="body" label="Case study" defaultValue={p?.body} />
