@@ -10,7 +10,6 @@ const en = {
   home: {
     now: "Now",
     latestWork: "Latest Work",
-    recentlyRead: "Recently read",
     allBooks: "All books",
     writing: "Writing",
     allWriting: "All writing",
@@ -50,7 +49,7 @@ const en = {
     next: "Next",
     backToBook: "Back to the book",
     readerError: "The text could not be loaded right now. Try again in a moment, or read it at the source.",
-    all: "All books",
+    more: "More books",
     coverOf: (t: string) => `Cover of ${t}`,
     model: (t: string) => `3D model of ${t}. Drag or use the arrow keys to turn it.`,
     dragHint: "Drag to turn the book",
@@ -86,7 +85,6 @@ const pt: Dict = {
   home: {
     now: "Agora",
     latestWork: "Trabalhos recentes",
-    recentlyRead: "Lidos recentemente",
     allBooks: "Todos os livros",
     writing: "Textos",
     allWriting: "Todos os textos",
@@ -126,7 +124,7 @@ const pt: Dict = {
     next: "Próxima",
     backToBook: "Voltar ao livro",
     readerError: "Não foi possível carregar o texto agora. Tente de novo em instantes, ou leia na fonte.",
-    all: "Todos os livros",
+    more: "Mais livros",
     coverOf: (t: string) => `Capa de ${t}`,
     model: (t: string) => `Modelo 3D de ${t}. Arraste ou use as setas para girar.`,
     dragHint: "Arraste para girar o livro",

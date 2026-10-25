@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow } from "@/components/Arrow";
 import { BookShelf } from "@/components/BookShelf";
-import { toShelfBook } from "@/lib/books";
+import { readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
 import { BOOK_STATUSES } from "@/db/schema";
@@ -18,9 +18,9 @@ export default async function BooksPage() {
     books.filter((b) => b.status === status).map(toShelfBook);
   // Reading and read share the first shelf, the current book leading.
   const shelves = [
-    { label: t.books.readAndReading, books: [...byStatus("reading"), ...byStatus("read")] },
-    // "next" was folded into the waitlist and is no longer a shelf.
-    ...BOOK_STATUSES.filter((s) => s !== "reading" && s !== "read" && s !== "next").map((s) => ({
+    { label: t.books.readAndReading, books: readAndReading(books).map(toShelfBook) },
+    // "next" was folded into the waitlist, and abandoned books ("Put down") are not shown.
+    ...BOOK_STATUSES.filter((s) => !["reading", "read", "next", "abandoned"].includes(s)).map((s) => ({
       label: t.books.status[s],
       books: byStatus(s),
     })),
