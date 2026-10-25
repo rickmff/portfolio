@@ -27,7 +27,6 @@ export function WritingList({ posts, t }: { posts: Post[]; t: Dict }) {
                 banner={p.bannerUrl}
                 meta={`${t.blog.minRead(readingMinutes(p.body))} · ${day.format(p.publishedAt!)}`}
                 excerpt={p.excerpt}
-                tags={p.tags.split(",").map((x) => x.trim()).filter(Boolean).slice(0, 3)}
               />
             ))}
           </div>

@@ -51,7 +51,7 @@ Fields: `title`, `author`, `status` (`reading`, `read`, `wishlist` = Waitlist sh
 The page slug comes from the base title, so don't change a published book's base `title`; put another-language title in translations.
 
 ### Blog (/blog and /blog/<slug>)
-Fields: `title`, `slug`, `excerpt` (one sentence, used in RSS, previews and the hover card), `body` (Markdown: headings, lists, tables, task lists, footnotes, `> [!NOTE]` callouts, fenced code with a language, images `![alt](url "caption")`), `tags` ("infra, product", up to 3 show), `bannerUrl` (2:1, at least 1600×800), `published`, `publishedAt` (ISO date; future = scheduled).
+Fields: `title`, `slug`, `excerpt` (one sentence, used in RSS, previews and the hover card), `body` (Markdown: headings, lists, tables, task lists, footnotes, `> [!NOTE]` callouts, fenced code with a language, images `![alt](url "caption")`), `tags` ("infra, product"; stored, not shown on the site), `bannerUrl` (2:1, at least 1600×800), `published`, `publishedAt` (ISO date; future = scheduled).
 1. Ask the topic and what they want to say, or take their draft. Edit lightly for clarity, keep their voice; don't invent facts or opinions.
 2. Ask for the banner image (a file path or URL). Upload it to `/media`. Images inside the post go to `/media` too.
 3. Ask: publish now, schedule (date) or keep as draft.
