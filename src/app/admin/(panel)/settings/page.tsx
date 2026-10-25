@@ -23,6 +23,13 @@ export default async function SettingsPage() {
       <AdminForm action={saveSettings}>
         {(Object.keys(SETTING_KEYS) as SettingKey[]).map((key) => {
           const label = SETTING_KEYS[key].label;
+          if (key === "cv")
+            return (
+              <div key={key}>
+                <Text name={key} label={label} defaultValue={value(key)} />
+                <input type="file" name="cvFile" accept="application/pdf,.pdf" aria-label="Upload CV (PDF)" />
+              </div>
+            );
           if (!TRANSLATED_SETTINGS.includes(key)) return <Text key={key} name={key} label={label} defaultValue={value(key)} />;
           if (key === "about")
             return LANGS.map((l) => (

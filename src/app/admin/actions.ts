@@ -323,7 +323,14 @@ export async function saveSettings(_: FormState, fd: FormData): Promise<FormStat
   const rows: { key: string; value: string }[] = [];
   for (const key of Object.keys(SETTING_KEYS) as SettingKey[]) {
     if (!TRANSLATED_SETTINGS.includes(key)) {
-      rows.push({ key, value: String(fd.get(key) ?? "").trim() });
+      // A PDF picked in the CV field replaces the stored link.
+      let file: string | null = null;
+      try {
+        if (key === "cv") file = await saveUpload(fd.get("cvFile"), { pdf: true });
+      } catch (e) {
+        return fail(e);
+      }
+      rows.push({ key, value: file ?? String(fd.get(key) ?? "").trim() });
       continue;
     }
     // English is the site default, so it is also the plain key every language falls back to.
