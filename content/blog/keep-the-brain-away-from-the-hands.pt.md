@@ -16,7 +16,7 @@ O desenho divide um agente em três partes:
 - **Harness** (o cérebro): o loop que chama o modelo e encaminha as chamadas de ferramenta.
 - **Sandbox** (as mãos): onde o código roda e os arquivos são editados.
 
-![Diagrama: o harness lê e escreve no log da sessão e chama sandboxes e ferramentas por uma única interface execute](img:diagram "Cérebro, mãos e log, cada um trocável sozinho")
+![Diagrama: o harness lê e escreve no log da sessão e chama sandboxes e ferramentas por uma única interface execute](img:agents-pt "Cérebro, mãos e log, cada um trocável sozinho")
 
 Nos Managed Agents, toda mão parece igual para o cérebro: `execute(name, input) → string`. Um container, um servidor MCP ou, no exemplo deles, um emulador de Pokémon, todos atrás da mesma assinatura. Pensa numa tomada: você liga o carregador do celular, a chaleira ou o abajur, e a parede não quer saber qual é. O Aristóteles chamava a mão de "o instrumento dos instrumentos", e é exatamente esse o papel dela aqui.
 

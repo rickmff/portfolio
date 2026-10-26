@@ -1,21 +1,22 @@
 {
-"banner-ai": "https://commons.wikimedia.org/wiki/File:Johannes_Vermeer_-_The_Geographer_-_Google_Art_Project.jpg",
-"banner-fintech": "https://commons.wikimedia.org/wiki/File:The_Fighting_Temeraire,_JMW_Turner,_National_Gallery.jpg",
-"system360": [
-"ArnoldReinhold",
-"CC BY-SA 3.0"
-],
-"pix": [
-"Banco Central do Brasil",
-"PD"
-],
-"boe": [
-"acediscovery",
-"CC BY 4.0"
-],
-"bug": [
-"Naval Surface Warfare Center, Dahlgren|Naval Surface Warfare Center, Dahlgren",
-"PD"
-],
-"banner-50things": "https://commons.wikimedia.org/wiki/File:Pieter_Bruegel_the_Elder_-_The_Tower_of_Babel_(Vienna)_-_Google_Art_Project_-_edited.jpg"
+  "banner-ai": "https://commons.wikimedia.org/wiki/File:Johannes_Vermeer_-_The_Geographer_-_Google_Art_Project.jpg",
+  "banner-fintech": "https://commons.wikimedia.org/wiki/File:The_Fighting_Temeraire,_JMW_Turner,_National_Gallery.jpg",
+  "system360": [
+    "ArnoldReinhold",
+    "CC BY-SA 3.0"
+  ],
+  "pix": [
+    "Banco Central do Brasil",
+    "PD"
+  ],
+  "boe": [
+    "acediscovery",
+    "CC BY 4.0"
+  ],
+  "bug": [
+    "Naval Surface Warfare Center, Dahlgren|Naval Surface Warfare Center, Dahlgren",
+    "PD"
+  ],
+  "banner-50things": "https://commons.wikimedia.org/wiki/File:Pieter_Bruegel_the_Elder_-_The_Tower_of_Babel_(Vienna)_-_Google_Art_Project_-_edited.jpg",
+  "banner-agents": "https://commons.wikimedia.org/wiki/File:Rembrandt_-_The_Anatomy_Lesson_of_Dr_Nicolaes_Tulp.jpg"
 }

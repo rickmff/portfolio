@@ -1,6 +1,6 @@
 ---
 name: portfolio
-description: Manage the content of rickmff's portfolio (novo.rickmff.com): projects, books, blog, about and harness. Asks which section to edit, interviews for the content, then formats, translates (EN/PT), captures project videos, publishes through the content API and finishes with a merged PR that records the changed content in the repo.
+description: Manage the content of rickmff's portfolio (rickmff.com): projects, books, blog, about and harness. Asks which section to edit, interviews for the content, then formats, translates (EN/PT), captures project videos, publishes through the content API and finishes with a merged PR that records the changed content in the repo.
 ---
 
 # Portfolio content
@@ -9,10 +9,10 @@ Use when the user types `/portfolio` or asks to add, edit, reorder or remove any
 
 ## 0. Connect
 
-- API: `https://novo.rickmff.com/api/content`. Every call needs `Authorization: Bearer $TOKEN`.
+- API: `https://rickmff.com/api/content`. Every call needs `Authorization: Bearer $TOKEN`.
 - Token: `$PORTFOLIO_TOKEN` if set, otherwise `~/.config/portfolio/token` on the user's Mac. Never print it, write it to another file, commit it or paste it in chat. Read it inline: `TOKEN=$(cat ~/.config/portfolio/token)`.
 - Check first: `curl -s -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $TOKEN" $API/harness` must print 200.
-- **Where to run.** API calls and project captures need the token, open internet, Node, pnpm and ffmpeg. A cloud session usually has none of these (its proxy blocks novo.rickmff.com and most sites). In that case, do the interview and all the writing/translating in the session, and run the commands on the user's Mac: in a Claude project thread, start or reuse a Remote Control session on the Mac and hand it the exact commands; in Claude Code on the Mac, run them directly. The repo checkout on the Mac is needed for project captures (`scripts/capture-project.mjs`). Say this limit to the user in one line when it applies.
+- **Where to run.** API calls and project captures need the token, open internet, Node, pnpm and ffmpeg. A cloud session usually has none of these (its proxy blocks rickmff.com and most sites). In that case, do the interview and all the writing/translating in the session, and run the commands on the user's Mac: in a Claude project thread, start or reuse a Remote Control session on the Mac and hand it the exact commands; in Claude Code on the Mac, run them directly. The repo checkout on the Mac is needed for project captures (`scripts/capture-project.mjs`). Say this limit to the user in one line when it applies.
 
 ## 1. Ask what to edit
 
@@ -56,9 +56,10 @@ Fields: `title`, `slug`, `excerpt` (one sentence, used in RSS, previews and the 
 2. Ask for the banner image (a file path or URL). Upload it to `/media`. Images inside the post go to `/media` too.
 3. Ask: publish now, schedule (date) or keep as draft.
 4. Write title, excerpt and body in both languages; `POST $API/posts`.
-   Quotes go inside the paragraph, not as blockquotes: the lead-in sentence, then the quote in quotation marks, then its source in parentheses, e.g. `(*The Way to Wealth*, 1758)`. Don't illustrate a quote with a portrait of the person quoted.
+   Voice: personal, direct and casual, with everyday examples (cooking, giving directions, a house key) that make the idea concrete. Don't invent the user's own experiences; ask, or keep it general.
+   Quotes are woven into the text, never as blockquotes and never opening a paragraph: name the person and paraphrase or quote them in the middle of the argument ("Brian Kernighan used to say that…"). No book title and no year in parentheses after a quote. Don't illustrate a quote with a portrait of the person quoted.
    No visible credit lines: no "Banner: …" note at the top and no "Image: author, license" in captions. Keep the source and license of each image in `content/blog/credits.json` instead. Because nothing is credited on the page, use only public-domain or CC0 images, or your own diagrams and screenshots; skip CC BY / CC BY-SA images, which require visible attribution.
-5. To publish now, set `publishedAt` about 2 hours in the past. The site hides posts whose `publishedAt` is later than the server's clock, and a time of "exactly now" can stay hidden for about an hour (timezone offset). Check that `/blog/<slug>` returns 200.
+5. To publish now, set `publishedAt` about 2 hours in the past. The site hides posts whose `publishedAt` is later than the server's clock, and a time of "exactly now" can stay hidden for about an hour (timezone offset). Check that `/blog/<slug>` (EN) and `/pt/blog/<slug>` (PT) return 200.
 
 ### About (/about)
 Setting `about` (English) and `about:pt`: Markdown. Format: a short intro paragraph, then `## Experience` with each job as `### Company <small>2023</small>`, then `*Role*` on its own line, then one short description paragraph; then `## Awards` as a bullet list `- **Place · Award** (date) — description`. No Stack or Certificates sections. `PATCH $API/settings {"about":"…","about:pt":"…"}`.
@@ -81,7 +82,7 @@ Errors come back as `{"error", "issues"}` with 400 (fix the fields), 401 (token)
 
 ## 5. Finish
 
-- Changes are live immediately. Check the page with `curl -s -H 'Accept-Language: en' <page>` and `-H 'Accept-Language: pt-BR'`, or open it, and give the user the link (https://novo.rickmff.com/...).
+- Changes are live immediately. Check the page with `curl -s -H 'Accept-Language: en' <page>` and `-H 'Accept-Language: pt-BR'`, or open it, and give the user the link (https://rickmff.com/...).
 - Deleting is permanent: confirm with the user first, naming the item.
 - Don't commit captures (`capture/` is git-ignored) and never commit the token.
 

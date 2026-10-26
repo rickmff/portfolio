@@ -16,7 +16,7 @@ The design splits an agent into three parts:
 - **Harness** (the brain): the loop that calls the model and routes its tool calls.
 - **Sandbox** (the hands): where code runs and files get edited.
 
-![Diagram: the harness reads and writes the session log, and calls sandboxes and tools through one execute interface](img:diagram "Brain, hands and log, each replaceable on its own")
+![Diagram: the harness reads and writes the session log, and calls sandboxes and tools through one execute interface](img:agents-en "Brain, hands and log, each replaceable on its own")
 
 In Managed Agents, every hand looks the same to the brain: `execute(name, input) → string`. A container, an MCP server or, in their example, a Pokémon emulator, all behind the same signature. Think of a power outlet: you plug in a phone charger, a kettle or a lamp, and the wall doesn't care which. Aristotle called the hand "the tool of tools", and that's exactly the job it does here.
 
