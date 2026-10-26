@@ -1,5 +1,6 @@
 import "server-only";
 import type { Book } from "@/db/schema";
+import { googleBooksUrl, pickVolume, type Preview } from "./google-books";
 
 /**
  * Free, legal ways to read a book: public-domain texts (Project Gutenberg, Standard Ebooks) and
@@ -66,7 +67,6 @@ const CURATED: Record<string, Curated> = {
 };
 
 export type Download = { label: string; href: string; source: string };
-export type Preview = { id: string; full: boolean };
 
 export type Editions = {
   /** Editions the on-site reader can show. */
@@ -135,59 +135,21 @@ export async function getEditions(b: BookRef & Pick<Book, "title" | "author">): 
 
 /* ---------- Google Books ---------- */
 
-type Volume = {
-  id: string;
-  volumeInfo: { title?: string; authors?: string[]; language?: string };
-  accessInfo: {
-    embeddable?: boolean;
-    publicDomain?: boolean;
-    viewability?: "NO_PAGES" | "PARTIAL" | "ALL_PAGES" | "UNKNOWN";
-    pdf?: { isAvailable?: boolean; downloadLink?: string };
-  };
-};
-
-const norm = (s: string) =>
-  s
-    .normalize("NFKD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-
-/** "Percy Jackson (coleção)" → "Percy Jackson": what a catalogue would call it. */
-const searchTitle = (t: string) => t.replace(/\(.*?\)/g, "").trim();
-
+/**
+ * Only asked server-side when a key is set: without one Google often answers 429 to servers,
+ * and the visitor's browser does the lookup instead (see BookPreview).
+ */
 async function googleBooks(title: string, author: string) {
-  const t = searchTitle(title);
-  const surname = author.split(/\s+/).pop() ?? author;
-  const params = new URLSearchParams({
-    q: `intitle:${t} inauthor:${surname}`,
-    maxResults: "20",
-    printType: "books",
-  });
-  if (process.env.GOOGLE_BOOKS_API_KEY) params.set("key", process.env.GOOGLE_BOOKS_API_KEY);
+  const key = process.env.GOOGLE_BOOKS_API_KEY;
+  if (!key) return null;
   try {
-    const res = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`, {
+    const res = await fetch(googleBooksUrl(title, author, key), {
       signal: AbortSignal.timeout(5000),
-      // Previews rarely change; a day keeps us far below the keyless quota.
+      // Previews rarely change; a day keeps us far below the quota.
       next: { revalidate: 86_400 },
     });
     if (!res.ok) return null;
-    const { items = [] } = (await res.json()) as { items?: Volume[] };
-    const want = norm(t);
-    const viewable = items.filter(
-      (v) =>
-        v.accessInfo.embeddable &&
-        (v.accessInfo.viewability === "PARTIAL" || v.accessInfo.viewability === "ALL_PAGES") &&
-        norm(v.volumeInfo.title ?? "").startsWith(want) &&
-        (v.volumeInfo.authors ?? []).some((a) => norm(a).includes(norm(surname))),
-    );
-    const score = (v: Volume) =>
-      (v.volumeInfo.language === "pt" ? 2 : 0) + (v.accessInfo.viewability === "ALL_PAGES" ? 1 : 0);
-    const best = viewable.sort((a, z) => score(z) - score(a))[0];
-    if (!best) return null;
-    const pdf = best.accessInfo.publicDomain && best.accessInfo.pdf?.isAvailable ? best.accessInfo.pdf.downloadLink : undefined;
-    return { preview: { id: best.id, full: best.accessInfo.viewability === "ALL_PAGES" }, pdf };
+    return pickVolume(await res.json(), title, author);
   } catch {
     return null;
   }

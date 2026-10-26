@@ -1889,6 +1889,9 @@ button.book-read {
   max-width: 640px;
   font-size: 13px;
 }
+.book-actions:empty {
+  display: none;
+}
 .book-read-main {
   background: var(--ink);
   border-color: var(--ink);
