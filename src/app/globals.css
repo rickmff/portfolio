@@ -534,13 +534,17 @@ a {
   justify-content: center;
   gap: 20px;
 }
-.strip-lead {
+.strip-lead,
+.strip-count,
+.strip-track {
   transition:
     opacity 0.6s var(--ease-soft),
     translate 0.8s var(--ease);
 }
 /* Out of sight while the page is at the top and the scroll arrow shows instead. */
-.strip-lead.is-hidden {
+.strip-lead.is-hidden,
+.strip-count.is-hidden,
+.strip-track.is-hidden {
   opacity: 0;
   translate: 0 -6px;
   pointer-events: none;
