@@ -72,29 +72,27 @@ export default async function BookPage({ params }: Props) {
         </p>
         <h1>{b.title}</h1>
         <p className="muted" style={{ margin: "12px 0 0" }}>{b.author}</p>
-        {ed.read.length || ed.downloads.length || ed.preview || ed.external ? (
-          <div className="book-actions">
-            {ed.read.length ? <ReadLink slug={slug} /> : null}
-            {ed.external ? (
-              <a href={ed.external} className="book-read with-arrow" target="_blank" rel="noopener noreferrer">
-                {t.books.readFree} <Arrow dir="out" />
-              </a>
-            ) : null}
-            {ed.downloads.map((d) => (
-              <a
-                key={d.href}
-                href={d.href}
-                className="book-read with-arrow"
-                title={`${t.books.download} · ${d.source}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {d.label} <Arrow dir="down" />
-              </a>
-            ))}
-            {ed.preview ? <BookPreview id={ed.preview.id} title={b.title} /> : null}
-          </div>
-        ) : null}
+        <div className="book-actions">
+          {ed.read.length ? <ReadLink slug={slug} /> : null}
+          {ed.external ? (
+            <a href={ed.external} className="book-read with-arrow" target="_blank" rel="noopener noreferrer">
+              {t.books.readFree} <Arrow dir="out" />
+            </a>
+          ) : null}
+          {ed.downloads.map((d) => (
+            <a
+              key={d.href}
+              href={d.href}
+              className="book-read with-arrow"
+              title={`${t.books.download} · ${d.source}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {d.label} <Arrow dir="down" />
+            </a>
+          ))}
+          <BookPreview id={ed.preview?.id} title={b.title} author={b.author} />
+        </div>
         {b.quote ? (
           <BookQuote quote={b.quote} source={b.quoteSource} className="book-quote">
             {ed.read.length ? (
