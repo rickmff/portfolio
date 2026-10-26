@@ -12,6 +12,7 @@ export function SiteHeader({ settings, harness = false, t }: { settings: SiteSet
         {settings.name}
       </Link>
       <nav aria-label="Main">
+        <Link href="/work" className="link-muted">{t.nav.work}</Link>
         <Link href="/books" className="link-muted">{t.nav.books}</Link>
         <Link href="/blog" className="link-muted">{t.nav.writing}</Link>
         {harness ? <Link href="/harness" className="link-muted">{t.nav.harness}</Link> : null}
@@ -24,18 +25,30 @@ export function SiteHeader({ settings, harness = false, t }: { settings: SiteSet
   );
 }
 
-export function SiteFooter({ settings }: { settings: SiteSettings }) {
+export function SiteFooter({ settings, harness = false, t }: { settings: SiteSettings; harness?: boolean; t: Dict }) {
   return (
     <footer className="wrap site-footer">
-      <span>© {new Date().getFullYear()} {settings.name}</span>
-      <span>
+      <nav aria-label="Footer" className="footer-nav">
+        <Link href="/" className="link-muted">{t.nav.home}</Link>
+        <Link href="/work" className="link-muted">{t.nav.work}</Link>
+        <Link href="/books" className="link-muted">{t.nav.books}</Link>
+        <Link href="/quotes" className="link-muted">{t.quotes.eyebrow}</Link>
+        <Link href="/blog" className="link-muted">{t.nav.writing}</Link>
+        {harness ? <Link href="/harness" className="link-muted">{t.nav.harness}</Link> : null}
+        {settings.about ? <Link href="/about" className="link-muted">{t.nav.about}</Link> : null}
+        {settings.cv ? <a href={settings.cv} download className="link-muted">{t.nav.cv}</a> : null}
+      </nav>
+      <div className="footer-social">
         {settings.github ? <a href={settings.github} className="link-muted">GitHub</a> : null}
         {settings.linkedin ? <a href={settings.linkedin} className="link-muted">LinkedIn</a> : null}
         {settings.twitter ? <a href={settings.twitter} className="link-muted">X</a> : null}
         {settings.discord ? <a href={settings.discord} className="link-muted">Discord</a> : null}
         {settings.email ? <a href={`mailto:${settings.email}`} className="link-muted">Email</a> : null}
+      </div>
+      <div className="footer-meta">
+        <span>© {new Date().getFullYear()} {settings.name}</span>
         <LanguageToggle />
-      </span>
+      </div>
     </footer>
   );
 }

@@ -34,7 +34,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <PageTransition />
       <SiteHeader settings={settings} harness={harness} t={t} />
       <main>{children}</main>
-      <SiteFooter settings={settings} />
+      <SiteFooter settings={settings} harness={harness} t={t} />
     </LocaleProvider>
   );
 }

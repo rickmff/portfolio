@@ -21,7 +21,7 @@ export function splitLocale(pathname: string): { locale: Locale; path: string } 
 
 const en = {
   intl: "en",
-  nav: { books: "Books", writing: "Writing", harness: "Harness", about: "About", email: "Email" },
+  nav: { home: "Home", work: "Projects", books: "Books", writing: "Writing", harness: "Harness", about: "About", email: "Email", cv: "CV" },
   home: {
     now: "Now",
     latestWork: "Latest Work",
@@ -91,7 +91,13 @@ const en = {
     all: "All writing",
     empty: "Nothing published yet.",
   },
-  work: { visit: "Visit", source: "Source", more: "More work" },
+  work: {
+    visit: "Visit",
+    source: "Source",
+    more: "More work",
+    eyebrow: "All projects",
+    title: "Things I have built, from client sites to products of my own.",
+  },
   about: { eyebrow: "About", projects: "Projects", cv: "Download CV" },
   harness: { eyebrow: "Harness", title: "The tools and setup I build with.", empty: "Coming soon." },
   language: "Language",
@@ -101,7 +107,7 @@ export type Dict = typeof en;
 
 const pt: Dict = {
   intl: "pt-BR",
-  nav: { books: "Livros", writing: "Textos", harness: "Harness", about: "Sobre", email: "Email" },
+  nav: { home: "Início", work: "Projetos", books: "Livros", writing: "Textos", harness: "Harness", about: "Sobre", email: "Email", cv: "CV" },
   home: {
     now: "Agora",
     latestWork: "Trabalhos recentes",
@@ -171,7 +177,13 @@ const pt: Dict = {
     all: "Todos os textos",
     empty: "Nada publicado ainda.",
   },
-  work: { visit: "Visitar", source: "Código", more: "Mais projetos" },
+  work: {
+    visit: "Visitar",
+    source: "Código",
+    more: "Mais projetos",
+    eyebrow: "Todos os projetos",
+    title: "Coisas que construí, de sites para clientes a produtos meus.",
+  },
   about: { eyebrow: "Sobre", projects: "Projetos", cv: "Baixar CV" },
   harness: { eyebrow: "Harness", title: "As ferramentas e o setup com que eu construo.", empty: "Em breve." },
   language: "Idioma",

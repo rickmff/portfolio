@@ -20,6 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages: Page[] = [
     { path: "/", lastModified: latest([...projects, ...posts]), priority: 1 },
     ...(settings.about ? [{ path: "/about", priority: 0.9 }] : []),
+    { path: "/work", lastModified: latest(projects), priority: 0.9 },
     { path: "/blog", lastModified: latest(posts), priority: 0.8 },
     { path: "/books", lastModified: latest(books) },
     { path: "/quotes", lastModified: latest(books) },
