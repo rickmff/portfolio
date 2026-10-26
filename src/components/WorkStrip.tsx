@@ -366,19 +366,29 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
       el.style.setProperty("--slot-w", `${slot()}px`);
     };
     fit();
-    // The cards slide in from the right; snapping that ran during the slide lands a little off
-    // the start, so settle back onto it once the first card is in place.
-    const settle = (e: TransitionEvent) => {
-      if (e.target === el.firstElementChild && e.propertyName === "transform" && el.scrollLeft < 200)
-        el.scrollTo({ left: 0 });
+    // The cards slide in from 90px to the right (see .strip.sr), and scroll snapping measures
+    // them where they are drawn, so a strip that snapped mid-slide would rest 90px off its start.
+    // Snapping stays off (.is-entering) while the cards are out of place and until the slide-in
+    // is over; then they are where the snap expects them.
+    let shown = el.classList.contains("sr-in");
+    let entered: ReturnType<typeof setTimeout> | undefined;
+    const watch = () => {
+      if (el.classList.contains("sr-in") === shown) return;
+      shown = !shown;
+      clearTimeout(entered);
+      if (!shown) el.classList.add("is-entering");
+      else entered = setTimeout(() => el.classList.remove("is-entering"), 2600);
     };
-    el.addEventListener("transitionend", settle);
+    if (shown) entered = setTimeout(() => el.classList.remove("is-entering"), 2600);
+    const mo = new MutationObserver(watch);
+    mo.observe(el, { attributes: true, attributeFilter: ["class"] });
     const ro = new ResizeObserver(fit);
     ro.observe(el);
     window.addEventListener("resize", fit);
     return () => {
       ro.disconnect();
-      el.removeEventListener("transitionend", settle);
+      mo.disconnect();
+      clearTimeout(entered);
       window.removeEventListener("resize", fit);
     };
   }, [strip]);
@@ -492,13 +502,45 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
     // Dragging the hairline moves the strip directly (snapping off), then eases onto a card.
     let drag: { x: number; left: number } | null = null;
     const ratio = () => el.scrollWidth / bar.clientWidth;
+    // A press off the thumb glides there instead of jumping: the strip eases onto the card that
+    // lands under the pointer, with snapping off until it arrives.
+    let glide = 0;
+    const glideTo = (to: number) => {
+      cancelAnimationFrame(glide);
+      const from = el.scrollLeft;
+      const ms = Math.min(900, 380 + Math.abs(to - from) * 0.12);
+      const start = performance.now();
+      el.classList.add("is-wheeling");
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / ms);
+        const k = t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+        el.scrollLeft = from + (to - from) * k;
+        if (t < 1) glide = requestAnimationFrame(tick);
+        else {
+          glide = 0;
+          el.classList.remove("is-wheeling");
+        }
+      };
+      glide = requestAnimationFrame(tick);
+    };
     const onDown = (e: PointerEvent) => {
       const thumb = bar.querySelector<HTMLElement>(".strip-thumb")!.getBoundingClientRect();
       const box = bar.getBoundingClientRect();
+      if (e.clientX < thumb.left || e.clientX > thumb.right) {
+        const max = el.scrollWidth - el.clientWidth;
+        const want = Math.min(max, Math.max(0, (e.clientX - box.left - thumb.width / 2) * ratio()));
+        const centre = want + el.clientWidth / 2;
+        const list = items();
+        const card = list.reduce((a, b) =>
+          Math.abs(b.offsetLeft + b.offsetWidth / 2 - centre) < Math.abs(a.offsetLeft + a.offsetWidth / 2 - centre) ? b : a,
+        );
+        // The end cards rest against the padding, like the snap does.
+        const i = list.indexOf(card);
+        glideTo(i === 0 ? 0 : i === list.length - 1 ? max : Math.min(max, card.offsetLeft + card.offsetWidth / 2 - el.clientWidth / 2));
+        return;
+      }
+      cancelAnimationFrame(glide);
       el.classList.add("is-wheeling");
-      // A press off the thumb first brings the thumb's middle to the pointer.
-      if (e.clientX < thumb.left || e.clientX > thumb.right)
-        el.scrollLeft = (e.clientX - box.left - thumb.width / 2) * ratio();
       drag = { x: e.clientX, left: el.scrollLeft };
       bar.setPointerCapture(e.pointerId);
       bar.classList.add("is-dragging");
@@ -526,6 +568,7 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
     el.addEventListener("transitionend", schedule);
     return () => {
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(glide);
       ro.disconnect();
       el.removeEventListener("scroll", schedule);
       el.removeEventListener("click", onClick, true);
@@ -589,7 +632,7 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
       </div>
       {/* Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
           at load; ScrollReveal adds "sr-in". Without JS or with reduced motion the CSS shows them. */}
-      <div className="strip sr" ref={strip}>
+      <div className="strip sr is-entering" ref={strip}>
         {projects.map((p, i) => (
           <WorkCard key={p.id} project={p} index={i} view={view} />
         ))}

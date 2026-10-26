@@ -228,6 +228,15 @@ a {
   scroll-snap-type: none;
   scroll-behavior: auto;
 }
+/* Off while the cards slide in (WorkStrip turns it back on); without scripts there is no slide. */
+.strip.is-entering {
+  scroll-snap-type: none;
+}
+@media (scripting: none) {
+  .strip.is-entering {
+    scroll-snap-type: x mandatory;
+  }
+}
 .strip::-webkit-scrollbar {
   display: none;
 }
