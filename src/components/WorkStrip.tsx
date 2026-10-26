@@ -9,8 +9,9 @@ import { useAtTop } from "@/lib/useAtTop";
 
 // What the cards really measure (see the slot maths in WorkStrip and .strip-item in the CSS), so
 // the browser picks a sharp enough copy on retina screens: one card plus half of the next is about
-// 60% of the width, a little over half on very wide screens; a 9:16 reel is at most about 47vh wide.
-const DESKTOP_SIZES = "(max-width: 1440px) 62vw, (max-width: 2400px) 52vw, 44vw";
+// 60% of the width (most of it on phones), a little over half on very wide screens; a 9:16 reel
+// is at most about 47vh wide.
+const DESKTOP_SIZES = "(max-width: 640px) 84vw, (max-width: 1440px) 62vw, (max-width: 2400px) 52vw, 44vw";
 const MOBILE_SIZES = "(max-width: 640px) 62vw, 47vh";
 
 const isVideo = (url: string) => /\.(mp4|webm|mov)(\?|$)/i.test(url);
@@ -342,6 +343,8 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
   const t = useDict();
   // One switch for the whole carousel. It opens on the visitor's own kind of screen.
   const [view, setView] = useState<View>("desktop");
+  const viewRef = useRef(view);
+  const fitRef = useRef(() => {});
   const hasMobile = projects.some(
     (p) => p.coverMobileUrl || p.previewMobileUrl || (p.showcaseUrl && p.showcaseMobileAt != null),
   );
@@ -359,12 +362,17 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
       const pad = parseFloat(cs.paddingLeft);
       const gap = parseFloat(cs.columnGap) || 0;
       const room = el.clientWidth - pad;
+      // On a phone a 16:9 card one and a half to the screen is too small to read, so the Desktop
+      // view there fills most of the width and leaves a sliver of the next card instead.
+      if (el.clientWidth <= 640 && viewRef.current === "desktop")
+        return el.style.setProperty("--slot-w", `${(room - gap) / 1.15}px`);
       const max = (window.innerHeight * 0.62 * 16) / 9;
       let k = 1;
       const slot = () => (room - k * gap) / (k + 0.5);
       while (slot() > max && k < 6) k++;
       el.style.setProperty("--slot-w", `${slot()}px`);
     };
+    fitRef.current = fit;
     fit();
     // The cards slide in from 90px to the right (see .strip.sr), and scroll snapping measures
     // them where they are drawn, so a strip that snapped mid-slide would rest 90px off its start.
@@ -392,6 +400,12 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
       window.removeEventListener("resize", fit);
     };
   }, [strip]);
+
+  // The slot depends on the view on phones (see fit above).
+  useLayoutEffect(() => {
+    viewRef.current = view;
+    fitRef.current();
+  }, [view]);
 
   // While the cards morph between Desktop and Mobile, keep the one in the middle in the middle.
   const morphed = useRef(view);
