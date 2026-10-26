@@ -543,12 +543,15 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
     };
   }, [strip, projects.length]);
 
+  // The switch, the counter and the hairline all stay out of sight while the page is at the top.
+  const hidden = hideAtTop && atTop;
+
   if (projects.length === 0)
     return <p className="muted wrap">{t.home.noProjects}</p>;
   return (
     <>
       {hasMobile ? (
-        <div className={`strip-lead${hideAtTop && atTop ? " is-hidden" : ""}`} inert={hideAtTop && atTop}>
+        <div className={`strip-lead${hidden ? " is-hidden" : ""}`} inert={hidden}>
           <div className="view-toggle strip-toggle" role="group" aria-label={t.home.latestWork}>
             {(["desktop", "mobile"] as const).map((v) => (
               <button
@@ -565,7 +568,7 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
         </div>
       ) : null}
       {projects.length > 1 ? (
-        <div className="strip-count">
+        <div className={`strip-count${hidden ? " is-hidden" : ""}`} inert={hidden}>
           <button
             type="button"
             aria-label={t.home.previousProject}
@@ -587,7 +590,7 @@ export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]
           </button>
         </div>
       ) : null}
-      <div className="strip-track" ref={track} aria-hidden="true">
+      <div className={`strip-track${hidden ? " is-hidden" : ""}`} ref={track} aria-hidden="true" inert={hidden}>
         <div className="strip-thumb" />
       </div>
       {/* Rendered hidden ("sr") so the cards can play their entrance even when the strip is on screen
