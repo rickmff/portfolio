@@ -536,7 +536,8 @@ a {
 }
 .strip-lead,
 .strip-count,
-.strip-track {
+.strip-track,
+.hides-at-top {
   transition:
     opacity 0.6s var(--ease-soft),
     translate 0.8s var(--ease);
@@ -544,7 +545,8 @@ a {
 /* Out of sight while the page is at the top and the scroll arrow shows instead. */
 .strip-lead.is-hidden,
 .strip-count.is-hidden,
-.strip-track.is-hidden {
+.strip-track.is-hidden,
+.hides-at-top.is-hidden {
   opacity: 0;
   translate: 0 -6px;
   pointer-events: none;

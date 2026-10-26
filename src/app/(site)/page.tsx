@@ -5,6 +5,7 @@ import { BookShelf } from "@/components/BookShelf";
 import { HeroLines } from "@/components/HeroLines";
 import { WorkStrip } from "@/components/WorkStrip";
 import { ScrollCue } from "@/components/ScrollCue";
+import { HideAtTop } from "@/components/HideAtTop";
 import { WritingList } from "@/components/WritingList";
 import { HOME_SHELF_SIZE, readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
@@ -57,7 +58,7 @@ export default async function Home() {
 
       <section id="work" className="section">
         <div className="wrap section-head center">
-          <h2>{t.home.latestWork}</h2>
+          <HideAtTop>{t.home.latestWork}</HideAtTop>
         </div>
         <div id="work-strip">
           <WorkStrip projects={projects} hideAtTop />

@@ -5,6 +5,7 @@ import Link from "@/components/LocaleLink";
 import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Project } from "@/db/schema";
 import { useDict } from "@/lib/i18n/client";
+import { useAtTop } from "@/lib/useAtTop";
 
 // What the cards really measure (see the slot maths in WorkStrip and .strip-item in the CSS), so
 // the browser picks a sharp enough copy on retina screens: one card plus half of the next is about
@@ -337,14 +338,7 @@ function WorkCard({
  */
 export function WorkStrip({ projects, hideAtTop = false }: { projects: Project[]; hideAtTop?: boolean }) {
   const strip = useWheelToHorizontal();
-  const [atTop, setAtTop] = useState(hideAtTop);
-  useEffect(() => {
-    if (!hideAtTop) return;
-    const update = () => setAtTop(window.scrollY < 8);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, [hideAtTop]);
+  const atTop = useAtTop(hideAtTop);
   const t = useDict();
   // One switch for the whole carousel. It opens on the visitor's own kind of screen.
   const [view, setView] = useState<View>("desktop");
