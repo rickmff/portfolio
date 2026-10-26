@@ -1753,6 +1753,7 @@ html.is-leaving main {
   opacity: 0;
   transform: translateX(90px);
   transition:
+    width var(--morph),
     opacity 1.1s var(--ease) var(--d),
     transform 1.5s var(--ease) var(--d);
 }
