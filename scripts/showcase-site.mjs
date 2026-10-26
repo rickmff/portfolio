@@ -3,7 +3,7 @@
 // it in 3D, reveals its notes, comes back home, hovers the writing list and opens a post. The
 // browser sits in a window drawn over a background image, in one continuous 1920×1080 take.
 //   node scripts/showcase-site.mjs [https://rickmff.com] --bg painting.jpg [--out capture/showcase]
-//     [--book <slug>] [--post 0] [--lang en] [--scale 1.5] [--frames-only]
+//     [--book <slug>] [--post 0] [--lang en] [--scale 1.5] [--speed 1.25] [--blur 10] [--frames-only] [--compose-only]
 // Filming runs on virtual time like showcase-project.mjs: every frame moves the page's clock,
 // its CSS animations and its videos on by exactly one tick, so the take is a clean 60 fps however
 // slow the screenshots are. Needs ffmpeg on PATH and a Chromium for Playwright.
@@ -26,6 +26,8 @@ const { values: opt, positionals } = parseArgs({
     scale: { type: "string", default: "1.5" },
     "frames-only": { type: "boolean", default: false },
     "compose-only": { type: "boolean", default: false },
+    speed: { type: "string", default: "1.25" },
+    blur: { type: "string", default: "10" },
   },
 });
 const site = (positionals[0] ?? "https://rickmff.com").replace(/\/$/, "");
@@ -33,6 +35,8 @@ if (!opt.bg && !opt["frames-only"]) throw new Error("--bg <image> is required (t
 
 const FPS = 60;
 const STEP = 1000 / FPS;
+// Every pause, glide and scroll of the tour is divided by this: 1.25 plays it a quarter faster.
+const SPEED = Number(opt.speed);
 const VIEW = { width: 1440, height: 810 };
 const out = path.resolve(opt.out);
 const raw = path.join(out, "frames");
@@ -229,7 +233,7 @@ function recorder(page) {
   };
 
   const rest = async (seconds) => {
-    for (let i = Math.round(seconds * FPS); i > 0; i--) await frame();
+    for (let i = Math.round(seconds * FPS / SPEED); i > 0; i--) await frame();
   };
 
   /** Glides the cursor to a point (or the middle of an element) along a gentle curve. */
@@ -242,7 +246,7 @@ function recorder(page) {
     const bow = Math.min(60, len * 0.12);
     const nx = len ? -(to.y - from.y) / len : 0;
     const ny = len ? (to.x - from.x) / len : 0;
-    const count = Math.max(1, Math.round(seconds * FPS));
+    const count = Math.max(1, Math.round(seconds * FPS / SPEED));
     for (let i = 1; i <= count; i++) {
       const t = ease(i / count);
       const arc = Math.sin(Math.PI * t) * bow;
@@ -267,7 +271,7 @@ function recorder(page) {
   /** Scrolls the page with the wheel, eased, by `dy` pixels. */
   const wheel = async (dy, seconds, { shift = false } = {}) => {
     if (shift) await page.keyboard.down("Shift");
-    const count = Math.max(1, Math.round(seconds * FPS));
+    const count = Math.max(1, Math.round(seconds * FPS / SPEED));
     let sent = 0;
     for (let i = 1; i <= count; i++) {
       const want = Math.round(dy * ease(i / count));
@@ -290,7 +294,7 @@ function recorder(page) {
 
   /** Scrolls the page from one position to another, eased (the page's smooth scroller follows along). */
   const glide = async (from, to, seconds) => {
-    const count = Math.max(1, Math.round(seconds * FPS));
+    const count = Math.max(1, Math.round(seconds * FPS / SPEED));
     for (let i = 1; i <= count; i++) {
       const y = Math.round(from + (to - from) * ease(i / count));
       await page.evaluate((y) => window.scrollTo(0, y), y);
@@ -544,8 +548,13 @@ async function compose() {
   const dir = path.join(out, "layers");
   await mkdir(dir, { recursive: true });
 
-  // The background: the image covering the frame, a touch softened so the window reads first.
-  const bg = await sharp(opt.bg).resize(W, H, { fit: "cover", position: "top" }).blur(0.6).toBuffer();
+  // The background: the image covering the frame, softly blurred (--blur, 0 for none) so the window reads first.
+  // Blurred a little larger than the frame, then cropped, so the edges don't fade in.
+  const sigma = Number(opt.blur);
+  const pad = Math.ceil(sigma * 3);
+  let bgImg = sharp(opt.bg).resize(W + pad * 2, H + pad * 2, { fit: "cover", position: "top" });
+  if (sigma > 0.3) bgImg = sharp(await bgImg.blur(sigma).toBuffer());
+  const bg = await bgImg.extract({ left: pad, top: pad, width: W, height: H }).toBuffer();
   const shadow = Buffer.from(
     `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
       <defs><filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="28"/></filter>
