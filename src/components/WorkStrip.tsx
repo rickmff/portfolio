@@ -76,7 +76,6 @@ function useWheelToHorizontal() {
       if (!frame) target = el.scrollLeft;
       if ((target <= 1 && delta < 0) || (target >= max() - 1 && delta > 0)) return;
       e.preventDefault();
-      e.stopPropagation(); // keep the page's smooth scroller out of it
       const px =
         e.deltaMode === 1
           ? delta * 32
