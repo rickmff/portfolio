@@ -1,6 +1,6 @@
 import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { BookShelf } from "@/components/BookShelf";
 import { HeroLines } from "@/components/HeroLines";
 import { WorkStrip } from "@/components/WorkStrip";

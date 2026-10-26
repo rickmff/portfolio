@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import type { Dict } from "@/lib/i18n/dict";
 import type { SiteSettings } from "@/lib/settings";

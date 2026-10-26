@@ -5,9 +5,9 @@ import { WorkStrip } from "@/components/WorkStrip";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProject, getPublishedProjects, getSettings } from "@/lib/data";
-import { getDict } from "@/lib/i18n/server";
+import { getDict, getLocale } from "@/lib/i18n/server";
 import { renderMarkdown } from "@/lib/markdown";
-import { absoluteUrl, breadcrumbs, metaFor, PERSON_ID, SITE_URL } from "@/lib/seo";
+import { absoluteUrl, breadcrumbs, localeUrl, metaFor, PERSON_ID } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -20,16 +20,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const [p, all, t, settings] = await Promise.all([
+  const [p, all, t, settings, locale] = await Promise.all([
     getProject((await params).slug),
     getPublishedProjects(),
     getDict(),
     getSettings(),
+    getLocale(),
   ]);
   if (!p) notFound();
   // The landing's carousel, without the project on this page.
   const others = all.filter((o) => o.id !== p.id);
-  const url = `${SITE_URL}/work/${p.slug}`;
+  const url = localeUrl(locale, `/work/${p.slug}`);
   const image = p.showcasePosterUrl || p.coverUrl;
   return (
     <article className="section">
@@ -51,7 +52,7 @@ export default async function ProjectPage({ params }: Props) {
             author: { "@id": PERSON_ID },
             ...(p.liveUrl || p.repoUrl ? { sameAs: [p.liveUrl, p.repoUrl].filter(Boolean) } : {}),
           },
-          breadcrumbs([
+          breadcrumbs(locale, [
             { name: settings.name, path: "/" },
             { name: t.home.latestWork, path: "/#work" },
             { name: p.title, path: `/work/${p.slug}` },

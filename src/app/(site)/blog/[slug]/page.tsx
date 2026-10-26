@@ -2,12 +2,12 @@ import { Arrow } from "@/components/Arrow";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { JsonLd } from "@/components/JsonLd";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { notFound } from "next/navigation";
 import { getPost, getSettings } from "@/lib/data";
 import { getDict, getLocale } from "@/lib/i18n/server";
 import { readingMinutes, renderMarkdown } from "@/lib/markdown";
-import { absoluteUrl, breadcrumbs, metaFor, PERSON_ID, SITE_URL, WEBSITE_ID } from "@/lib/seo";
+import { absoluteUrl, breadcrumbs, localeUrl, metaFor, PERSON_ID, WEBSITE_ID } from "@/lib/seo";
 
 const tagList = (tags: string) =>
   tags
@@ -38,7 +38,7 @@ export default async function PostPage({ params }: Props) {
   const post = await getPost((await params).slug);
   if (!post) notFound();
   const [t, settings, locale] = await Promise.all([getDict(), getSettings(), getLocale()]);
-  const url = `${SITE_URL}/blog/${post.slug}`;
+  const url = localeUrl(locale, `/blog/${post.slug}`);
   const minutes = readingMinutes(post.body);
   const date = new Intl.DateTimeFormat(t.intl, { day: "numeric", month: "long", year: "numeric" });
   return (
@@ -61,9 +61,9 @@ export default async function PostPage({ params }: Props) {
             timeRequired: `PT${minutes}M`,
             author: { "@id": PERSON_ID },
             publisher: { "@id": PERSON_ID },
-            isPartOf: [{ "@id": `${SITE_URL}/blog` }, { "@id": WEBSITE_ID }],
+            isPartOf: [{ "@id": localeUrl(locale, "/blog") }, { "@id": WEBSITE_ID }],
           },
-          breadcrumbs([
+          breadcrumbs(locale, [
             { name: settings.name, path: "/" },
             { name: t.blog.eyebrow, path: "/blog" },
             { name: post.title, path: `/blog/${post.slug}` },

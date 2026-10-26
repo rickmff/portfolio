@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "@/components/LocaleLink";
 import { notFound } from "next/navigation";
 import { Arrow } from "@/components/Arrow";
 import { SaveProgress } from "@/components/ReadingProgress";
