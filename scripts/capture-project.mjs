@@ -150,7 +150,9 @@ async function capture(name) {
 
   // Freeze time, then every frame: advance CSS/Web animations and videos by one step, run the
   // page's timers and animation frames for one step, screenshot.
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 50));
+  // Archived pages fake an older Date, so a pause "in the past" falls back to real time.
+  const now = await page.evaluate(() => Date.now());
+  await page.clock.pauseAt(now + 50).catch(() => page.clock.pauseAt(Date.now() + 2000));
   let n = 0;
   const frame = async () => {
     await page.evaluate((dt) => {
