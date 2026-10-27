@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProject, getPublishedProjects, getSettings } from "@/lib/data";
 import { getDict, getLocale } from "@/lib/i18n/server";
+import { imageDims } from "@/lib/image-dims";
 import { renderMarkdown } from "@/lib/markdown";
 import { absoluteUrl, breadcrumbs, localeUrl, metaFor, PERSON_ID } from "@/lib/seo";
 
@@ -75,7 +76,7 @@ export default async function ProjectPage({ params }: Props) {
           title={p.title}
           tint={p.tint}
         />
-        <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(p.body) }} />
+        <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(p.body, await imageDims(p.body)) }} />
       </div>
       {others.length ? (
         <section id="more-work" style={{ marginTop: 160 }}>

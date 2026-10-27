@@ -172,18 +172,22 @@ function WorkCard({
     const v = current as HTMLVideoElement | null;
     if (!v) return setPlaying(false);
 
-    // The ring under the corner button follows the clip's progress, frame by frame.
+    // The ring under the corner button follows the clip's progress, frame by frame, but only
+    // while it plays: a paused clip leaves the ring where it is and the main thread idle.
     let frame = 0;
     const tick = () => {
       const c = ring.current;
       if (c && v.duration) c.style.strokeDashoffset = String(1 - v.currentTime / v.duration);
-      frame = requestAnimationFrame(tick);
+      frame = v.paused ? 0 : requestAnimationFrame(tick);
     };
-    const sync = () => setPlaying(!v.paused);
+    const sync = () => {
+      setPlaying(!v.paused);
+      cancelAnimationFrame(frame);
+      tick();
+    };
     v.addEventListener("play", sync);
     v.addEventListener("pause", sync);
     sync();
-    tick();
     return () => {
       cancelAnimationFrame(frame);
       v.removeEventListener("play", sync);

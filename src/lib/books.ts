@@ -1,7 +1,7 @@
 import type { Book } from "@/db/schema";
 import type { ShelfBook } from "@/components/BookShelf";
 import { DICTS, type Dict } from "./i18n/dict";
-import { slugify } from "./markdown";
+import { slugify } from "./slug";
 
 export function toShelfBook(b: Book & { slug?: string }): ShelfBook {
   return {

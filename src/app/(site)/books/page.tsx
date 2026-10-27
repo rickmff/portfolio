@@ -39,7 +39,7 @@ export default async function BooksPage() {
         </p>
       </section>
       <section className="wrap section">
-        <BookShelf shelves={shelves} initialOpen={books.find((b) => b.status === "reading")?.id} />
+        <BookShelf shelves={shelves} initialOpen={books.find((b) => b.status === "reading")?.id} priority />
       </section>
     </>
   );

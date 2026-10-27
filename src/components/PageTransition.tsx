@@ -59,9 +59,21 @@ export function PageTransition() {
     });
     const observe = () => document.querySelectorAll("a[href]").forEach((a) => io.observe(a));
     const idle = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 200));
-    idle(observe);
     const mo = new MutationObserver(() => idle(observe));
-    mo.observe(document.body, { childList: true, subtree: true });
+    // Links in view are prefetched once the page has loaded and gone idle, so their payloads
+    // don't compete with this page's own hydration and entrance. Hover and focus still prefetch
+    // at once. On a data-saving connection only the intent counts.
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    const frugal = conn?.saveData || /(^|-)2g$/.test(conn?.effectiveType ?? "");
+    const start = () =>
+      idle(() => {
+        observe();
+        mo.observe(document.body, { childList: true, subtree: true });
+      });
+    if (!frugal) {
+      if (document.readyState === "complete") start();
+      else window.addEventListener("load", start, { once: true });
+    }
     const onIntent = (e: Event) => {
       const a = (e.target as Element).closest?.("a[href]");
       if (a) prefetch(a as HTMLAnchorElement);
@@ -69,6 +81,7 @@ export function PageTransition() {
     document.addEventListener("pointerover", onIntent, { passive: true });
     document.addEventListener("focusin", onIntent);
     return () => {
+      window.removeEventListener("load", start);
       io.disconnect();
       mo.disconnect();
       document.removeEventListener("pointerover", onIntent);
