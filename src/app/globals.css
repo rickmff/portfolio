@@ -1792,7 +1792,7 @@ html.is-leaving main {
   translate: none;
   rotate: none;
   /* Arriving: book by book. */
-  --book-delay: calc(var(--sr-delay, 0ms) + 200ms + var(--i, 0) * 55ms);
+  --book-delay: calc(var(--sr-delay, 0ms) + 100ms + var(--i, 0) * 45ms);
   transition:
     opacity 0.45s var(--ease-soft) var(--book-delay),
     translate 0.9s cubic-bezier(0.34, 1.45, 0.64, 1) var(--book-delay),

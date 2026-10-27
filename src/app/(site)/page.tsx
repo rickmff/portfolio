@@ -66,7 +66,7 @@ export default async function Home() {
       </section>
 
       {shelf.length ? (
-        <section id="books" className="wrap section" data-sr-delay="280">
+        <section id="books" className="wrap section" data-sr-delay="120">
           <div className="section-head center">
             <h2>{t.home.recentlyRead}</h2>
           </div>
