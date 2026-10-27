@@ -601,28 +601,62 @@ async function booksTour() {
   await moveTo(open, 0.9);
   await click({ settle: 0 });
 
-  // The 3D book: a hover tilt across the cover, a drag that turns it, and a flick to spin.
+  // The 3D book: a hover tilt across the cover, then a flick that sets it spinning.
   await until(() => page.locator(".b3d-stage").isVisible());
   const sb = await page.locator(".b3d-stage").boundingBox();
   const cx = sb.x + sb.width / 2;
   const cy = sb.y + sb.height / 2;
-  await moveTo({ x: cx + sb.width * 0.3, y: cy - sb.height * 0.15 }, 1.0);
-  await moveTo({ x: cx - sb.width * 0.28, y: cy + sb.height * 0.12 }, 1.0);
-  await moveTo({ x: cx, y: cy }, 0.4);
+  await moveTo({ x: cx + sb.width * 0.3, y: cy - sb.height * 0.15 }, 0.8);
+  await moveTo({ x: cx - sb.width * 0.25, y: cy + sb.height * 0.1 }, 0.8);
+  await moveTo({ x: cx + 60, y: cy }, 0.35);
   rec.mouse.down = true;
   await page.mouse.down();
-  await moveTo({ x: cx + 200, y: cy - 25 }, 1.0);
-  await moveTo({ x: cx + 70, y: cy + 20 }, 0.5);
-  await moveTo({ x: cx - 150, y: cy + 15 }, 0.2);
+  await moveTo({ x: cx - 170, y: cy + 15 }, 0.22);
   await page.mouse.up();
   rec.mouse.down = false;
-  await moveTo({ x: cx + sb.width * 0.55, y: cy + sb.height * 0.2 }, 1.1);
-  // A double click sets it back on its cover to close the cut.
-  await moveTo({ x: cx, y: cy }, 0.5);
-  await page.mouse.dblclick(cx, cy);
-  await page.evaluate(({ x, y }) => window.__click(x, y), rec.mouse);
-  await moveTo({ x: VIEW.width * 0.8, y: VIEW.height * 0.72 }, 0.9);
-  await rest(0.8);
+
+  // Notes: down to them while the book spins, revealed, then on through them.
+  const reveal = page.locator(".notes-btn");
+  await scrollTo(page.locator(".notes"), 0.22, 1.3, { cursor: reveal });
+  await moveTo(reveal, 0.25);
+  await click({ settle: 0.4 });
+  await moveTo({ x: VIEW.width * 0.8, y: VIEW.height * 0.6 }, 0.6);
+  await scrollBy(VIEW.height * 0.6, 1.4);
+
+  // Quotes: the shelf at the foot of the page links to every book's line.
+  const quotes = page.locator("main a[href^='/quotes']").first();
+  await scrollTo(quotes, 0.6, 1.5, { cursor: quotes });
+  await moveTo(quotes, 0.25);
+  await click({ settle: 0 });
+  await until(() => page.locator(".quote-item").first().isVisible());
+  // Down the list, the cursor on each line in turn, to this book's quote and its link.
+  const items = page.locator(".quote-item");
+  await rest(0.3);
+  const back = page.locator(`a.quote-book[href$='/books/${book.slug}']`).first();
+  await moveTo(items.first().locator("figure"), 0.6, { dx: 120 });
+  await scrollTo(back, 0.55, 1.6, { cursor: back });
+  await moveTo(back, 0.25);
+  await click({ settle: 0 });
+
+  // The ebook: from the book's page into the reader.
+  const read = page.locator("a.book-read-main");
+  await until(() => read.isVisible());
+  await rest(0.2);
+  await scrollTo(read, 0.75, 0.9, { cursor: read });
+  await moveTo(read, 0.2);
+  await click({ settle: 0 });
+  const toc = page.locator(".reader-toc summary");
+  await until(() => toc.isVisible());
+  await moveTo(toc, 0.8);
+  await click({ settle: 0.3 });
+  const chapter = page.locator(".reader-toc a", { hasText: "THE GOLD-BUG" }).first();
+  await scrollTo(chapter, 0.6, 1.0, { cursor: chapter });
+  await moveTo(chapter, 0.25);
+  await click({ settle: 0 });
+  await until(async () => /[?&]p=3/.test(page.url()));
+  await rest(0.4);
+  await moveTo({ x: VIEW.width * 0.86, y: VIEW.height * 0.7 }, 0.7);
+  await scrollBy(VIEW.height * 1.2, 2.8);
 }
 
 await browser.close();
