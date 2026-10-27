@@ -37,6 +37,8 @@ export function Book3D({ title, author, color, ink, coverUrl, thickness }: Props
     let vel = { x: 0, y: 0 };
     let target: { x: number; y: number } | null = null;
     let drag: { id: number; x: number; y: number; t: number } | null = null;
+    // Set on release: once the flick runs out, the book eases onto its nearest face.
+    let settle = false;
     let raf = 0;
     // Hover: a small tilt toward the cursor and a lift, layered on top of the rotation.
     let tilt = { x: 0, y: 0, lift: 0 };
@@ -74,7 +76,12 @@ export function Book3D({ title, author, color, ink, coverUrl, thickness }: Props
         rot.y += vel.y;
         rot.x = clampX(rot.x + vel.x);
         vel = { x: vel.x * 0.94, y: vel.y * 0.94 };
-        if (Math.abs(vel.x) + Math.abs(vel.y) < 0.02) vel = { x: 0, y: 0 };
+        if (Math.abs(vel.x) + Math.abs(vel.y) < (settle ? 0.8 : 0.02)) {
+          vel = { x: 0, y: 0 };
+          // Never left standing on its edge: on to the cover or the back, whichever is closer.
+          if (settle) target = { x: REST.x, y: REST.y + Math.round((rot.y - REST.y) / 180) * 180 };
+          settle = false;
+        }
       }
       paint();
       if (target || vel.x || vel.y || tilting) raf = requestAnimationFrame(tick);
@@ -100,6 +107,7 @@ export function Book3D({ title, author, color, ink, coverUrl, thickness }: Props
       if (e.button !== 0) return;
       drag = { id: e.pointerId, x: e.clientX, y: e.clientY, t: e.timeStamp };
       target = null;
+      settle = false;
       vel = { x: 0, y: 0 };
       el.setPointerCapture(e.pointerId);
       el.classList.add("is-dragging");
@@ -138,6 +146,7 @@ export function Book3D({ title, author, color, ink, coverUrl, thickness }: Props
       // Held still before letting go: no flick.
       if (reduced || e.timeStamp - drag.t > 80) vel = { x: 0, y: 0 };
       drag = null;
+      settle = !reduced;
       el.classList.remove("is-dragging");
       run();
     };
