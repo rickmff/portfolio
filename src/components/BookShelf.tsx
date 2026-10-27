@@ -2,8 +2,10 @@
 
 import { Arrow } from "@/components/Arrow";
 import Link from "@/components/LocaleLink";
+import { getImageProps } from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { preload } from "react-dom";
 import { navigateWithTransition, prefetchFull } from "@/components/PageTransition";
 import { BookQuote } from "@/components/BookQuote";
 import type { BookStatus } from "@/db/schema";
@@ -31,6 +33,17 @@ export type ShelfBook = {
 export type Shelf = { label?: string; books: ShelfBook[] };
 
 const COVER_W = 150;
+
+/**
+ * The cover through Next's image optimiser: WebP/AVIF at twice the width the shelf draws it (the
+ * 2x candidate getImageProps puts in src) instead of the full-size JPEG. A single URL, so it
+ * works as a plain CSS background everywhere. Only local files can go through it.
+ */
+function coverUrl(src: string) {
+  if (!src.startsWith("/")) return src;
+  return getImageProps({ src, alt: "", width: COVER_W, height: COVER_W * 1.5 }).props.src;
+}
+
 const PER_SHELF = 22;
 
 /** Stable, slightly varied book height so the row doesn't look machine-cut. */
@@ -49,9 +62,12 @@ export function BookShelf({
   shelves,
   initialOpen,
   centered = false,
+  priority = false,
 }: {
   shelves: Shelf[];
   initialOpen?: number | null;
+  /** The shelf is the first thing on the page: fetch the open book's cover right away. */
+  priority?: boolean;
   /** Centre short shelves (the home page shows only a handful of books). */
   centered?: boolean;
 }) {
@@ -61,6 +77,21 @@ export function BookShelf({
   const router = useRouter();
   const t = useDict();
   const locale = useLocale();
+
+  // A CSS background is only found after layout; a preload lets the cover start with the HTML.
+  const first = priority && all.find((b) => b.id === initialOpen)?.coverUrl;
+  if (first) preload(coverUrl(first), { as: "image", fetchPriority: "high" });
+
+  // Closed books only show their spines, so the other covers wait until the page has loaded and
+  // gone idle: by the time anyone opens a book its cover is already there.
+  const [allCovers, setAllCovers] = useState(false);
+  useEffect(() => {
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 200));
+    const show = () => idle(() => setAllCovers(true));
+    if (document.readyState === "complete") show();
+    else window.addEventListener("load", show, { once: true });
+    return () => window.removeEventListener("load", show);
+  }, []);
 
   // The open book is one click from its page, so load that page in the background.
   useEffect(() => {
@@ -89,9 +120,9 @@ export function BookShelf({
         shelf.books.length === 0 ? null : (
           <section key={si} className="shelf-group" aria-label={shelf.label ?? "Bookshelf"}>
             {shelf.label ? (
-              <h3 className="shelf-label">
+              <h2 className="shelf-label">
                 {shelf.label} <span>{shelf.books.length}</span>
-              </h3>
+              </h2>
             ) : null}
             {chunk(shelf.books, PER_SHELF).map((row, ri) => (
               <div key={ri} className="shelf">
@@ -127,7 +158,7 @@ export function BookShelf({
                             style={{
                               backgroundColor: b.color,
                               color: b.ink,
-                              backgroundImage: b.coverUrl ? `url(${b.coverUrl})` : undefined,
+                              backgroundImage: b.coverUrl && (allCovers || isOpen) ? `url("${coverUrl(b.coverUrl)}")` : undefined,
                             }}
                           >
                             <span className="sb-front-author">{b.author}</span>

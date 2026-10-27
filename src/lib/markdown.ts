@@ -5,6 +5,34 @@ import markedFootnote from "marked-footnote";
 import { gfmHeadingId } from "marked-gfm-heading-id";
 import { markedHighlight } from "marked-highlight";
 
+// Kept in its own module so client components can slugify without pulling in marked and highlight.js.
+export { slugify } from "./slug";
+
+export type ImageDims = Record<string, { width: number; height: number }>;
+
+// Widths Next's image optimiser serves by default (deviceSizes + the larger imageSizes).
+const WIDTHS = [384, 640, 828, 1080, 1200, 1920];
+
+/**
+ * A local image with a known size gets width/height and a srcset through Next's optimiser, so
+ * it arrives as WebP/AVIF at the width the column needs and never shifts the text below it.
+ * It still shows at its own size, capped by the column, exactly like the plain tag.
+ */
+function imgTag(href: string, alt: string, dims?: ImageDims) {
+  const d = dims?.[href];
+  if (!d || !href.startsWith("/") || /\.(gif|svg)(\?|$)/i.test(href)) {
+    return `<img src="${href}" alt="${alt}" loading="lazy" decoding="async" />`;
+  }
+  const url = (w: number) => `/_next/image?url=${encodeURIComponent(href)}&w=${w}&q=80`;
+  const widths = WIDTHS.filter((w) => w < d.width);
+  const full = WIDTHS.find((w) => w >= d.width);
+  const srcset = widths.map((w) => `${url(w)} ${w}w`);
+  if (full) srcset.push(`${url(full)} ${d.width}w`);
+  return `<img src="${href}" srcset="${srcset.join(", ")}" sizes="(max-width: 700px) 100vw, ${Math.min(d.width, 640)}px" width="${d.width}" height="${d.height}" alt="${alt}" loading="lazy" decoding="async" />`;
+}
+
+let currentDims: ImageDims | undefined;
+
 /**
  * Full GitHub-flavoured Markdown: tables, task lists, strikethrough, footnotes, heading ids,
  * `> [!NOTE]` callouts and highlighted code blocks. The single renderer for every page,
@@ -44,7 +72,7 @@ const md = new Marked(
       },
       // An image with a title ![alt](src "caption") gets a caption. Spans, because images sit inside <p>.
       image({ href, title, text }) {
-        const img = `<img src="${href}" alt="${text}" loading="lazy" />`;
+        const img = imgTag(href, text, currentDims);
         return title ? `<span class="figure">${img}<span class="caption">${title}</span></span>` : img;
       },
     },
@@ -52,19 +80,15 @@ const md = new Marked(
 );
 
 /** Content is authored only by the site owner in the backoffice, so raw HTML is allowed. */
-export function renderMarkdown(src: string) {
-  return md.parse(src, { async: false });
+export function renderMarkdown(src: string, dims?: ImageDims) {
+  currentDims = dims;
+  try {
+    return md.parse(src, { async: false });
+  } finally {
+    currentDims = undefined;
+  }
 }
 
-export function slugify(input: string) {
-  return input
-    .normalize("NFKD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 120);
-}
 
 export function readingMinutes(src: string) {
   return Math.max(1, Math.round(src.split(/\s+/).length / 220));

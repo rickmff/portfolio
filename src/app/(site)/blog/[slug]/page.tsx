@@ -6,6 +6,7 @@ import Link from "@/components/LocaleLink";
 import { notFound } from "next/navigation";
 import { getPost, getSettings } from "@/lib/data";
 import { getDict, getLocale } from "@/lib/i18n/server";
+import { imageDims } from "@/lib/image-dims";
 import { readingMinutes, renderMarkdown } from "@/lib/markdown";
 import { absoluteUrl, breadcrumbs, localeUrl, metaFor, PERSON_ID, WEBSITE_ID } from "@/lib/seo";
 
@@ -84,7 +85,7 @@ export default async function PostPage({ params }: Props) {
         </div>
       ) : null}
       <div className="wrap">
-        <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(post.body) }} />
+        <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(post.body, await imageDims(post.body)) }} />
         <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>
           <Link href="/blog" className="link-muted with-arrow"><Arrow dir="left" /> {t.blog.all}</Link>
         </p>
