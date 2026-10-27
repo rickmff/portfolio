@@ -255,13 +255,15 @@ for (const name of names) {
       "-y", "-loglevel", "error",
       "-framerate", String(FPS), "-i", path.join(raw, "f%05d.jpg"),
       "-vf", `scale=${size[0]}:${size[1]}:flags=lanczos`,
-      "-c:v", "libx264", "-preset", "slow", "-crf", String(crf), "-pix_fmt", "yuv420p", "-profile:v", "high", "-r", String(FPS),
+      "-c:v", "libx264", "-preset", "slower", "-crf", String(crf), "-pix_fmt", "yuv420p", "-profile:v", "high", "-r", String(FPS),
       "-an", "-movflags", "+faststart",
       mp4,
     ]);
-  let crf = 20;
+  // CRF 26 keeps text and textures sharp at a fraction of the size (a 24 s 1080p60 film:
+  // 16 MB at CRF 20, 3.6 MB at 26); anything still over 6 MB steps down until it fits.
+  let crf = 26;
   encode(crf);
-  while ((await stat(mp4)).size > 30 * 1024 * 1024 && crf < 32) encode((crf += 3));
+  while ((await stat(mp4)).size > 6 * 1024 * 1024 && crf < 32) encode((crf += 2));
   await sharp(rec.files[0]).resize(size[0], size[1], { fit: "fill" }).webp({ quality: 86 }).toFile(path.join(out, `${file}.webp`));
   await rm(raw, { recursive: true, force: true });
 
