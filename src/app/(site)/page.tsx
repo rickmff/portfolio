@@ -66,7 +66,7 @@ export default async function Home() {
       </section>
 
       {shelf.length ? (
-        <section id="books" className="wrap section">
+        <section id="books" className="wrap section" data-sr-delay="280">
           <div className="section-head center">
             <h2>{t.home.recentlyRead}</h2>
           </div>
@@ -81,7 +81,7 @@ export default async function Home() {
         </section>
       ) : null}
 
-      <section id="writing" className="wrap section" style={{ maxWidth: 720 }}>
+      <section id="writing" className="wrap section" style={{ maxWidth: 720 }} data-sr-delay="280">
         <div className="section-head center">
           <h2>{t.home.writing}</h2>
         </div>

@@ -34,7 +34,9 @@ export function ScrollReveal() {
         for (const e of entries) {
           const el = e.target as HTMLElement;
           if (e.isIntersecting) {
-            el.style.setProperty("--sr-delay", `${Math.min(i++, 6) * 110}ms`);
+            // A section can hold its content back a little more with data-sr-delay="<ms>".
+            const base = Number(el.closest<HTMLElement>("[data-sr-delay]")?.dataset.srDelay) || 0;
+            el.style.setProperty("--sr-delay", `${base + Math.min(i++, 6) * 110}ms`);
             el.classList.add("sr-in");
           } else {
             el.style.setProperty("--sr-delay", "0ms");
