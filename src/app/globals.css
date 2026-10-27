@@ -325,11 +325,20 @@ a {
   color: inherit;
   font: inherit;
   font-size: 14px;
+  border-radius: 50%;
   cursor: pointer;
-  transition: color 0.2s var(--ease), opacity 0.2s var(--ease);
+  transition:
+    color 0.2s var(--ease),
+    background-color 0.2s var(--ease),
+    opacity 0.2s var(--ease),
+    scale 0.2s var(--ease);
 }
 .strip-count button:hover:not(:disabled) {
   color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+}
+.strip-count button:active:not(:disabled) {
+  scale: 0.9;
 }
 .strip-count button:disabled {
   opacity: 0.3;
@@ -448,6 +457,13 @@ a {
   transform: none;
   pointer-events: auto;
 }
+.frame-control.is-shown:hover {
+  transform: scale(1.08);
+}
+.frame-control.is-shown:active {
+  transform: scale(0.94);
+  transition-duration: 0.12s;
+}
 /* Rides along with the frame's lift on hover. */
 .strip-item:hover .frame-control {
   translate: 0 -6px;
@@ -528,7 +544,7 @@ a {
 }
 .view-toggle {
   display: flex;
-  gap: 12px;
+  gap: 4px;
 }
 /* Under the section heading: the Desktop · Mobile switch, with a full var(--head-gap)
    above and below. */
@@ -541,7 +557,7 @@ a {
 }
 .strip-toggle {
   justify-content: center;
-  gap: 20px;
+  gap: 4px;
 }
 .strip-lead,
 .strip-count,
@@ -567,15 +583,26 @@ a {
   font: inherit;
   font-size: 12px;
   color: var(--faint);
-  background: none;
+  background: transparent;
   border: 0;
-  padding: 0;
+  border-radius: 999px;
+  padding: 6px 12px;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition:
+    color 0.25s var(--ease),
+    background-color 0.25s var(--ease),
+    scale 0.2s var(--ease);
 }
-.view-toggle button:hover,
+.view-toggle button:hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+}
 .view-toggle button[aria-pressed="true"] {
   color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+}
+.view-toggle button:active {
+  scale: 0.96;
 }
 .frame-empty {
   position: absolute;
@@ -2235,11 +2262,17 @@ button.book-read {
   color: var(--muted);
   transition:
     color 0.2s var(--ease),
-    border-color 0.2s var(--ease);
+    border-color 0.2s var(--ease),
+    background-color 0.2s var(--ease),
+    scale 0.2s var(--ease);
 }
 .cv-button:hover {
   color: var(--ink);
-  border-color: var(--ink);
+  border-color: color-mix(in srgb, var(--ink) 35%, transparent);
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+}
+.cv-button:active {
+  scale: 0.97;
 }
 .cv-button svg {
   transition: transform 0.25s var(--ease);
@@ -2393,7 +2426,11 @@ button.book-read {
   border-left: 1px solid var(--line);
 }
 .lang-toggle button {
-  padding: 2px 4px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  transition:
+    color 0.2s var(--ease),
+    background-color 0.2s var(--ease);
   font: inherit;
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-size: 11px;
@@ -2407,6 +2444,7 @@ button.book-read {
 }
 .lang-toggle button:hover {
   color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
 }
 
 /* Book page: CSS 3D model of the book */
