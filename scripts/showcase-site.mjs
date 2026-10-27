@@ -29,6 +29,8 @@ const { values: opt, positionals } = parseArgs({
     "compose-only": { type: "boolean", default: false },
     speed: { type: "string", default: "1" },
     "menu-rate": { type: "string", default: "5" },
+    tour: { type: "string", default: "site" },
+    view: { type: "string", default: "1440x810" },
     blur: { type: "string", default: "10" },
   },
 });
@@ -42,7 +44,9 @@ const STEP = 1000 / FPS;
 const SPEED = Number(opt.speed);
 // The Menu Online demo plays to its end in the carousel, this many times faster than real time.
 const MENU_RATE = Number(opt["menu-rate"]);
-const VIEW = { width: 1440, height: 810 };
+// A smaller viewport shows the page larger in the same window (the books cut uses 1120×630).
+const [vwOpt, vhOpt] = opt.view.split("x").map(Number);
+const VIEW = { width: vwOpt, height: vhOpt };
 const out = path.resolve(opt.out);
 const raw = path.join(out, "frames");
 
@@ -91,13 +95,18 @@ function filmKit() {
   Object.defineProperty(proto, "paused", { configurable: true, get() { return !want.has(this) && paused.get.call(this); } });
   for (const t of ["play", "pause", "playing"])
     w.addEventListener(t, (e) => quiet && e.stopImmediatePropagation(), true);
+  // Resolves once every clip it moved has its new frame decoded, so no frame is filmed stale.
   w.__media = (dt) => {
+    const seeks = [];
     for (const v of document.querySelectorAll("video")) {
       if (!want.has(v) || !v.duration) continue;
       let t = v.currentTime + dt / 1000;
       if (t >= v.duration) t = v.loop ? t % v.duration : v.duration;
+      if (t === v.currentTime) continue;
+      seeks.push(new Promise((done) => v.addEventListener("seeked", done, { once: true })));
       v.currentTime = t;
     }
+    return Promise.all(seeks);
   };
   void play;
 
@@ -211,7 +220,7 @@ function recorder(page) {
   // How fast the page's videos run against the take: 4 plays a clip four times over in its span.
   let rate = 1;
   const frame = async () => {
-    await page.evaluate(
+    const step = page.evaluate(
       ({ dt, m, r }) => {
         window.__hold?.();
         for (const a of window.__held ?? []) {
@@ -226,11 +235,13 @@ function recorder(page) {
             window.__held.delete(a);
           } else a.currentTime = t;
         }
-        window.__media?.(dt * r);
         window.__cursor?.(m.x, m.y, m.down, m.shown);
+        return window.__media?.(dt * r);
       },
       { dt: STEP, m: mouse, r: rate },
     );
+    // A seek that never reports back (a clip swapped out mid-take) holds the frame a second at most.
+    await Promise.race([step, new Promise((done) => setTimeout(done, 1000))]);
     await page.clock.runFor(STEP);
     const file = path.join(raw, `f${String(n++).padStart(5, "0")}.jpg`);
     await page.screenshot({ path: file, type: "jpeg", quality: 92, animations: "allow", caret: "initial" });
@@ -404,6 +415,23 @@ console.log(`book: ${book.slug} (#${book.index + 1} on the shelf)`);
 await rm(raw, { recursive: true, force: true });
 await mkdir(raw, { recursive: true });
 
+// The site's clips have a keyframe every few seconds, so stepping them frame by frame means decoding
+// seconds of video per frame. The take gets them re-encoded with every frame a keyframe instead.
+const intra = path.join(out, "media");
+await mkdir(intra, { recursive: true });
+await page.route(/\/media\/[^/?]+\.mp4(\?|$)/, async (route) => {
+  const name = new URL(route.request().url()).pathname.split("/").pop();
+  const file = path.join(intra, name);
+  try {
+    await stat(file);
+  } catch {
+    const src = `${file}.src`;
+    await writeFile(src, await (await route.fetch()).body());
+    execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-i", src, "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-g", "1", "-pix_fmt", "yuv420p", file]);
+    await rm(src);
+  }
+  await route.fulfill({ path: file, contentType: "video/mp4" });
+});
 await page.clock.install();
 await page.addInitScript(filmKit);
 await page.goto(site, { waitUntil: "load" });
@@ -429,6 +457,8 @@ await page.evaluate(() =>
 const rec = recorder(page);
 const { until, rest, moveTo, click, scrollTo, scrollBy } = rec;
 
+if (opt.tour === "books") await booksTour();
+else {
 // The tour only moves forward: no gesture goes back over ground already covered, and every
 // beat overlaps the next (the cursor travels while the page scrolls), so something is always
 // moving on screen.
@@ -538,6 +568,62 @@ await click({ settle: 0 });
 await until(async () => /\/blog\//.test(new URL(page.url()).pathname) && (await page.locator("article, .prose").first().isVisible()));
 await moveTo({ x: VIEW.width * 0.9, y: VIEW.height * 0.72 }, 0.8);
 await scrollBy(VIEW.height * 1.1, 3.0);
+}
+
+/** A short cut of the bookshelf alone, for a social post: the spines, one book out, its 3D cover. */
+async function booksTour() {
+  // Start on the shelf: the section's entrance plays as the take opens.
+  // Settled off camera: the page's smooth scroller needs a few nudges to land the shelf in place.
+  const shelf = page.locator("#books .sb-slot").first();
+  for (let i = 0; i < 4; i++) {
+    const off = await shelf.evaluate((el) => el.getBoundingClientRect().top);
+    await page.evaluate((dy) => window.scrollTo(0, scrollY + dy), off - VIEW.height * 0.36);
+    await page.clock.runFor(600);
+  }
+  await rest(0.6);
+
+  // One slow pass along the spines, from the far end to the book.
+  const slots = page.locator("#books .sb-slot");
+  const count = await slots.count();
+  const slot = slots.nth(book.index);
+  const far = await slots.nth(book.index < count / 2 ? count - 1 : 0).boundingBox();
+  const target = await slot.boundingBox();
+  const along = target.y + target.height * 0.55;
+  rec.mouse.x = VIEW.width * 1.04;
+  rec.mouse.y = along + 40;
+  await moveTo({ x: far.x + far.width / 2, y: along }, 0.8);
+  await moveTo({ x: target.x + target.width / 2, y: along }, 2.8);
+
+  // Pulled from the shelf, then opened from its card.
+  if ((await slot.getAttribute("aria-pressed")) !== "true") await click({ settle: 0.5 });
+  const open = page.locator(`.shelf-detail a[href$='/books/${book.slug}']`).first();
+  await until(() => open.isVisible(), 3);
+  await moveTo(open, 0.9);
+  await click({ settle: 0 });
+
+  // The 3D book: a hover tilt across the cover, a drag that turns it, and a flick to spin.
+  await until(() => page.locator(".b3d-stage").isVisible());
+  const sb = await page.locator(".b3d-stage").boundingBox();
+  const cx = sb.x + sb.width / 2;
+  const cy = sb.y + sb.height / 2;
+  await moveTo({ x: cx + sb.width * 0.3, y: cy - sb.height * 0.15 }, 1.0);
+  await moveTo({ x: cx - sb.width * 0.28, y: cy + sb.height * 0.12 }, 1.0);
+  await moveTo({ x: cx, y: cy }, 0.4);
+  rec.mouse.down = true;
+  await page.mouse.down();
+  await moveTo({ x: cx + 200, y: cy - 25 }, 1.0);
+  await moveTo({ x: cx + 70, y: cy + 20 }, 0.5);
+  await moveTo({ x: cx - 150, y: cy + 15 }, 0.2);
+  await page.mouse.up();
+  rec.mouse.down = false;
+  await moveTo({ x: cx + sb.width * 0.55, y: cy + sb.height * 0.2 }, 1.1);
+  // A double click sets it back on its cover to close the cut.
+  await moveTo({ x: cx, y: cy }, 0.5);
+  await page.mouse.dblclick(cx, cy);
+  await page.evaluate(({ x, y }) => window.__click(x, y), rec.mouse);
+  await moveTo({ x: VIEW.width * 0.8, y: VIEW.height * 0.72 }, 0.9);
+  await rest(0.8);
+}
 
 await browser.close();
 await writeFile(path.join(out, "urls.json"), JSON.stringify(rec.urls));
