@@ -48,9 +48,17 @@ a {
   transition: color 0.2s ease;
 }
 
+/* Keyboard focus: a soft, rounded ring instead of the browser's hard box. Mouse clicks show none. */
+:focus:not(:focus-visible) {
+  outline: none;
+}
 :focus-visible {
-  outline: 1.5px solid var(--ink);
-  outline-offset: 3px;
+  outline: 2px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  outline-offset: 4px;
+  transition: outline-offset 0.15s ease;
+}
+:where(a, button, summary, [role="button"], [tabindex]):focus-visible {
+  border-radius: 6px;
 }
 
 .wrap {
@@ -327,11 +335,6 @@ a {
   opacity: 0.3;
   cursor: default;
 }
-.strip-count button:focus-visible {
-  outline: 1px solid var(--ink);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
 .strip-item {
   /* Frame size: 16:9 for the desktop film; a 9:16 reel when the carousel is on Mobile. */
   --frame-w: var(--slot-w);
@@ -471,8 +474,9 @@ a {
   transform-origin: center;
 }
 .frame-control:focus-visible {
-  outline: 1px solid #fff;
-  outline-offset: 2px;
+  outline: 2px solid rgb(255 255 255 / 0.7);
+  outline-offset: 3px;
+  border-radius: 999px;
 }
 
 /* Desktop and mobile captures of a project, switched from the card's footer */
@@ -573,10 +577,6 @@ a {
 .view-toggle button[aria-pressed="true"] {
   color: var(--ink);
 }
-.view-toggle button:focus-visible {
-  outline: 1px solid var(--ink);
-  outline-offset: 3px;
-}
 .frame-empty {
   position: absolute;
   inset: 0;
@@ -654,7 +654,7 @@ a {
   outline: none;
 }
 .sb-slot:focus-visible .sb-spine {
-  outline: 1.5px solid var(--ink);
+  outline: 2px solid color-mix(in srgb, var(--ink) 28%, transparent);
   outline-offset: 3px;
 }
 .sb-book {
@@ -2434,7 +2434,7 @@ button.book-read {
   cursor: grabbing;
 }
 .b3d-stage:focus-visible .b3d-floor {
-  outline: 1.5px solid var(--ink);
+  outline: 2px solid color-mix(in srgb, var(--ink) 28%, transparent);
   outline-offset: 6px;
 }
 .b3d-book {
