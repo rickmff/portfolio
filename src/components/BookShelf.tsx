@@ -96,7 +96,7 @@ export function BookShelf({
             {chunk(shelf.books, PER_SHELF).map((row, ri) => (
               <div key={ri} className="shelf">
                 <div className={`shelf-row${centered ? " centered" : ""}`}>
-                  {row.map((b) => {
+                  {row.map((b, bi) => {
                     const isOpen = b.id === open;
                     const h = heightOf(b);
                     const d = depthOf(b);
@@ -115,6 +115,7 @@ export function BookShelf({
                             "--w": `${COVER_W}px`,
                             "--h": `${h}px`,
                             "--d": `${d}px`,
+                            "--i": Math.min(bi, 30),
                             width: isOpen ? COVER_W + 56 : d + 2,
                             height: h,
                           } as React.CSSProperties
