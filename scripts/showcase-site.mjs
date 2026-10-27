@@ -572,46 +572,65 @@ await scrollBy(VIEW.height * 1.1, 3.0);
 
 /** A short cut of the bookshelf alone, for a social post: the spines, one book out, its 3D cover. */
 async function booksTour() {
-  // Start on the shelf: the section's entrance plays as the take opens.
-  // Settled off camera: the page's smooth scroller needs a few nudges to land the shelf in place.
+  // Start just above the section, so its entrance plays as the page glides down onto the shelf.
   const shelf = page.locator("#books .sb-slot").first();
+  const shelfTop = await shelf.evaluate((el) => el.getBoundingClientRect().top + scrollY);
+  const settled = shelfTop - VIEW.height * 0.36;
   for (let i = 0; i < 4; i++) {
-    const off = await shelf.evaluate((el) => el.getBoundingClientRect().top);
-    await page.evaluate((dy) => window.scrollTo(0, scrollY + dy), off - VIEW.height * 0.36);
+    await page.evaluate((y) => window.scrollTo(0, y), settled - VIEW.height * 0.95);
     await page.clock.runFor(600);
   }
-  await rest(0.6);
-
-  // One slow pass along the spines, from the far end to the book.
+  rec.mouse.x = VIEW.width * 1.04;
+  rec.mouse.y = VIEW.height * 0.62;
+  await rest(0.3);
   const slots = page.locator("#books .sb-slot");
   const count = await slots.count();
-  const slot = slots.nth(book.index);
-  const far = await slots.nth(book.index < count / 2 ? count - 1 : 0).boundingBox();
-  const target = await slot.boundingBox();
-  const along = target.y + target.height * 0.55;
-  rec.mouse.x = VIEW.width * 1.04;
-  rec.mouse.y = along + 40;
-  await moveTo({ x: far.x + far.width / 2, y: along }, 0.8);
-  await moveTo({ x: target.x + target.width / 2, y: along }, 2.8);
+  const far = slots.nth(count - 1);
+  const bookTitle = (await slots.nth(book.index).locator(".sb-spine-title").textContent()).trim();
+  await scrollTo(shelf, 0.36, 1.8, { cursor: far, dy: 20 });
+  // The scroller lands a beat later; the cursor follows the spine it is on.
+  await moveTo(far, 0.3, { dy: 20 });
 
-  // Pulled from the shelf, then opened from its card.
-  if ((await slot.getAttribute("aria-pressed")) !== "true") await click({ settle: 0.5 });
-  const open = page.locator(`.shelf-detail a[href$='/books/${book.slug}']`).first();
-  await until(() => open.isVisible(), 3);
-  await moveTo(open, 0.9);
+  // One slow pass along the spines, then down to "All books".
+  const firstBox = await shelf.boundingBox();
+  await moveTo({ x: firstBox.x + firstBox.width * 0.7, y: rec.mouse.y }, 2.2);
+  const all = page.locator("#books a", { hasText: "All books" }).first();
+  await scrollTo(all, 0.82, 1.0, { cursor: all });
+  await moveTo(all, 0.25);
   await click({ settle: 0 });
 
-  // The 3D book: a hover tilt across the cover, then a flick that sets it spinning.
+  // The library: its title comes in, then down to the shelf and along it to the book.
+  await until(async () => new URL(page.url()).pathname === "/books" && (await page.locator(".shelf-group .sb-slot").first().isVisible()));
+  await moveTo({ x: VIEW.width * 0.75, y: VIEW.height * 0.55 }, 0.8);
+  const lib = page.locator(".shelf-group").first();
+  const lslots = lib.locator(".sb-slot");
+  const lcount = await lslots.count();
+  // The book's slot here: the one whose spine carries its title on the home shelf.
+  const lslot = lslots.nth(await lslots.evaluateAll((els, t) => Math.max(0, els.findIndex((el) => el.textContent.includes(t))), bookTitle));
+  await scrollTo(lslots.first(), 0.34, 1.6, { cursor: lslots.nth(lcount - 1), dy: 20 });
+  await moveTo(lslots.nth(lcount - 1), 0.3, { dy: 20 });
+  await moveTo(lslot, 2.6, { dy: 20 });
+
+  // Pulled from the shelf, its quote coming in below; a second click on the cover opens it.
+  if ((await lslot.getAttribute("aria-pressed")) !== "true") await click({ settle: 1.0 });
+  await moveTo(lslot, 0.6, { dy: -10 });
+  await click({ settle: 0 });
+
+  // The 3D book: a hover tilt across the cover, then a slow drag round to its spine and back
+  // cover, a turn back, and a flick to let it spin.
   await until(() => page.locator(".b3d-stage").isVisible());
   const sb = await page.locator(".b3d-stage").boundingBox();
   const cx = sb.x + sb.width / 2;
   const cy = sb.y + sb.height / 2;
   await moveTo({ x: cx + sb.width * 0.3, y: cy - sb.height * 0.15 }, 0.8);
   await moveTo({ x: cx - sb.width * 0.25, y: cy + sb.height * 0.1 }, 0.8);
-  await moveTo({ x: cx + 60, y: cy }, 0.35);
+  await moveTo({ x: cx - 120, y: cy }, 0.4);
   rec.mouse.down = true;
   await page.mouse.down();
-  await moveTo({ x: cx - 170, y: cy + 15 }, 0.22);
+  await moveTo({ x: cx + 150, y: cy - 30 }, 1.5);
+  await rest(0.25);
+  await moveTo({ x: cx + 20, y: cy + 10 }, 0.9);
+  await moveTo({ x: cx - 180, y: cy + 20 }, 0.2);
   await page.mouse.up();
   rec.mouse.down = false;
 
