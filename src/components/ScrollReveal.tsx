@@ -10,6 +10,7 @@ const TARGETS = [
   ".shelf-label",
   ".shelf",
   ".year-row",
+  ".gh",
   ".prose > *",
   ".harness-group h2",
   ".harness-group li",

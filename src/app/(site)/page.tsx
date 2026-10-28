@@ -7,6 +7,8 @@ import { WorkStrip } from "@/components/WorkStrip";
 import { ScrollCue } from "@/components/ScrollCue";
 import { HideAtTop } from "@/components/HideAtTop";
 import { WritingList } from "@/components/WritingList";
+import { GitHubActivity } from "@/components/GitHubActivity";
+import { Suspense } from "react";
 import { HOME_SHELF_SIZE, readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
@@ -90,6 +92,12 @@ export default async function Home() {
           <Link href="/blog" className="link-muted with-arrow">{t.home.allWriting} <Arrow /></Link>
         </p>
       </section>
+
+      {settings.github ? (
+        <Suspense fallback={null}>
+          <GitHubActivity url={settings.github} t={t} />
+        </Suspense>
+      ) : null}
     </>
   );
 }

@@ -7,6 +7,7 @@ Minimal portfolio with a project gallery, an interactive 3D bookshelf, a blog an
 - **CSS 3D** books, no WebGL needed
 - **/admin** backoffice: projects, books, posts, harness and site texts, each with English and Portuguese versions
 - **Content API** (`/api/content`, bearer token) for projects, books, posts, harness, settings and media, driven by the `portfolio` Claude skill. Every text field can carry English and Portuguese versions
+- **GitHub contribution graph** on the home page, read server-side from the profile in Settings and cached for an hour (optional `GITHUB_TOKEN` switches it to the GraphQL API)
 - **Docker Compose** with Postgres and Caddy (automatic HTTPS)
 
 ## Local development
