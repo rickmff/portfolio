@@ -68,7 +68,7 @@ export function BookShelf({
   initialOpen?: number | null;
   /** The shelf is the first thing on the page: fetch the open book's cover right away. */
   priority?: boolean;
-  /** Centre short shelves (the home page shows only a handful of books). */
+  /** Centre rows that are shorter than the page (the last row of the home shelf, a short list). */
   centered?: boolean;
 }) {
   const all = shelves.flatMap((s) => s.books);

@@ -7,7 +7,7 @@ import { WorkStrip } from "@/components/WorkStrip";
 import { ScrollCue } from "@/components/ScrollCue";
 import { HideAtTop } from "@/components/HideAtTop";
 import { WritingList } from "@/components/WritingList";
-import { HOME_SHELF_SIZE, readAndReading, toShelfBook } from "@/lib/books";
+import { readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
 import { metaFor } from "@/lib/seo";
@@ -28,8 +28,8 @@ export default async function Home() {
     getDict(),
   ]);
 
-  // The latest ten: the current book first, then the most recently read.
-  const shelf = readAndReading(books).slice(0, HOME_SHELF_SIZE);
+  // The whole shelf of read books: the current book first, then the rest in the backoffice order.
+  const shelf = readAndReading(books);
 
   return (
     <>
@@ -68,7 +68,7 @@ export default async function Home() {
       {shelf.length ? (
         <section id="books" className="wrap section" data-sr-delay="120">
           <div className="section-head center">
-            <h2>{t.home.recentlyRead}</h2>
+            <h2>{t.home.shelf}</h2>
           </div>
           <BookShelf
             shelves={[{ books: shelf.map(toShelfBook) }]}

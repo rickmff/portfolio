@@ -39,9 +39,6 @@ export function statusLabel(b: Pick<Book, "status" | "finishedYear">, t: Dict = 
   return t.books.status[b.status];
 }
 
-/** How many books the home page shelf shows. */
-export const HOME_SHELF_SIZE = 10;
-
 /** The "Read & reading" shelf: the current books first, then the read ones, in the shelf order set in the backoffice (Books → drag to reorder). */
 export function readAndReading<T extends Pick<Book, "status" | "sort" | "id">>(books: T[]) {
   const ordered = [...books].sort((a, b) => a.sort - b.sort || a.id - b.id);
