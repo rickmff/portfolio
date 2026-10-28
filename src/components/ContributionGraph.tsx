@@ -1,6 +1,6 @@
 "use client";
 
-import { type CSSProperties, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, useLayoutEffect, useMemo, useRef } from "react";
 import type { ContributionDay } from "@/lib/github";
 import { useDict } from "@/lib/i18n/client";
 
@@ -8,12 +8,11 @@ const parse = (date: string) => new Date(`${date}T00:00:00Z`);
 
 /**
  * The GitHub contribution calendar, drawn from our own copy of the data: one column per week,
- * Sunday at the top. Hovering a day reads its count out in the line underneath.
+ * Sunday at the top. Hovering a day shows its count.
  */
 export function ContributionGraph({ days, total }: { days: ContributionDay[]; total: number }) {
   const t = useDict();
   const scroller = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState<number | null>(null);
 
   const { weeks, months } = useMemo(() => {
     const weeks: (number | null)[][] = [];
@@ -38,19 +37,12 @@ export function ContributionGraph({ days, total }: { days: ContributionDay[]; to
     return { weeks, months };
   }, [days, t.intl]);
 
-  const weekday = useMemo(() => {
-    const f = new Intl.DateTimeFormat(t.intl, { weekday: "short", timeZone: "UTC" });
-    // 2023-01-01 was a Sunday.
-    return (dow: number) => f.format(new Date(Date.UTC(2023, 0, 1 + dow))).replace(".", "");
-  }, [t.intl]);
-
   // Today sits at the right edge: on a narrow screen, start scrolled there.
   useLayoutEffect(() => {
     const el = scroller.current;
     if (el) el.scrollLeft = el.scrollWidth;
   }, []);
 
-  const day = active === null ? null : days[active];
   const longDate = new Intl.DateTimeFormat(t.intl, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
   const summary = t.home.contributionsYear(total.toLocaleString(t.intl));
 
@@ -59,21 +51,7 @@ export function ContributionGraph({ days, total }: { days: ContributionDay[]; to
     <figure className="gh" suppressHydrationWarning>
       <div className="gh-scroll" ref={scroller}>
         <div className="gh-cal" role="img" aria-label={summary}>
-          <div className="gh-labels" aria-hidden="true">
-            <span />
-            {[0, 1, 2, 3, 4, 5, 6].map((d) => (
-              <span key={d}>{d % 2 ? weekday(d) : ""}</span>
-            ))}
-          </div>
-          <div
-            className="gh-weeks"
-            aria-hidden="true"
-            onPointerOver={(e) => {
-              const i = (e.target as HTMLElement).dataset.i;
-              setActive(i === undefined ? null : Number(i));
-            }}
-            onPointerLeave={() => setActive(null)}
-          >
+          <div className="gh-weeks" aria-hidden="true">
             {weeks.map((w, c) => (
               <div key={c} className="gh-week" style={{ "--c": c } as CSSProperties}>
                 <span className="gh-month">{months.get(c)}</span>
@@ -83,9 +61,9 @@ export function ContributionGraph({ days, total }: { days: ContributionDay[]; to
                   ) : (
                     <span
                       key={dow}
-                      className={`gh-day${i === active ? " is-active" : ""}`}
+                      className="gh-day"
                       data-level={days[i].level}
-                      data-i={i}
+                      title={t.home.contributionsDay(days[i].count, longDate.format(parse(days[i].date)))}
                     />
                   ),
                 )}
@@ -94,18 +72,6 @@ export function ContributionGraph({ days, total }: { days: ContributionDay[]; to
           </div>
         </div>
       </div>
-      <figcaption className="gh-foot mono">
-        <span className="gh-readout">
-          {day ? t.home.contributionsDay(day.count, longDate.format(parse(day.date))) : summary}
-        </span>
-        <span className="gh-legend" aria-hidden="true">
-          {t.home.less}
-          {[0, 1, 2, 3, 4].map((l) => (
-            <span key={l} className="gh-day" data-level={l} />
-          ))}
-          {t.home.more}
-        </span>
-      </figcaption>
     </figure>
   );
 }

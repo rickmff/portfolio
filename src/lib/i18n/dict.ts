@@ -40,8 +40,6 @@ const en = {
     githubProfile: (login: string) => `@${login} on GitHub`,
     contributionsYear: (n: string) => `${n} contributions in the last year`,
     contributionsDay: (n: number, date: string) => `${n === 0 ? "No" : n} contribution${n === 1 ? "" : "s"} on ${date}`,
-    less: "Less",
-    more: "More",
   },
   books: {
     eyebrow: "Library",
@@ -133,8 +131,6 @@ const pt: Dict = {
     contributionsYear: (n: string) => `${n} contribuições no último ano`,
     contributionsDay: (n: number, date: string) =>
       n === 0 ? `Nenhuma contribuição em ${date}` : `${n} contribuiç${n === 1 ? "ão" : "ões"} em ${date}`,
-    less: "Menos",
-    more: "Mais",
   },
   books: {
     eyebrow: "Biblioteca",
