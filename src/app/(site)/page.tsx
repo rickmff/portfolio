@@ -7,7 +7,7 @@ import { WorkStrip } from "@/components/WorkStrip";
 import { ScrollCue } from "@/components/ScrollCue";
 import { HideAtTop } from "@/components/HideAtTop";
 import { WritingList } from "@/components/WritingList";
-import { HOME_SHELF_SIZE, readAndReading, toShelfBook } from "@/lib/books";
+import { fillShelf, readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
 import { metaFor } from "@/lib/seo";
@@ -28,8 +28,8 @@ export default async function Home() {
     getDict(),
   ]);
 
-  // The latest ten: the current book first, then the most recently read.
-  const shelf = readAndReading(books).slice(0, HOME_SHELF_SIZE);
+  // The latest books, as many as fill one shelf: the current book first, then the most recently read.
+  const shelf = fillShelf(readAndReading(books));
 
   return (
     <>
