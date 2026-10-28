@@ -25,7 +25,7 @@ const en = {
   home: {
     now: "Now",
     latestWork: "Latest Work",
-    shelf: "Bookshelf",
+    recentlyRead: "Recently read",
     allBooks: "All books",
     writing: "Writing",
     allWriting: "All writing",
@@ -111,7 +111,7 @@ const pt: Dict = {
   home: {
     now: "Agora",
     latestWork: "Trabalhos recentes",
-    shelf: "Estante",
+    recentlyRead: "Lidos recentemente",
     allBooks: "Todos os livros",
     writing: "Textos",
     allWriting: "Todos os textos",

@@ -9,7 +9,7 @@ import { preload } from "react-dom";
 import { navigateWithTransition, prefetchFull } from "@/components/PageTransition";
 import { BookQuote } from "@/components/BookQuote";
 import type { BookStatus } from "@/db/schema";
-import { statusLabel } from "@/lib/books";
+import { spineDepth, statusLabel } from "@/lib/books";
 import { localePath } from "@/lib/i18n/dict";
 import { useDict, useLocale } from "@/lib/i18n/client";
 
@@ -50,7 +50,6 @@ const PER_SHELF = 22;
 // Books with a real cover keep its ~2:3 proportions; the rest vary a little for a lived-in shelf.
 const heightOf = (b: ShelfBook) =>
   b.coverUrl ? 220 + ((b.id * 37) % 9) : 196 + ((b.id * 37 + b.title.length * 7) % 48);
-const depthOf = (b: ShelfBook) => Math.min(56, Math.max(18, b.thickness));
 
 function chunk<T>(list: T[], size: number) {
   const out: T[][] = [];
@@ -68,7 +67,7 @@ export function BookShelf({
   initialOpen?: number | null;
   /** The shelf is the first thing on the page: fetch the open book's cover right away. */
   priority?: boolean;
-  /** Centre rows that are shorter than the page (the last row of the home shelf, a short list). */
+  /** Centre short shelves (the home page shows only one shelf's worth of books). */
   centered?: boolean;
 }) {
   const all = shelves.flatMap((s) => s.books);
@@ -130,7 +129,7 @@ export function BookShelf({
                   {row.map((b, bi) => {
                     const isOpen = b.id === open;
                     const h = heightOf(b);
-                    const d = depthOf(b);
+                    const d = spineDepth(b);
                     return (
                       <button
                         key={b.id}
