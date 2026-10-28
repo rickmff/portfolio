@@ -599,38 +599,35 @@ async function booksTour() {
   await moveTo(all, 0.25);
   await click({ settle: 0 });
 
-  // The library: its title comes in, then down to the shelf and along it to the book.
+  // The library: its title comes in, then down to the shelf with the cursor going straight to the book.
   await until(async () => new URL(page.url()).pathname === "/books" && (await page.locator(".shelf-group .sb-slot").first().isVisible()));
   await moveTo({ x: VIEW.width * 0.75, y: VIEW.height * 0.55 }, 0.8);
   const lib = page.locator(".shelf-group").first();
   const lslots = lib.locator(".sb-slot");
-  const lcount = await lslots.count();
   // The book's slot here: the one whose spine carries its title on the home shelf.
   const lslot = lslots.nth(await lslots.evaluateAll((els, t) => Math.max(0, els.findIndex((el) => el.textContent.includes(t))), bookTitle));
-  await scrollTo(lslots.first(), 0.34, 1.6, { cursor: lslots.nth(lcount - 1), dy: 20 });
-  await moveTo(lslots.nth(lcount - 1), 0.3, { dy: 20 });
-  await moveTo(lslot, 2.6, { dy: 20 });
+  await scrollTo(lslots.first(), 0.34, 1.4, { cursor: lslot, dy: 20 });
+  await moveTo(lslot, 0.3, { dy: 20 });
 
   // Pulled from the shelf, its quote coming in below; a second click on the cover opens it.
   if ((await lslot.getAttribute("aria-pressed")) !== "true") await click({ settle: 1.0 });
   await moveTo(lslot, 0.6, { dy: -10 });
   await click({ settle: 0 });
 
-  // The 3D book: a hover tilt across the cover, then a slow drag round to its spine and back
-  // cover, a turn back, and a flick to let it spin.
+  // The 3D book: a quick hover tilt across the cover, then a brisk drag round to its spine and
+  // back cover, a turn back, and a flick to let it spin.
   await until(() => page.locator(".b3d-stage").isVisible());
   const sb = await page.locator(".b3d-stage").boundingBox();
   const cx = sb.x + sb.width / 2;
   const cy = sb.y + sb.height / 2;
-  await moveTo({ x: cx + sb.width * 0.3, y: cy - sb.height * 0.15 }, 0.8);
-  await moveTo({ x: cx - sb.width * 0.25, y: cy + sb.height * 0.1 }, 0.8);
-  await moveTo({ x: cx - 120, y: cy }, 0.4);
+  await moveTo({ x: cx + sb.width * 0.3, y: cy - sb.height * 0.15 }, 0.55);
+  await moveTo({ x: cx - sb.width * 0.25, y: cy + sb.height * 0.1 }, 0.55);
+  await moveTo({ x: cx - 120, y: cy }, 0.3);
   rec.mouse.down = true;
   await page.mouse.down();
-  await moveTo({ x: cx + 150, y: cy - 30 }, 1.5);
-  await rest(0.25);
-  await moveTo({ x: cx + 20, y: cy + 10 }, 0.9);
-  await moveTo({ x: cx - 180, y: cy + 20 }, 0.2);
+  await moveTo({ x: cx + 150, y: cy - 30 }, 0.7);
+  await moveTo({ x: cx + 20, y: cy + 10 }, 0.45);
+  await moveTo({ x: cx - 180, y: cy + 20 }, 0.15);
   await page.mouse.up();
   rec.mouse.down = false;
 
