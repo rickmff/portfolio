@@ -45,3 +45,4 @@ scripts/*.bundle.mjs
 
 # project captures (scripts/capture-project.mjs)
 /capture/
+.seasonal/

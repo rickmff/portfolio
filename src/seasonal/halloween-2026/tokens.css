@@ -1,0 +1,46 @@
+/* Halloween 2026. Everything is scoped to [data-holiday], which <html> carries only inside the
+   date window, so the site's own tokens come back untouched once it ends. */
+[data-holiday="halloween"] {
+  /* The hero dot becomes a pumpkin ember, close to the existing red accent. */
+  --accent: #e8743b;
+  --holiday-thread: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+
+[data-holiday="halloween"] .site-brand,
+[data-holiday="halloween"] .hero {
+  position: relative;
+}
+
+.hw-spider,
+.hw-bats {
+  position: absolute;
+  pointer-events: none;
+  color: var(--ink);
+}
+
+/* A spider on a hairline thread, dropped from the top of the page to the avatar's shoulder. */
+.hw-spider {
+  left: 27px;
+  top: -32px;
+  width: 12px;
+  height: 46px;
+}
+
+/* Three small bats leaving the headline, top right of the hero. */
+.hw-bats {
+  top: 128px;
+  left: calc(50% + 200px);
+  width: 96px;
+  height: 52px;
+  color: var(--muted);
+  opacity: 0.55;
+}
+@media (max-width: 640px) {
+  .hw-bats {
+    top: 56px;
+    left: auto;
+    right: 24px;
+    width: 72px;
+    height: 39px;
+  }
+}
