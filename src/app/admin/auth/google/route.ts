@@ -7,7 +7,7 @@ const b64url = (b: Buffer) => b.toString("base64url");
 
 /** Starts Google sign-in. Only the admin account can finish it (checked in the callback). */
 export async function GET(req: NextRequest) {
-  if (!googleConfigured()) return NextResponse.redirect(new URL("/admin/login?error=config", req.url));
+  if (!googleConfigured()) return NextResponse.redirect(new URL("/admin/login?error=config", process.env.SITE_URL ?? req.url));
   const next = req.nextUrl.searchParams.get("next") ?? "";
   const state = b64url(randomBytes(24));
   const nonce = b64url(randomBytes(24));
