@@ -4,6 +4,7 @@ import { getLocale } from "@/lib/i18n/server";
 import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
 import { HalloweenGate } from "@/seasonal/halloween"; // seasonal:halloween
+import { NatalGate } from "@/seasonal/natal"; // seasonal:natal
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], weight: ["300", "400", "500"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], weight: ["400"] });
@@ -16,10 +17,12 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const locale = await getLocale();
   return (
-    <html lang={locale === "pt" ? "pt-BR" : "en"} suppressHydrationWarning /* seasonal:halloween */>
+    <html lang={locale === "pt" ? "pt-BR" : "en"} suppressHydrationWarning /* seasonal:halloween seasonal:natal */>
       <head>
         {/* seasonal:halloween */}
         <HalloweenGate />
+        {/* seasonal:natal */}
+        <NatalGate />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
     </html>
