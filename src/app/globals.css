@@ -1944,6 +1944,10 @@ html.is-leaving main {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+  /* The hero words start hidden and only an animation shows them. */
+  .hl-w {
+    opacity: 1;
+  }
 }
 
 /* Book page */
