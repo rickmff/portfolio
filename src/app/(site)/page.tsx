@@ -11,6 +11,7 @@ import { fillShelf, readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
 import { metaFor } from "@/lib/seo";
+import { HalloweenBats } from "@/seasonal/halloween"; // seasonal:halloween
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
@@ -34,6 +35,7 @@ export default async function Home() {
   return (
     <>
       <section className="wrap hero">
+        <HalloweenBats /> {/* seasonal:halloween */}
         <p className="eyebrow hero-in" style={{ margin: 0 }}>{settings.role}</p>
         <HeroLines text={settings.hero} />
         {settings.heroBy ? (
