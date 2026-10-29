@@ -36,8 +36,8 @@ export default async function BlogPage() {
         ]}
       />
       <section className="wrap page-title reveal">
-        <p className="eyebrow" style={{ margin: 0 }}>{t.blog.eyebrow}</p>
-        <h1>{t.blog.title}</h1>
+        <p className="eyebrow" style={{ margin: 0 }} aria-hidden="true">{t.blog.eyebrow}</p>
+        <h1 className="sr-only">{t.blog.eyebrow}</h1>
       </section>
       <section className="wrap section" style={{ maxWidth: 720 }}>
         <WritingList posts={posts} t={t} />
