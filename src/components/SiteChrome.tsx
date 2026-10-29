@@ -3,6 +3,7 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import type { Dict } from "@/lib/i18n/dict";
 import type { SiteSettings } from "@/lib/settings";
 import { HalloweenOptOut, HalloweenSpider } from "@/seasonal/halloween"; // seasonal:halloween
+import { NatalHolly } from "@/seasonal/natal"; // seasonal:natal
 
 export function SiteHeader({ settings, harness = false, t }: { settings: SiteSettings; harness?: boolean; t: Dict }) {
   return (
@@ -11,6 +12,7 @@ export function SiteHeader({ settings, harness = false, t }: { settings: SiteSet
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/profile.jpg?v=5" alt="" width={36} height={36} className="site-avatar" />
         <HalloweenSpider /> {/* seasonal:halloween */}
+        <NatalHolly /> {/* seasonal:natal */}
         {settings.name}
       </Link>
       <nav aria-label="Main">
