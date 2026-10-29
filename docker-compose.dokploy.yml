@@ -13,6 +13,7 @@ services:
       ADMIN_EMAIL: ${ADMIN_EMAIL:-rickmff@gmail.com}
       CONTENT_API_TOKEN: ${CONTENT_API_TOKEN}
       GOOGLE_BOOKS_API_KEY: ${GOOGLE_BOOKS_API_KEY:-}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
       SITE_URL: https://${DOMAIN}
     volumes:
       - uploads:/app/uploads

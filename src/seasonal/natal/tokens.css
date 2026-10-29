@@ -1,0 +1,74 @@
+/* Natal. Everything keys off <html data-holiday="natal">, set by gate.ts before paint,
+   so without it the site renders exactly as before. The red is the site's own --accent;
+   the green is the one already used for tip alerts. */
+[data-holiday="natal"] {
+  --nt-pine: #2f6f4f;
+  --nt-pine-soft: color-mix(in oklch, #2f6f4f 22%, var(--bg));
+}
+
+.nt-holly,
+.nt-snow {
+  display: none;
+}
+
+[data-holiday="natal"] .site-brand,
+[data-holiday="natal"] .hero {
+  position: relative;
+}
+
+/* Holly: tucked on the avatar's lower-right edge, a thin --bg halo so it reads on the photo. */
+[data-holiday="natal"] .nt-holly {
+  display: block;
+  position: absolute;
+  left: 22px;
+  top: 22px;
+  width: 20px;
+  height: 16px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 0.75px var(--bg)) drop-shadow(0 0 0.75px var(--bg));
+}
+.nt-holly svg {
+  display: block;
+}
+.nt-leaf {
+  fill: var(--nt-pine);
+  stroke: var(--nt-pine);
+}
+.nt-vein {
+  stroke: var(--nt-pine-soft);
+  stroke-width: 0.6;
+  fill: none;
+}
+.nt-berry {
+  fill: var(--accent);
+}
+.nt-shine {
+  fill: var(--bg);
+  opacity: 0.7;
+}
+
+/* Snow: three line flakes in the muted ink, off the headline's top-right corner. */
+[data-holiday="natal"] .nt-snow {
+  display: block;
+  position: absolute;
+  top: 128px;
+  left: calc(50% + 210px);
+  width: 72px;
+  height: 48px;
+  color: var(--muted);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.nt-flake {
+  position: absolute;
+  display: block;
+}
+@media (max-width: 640px) {
+  [data-holiday="natal"] .nt-snow {
+    top: 52px;
+    left: auto;
+    right: 20px;
+    scale: 0.9;
+    transform-origin: top right;
+  }
+}

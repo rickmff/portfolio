@@ -7,11 +7,14 @@ import { WorkStrip } from "@/components/WorkStrip";
 import { ScrollCue } from "@/components/ScrollCue";
 import { HideAtTop } from "@/components/HideAtTop";
 import { WritingList } from "@/components/WritingList";
+import { GitHubActivity } from "@/components/GitHubActivity";
+import { Suspense } from "react";
 import { fillShelf, readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
 import { getDict } from "@/lib/i18n/server";
 import { metaFor } from "@/lib/seo";
-import { SeasonalHero } from "@/seasonal/halloween-2026"; // seasonal:halloween
+import { HalloweenBats } from "@/seasonal/halloween"; // seasonal:halloween
+import { NatalSnow } from "@/seasonal/natal"; // seasonal:natal
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
@@ -35,7 +38,8 @@ export default async function Home() {
   return (
     <>
       <section className="wrap hero">
-        <SeasonalHero /> {/* seasonal:halloween */}
+        <HalloweenBats /> {/* seasonal:halloween */}
+        <NatalSnow /> {/* seasonal:natal */}
         <p className="eyebrow hero-in" style={{ margin: 0 }}>{settings.role}</p>
         <HeroLines text={settings.hero} />
         {settings.heroBy ? (
@@ -92,6 +96,12 @@ export default async function Home() {
           <Link href="/blog" className="link-muted with-arrow">{t.home.allWriting} <Arrow /></Link>
         </p>
       </section>
+
+      {settings.github ? (
+        <Suspense fallback={null}>
+          <GitHubActivity url={settings.github} t={t} />
+        </Suspense>
+      ) : null}
     </>
   );
 }

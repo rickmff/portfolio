@@ -1,0 +1,111 @@
+/* Halloween. Everything keys off <html data-holiday="halloween">, set by gate.ts before paint,
+   so without it the site renders exactly as before. */
+[data-holiday="halloween"] {
+  /* The hero's breathing dot becomes an ember, the only colour on the page. */
+  --accent: #e8743b;
+  --hw-thread: color-mix(in oklch, var(--ink) 20%, transparent);
+  --hw-sheen: color-mix(in oklch, var(--ink), var(--bg) 62%);
+  --hw-spring: linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1.004 83.8%, 1);
+}
+
+.hw-spider,
+.hw-bats,
+.hw-optout {
+  display: none;
+}
+
+[data-holiday="halloween"] .site-brand,
+[data-holiday="halloween"] .hero {
+  position: relative;
+}
+
+/* Spider: its body sits on the avatar's top-right shoulder, the thread runs up off the page. */
+[data-holiday="halloween"] .hw-spider {
+  display: block;
+  position: absolute;
+  left: 25px;
+  top: -11px;
+  width: 18px;
+  height: 18px;
+  color: var(--ink);
+  pointer-events: none;
+}
+.hw-spider-sway,
+.hw-spider-climb,
+.hw-spider svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+.hw-spider-climb {
+  position: relative;
+}
+.hw-thread {
+  position: absolute;
+  left: 8.5px;
+  bottom: calc(100% - 4.6px);
+  width: 1px;
+  height: 220px;
+  background: linear-gradient(to bottom, transparent, var(--hw-thread) 40%);
+}
+.hw-sheen {
+  fill: var(--hw-sheen);
+  opacity: 0.55;
+}
+.hw-eye {
+  fill: var(--accent);
+  filter: drop-shadow(0 0 0.6px color-mix(in oklch, var(--accent) 80%, transparent));
+}
+
+/* Bats: three silhouettes in the muted ink, rising off the headline's top-right corner. */
+[data-holiday="halloween"] .hw-bats {
+  display: block;
+  position: absolute;
+  top: 128px;
+  left: calc(50% + 200px);
+  width: 96px;
+  height: 52px;
+  color: var(--muted);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.hw-bat {
+  position: absolute;
+  rotate: var(--r);
+}
+.hw-bat svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 640px) {
+  [data-holiday="halloween"] .hw-bats {
+    top: 52px;
+    left: auto;
+    right: 20px;
+    scale: 0.9;
+    transform-origin: top right;
+  }
+}
+
+/* Visitor opt-out, styled like the language toggle beside it. */
+[data-holiday="halloween"] .hw-optout {
+  display: inline;
+  margin-left: 12px;
+  padding: 3px 6px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  font: inherit;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--faint);
+  cursor: pointer;
+  transition:
+    color 0.2s var(--ease),
+    background-color 0.2s var(--ease);
+}
+.hw-optout:hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+}

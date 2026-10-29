@@ -45,4 +45,6 @@ scripts/*.bundle.mjs
 
 # project captures (scripts/capture-project.mjs)
 /capture/
+
+# holiday-touch screenshots
 .seasonal/
