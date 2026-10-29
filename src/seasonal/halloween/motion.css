@@ -1,0 +1,71 @@
+/* Halloween motion: transform-family properties only, each layer on its own property so they add up. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Entrance, once: the spider drops in on its thread and settles with a little stretch. */
+  [data-holiday="halloween"] .hw-spider {
+    animation: hw-drop 900ms var(--hw-spring) 500ms both;
+  }
+  /* At rest: a slow pendulum from the top of the thread, and a breath up and down. */
+  [data-holiday="halloween"] .hw-spider-sway {
+    transform-origin: 50% -200px;
+    animation:
+      hw-sway 6.4s var(--ease-soft) 1.4s infinite alternate,
+      hw-bob 3.8s var(--ease-soft) 1.4s infinite alternate;
+  }
+  /* Hover or focus on the name: it shies away up the thread (a small dip first), then lowers back. */
+  .hw-spider-climb {
+    transition: translate 1.2s var(--hw-spring) 0.35s;
+  }
+  .site-brand:is(:hover, :focus-visible) .hw-spider-climb {
+    translate: 0 -22px;
+    transition: translate 0.5s cubic-bezier(0.55, -0.6, 0.3, 1);
+  }
+
+  [data-holiday="halloween"] .hw-bat {
+    animation:
+      hw-bat-in 700ms var(--ease) calc(700ms + var(--d)) both,
+      hw-glide var(--t) var(--ease-soft) calc(1.4s + var(--d)) infinite alternate;
+  }
+  [data-holiday="halloween"] .hw-bat svg {
+    transform-origin: 50% 45%;
+    animation: hw-flap calc(var(--t) * 0.75) var(--ease-soft) var(--d) infinite alternate;
+  }
+}
+
+@keyframes hw-drop {
+  from {
+    translate: 0 -64px;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+@keyframes hw-sway {
+  from {
+    rotate: -0.7deg;
+  }
+  to {
+    rotate: 0.7deg;
+  }
+}
+@keyframes hw-bob {
+  to {
+    translate: 0 3px;
+  }
+}
+@keyframes hw-bat-in {
+  from {
+    opacity: 0;
+    translate: -14px 10px;
+  }
+}
+@keyframes hw-glide {
+  to {
+    translate: 3px -4px;
+  }
+}
+@keyframes hw-flap {
+  to {
+    scale: 1 0.86;
+  }
+}
