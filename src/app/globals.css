@@ -206,172 +206,93 @@ a {
   justify-content: center;
 }
 
-/* Work strip */
-.strip,
-.strip-track {
-  --gap: 32px;
-  --pad: max(24px, calc((100vw - 1100px) / 2));
-}
-.strip {
-  /* Card slots are sized so the first screen always ends on a card cut in half: one full slot
-     (or more on wide, short screens) plus half of the next. WorkStrip measures the real width
-     and sets --slot-w; this is the one-full-slot value for before it runs. */
-  --slot-w: calc((100vw - var(--pad) - var(--gap)) / 1.5);
+/* Work gallery (src/components/WorkGallery.tsx): two cards to a row, the first one across the
+   whole row when the count is odd; one to a row on phones. On Mobile every card is a 9:16 reel,
+   four to a row (three on tablets, two on phones). Flex rather than grid, so a short last row
+   sits in the middle. */
+.work-grid {
+  --gap-x: 40px;
+  --gap-y: 72px;
+  --cols: 2;
   display: flex;
-  gap: var(--gap);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  margin-top: -12px;
-  padding: 12px var(--pad) 24px;
-  scroll-padding-inline: var(--pad);
-  scrollbar-width: none;
-  overscroll-behavior-x: contain;
-}
-.strip.is-wheeling,
-.strip.is-morphing {
-  scroll-snap-type: none;
-  scroll-behavior: auto;
-}
-/* Off while the cards slide in (WorkStrip turns it back on); without scripts there is no slide. */
-.strip.is-entering {
-  scroll-snap-type: none;
-}
-@media (scripting: none) {
-  .strip.is-entering {
-    scroll-snap-type: x mandatory;
-  }
-}
-.strip::-webkit-scrollbar {
-  display: none;
-}
-/* The first and last cards rest against the padding, so the strip opens at its start (with the
-   half card on the right) instead of snapping the first card to the middle. */
-.strip-item:first-child {
-  scroll-snap-align: start;
-}
-.strip-item:last-child {
-  scroll-snap-align: end;
-}
-@media (max-width: 640px) {
-  .strip,
-  .strip-track {
-    --gap: 16px;
-    --pad: 16px;
-  }
-}
-/* A card cut off at either edge is a step: clicking it moves the carousel that way. */
-.strip-item.is-peek .frame {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='13' fill='%23fff' fill-opacity='.85'/%3E%3Cpath d='M11 8.5l5.5 5.5-5.5 5.5' fill='none' stroke='%230a0a0a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 14 14, e-resize;
-}
-.strip-item.is-peek[data-peek="prev"] .frame {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='13' fill='%23fff' fill-opacity='.85'/%3E%3Cpath d='M17 8.5L11.5 14l5.5 5.5' fill='none' stroke='%230a0a0a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 14 14, w-resize;
-}
-/* A hairline over the cards: the darker part is the stretch on screen. Click or drag it. */
-.strip-track {
-  position: relative;
-  height: 24px;
-  margin: 0 var(--pad) 20px;
-  cursor: pointer;
-  touch-action: none;
-}
-.strip-track::before,
-.strip-thumb {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  height: 1px;
-  translate: 0 -50%;
-}
-.strip-track::before {
-  right: 0;
-  background: var(--faint);
-  opacity: 0.3;
-}
-.strip-thumb {
-  width: calc(var(--thumb-w, 0.3) * 100%);
-  left: calc(var(--thumb-x, 0) * 100%);
-  background: var(--muted);
-  transition: height 0.2s var(--ease);
-}
-.strip-track:hover .strip-thumb,
-.strip-track.is-dragging .strip-thumb {
-  height: 2px;
-}
-/* 1/5 over the hairline, with − and + to step through the cards. */
-.strip-count {
-  display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 6px;
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
+  gap: var(--gap-y) var(--gap-x);
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-inline: 40px;
+  box-sizing: content-box;
 }
-.strip-count span {
-  min-width: 3.5ch;
-  text-align: center;
+.work-grid[data-view="mobile"] {
+  --cols: 4;
+  --gap-x: 32px;
+  --gap-y: 56px;
 }
-.strip-count button {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  font-size: 14px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition:
-    color 0.2s var(--ease),
-    background-color 0.2s var(--ease),
-    opacity 0.2s var(--ease),
-    scale 0.2s var(--ease);
-}
-.strip-count button:hover:not(:disabled) {
-  color: var(--ink);
-  background: color-mix(in srgb, var(--ink) 6%, transparent);
-}
-.strip-count button:active:not(:disabled) {
-  scale: 0.9;
-}
-.strip-count button:disabled {
-  opacity: 0.3;
-  cursor: default;
-}
-.strip-item {
-  /* Frame size: 16:9 for the desktop film; a 9:16 reel when the carousel is on Mobile. */
-  --frame-w: var(--slot-w);
-  --frame-h: calc(var(--frame-w) * 9 / 16);
-  /* Every card keeps its slot (--slot-w, from .strip), so a 9:16 reel sits on the same centre
-     point its 16:9 frame had and the carousel keeps one rhythm in both views. */
-  /* Desktop ⇄ Mobile: width and height morph together, card after card. */
-  --morph: 0.9s var(--ease) calc(var(--i, 0) * 45ms);
-  flex: none;
-  width: var(--slot-w);
-  scroll-snap-align: center;
+.work-card {
+  /* As wide as one column of --cols. */
+  flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap-x)) / var(--cols));
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 18px;
+  /* Each card glides to its new place and size when the view switches (WorkGallery). */
+  view-transition-class: work-card;
+}
+.work-grid[data-view="desktop"] .work-card.is-featured {
+  flex-basis: 100%;
+}
+@media (max-width: 960px) {
+  .work-grid[data-view="mobile"] {
+    --cols: 3;
+  }
+}
+@media (max-width: 640px) {
+  .work-grid {
+    --cols: 1;
+    --gap-y: 48px;
+    padding-inline: 20px;
+  }
+  .work-grid[data-view="mobile"] {
+    --cols: 2;
+    --gap-x: 16px;
+    --gap-y: 40px;
+  }
+}
+::view-transition-group(.work-card) {
+  animation-duration: 0.75s;
+  animation-timing-function: var(--ease);
+}
+::view-transition-old(.work-card),
+::view-transition-new(.work-card) {
+  /* Both captures fill the moving box, so a 16:9 frame turning into a 9:16 reel reads as one card. */
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+/* A project without a phone capture keeps its desktop picture on Mobile: a small 16:9 screen
+   floating in the middle of the reel, on the project's tint. */
+.work-grid[data-view="mobile"] .work-card[data-view="desktop"] .frame-desktop {
+  inset: 50% 10px auto;
+  aspect-ratio: 16 / 9;
+  translate: 0 -50%;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 12px 28px -14px rgb(0 0 0 / 0.35);
+}
+/* The play/pause button sits in the frame's corner, over the link. */
+.work-media {
+  position: relative;
 }
 .frame {
   position: relative;
   display: block;
-  width: var(--frame-w);
-  height: var(--frame-h);
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 10px;
-  transition:
-    transform 0.6s var(--ease),
-    width var(--morph),
-    height var(--morph),
-    border-radius var(--morph);
+  transition: transform 0.6s var(--ease);
+}
+.work-grid[data-view="mobile"] .frame {
+  aspect-ratio: 9 / 16;
+  border-radius: 14px;
 }
 .frame img {
   width: 100%;
@@ -380,10 +301,10 @@ a {
   object-position: top;
   transition: transform 1.2s var(--ease);
 }
-.strip-item:hover .frame {
+.work-card:hover .frame {
   transform: translateY(-6px);
 }
-.strip-item:hover .frame img {
+.work-card:hover .frame img {
   transform: scale(1.03);
 }
 .frame-preview {
@@ -396,25 +317,12 @@ a {
   opacity: 0;
   transition: opacity 0.4s ease;
 }
-.strip-item:hover .frame-preview,
+.work-card:hover .frame-preview,
 .project-cover:hover .frame-preview,
 .frame-preview.is-playing {
   opacity: 1;
 }
-/* Pause / play in the frame's bottom-left corner while a clip plays on hover, with a thin
-   ring that fills with the clip's progress. A sibling of the link, placed over the frame. */
-.strip-item {
-  position: relative;
-}
-.strip-item[data-view="mobile"] {
-  /* As wide as the slot, but never taller than most of the screen. */
-  --frame-w: min(var(--slot-w), 72vh * 9 / 16);
-  --frame-h: calc(var(--frame-w) * 16 / 9);
-}
-.strip-item[data-view="mobile"] .frame {
-  border-radius: 14px;
-}
-/* Glass button over the carousel (play/pause): a frosted, slightly saturated blur of what is
+/* Glass button over a project frame (play/pause): a frosted, slightly saturated blur of what is
    behind, a faint top highlight and a hairline edge. */
 .frame-control {
   padding: 0;
@@ -438,8 +346,8 @@ a {
 }
 .frame-control {
   position: absolute;
-  left: calc((var(--slot-w) - var(--frame-w)) / 2 + 14px);
-  top: calc(var(--frame-h) - 14px - 36px);
+  left: 14px;
+  bottom: 14px;
   width: 36px;
   height: 36px;
   opacity: 0;
@@ -448,9 +356,7 @@ a {
   transition:
     opacity 0.35s var(--ease-soft),
     transform 0.6s var(--ease),
-    translate 0.6s var(--ease),
-    top var(--morph),
-    left var(--morph);
+    translate 0.6s var(--ease);
 }
 .frame-control.is-shown {
   opacity: 1;
@@ -464,8 +370,17 @@ a {
   transform: scale(0.94);
   transition-duration: 0.12s;
 }
+/* Smaller in the narrow reels on phones. */
+@media (max-width: 640px) {
+  .work-grid[data-view="mobile"] .frame-control {
+    left: 10px;
+    bottom: 10px;
+    width: 30px;
+    height: 30px;
+  }
+}
 /* Rides along with the frame's lift on hover. */
-.strip-item:hover .frame-control {
+.work-card:hover .frame-control {
   translate: 0 -6px;
 }
 .frame-control svg {
@@ -495,7 +410,7 @@ a {
   border-radius: 999px;
 }
 
-/* Desktop and mobile captures of a project, switched from the card's footer */
+/* Desktop and mobile captures of a project, switched from the gallery's Desktop · Mobile switch */
 .frame-view {
   position: absolute;
   inset: 0;
@@ -505,23 +420,22 @@ a {
     filter 0.7s var(--ease-soft) calc(var(--i, 0) * 45ms);
 }
 /* The outgoing capture blurs and eases back while the incoming one settles in. */
-.strip-item[data-view="mobile"] .frame-desktop,
-.strip-item[data-view="desktop"] .frame-mobile {
+.work-card[data-view="mobile"] .frame-desktop,
+.work-card[data-view="desktop"] .frame-mobile {
   opacity: 0;
   scale: 1.06;
   filter: blur(8px);
   pointer-events: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .strip-item,
   .frame,
-  .strip-meta,
   .frame-view,
   .frame-control,
-  .strip.sr .frame,
-  .strip.sr .strip-meta,
-  .strip.sr .frame-view {
-    --morph: 0s;
+  .work-card.sr,
+  .work-card.sr .frame,
+  .work-card.sr .work-meta,
+  .work-card.sr .work-summary,
+  .work-card.sr .frame-view {
     transition-duration: 0s;
     transition-delay: 0s;
   }
@@ -548,29 +462,21 @@ a {
 }
 /* Under the section heading: the Desktop · Mobile switch, with a full var(--head-gap)
    above and below. */
-.strip-lead {
+.work-lead {
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto var(--head-gap);
   min-height: 24px;
 }
-.strip-toggle {
-  justify-content: center;
-  gap: 4px;
-}
-.strip-lead,
-.strip-count,
-.strip-track,
+.work-lead,
 .hides-at-top {
   transition:
     opacity 0.6s var(--ease-soft),
     translate 0.8s var(--ease);
 }
 /* Out of sight while the page is at the top and the scroll arrow shows instead. */
-.strip-lead.is-hidden,
-.strip-count.is-hidden,
-.strip-track.is-hidden,
+.work-lead.is-hidden,
 .hides-at-top.is-hidden {
   opacity: 0;
   translate: 0 -6px;
@@ -610,13 +516,33 @@ a {
   display: grid;
   place-items: center;
 }
-.strip-meta {
-  width: var(--frame-w);
-  transition: width var(--morph);
+.work-meta {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   gap: 16px;
+  margin-top: 18px;
   font-size: 13px;
+}
+.work-meta a {
+  color: var(--ink);
+}
+.work-meta span {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--faint);
+}
+.work-summary {
+  margin: 6px 0 0;
+  max-width: 52ch;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+/* Reels are narrow: the title and year are enough there. */
+.work-grid[data-view="mobile"] .work-summary {
+  display: none;
 }
 
 /* Bookshelf */
@@ -1002,10 +928,6 @@ a:hover .arrow[data-dir="out"] {
   transform: translate(2px, -2px) rotate(-45deg);
 }
 
-/* The strip keeps 24px under its cards; take it off the section gap. */
-#work {
-  padding-bottom: calc(var(--section-gap) - 24px);
-}
 /* On the home page the open (lifted, slightly forward) book is what the eye reads as the
    top of the shelf, so it is that book's top that sits var(--head-gap) under the title. */
 #books .shelf-row {
@@ -1076,7 +998,7 @@ a:hover .arrow[data-dir="out"] {
   }
 }
 /* The arrow's target: land with some room above the projects. */
-#work-strip {
+#work-gallery {
   scroll-margin-top: 15vh;
 }
 /* Hover preview of a post (src/components/PostLink.tsx) */
@@ -1838,73 +1760,68 @@ html.is-leaving main {
   transition: none;
 }
 
-/* The work strip arrives card by card: each slides in from the right, its frame wipes open from
-   the bottom while the picture settles from a slight zoom, then the title line follows. */
-.strip.sr {
-  opacity: 1;
-  transform: none;
-}
-.strip.sr .strip-item {
-  --d: calc(var(--sr-delay, 0ms) + var(--i, 0) * 140ms);
+/* Gallery cards arrive as they scroll in, cascading along a row (ScrollReveal staggers
+   --sr-delay): each rises a little, its frame wipes open from the bottom while the picture
+   settles from a slight zoom, then the title line follows. */
+.work-card.sr {
+  --d: var(--sr-delay, 0ms);
   opacity: 0;
-  transform: translateX(90px);
+  transform: translateY(48px);
   transition:
-    width var(--morph),
     opacity 1.1s var(--ease) var(--d),
-    transform 1.5s var(--ease) var(--d);
+    transform 1.4s var(--ease) var(--d);
 }
-/* The entrance transitions below also carry the Desktop ⇄ Mobile morph (see .frame,
-   .frame-view and .strip-meta), or these rules would switch it off. */
-.strip.sr .frame {
-  clip-path: inset(100% 0 0 0 round 10px);
+/* These also carry the hover lift and the Desktop ⇄ Mobile crossfade (see .frame and
+   .frame-view), or they would switch them off. */
+.work-card.sr .frame {
+  clip-path: inset(100% 0 0 0);
   transition:
     transform 0.6s var(--ease),
-    width var(--morph),
-    height var(--morph),
-    border-radius var(--morph),
     clip-path 1.3s var(--ease) calc(var(--d) + 120ms);
 }
-.strip.sr .frame-view {
+.work-card.sr .frame-view {
   transform: scale(1.14);
   transition:
-    opacity 0.7s var(--ease-soft) calc(var(--i, 0) * 45ms + 0.1s),
-    scale 0.9s var(--ease) calc(var(--i, 0) * 45ms),
-    filter 0.7s var(--ease-soft) calc(var(--i, 0) * 45ms),
+    opacity 0.7s var(--ease-soft) 0.1s,
+    scale 0.9s var(--ease),
+    filter 0.7s var(--ease-soft),
     transform 1.9s var(--ease) calc(var(--d) + 120ms);
 }
-.strip.sr .strip-meta {
+.work-card.sr .work-meta,
+.work-card.sr .work-summary {
   opacity: 0;
   transform: translateY(10px);
   transition:
-    width var(--morph),
     opacity 0.9s var(--ease) calc(var(--d) + 500ms),
     transform 1.1s var(--ease) calc(var(--d) + 500ms);
 }
-.strip.sr.sr-in .strip-item,
-.strip.sr.sr-in .strip-meta {
+.work-card.sr.sr-in,
+.work-card.sr.sr-in .work-meta,
+.work-card.sr.sr-in .work-summary {
   opacity: 1;
   transform: none;
 }
-.strip.sr.sr-in .frame-view {
+.work-card.sr.sr-in .frame-view {
   transform: none;
 }
-.strip.sr.sr-in .frame {
-  clip-path: inset(0 0 0 0 round 10px);
+.work-card.sr.sr-in .frame {
+  clip-path: inset(0 0 0 0);
 }
-.strip.sr.sr-instant,
-.strip.sr.sr-instant * {
+.work-card.sr.sr-instant,
+.work-card.sr.sr-instant * {
   transition: none;
 }
 @media (scripting: none), (prefers-reduced-motion: reduce) {
-  .strip.sr .strip-item,
-  .strip.sr .strip-meta {
+  .work-card.sr,
+  .work-card.sr .work-meta,
+  .work-card.sr .work-summary {
     opacity: 1;
     transform: none;
   }
-  .strip.sr .frame-view {
+  .work-card.sr .frame-view {
     transform: none;
   }
-  .strip.sr .frame {
+  .work-card.sr .frame {
     clip-path: none;
   }
 }
@@ -2323,7 +2240,7 @@ button.book-read {
   }
 }
 
-/* About: the CV download under the name, quiet like the view toggle on the work strip. */
+/* About: the CV download under the name, quiet like the view toggle on the work gallery. */
 .cv-button {
   display: inline-flex;
   align-items: center;

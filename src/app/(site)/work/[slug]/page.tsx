@@ -1,7 +1,7 @@
 import { Arrow } from "@/components/Arrow";
 import { JsonLd } from "@/components/JsonLd";
 import { ProjectCover } from "@/components/ProjectCover";
-import { WorkStrip } from "@/components/WorkStrip";
+import { WorkGallery } from "@/components/WorkGallery";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProject, getPublishedProjects, getSettings } from "@/lib/data";
@@ -29,7 +29,7 @@ export default async function ProjectPage({ params }: Props) {
     getLocale(),
   ]);
   if (!p) notFound();
-  // The landing's carousel, without the project on this page.
+  // The landing's gallery, without the project on this page.
   const others = all.filter((o) => o.id !== p.id);
   const url = localeUrl(locale, `/work/${p.slug}`);
   const image = p.showcasePosterUrl || p.coverUrl;
@@ -83,8 +83,8 @@ export default async function ProjectPage({ params }: Props) {
           <div className="wrap section-head center">
             <h2>{t.work.more}</h2>
           </div>
-          <div id="more-work-strip">
-            <WorkStrip projects={others} />
+          <div id="more-work-gallery">
+            <WorkGallery projects={others} />
           </div>
         </section>
       ) : null}

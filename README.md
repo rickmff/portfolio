@@ -47,7 +47,7 @@ CONTENTFUL_SPACE_ID=… CONTENTFUL_ACCESS_TOKEN=… pnpm import:contentful      
 src/app/(site)      public pages: home, /work/[slug], /books, /blog, /blog/[slug]
 src/app/admin       backoffice (login, CRUD, settings) and server actions
 src/app/api/content content API (CRUD, settings, media, reorder, book lookup)
-src/components      BookStage (3D book), WorkStrip, WritingList
+src/components      BookStage (3D book), WorkGallery, WritingList
 src/db              Drizzle schema and client
 scripts/            migrate, seed, hash-password
 ```

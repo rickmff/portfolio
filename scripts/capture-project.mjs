@@ -1,4 +1,4 @@
-// Records a project's site for the Latest Work carousel, on desktop and on a phone: a smooth scroll
+// Records a project's site for the Latest Work gallery, on desktop and on a phone: a smooth scroll
 // clip that rests on each section, a cover that matches the clip's first frame, and the page meta.
 //   node scripts/capture-project.mjs https://example.com [--out capture/example] [--device both|desktop|mobile]
 //     [--pause 1.2] [--max 22] [--wait 2] [--lang en]   (en by default, pt, or any; see pin-language.mjs)

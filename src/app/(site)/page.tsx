@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "@/components/LocaleLink";
 import { BookShelf } from "@/components/BookShelf";
 import { HeroLines } from "@/components/HeroLines";
-import { WorkStrip } from "@/components/WorkStrip";
+import { WorkGallery } from "@/components/WorkGallery";
 import { ScrollCue } from "@/components/ScrollCue";
 import { HideAtTop } from "@/components/HideAtTop";
 import { WritingList } from "@/components/WritingList";
@@ -59,15 +59,15 @@ export default async function Home() {
             {t.home.now} — {settings.now}
           </p>
         ) : null}
-        {projects.length ? <ScrollCue href="#work-strip" label={t.home.latestWork} /> : null}
+        {projects.length ? <ScrollCue href="#work-gallery" label={t.home.latestWork} /> : null}
       </section>
 
       <section id="work" className="section">
         <div className="wrap section-head center">
           <HideAtTop>{t.home.latestWork}</HideAtTop>
         </div>
-        <div id="work-strip">
-          <WorkStrip projects={projects} hideAtTop />
+        <div id="work-gallery">
+          <WorkGallery projects={projects} hideAtTop />
         </div>
       </section>
 

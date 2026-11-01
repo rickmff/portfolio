@@ -1,4 +1,4 @@
-// Films a project's site for the Latest Work carousel, full frame, with nothing around it: the
+// Films a project's site for the Latest Work gallery, full frame, with nothing around it: the
 // desktop site at 1920×1080 in one smooth, continuous scroll from top to bottom, and the mobile
 // site the same way as its own 9:16 clip at 1080×1920, the reels format, with no phone drawn.
 //   node scripts/showcase-project.mjs https://example.com [--out capture/example] [--device both|desktop|mobile]
