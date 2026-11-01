@@ -9,10 +9,8 @@ import { useDict } from "@/lib/i18n/client";
 import { useAtTop } from "@/lib/useAtTop";
 
 // What the frames really measure, so the browser picks a sharp enough copy on retina screens:
-// two columns inside a 1180px gallery (the first project takes the full row when the count is
-// odd), one column on phones; reels are four to a row, two on phones.
+// two columns inside a 1180px gallery, one column on phones; reels are four to a row, two on phones.
 const DESKTOP_SIZES = "(max-width: 640px) 92vw, (max-width: 1260px) 48vw, 590px";
-const FEATURED_SIZES = "(max-width: 640px) 92vw, (max-width: 1260px) 96vw, 1180px";
 const MOBILE_SIZES = "(max-width: 640px) 46vw, (max-width: 960px) 31vw, 280px";
 
 const isVideo = (url: string) => /\.(mp4|webm|mov)(\?|$)/i.test(url);
@@ -40,12 +38,10 @@ function WorkCard({
   project: p,
   index: i,
   view: chosen,
-  featured,
 }: {
   project: Project;
   index: number;
   view: View;
-  featured: boolean;
 }) {
   const card = useRef<HTMLDivElement>(null);
   // "Mobile" shows the project's own mobile clip (a 9:16 reel). Older showcase films without one
@@ -119,7 +115,7 @@ function WorkCard({
       ref={card}
       // Rendered hidden ("sr") so each card plays its entrance as it scrolls in; ScrollReveal adds
       // "sr-in". Without JS or with reduced motion the CSS shows them.
-      className={`work-card sr${featured ? " is-featured" : ""}`}
+      className="work-card sr"
       style={{ "--i": i, viewTransitionName: `work-${p.id}` } as CSSProperties}
       data-view={jumps ? "desktop" : view}
       onMouseEnter={() => !touch && setActive(true)}
@@ -143,7 +139,7 @@ function WorkCard({
                 src={(p.showcasePosterUrl || p.coverUrl)!}
                 alt=""
                 fill
-                sizes={featured ? FEATURED_SIZES : DESKTOP_SIZES}
+                sizes={DESKTOP_SIZES}
                 quality={85}
                 priority={i < 3}
               />
@@ -170,7 +166,7 @@ function WorkCard({
                 src={p.coverUrl}
                 alt=""
                 fill
-                sizes={featured ? FEATURED_SIZES : DESKTOP_SIZES}
+                sizes={DESKTOP_SIZES}
                 quality={85}
                 priority={i < 3}
               />
@@ -261,8 +257,8 @@ function WorkCard({
 }
 
 /**
- * The project gallery: a grid of cards (two to a row, the first one across the whole row when
- * the count is odd), with one Desktop · Mobile switch for all of them. Mobile turns every card
+ * The project gallery: a grid of cards (two to a row, a short last row centred), with one
+ * Desktop · Mobile switch for all of them. Mobile turns every card
  * into a 9:16 reel, four to a row. With `hideAtTop` the switch stays out of sight while the page
  * is at the very top, where the scroll arrow shows.
  */
@@ -288,8 +284,6 @@ export function WorkGallery({ projects, hideAtTop = false }: { projects: Project
   };
 
   const hidden = hideAtTop && atTop;
-  // An odd count leaves the last row half empty; the first (latest) project takes a row of its own instead.
-  const featureFirst = projects.length % 2 === 1;
 
   if (projects.length === 0)
     return <p className="muted wrap">{t.home.noProjects}</p>;
@@ -314,7 +308,7 @@ export function WorkGallery({ projects, hideAtTop = false }: { projects: Project
       ) : null}
       <div className="work-grid" data-view={view}>
         {projects.map((p, i) => (
-          <WorkCard key={p.id} project={p} index={i} view={view} featured={featureFirst && i === 0} />
+          <WorkCard key={p.id} project={p} index={i} view={view} />
         ))}
       </div>
     </>

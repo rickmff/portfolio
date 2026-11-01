@@ -206,10 +206,9 @@ a {
   justify-content: center;
 }
 
-/* Work gallery (src/components/WorkGallery.tsx): two cards to a row, the first one across the
-   whole row when the count is odd; one to a row on phones. On Mobile every card is a 9:16 reel,
-   four to a row (three on tablets, two on phones). Flex rather than grid, so a short last row
-   sits in the middle. */
+/* Work gallery (src/components/WorkGallery.tsx): two cards to a row, one on phones. On Mobile
+   every card is a 9:16 reel, four to a row (three on tablets, two on phones). Flex rather than
+   grid, so a short last row sits in the middle. */
 .work-grid {
   --gap-x: 40px;
   --gap-y: 72px;
@@ -236,9 +235,6 @@ a {
   flex-direction: column;
   /* Each card glides to its new place and size when the view switches (WorkGallery). */
   view-transition-class: work-card;
-}
-.work-grid[data-view="desktop"] .work-card.is-featured {
-  flex-basis: 100%;
 }
 @media (max-width: 960px) {
   .work-grid[data-view="mobile"] {
