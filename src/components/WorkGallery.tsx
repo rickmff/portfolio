@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "@/components/LocaleLink";
-import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from "react";
+import { Arrow } from "@/components/Arrow";
+import { type CSSProperties, type ReactNode, useEffect, useId, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import type { Project } from "@/db/schema";
 import { useDict } from "@/lib/i18n/client";
@@ -258,13 +259,37 @@ function WorkCard({
 
 /**
  * The project gallery: a grid of cards (two to a row, a short last row centred), with one
- * Desktop · Mobile switch for all of them. Mobile turns every card
+ * Desktop · Mobile switch for all of them. Only the first `limit` cards show until "Show more". Mobile turns every card
  * into a 9:16 reel, four to a row. With `hideAtTop` the switch stays out of sight while the page
  * is at the very top, where the scroll arrow shows.
  */
-export function WorkGallery({ projects, hideAtTop = false }: { projects: Project[]; hideAtTop?: boolean }) {
+export function WorkGallery({
+  projects,
+  hideAtTop = false,
+  limit = 4,
+}: {
+  projects: Project[];
+  hideAtTop?: boolean;
+  limit?: number;
+}) {
   const atTop = useAtTop(hideAtTop);
   const t = useDict();
+  const gridId = useId();
+  const grid = useRef<HTMLDivElement>(null);
+  // Past `limit` the rest wait behind "Show more"; they play their entrance as they appear.
+  const [expanded, setExpanded] = useState(false);
+  const extra = Math.max(0, projects.length - limit);
+  const shown = expanded ? projects : projects.slice(0, limit);
+  // Opening moves focus to the first new card, so keyboard and screen reader users land on what
+  // just appeared; closing keeps it on the button, which slides up under the last card left.
+  const toggle = () => {
+    const opening = !expanded;
+    setExpanded(opening);
+    if (opening)
+      requestAnimationFrame(() =>
+        grid.current?.querySelectorAll<HTMLElement>(".work-card")[limit]?.querySelector<HTMLElement>(".work-meta a")?.focus({ preventScroll: true }),
+      );
+  };
   // One switch for the whole gallery. It opens on the visitor's own kind of screen.
   const [view, setView] = useState<View>("desktop");
   const hasMobile = projects.some(
@@ -306,11 +331,24 @@ export function WorkGallery({ projects, hideAtTop = false }: { projects: Project
           </div>
         </div>
       ) : null}
-      <div className="work-grid" data-view={view}>
-        {projects.map((p, i) => (
+      <div className="work-grid" id={gridId} ref={grid} data-view={view}>
+        {shown.map((p, i) => (
           <WorkCard key={p.id} project={p} index={i} view={view} />
         ))}
       </div>
+      {extra ? (
+        <p className="section-more work-more">
+          <button
+            type="button"
+            className="link-muted with-arrow"
+            aria-expanded={expanded}
+            aria-controls={gridId}
+            onClick={toggle}
+          >
+            {expanded ? t.home.showLess : t.home.showMore} <Arrow dir={expanded ? "up" : "down"} />
+          </button>
+        </p>
+      ) : null}
     </>
   );
 }

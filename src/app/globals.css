@@ -274,6 +274,29 @@ a {
   border-radius: 6px;
   box-shadow: 0 12px 28px -14px rgb(0 0 0 / 0.35);
 }
+/* "Show more" under the gallery, quiet like the section links ("All books"). */
+.work-more {
+  margin-top: 64px;
+}
+.work-more button {
+  padding: 6px 4px;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.25s var(--ease);
+}
+.work-more .arrow {
+  transition: transform 0.3s var(--ease);
+}
+.with-arrow:hover .arrow[data-dir="up"] {
+  transform: translateY(-2px) rotate(-90deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .work-more .arrow {
+    transition: none;
+  }
+}
 /* The play/pause button sits in the frame's corner, over the link. */
 .work-media {
   position: relative;
