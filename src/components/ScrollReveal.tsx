@@ -6,7 +6,7 @@ import { useEffect } from "react";
 /** What fades in as it enters the viewport and out again as it leaves. */
 const TARGETS = [
   ".section-head",
-  ".strip",
+  ".work-card",
   ".shelf-label",
   ".shelf",
   ".year-row",
@@ -52,7 +52,7 @@ export function ScrollReveal() {
         if (seen.has(el)) continue;
         seen.add(el);
         if (el.classList.contains("sr")) {
-          // Rendered hidden on the server (the work strip): it always plays its entrance.
+          // Rendered hidden on the server (the work gallery cards): they always play their entrance.
           io.observe(el);
           continue;
         }

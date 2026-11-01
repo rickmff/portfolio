@@ -1,6 +1,6 @@
 // Films a guided tour of the portfolio itself for a showcase video: a drawn cursor walks the home
-// page (the Menu Online desktop demo played through fast, the carousel scrolled to its end and
-// switched to Mobile, a hover along the bookshelf), opens a book and sets it spinning, reveals its
+// page (the Menu Online desktop demo played through fast, the gallery switched to Mobile
+// and scrolled through, a hover along the bookshelf), opens a book and sets it spinning, reveals its
 // notes, goes home from the footer, hovers the writing list and opens a post. The browser sits in
 // a window drawn over a background image, in one continuous 1920×1080 take of about 33 s.
 //   node scripts/showcase-site.mjs [https://rickmff.com] --bg painting.jpg [--out capture/showcase]
@@ -42,7 +42,7 @@ const STEP = 1000 / FPS;
 // Every pause, glide and scroll of the tour is divided by this: 1.25 plays it a quarter faster.
 // The tour below is timed at 1, about 38 s.
 const SPEED = Number(opt.speed);
-// The Menu Online demo plays to its end in the carousel, this many times faster than real time.
+// The Menu Online demo plays to its end in the gallery, this many times faster than real time.
 const MENU_RATE = Number(opt["menu-rate"]);
 // A smaller viewport shows the page larger in the same window (the books cut uses 1120×630).
 const [vwOpt, vhOpt] = opt.view.split("x").map(Number);
@@ -210,7 +210,6 @@ html,body{scrollbar-width:none!important}::-webkit-scrollbar{display:none!import
 /* Recorder */
 
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
-const easeOut = (t) => 1 - (1 - t) ** 3;
 
 function recorder(page) {
   const files = [];
@@ -441,11 +440,11 @@ const now = await page.evaluate(() => Date.now());
 await page.clock.pauseAt(now + 300).catch(() => page.clock.pauseAt(Date.now() + 2000));
 await page.waitForLoadState("networkidle", { timeout: 15_000 }).catch(() => {});
 await page.evaluate(() => document.fonts.ready);
-// Load the carousel's clips now, as blobs: the server answers /media without byte ranges, and a
+// Load the gallery's clips now, as blobs: the server answers /media without byte ranges, and a
 // clip that can't be seeked can't be stepped frame by frame.
 await page.evaluate(() =>
   Promise.all(
-    [...document.querySelectorAll(".strip-item video")].map(async (v) => {
+    [...document.querySelectorAll(".work-card video")].map(async (v) => {
       const blob = await (await fetch(v.src)).blob();
       v.src = URL.createObjectURL(blob);
       v.preload = "auto";
@@ -463,10 +462,10 @@ else {
 // beat overlaps the next (the cursor travels while the page scrolls), so something is always
 // moving on screen.
 
-// 1. The hero comes in while the page is already on its way down to the carousel, and the cursor
+// 1. The hero comes in while the page is already on its way down to the gallery, and the cursor
 //    heads for the Menu Online card in the same move.
 await rest(0.9);
-const cards = page.locator(".strip-item");
+const cards = page.locator("#work .work-card");
 const menu = cards.first();
 await scrollTo(page.locator("#work .section-head"), 0.04, 1.4, { cursor: menu.locator(".frame") });
 
@@ -477,31 +476,15 @@ rec.setRate(MENU_RATE);
 await rest(Math.max(2, clip / MENU_RATE - 0.05));
 rec.setRate(1);
 
-// 3. The carousel runs sideways to its end, once, under a cursor drifting right over the other cards.
-const strip = await page.locator(".strip").evaluate((el) => el.scrollWidth - el.clientWidth);
-const drift = { x: Math.min(VIEW.width * 0.72, rec.mouse.x + 520), y: rec.mouse.y + 10 };
-const from = { ...rec.mouse };
-const sideways = 2.4;
-const steps = Math.round(sideways * FPS / SPEED);
-await page.keyboard.down("Shift");
-for (let i = 1, sent = 0; i <= steps; i++) {
-  // A touch past the end, so the smooth scroller settles right on it.
-  const want = Math.round(((strip + 200) / 0.85) * ease(i / steps));
-  const t = easeOut(i / steps);
-  rec.mouse.x = from.x + (drift.x - from.x) * t;
-  rec.mouse.y = from.y + (drift.y - from.y) * t;
-  await page.mouse.move(rec.mouse.x, rec.mouse.y);
-  if (want - sent) await page.mouse.wheel(0, want - sent);
-  sent = want;
-  await rec.frame();
-}
-await page.keyboard.up("Shift");
-
-// 4. Up to the switch: the carousel turns to its Mobile view while the cursor drifts back down.
-const mobileBtn = page.locator(".strip-toggle button").nth(1);
+// 3. Up to the switch just above: the gallery turns to its Mobile view, every card gliding into a
+//    reel, while the cursor drifts back down over them.
+const mobileBtn = page.locator("#work .view-toggle button").nth(1);
 await moveTo(mobileBtn, 0.8);
 await click({ settle: 0.05 });
 await moveTo({ x: VIEW.width * 0.62, y: VIEW.height * 0.62 }, 1.1);
+
+// 4. Down through the reels, the cursor passing over the last row.
+await scrollTo(cards.last(), 0.3, 1.6, { cursor: cards.last().locator(".frame") });
 
 // 5. Down to the bookshelf, the cursor landing on the first spine, then one pass along the
 //    spines that ends on the book to open.
