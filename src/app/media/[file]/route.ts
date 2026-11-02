@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { head } from "@vercel/blob";
 import { MIME, UPLOAD_DIR } from "@/lib/uploads";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ file: string }> }) {
@@ -13,6 +14,14 @@ export async function GET(_req: Request, { params }: { params: Promise<{ file: s
       headers: { "Content-Type": type, "Cache-Control": "public, max-age=31536000, immutable" },
     });
   } catch {
+    // On Vercel the disk is empty: files moved over from the VPS sit in Blob under media/<name>,
+    // so old /media links (feeds, shared posts, rows not yet rewritten) keep working.
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      try {
+        const blob = await head(`media/${file}`);
+        return Response.redirect(blob.url, 308);
+      } catch {}
+    }
     return new Response("Not found", { status: 404 });
   }
 }

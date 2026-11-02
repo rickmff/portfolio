@@ -5,8 +5,12 @@ import { type Locale, localePath } from "./i18n/dict";
 import { getLocale } from "./i18n/server";
 import type { SiteSettings } from "./settings";
 
-/** The public origin, without a trailing slash. Everything canonical is built on it. */
-export const SITE_URL = (process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+/**
+ * The public origin, without a trailing slash. Everything canonical is built on it.
+ * On Vercel without SITE_URL it falls back to the project's production domain.
+ */
+const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+export const SITE_URL = (process.env.SITE_URL || vercelUrl || "http://localhost:3000").replace(/\/$/, "");
 
 export const PERSON_ID = `${SITE_URL}/#person`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;

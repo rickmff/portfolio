@@ -42,7 +42,11 @@ const nextConfig: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
   // Uploads are content-addressed (random names, never rewritten), so optimised copies can live long.
-  images: { minimumCacheTTL: 31_536_000 },
+  images: {
+    minimumCacheTTL: 31_536_000,
+    // On Vercel, uploads live in Vercel Blob (public stores serve from this host).
+    remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],
+  },
   experimental: {
     serverActions: { bodySizeLimit: "42mb" },
   },

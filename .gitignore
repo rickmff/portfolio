@@ -40,6 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /uploads
+# local copy of the VPS uploads volume, used once by `pnpm migrate:blob`
+/uploads-vps
 !.env.example
 scripts/*.bundle.mjs
 
