@@ -39,7 +39,6 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  output: "standalone",
   poweredByHeader: false,
   // Uploads are content-addressed (random names, never rewritten), so optimised copies can live long.
   images: {

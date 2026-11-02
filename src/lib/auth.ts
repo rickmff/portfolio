@@ -19,7 +19,7 @@ export function googleConfigured() {
   );
 }
 
-/** Google must send the user back to exactly this URL, so it comes from SITE_URL, not the request (Caddy proxies). */
+/** Google must send the user back to exactly this URL, so it comes from SITE_URL, not the request host. */
 export function googleRedirectUri() {
   return `${(process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, "")}/admin/auth/callback`;
 }

@@ -43,7 +43,6 @@ next-env.d.ts
 # local copy of the VPS uploads volume, used once by `pnpm migrate:blob`
 /uploads-vps
 !.env.example
-scripts/*.bundle.mjs
 
 # project captures (scripts/capture-project.mjs)
 /capture/
@@ -51,5 +50,5 @@ scripts/*.bundle.mjs
 # holiday-touch screenshots
 .seasonal/
 
-# local SQLite database (dev / Docker without Turso)
+# local SQLite database (dev without Turso)
 /data
