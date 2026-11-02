@@ -1,18 +1,11 @@
-import {
-  boolean,
-  integer,
-  real,
-  jsonb,
-  pgEnum,
-  pgTable,
-  serial,
-  text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const bookStatus = pgEnum("book_status", ["reading", "read", "next", "wishlist", "abandoned"]);
-export const BOOK_STATUSES = bookStatus.enumValues;
+// SQLite (Turso / libSQL). Types map from the old Postgres schema like this: serial → integer
+// autoincrement, varchar(n) → text (length checked by zod, not the database), boolean → integer
+// 0/1, jsonb → JSON text, timestamptz → integer milliseconds, pg enum → text checked by zod.
+
+export const BOOK_STATUSES = ["reading", "read", "next", "wishlist", "abandoned"] as const;
 export type BookStatus = (typeof BOOK_STATUSES)[number];
 
 /**
@@ -20,18 +13,25 @@ export type BookStatus = (typeof BOOK_STATUSES)[number];
  * The site shows the visitor's language when present and the base column otherwise.
  */
 export type Translations = Partial<Record<"en" | "pt", Record<string, string>>>;
-const translations = () => jsonb("translations").$type<Translations>().notNull().default({});
+const translations = () =>
+  text("translations", { mode: "json" }).$type<Translations>().notNull().default(sql`'{}'`);
+
+const ms = (name: string) => integer(name, { mode: "timestamp_ms" });
+const nowMs = sql`(cast(unixepoch('subsec') * 1000 as integer))`;
+const id = () => integer("id").primaryKey({ autoIncrement: true });
+const bool = (name: string) => integer(name, { mode: "boolean" });
+const varchar = (name: string, { length }: { length: number }) => text(name, { length });
 
 const timestamps = {
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .defaultNow()
+  createdAt: ms("created_at").default(nowMs).notNull(),
+  updatedAt: ms("updated_at")
+    .default(nowMs)
     .notNull()
     .$onUpdate(() => new Date()),
 };
 
-export const projects = pgTable("projects", {
-  id: serial("id").primaryKey(),
+export const projects = sqliteTable("projects", {
+  id: id(),
   slug: varchar("slug", { length: 120 }).notNull().unique(),
   title: varchar("title", { length: 200 }).notNull(),
   summary: text("summary").notNull().default(""),
@@ -53,16 +53,16 @@ export const projects = pgTable("projects", {
   repoUrl: text("repo_url"),
   tint: varchar("tint", { length: 9 }).notNull().default("#F1F0EB"),
   sort: integer("sort").notNull().default(0),
-  published: boolean("published").notNull().default(true),
+  published: bool("published").notNull().default(true),
   translations: translations(),
   ...timestamps,
 });
 
-export const books = pgTable("books", {
-  id: serial("id").primaryKey(),
+export const books = sqliteTable("books", {
+  id: id(),
   title: varchar("title", { length: 200 }).notNull(),
   author: varchar("author", { length: 200 }).notNull(),
-  status: bookStatus("status").notNull().default("read"),
+  status: text("status", { enum: BOOK_STATUSES }).notNull().default("read"),
   finishedYear: integer("finished_year"),
   rating: integer("rating"),
   note: text("note").notNull().default(""),
@@ -74,7 +74,7 @@ export const books = pgTable("books", {
   /** Reading notes in Markdown, hidden behind a reveal on the book page. */
   notes: text("notes").notNull().default(""),
   /** True when the notes were drafted for the owner rather than written by them. */
-  notesGenerated: boolean("notes_generated").notNull().default(false),
+  notesGenerated: bool("notes_generated").notNull().default(false),
   /** The book's best-known line, highlighted on the shelf, the book page and /quotes. */
   quote: text("quote").notNull().default(""),
   /** Where the quote sits in the book, e.g. "Act III, Scene 1" or "Chapter 21". */
@@ -88,8 +88,8 @@ export const books = pgTable("books", {
   ...timestamps,
 });
 
-export const posts = pgTable("posts", {
-  id: serial("id").primaryKey(),
+export const posts = sqliteTable("posts", {
+  id: id(),
   slug: varchar("slug", { length: 160 }).notNull().unique(),
   title: varchar("title", { length: 240 }).notNull(),
   excerpt: text("excerpt").notNull().default(""),
@@ -97,22 +97,22 @@ export const posts = pgTable("posts", {
   tags: text("tags").notNull().default(""),
   /** Wide image on top of the post and in the hover preview on the blog list. */
   bannerUrl: text("banner_url"),
-  published: boolean("published").notNull().default(false),
-  publishedAt: timestamp("published_at", { withTimezone: true }),
+  published: bool("published").notNull().default(false),
+  publishedAt: ms("published_at"),
   translations: translations(),
   ...timestamps,
 });
 
 /** Key/value site copy editable from the backoffice (hero line, "now", links). */
-export const settings = pgTable("settings", {
+export const settings = sqliteTable("settings", {
   key: varchar("key", { length: 64 }).primaryKey(),
   value: text("value").notNull().default(""),
 });
 
 export type Project = typeof projects.$inferSelect;
 /** The /harness page: the tools, services and setup behind the work, grouped by category. */
-export const harness = pgTable("harness", {
-  id: serial("id").primaryKey(),
+export const harness = sqliteTable("harness", {
+  id: id(),
   name: varchar("name", { length: 160 }).notNull(),
   url: text("url").notNull(),
   description: text("description").notNull().default(""),

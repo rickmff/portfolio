@@ -13,14 +13,17 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build && pnpm build:seed
 
-# Migration runner needs drizzle-orm + postgres outside the traced standalone bundle.
+# Migration runner and seed bundle need drizzle-orm + @libsql/client (native, so not bundled)
+# outside the traced standalone bundle.
 FROM base AS migrator
-RUN mkdir /m && cd /m && npm init -y >/dev/null && npm i --omit=dev drizzle-orm@0 postgres@3 >/dev/null
+RUN mkdir /m && cd /m && npm init -y >/dev/null && npm i --omit=dev drizzle-orm@0.45 @libsql/client@0.18 >/dev/null
 
 FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0 UPLOAD_DIR=/app/uploads
-RUN addgroup -S app && adduser -S app -G app && mkdir -p /app/uploads && chown app:app /app/uploads
+# Without TURSO_DATABASE_URL the app keeps its SQLite file here (mount a volume on /app/data).
+ENV DATABASE_URL=file:/app/data/portfolio.db
+RUN addgroup -S app && adduser -S app -G app && mkdir -p /app/uploads /app/data && chown app:app /app/uploads /app/data
 COPY --from=build --chown=app:app /app/.next/standalone ./
 COPY --from=build --chown=app:app /app/.next/static ./.next/static
 COPY --from=build --chown=app:app /app/public ./public
