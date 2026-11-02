@@ -5,7 +5,13 @@
 export function dbConfig() {
   const env = process.env;
   const fromDatabaseUrl = env.DATABASE_URL && !/^postgres(ql)?:/.test(env.DATABASE_URL) ? env.DATABASE_URL : undefined;
-  const url = env.TURSO_DATABASE_URL || env.LIBSQL_URL || fromDatabaseUrl || "file:./data/portfolio.db";
+  const remote = env.TURSO_DATABASE_URL || env.LIBSQL_URL || fromDatabaseUrl;
+  // Vercel functions can't keep a local file, so fail the build with a clear message instead
+  // of shipping a deploy whose every page errors.
+  if (!remote && env.VERCEL) {
+    throw new Error("TURSO_DATABASE_URL is not set for this Vercel environment (see README, Deploying to Vercel)");
+  }
+  const url = remote || "file:./data/portfolio.db";
   const authToken = env.TURSO_AUTH_TOKEN || env.LIBSQL_AUTH_TOKEN || undefined;
   return { url, authToken };
 }
