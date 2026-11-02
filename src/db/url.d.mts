@@ -1,1 +1,2 @@
-export function databaseUrl(opts?: { direct?: boolean }): string | undefined;
+export function dbConfig(): { url: string; authToken: string | undefined };
+export function ensureLocalDir(url: string): Promise<void>;

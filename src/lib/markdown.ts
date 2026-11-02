@@ -10,17 +10,20 @@ export { slugify } from "./slug";
 
 export type ImageDims = Record<string, { width: number; height: number }>;
 
+/** Public Vercel Blob URLs, where uploads live when the site runs on Vercel. */
+export const BLOB_HOST = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\//i;
+
 // Widths Next's image optimiser serves by default (deviceSizes + the larger imageSizes).
 const WIDTHS = [384, 640, 828, 1080, 1200, 1920];
 
 /**
- * A local image with a known size gets width/height and a srcset through Next's optimiser, so
+ * A local (or Blob) image with a known size gets width/height and a srcset through Next's optimiser, so
  * it arrives as WebP/AVIF at the width the column needs and never shifts the text below it.
  * It still shows at its own size, capped by the column, exactly like the plain tag.
  */
 function imgTag(href: string, alt: string, dims?: ImageDims) {
   const d = dims?.[href];
-  if (!d || !href.startsWith("/") || /\.(gif|svg)(\?|$)/i.test(href)) {
+  if (!d || !(href.startsWith("/") || BLOB_HOST.test(href)) || /\.(gif|svg)(\?|$)/i.test(href)) {
     return `<img src="${href}" alt="${alt}" loading="lazy" decoding="async" />`;
   }
   const url = (w: number) => `/_next/image?url=${encodeURIComponent(href)}&w=${w}&q=80`;

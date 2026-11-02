@@ -18,9 +18,9 @@ export async function POST(req: Request) {
   try {
     const { collection, ids } = body.parse(await readJson(req));
     const t = COLLECTIONS[collection].table;
-    await db.transaction(async (tx) => {
-      for (const [i, id] of ids.entries()) await tx.update(t).set({ sort: i + 1 }).where(eq(t.id, id));
-    });
+    // One batch = one round trip to Turso, applied atomically.
+    const updates = ids.map((id, i) => db.update(t).set({ sort: i + 1 }).where(eq(t.id, id)));
+    await db.batch(updates as [(typeof updates)[number], ...typeof updates]);
     refreshSite();
     return NextResponse.json({ ordered: ids.length });
   } catch (e) {

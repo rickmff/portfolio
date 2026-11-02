@@ -6,7 +6,9 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgres://portfolio:${POSTGRES_PASSWORD}@db:5432/portfolio
+      # Turso when set; otherwise a SQLite file in the data volume.
+      TURSO_DATABASE_URL: ${TURSO_DATABASE_URL:-}
+      TURSO_AUTH_TOKEN: ${TURSO_AUTH_TOKEN:-}
       SESSION_SECRET: ${SESSION_SECRET}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
@@ -17,26 +19,12 @@ services:
       SITE_URL: https://${DOMAIN}
     volumes:
       - uploads:/app/uploads
+      - data:/app/data
     expose:
       - "3000"
-    depends_on:
-      db:
-        condition: service_healthy
-
-  db:
-    image: postgres:16-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: portfolio
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: portfolio
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U portfolio"]
-      interval: 5s
-      retries: 10
 
 volumes:
+  # Old Postgres data, kept so `docker compose down` never drops it; unused since the move to Turso.
   pgdata:
+  data:
   uploads:
