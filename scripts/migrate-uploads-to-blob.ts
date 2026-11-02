@@ -2,16 +2,16 @@
 // volume to Vercel Blob (as media/<name>, same name as before), then rewrites every
 // "/media/<name>" (and "https://<old-domain>/media/<name>") the database holds to the Blob URL.
 //
-//   BLOB_READ_WRITE_TOKEN=… DATABASE_URL=… pnpm migrate:blob ./uploads-vps --dry-run
-//   BLOB_READ_WRITE_TOKEN=… DATABASE_URL=… pnpm migrate:blob ./uploads-vps
+//   BLOB_READ_WRITE_TOKEN=… TURSO_DATABASE_URL=… TURSO_AUTH_TOKEN=… pnpm migrate:blob ./uploads-vps --dry-run
+//   BLOB_READ_WRITE_TOKEN=… TURSO_DATABASE_URL=… TURSO_AUTH_TOKEN=… pnpm migrate:blob ./uploads-vps
 //   (--old-host=example.com if absolute links point at another domain; default rickmff.com)
 //
 // Safe to re-run: files already in Blob are skipped and rewritten rows no longer match.
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { head, put } from "@vercel/blob";
-import postgres from "postgres";
-import { databaseUrl } from "../src/db/url.mjs";
+import { createClient } from "@libsql/client";
+import { dbConfig } from "../src/db/url.mjs";
 
 const MIME: Record<string, string> = {
   ".jpg": "image/jpeg",
@@ -32,8 +32,6 @@ async function main() {
   const dir = args.find((a) => !a.startsWith("--"));
   if (!dir) throw new Error("Usage: pnpm migrate:blob <uploads dir> [--dry-run]");
   if (!process.env.BLOB_READ_WRITE_TOKEN) throw new Error("BLOB_READ_WRITE_TOKEN is not set");
-  const url = databaseUrl({ direct: true });
-  if (!url) throw new Error("DATABASE_URL is not set");
 
   // Matches what the /media route serves: <uuid-ish>.<ext>
   const NAME = /^[a-f0-9-]+\.[a-z0-9]+$/i;
@@ -66,32 +64,37 @@ async function main() {
     console.log(dryRun ? "dry run: nothing uploaded yet, so the Blob URL is unknown; rewrite counts below are matches only" : "no files, nothing to rewrite");
   }
 
-  // Every text-like column of every table in public: covers, previews, banners, Markdown bodies,
-  // settings values and the jsonb translations.
-  const sql = postgres(url, { max: 1, prepare: false });
-  const cols = await sql<{ table_name: string; column_name: string; data_type: string }[]>`
-    select table_name, column_name, data_type from information_schema.columns
-    where table_schema = 'public' and data_type in ('text', 'character varying', 'jsonb')`;
+  // Every text column of every table: covers, previews, banners, Markdown bodies, settings
+  // values and the JSON translations. SQLite has no regexp_replace, so rows are rewritten here.
+  const db = createClient(dbConfig());
+  const tables = (await db.execute(`select name from sqlite_master where type = 'table' and name not like 'sqlite_%' and name not like '\\_\\_%' escape '\\'`)).rows.map((r) => String(r.name));
 
   // "/media/x" at the start of a value or after a non-URL character (quote, paren, space…),
   // optionally prefixed by the old site's own origin (--old-host, default rickmff.com).
   const oldHost = (args.find((a) => a.startsWith("--old-host="))?.split("=")[1] ?? "rickmff.com").replace(/[.]/g, "\\.");
-  const pattern = String.raw`(^|[^A-Za-z0-9._~:/-])(https?://(www\.)?` + oldHost + String.raw`)?/media/([A-Fa-f0-9-]+\.[A-Za-z0-9]+)`;
+  const pattern = new RegExp(String.raw`(^|[^A-Za-z0-9._~:/-])(https?://(www\.)?` + oldHost + String.raw`)?/media/([A-Fa-f0-9-]+\.[A-Za-z0-9]+)`, "g");
   let rows = 0;
-  for (const { table_name: t, column_name: c, data_type: type } of cols) {
-    const asText = type === "jsonb" ? sql`${sql(c)}::text` : sql`${sql(c)}`;
-    const [{ n }] = await sql<{ n: number }[]>`
-      select count(*)::int as n from ${sql(t)} where ${asText} ~ ${pattern}`;
-    if (!n) continue;
-    console.log(`  ${t}.${c}: ${n} rows`);
-    rows += n;
-    if (dryRun || !base) continue;
-    const replaced = sql`regexp_replace(${asText}, ${pattern}, ${"\\1" + base + "media/\\4"}, 'g')`;
-    await sql`update ${sql(t)} set ${sql(c)} = ${type === "jsonb" ? sql`${replaced}::jsonb` : replaced}
-      where ${asText} ~ ${pattern}`;
+  for (const t of tables) {
+    const cols = (await db.execute(`pragma table_info("${t}")`)).rows
+      .filter((r) => /^text/i.test(String(r.type)))
+      .map((r) => String(r.name));
+    for (const c of cols) {
+      const found = (await db.execute(`select rowid as rid, "${c}" as v from "${t}" where "${c}" like '%/media/%'`)).rows;
+      const changes = found
+        .map((r) => ({ rid: r.rid, before: String(r.v), after: String(r.v).replace(pattern, `$1${base ?? ""}media/$4`) }))
+        .filter((r) => r.before.replace(pattern, "") !== r.before);
+      if (!changes.length) continue;
+      console.log(`  ${t}.${c}: ${changes.length} rows`);
+      rows += changes.length;
+      if (dryRun || !base) continue;
+      await db.batch(
+        changes.map((r) => ({ sql: `update "${t}" set "${c}" = ? where rowid = ?`, args: [r.after, r.rid] })),
+        "write",
+      );
+    }
   }
   console.log(`${dryRun ? "would rewrite" : "rewrote"} ${rows} rows`);
-  await sql.end();
+  db.close();
 }
 
 main().catch((err) => {

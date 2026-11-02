@@ -1,10 +1,11 @@
 import { defineConfig } from "drizzle-kit";
+import { dbConfig } from "./src/db/url.mjs";
+
+const { url, authToken } = dbConfig();
 
 export default defineConfig({
   schema: "./src/db/schema.ts",
   out: "./drizzle",
-  dialect: "postgresql",
-  dbCredentials: {
-    url: process.env.DATABASE_URL ?? "postgres://portfolio:portfolio@localhost:5432/portfolio",
-  },
+  dialect: "turso",
+  dbCredentials: { url, authToken },
 });

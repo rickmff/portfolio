@@ -1,103 +1,12 @@
 {
   "version": "7",
-  "dialect": "postgresql",
+  "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
-      "version": "7",
-      "when": 1792702333212,
+      "version": "6",
+      "when": 1793623358276,
       "tag": "0000_init",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1792704042389,
-      "tag": "0001_project_preview",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1792704348514,
-      "tag": "0002_book_statuses",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1792713699411,
-      "tag": "0003_arte_da_guerra_spine",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1792727358565,
-      "tag": "0004_book_pages",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1792758981791,
-      "tag": "0005_drop_certificates",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1792759074902,
-      "tag": "0006_harness",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1792763071082,
-      "tag": "0007_post_banner",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1792763532660,
-      "tag": "0008_waitlist",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1792764896138,
-      "tag": "0009_project_mobile",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "7",
-      "when": 1792765432975,
-      "tag": "0010_translations",
-      "breakpoints": true
-    },
-    {
-      "idx": 11,
-      "version": "7",
-      "when": 1792800000000,
-      "tag": "0011_project_showcase",
-      "breakpoints": true
-    },
-    {
-      "idx": 12,
-      "version": "7",
-      "when": 1792900000000,
-      "tag": "0012_showcase_mobile_at",
-      "breakpoints": true
-    },
-    {
-      "idx": 13,
-      "version": "7",
-      "when": 1793000000000,
-      "tag": "0013_book_quote",
       "breakpoints": true
     }
   ]

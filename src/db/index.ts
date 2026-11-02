@@ -1,20 +1,14 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { createClient, type Client } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./schema";
-import { databaseUrl } from "./url.mjs";
+import { dbConfig } from "./url.mjs";
 
-const globalForDb = globalThis as unknown as { pg?: ReturnType<typeof postgres> };
+const globalForDb = globalThis as unknown as { libsql?: Client };
 
-const client =
-  globalForDb.pg ??
-  postgres(databaseUrl() ?? "postgres://portfolio:portfolio@localhost:5432/portfolio", {
-    // Serverless functions each hold their own pool; keep it tiny there.
-    max: process.env.VERCEL ? 1 : 10,
-    // Transaction-mode poolers (Supabase, Neon pooled) don't support prepared statements.
-    prepare: false,
-  });
+// Remote Turso URLs talk HTTP, so there is no pool to size: one client per process is enough.
+const client = globalForDb.libsql ?? createClient(dbConfig());
 
-if (process.env.NODE_ENV !== "production") globalForDb.pg = client;
+if (process.env.NODE_ENV !== "production") globalForDb.libsql = client;
 
 export const db = drizzle(client, { schema });
 export { schema };

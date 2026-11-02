@@ -204,11 +204,9 @@ export async function reorderBooks(ids: number[]): Promise<FormState> {
   await requireAdmin();
   try {
     const order = z.array(z.number().int().positive()).parse(ids);
-    await db.transaction(async (tx) => {
-      for (const [i, id] of order.entries()) {
-        await tx.update(books).set({ sort: i + 1 }).where(eq(books.id, id));
-      }
-    });
+    // One batch = one round trip to Turso, applied atomically.
+    const updates = order.map((id, i) => db.update(books).set({ sort: i + 1 }).where(eq(books.id, id)));
+    if (updates.length) await db.batch(updates as [(typeof updates)[number], ...typeof updates]);
   } catch (e) {
     return fail(e);
   }
