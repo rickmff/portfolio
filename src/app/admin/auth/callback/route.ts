@@ -1,12 +1,12 @@
 import { createRemoteJWKSet, jwtVerify } from "jose";
 import { NextResponse, type NextRequest } from "next/server";
-import { OAUTH_COOKIE, googleConfigured, googleRedirectUri } from "@/lib/auth";
+import { OAUTH_COOKIE, googleConfigured, googleRedirectUri, publicOrigin } from "@/lib/auth";
 import { SESSION_COOKIE, adminEmail, createSessionToken, readOAuthState, sessionCookieOptions } from "@/lib/session";
 
 const GOOGLE_KEYS = createRemoteJWKSet(new URL("https://www.googleapis.com/oauth2/v3/certs"));
 
 function fail(req: NextRequest, error: string) {
-  const res = NextResponse.redirect(new URL(`/admin/login?error=${error}`, process.env.SITE_URL ?? req.url));
+  const res = NextResponse.redirect(new URL(`/admin/login?error=${error}`, publicOrigin()));
   res.cookies.delete({ name: OAUTH_COOKIE, path: "/admin/auth" });
   return res;
 }
@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
   }
   if (email !== adminEmail()) return fail(req, "account");
 
-  const res = NextResponse.redirect(new URL(saved.next, process.env.SITE_URL ?? req.url));
+  const res = NextResponse.redirect(new URL(saved.next, publicOrigin()));
   res.cookies.delete({ name: OAUTH_COOKIE, path: "/admin/auth" });
   res.cookies.set(SESSION_COOKIE, await createSessionToken(email), sessionCookieOptions);
   return res;
