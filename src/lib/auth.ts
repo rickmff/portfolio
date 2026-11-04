@@ -20,7 +20,7 @@ export function googleConfigured() {
 }
 
 /**
- * The public origin for auth redirects. It comes from env, not the request (Caddy proxies).
+ * The public origin for auth redirects. It comes from env, not the request host.
  * Same fallback as SITE_URL in seo.ts: on Vercel without SITE_URL, the production domain.
  */
 export function publicOrigin() {

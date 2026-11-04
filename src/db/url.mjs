@@ -1,5 +1,5 @@
 // Resolves the libSQL connection: Turso in production (TURSO_DATABASE_URL + TURSO_AUTH_TOKEN,
-// the names the Turso Vercel integration injects) or a local SQLite file for dev and Docker
+// the names the Turso Vercel integration injects) or a local SQLite file for dev
 // (DATABASE_URL=file:./data/portfolio.db). A leftover postgres:// DATABASE_URL is ignored so
 // an old .env doesn't break the switch.
 export function dbConfig() {

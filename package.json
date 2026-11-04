@@ -16,7 +16,6 @@
     "import:books": "tsx scripts/import-books.ts",
     "migrate:blob": "tsx scripts/migrate-uploads-to-blob.ts",
     "vercel-build": "node scripts/migrate.mjs && tsx scripts/seed.ts && next build",
-    "build:seed": "esbuild scripts/seed.ts scripts/import-contentful.ts --bundle --platform=node --target=node22 --format=esm --external:@libsql/client --outdir=scripts --out-extension:.js=.bundle.mjs --log-level=warning --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\"",
     "migrate:turso": "tsx scripts/migrate-pg-to-turso.ts"
   },
   "dependencies": {
@@ -46,7 +45,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.11",
-    "esbuild": "^0.28.2",
     "eslint": "^9",
     "eslint-config-next": "15.5.28",
     "playwright": "1.56.1",
