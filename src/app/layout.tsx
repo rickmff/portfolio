@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { getLocale } from "@/lib/i18n/server";
 import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
@@ -24,7 +25,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         {/* seasonal:natal */}
         <NatalGate />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
