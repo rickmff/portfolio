@@ -19,9 +19,18 @@ export function googleConfigured() {
   );
 }
 
-/** Google must send the user back to exactly this URL, so it comes from SITE_URL, not the request (Caddy proxies). */
+/**
+ * The public origin for auth redirects. It comes from env, not the request (Caddy proxies).
+ * Same fallback as SITE_URL in seo.ts: on Vercel without SITE_URL, the production domain.
+ */
+export function publicOrigin() {
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  return (process.env.SITE_URL || vercel || "http://localhost:3000").replace(/\/$/, "");
+}
+
+/** Google must send the user back to exactly this URL (it has to be listed in the OAuth client). */
 export function googleRedirectUri() {
-  return `${(process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, "")}/admin/auth/callback`;
+  return `${publicOrigin()}/admin/auth/callback`;
 }
 
 export const OAUTH_COOKIE = "pf_oauth";
