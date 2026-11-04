@@ -8,6 +8,7 @@ import { ScrollCue } from "@/components/ScrollCue";
 import { HideAtTop } from "@/components/HideAtTop";
 import { WritingList } from "@/components/WritingList";
 import { GitHubActivity } from "@/components/GitHubActivity";
+import { githubFlag } from "@/flags";
 import { Suspense } from "react";
 import { fillShelf, readAndReading, toShelfBook } from "@/lib/books";
 import { getBooks, getPublishedPosts, getPublishedProjects, getSettings } from "@/lib/data";
@@ -24,12 +25,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const [settings, projects, books, posts, t] = await Promise.all([
+  const [settings, projects, books, posts, t, showGithub] = await Promise.all([
     getSettings(),
     getPublishedProjects(),
     getBooks(),
     getPublishedPosts(6),
     getDict(),
+    githubFlag(),
   ]);
 
   // The latest books, as many as fill one shelf: the current book first, then the most recently read.
@@ -97,7 +99,7 @@ export default async function Home() {
         </p>
       </section>
 
-      {settings.github ? (
+      {showGithub && settings.github ? (
         <Suspense fallback={null}>
           <GitHubActivity url={settings.github} t={t} />
         </Suspense>

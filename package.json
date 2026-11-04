@@ -20,11 +20,13 @@
     "migrate:turso": "tsx scripts/migrate-pg-to-turso.ts"
   },
   "dependencies": {
+    "@flags-sdk/vercel": "^1.6.0",
     "@libsql/client": "^0.18.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.8.2",
     "drizzle-orm": "^0.45.4",
     "drizzle-zod": "0.8.3",
+    "flags": "^4.4.0",
     "highlight.js": "^11.12.0",
     "jose": "^6.2.13",
     "marked": "^18.1.1",

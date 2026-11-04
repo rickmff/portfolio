@@ -46,6 +46,6 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Pages only: not Next's assets, the API, uploads, feeds, metadata routes or files with an extension.
-  matcher: ["/((?!_next/|api/|media/|og$|rss\\.xml|sitemap\\.xml|robots\\.txt|llms(?:-full)?\\.txt|.*\\.[a-z0-9]+$).*)"],
+  // Pages only: not Next's assets, /.well-known (Flags Explorer), the API, uploads, feeds, metadata routes or files with an extension.
+  matcher: ["/((?!_next/|\\.well-known/|api/|media/|og$|rss\\.xml|sitemap\\.xml|robots\\.txt|llms(?:-full)?\\.txt|.*\\.[a-z0-9]+$).*)"],
 };
