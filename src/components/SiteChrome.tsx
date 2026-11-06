@@ -40,7 +40,6 @@ export function SiteFooter({ settings, harness = false, t }: { settings: SiteSet
         <Link href="/blog" className="link-muted">{t.nav.writing}</Link>
         {harness ? <Link href="/harness" className="link-muted">{t.nav.harness}</Link> : null}
         {settings.about ? <Link href="/about" className="link-muted">{t.nav.about}</Link> : null}
-        {settings.cv ? <a href={settings.cv} download className="link-muted">{t.nav.cv}</a> : null}
       </nav>
       <div className="footer-social">
         {settings.github ? <a href={settings.github} className="link-muted">GitHub</a> : null}

@@ -63,14 +63,6 @@ export default async function AboutPage() {
       <header className="wrap page-title reveal">
         <p className="eyebrow" style={{ margin: 0 }}>{t.about.eyebrow}</p>
         <h1>{settings.name}</h1>
-        {settings.cv && (
-          <a className="cv-button" href={settings.cv} download={`${settings.name.replace(/\s+/g, "-")}-CV.pdf`}>
-            {t.about.cv}
-            <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
-              <path d="M8 2v9m0 0L4.5 7.5M8 11l3.5-3.5M3 14h10" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
-        )}
       </header>
       <div className="wrap">
         <div className="prose about">
