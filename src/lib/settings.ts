@@ -25,7 +25,7 @@ export const SETTING_KEYS = {
   linkedin: { label: "LinkedIn URL", fallback: "https://www.linkedin.com/in/rickmff/" },
   twitter: { label: "X / Twitter URL", fallback: "https://twitter.com/rickmff" },
   discord: { label: "Discord invite URL", fallback: "" },
-  cv: { label: "CV (PDF link, shown as a download button on About; upload a file below to replace it)", fallback: "" },
+  cv: { label: "CV (PDF link, not shown on the public site; upload a file below to replace it)", fallback: "" },
   about: { label: "About page (Markdown)", fallback: "" },
 } as const;
 
