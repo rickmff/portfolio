@@ -2,8 +2,8 @@
 // volume to Vercel Blob (as media/<name>, same name as before), then rewrites every
 // "/media/<name>" (and "https://<old-domain>/media/<name>") the database holds to the Blob URL.
 //
-//   BLOB_READ_WRITE_TOKEN=… TURSO_DATABASE_URL=… TURSO_AUTH_TOKEN=… pnpm migrate:blob ./uploads-vps --dry-run
-//   BLOB_READ_WRITE_TOKEN=… TURSO_DATABASE_URL=… TURSO_AUTH_TOKEN=… pnpm migrate:blob ./uploads-vps
+//   BLOB_READ_WRITE_TOKEN=… (or BLOB_STORE_ID + VERCEL_OIDC_TOKEN) TURSO_DATABASE_URL=… TURSO_AUTH_TOKEN=… pnpm migrate:blob ./uploads-vps --dry-run
+//   BLOB_READ_WRITE_TOKEN=… (or BLOB_STORE_ID + VERCEL_OIDC_TOKEN) TURSO_DATABASE_URL=… TURSO_AUTH_TOKEN=… pnpm migrate:blob ./uploads-vps
 //   (--old-host=example.com if absolute links point at another domain; default rickmff.com)
 //
 // Safe to re-run: files already in Blob are skipped and rewritten rows no longer match.
@@ -11,6 +11,7 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { head, put } from "@vercel/blob";
 import { createClient } from "@libsql/client";
+import { blobConfigured } from "../src/lib/blob.mjs";
 import { dbConfig } from "../src/db/url.mjs";
 
 const MIME: Record<string, string> = {
@@ -31,7 +32,7 @@ async function main() {
   const dryRun = args.includes("--dry-run");
   const dir = args.find((a) => !a.startsWith("--"));
   if (!dir) throw new Error("Usage: pnpm migrate:blob <uploads dir> [--dry-run]");
-  if (!process.env.BLOB_READ_WRITE_TOKEN) throw new Error("BLOB_READ_WRITE_TOKEN is not set");
+  if (!blobConfigured()) throw new Error("Set BLOB_READ_WRITE_TOKEN, or BLOB_STORE_ID with an OIDC token (vercel env pull)");
 
   // Matches what the /media route serves: <uuid-ish>.<ext>
   const NAME = /^[a-f0-9-]+\.[a-z0-9]+$/i;

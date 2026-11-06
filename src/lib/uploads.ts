@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { put } from "@vercel/blob";
+import { blobConfigured } from "./blob.mjs";
 
 export const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(process.cwd(), "uploads");
 
@@ -33,7 +34,7 @@ export async function saveUpload(
   if (file.size > maxMb * 1024 * 1024) throw new Error(`Files must be ${maxMb} MB or smaller.`);
   const name = `${randomUUID()}${ext}`;
   // On Vercel the disk is ephemeral, so files go to Vercel Blob when a store is connected.
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  if (blobConfigured()) {
     const blob = await put(`media/${name}`, file, { access: "public", contentType: MIME[ext] });
     return blob.url;
   }
