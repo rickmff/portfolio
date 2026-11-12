@@ -1,13 +1,14 @@
 /* Block editor for posts: the site's own typography (.prose), with Notion-style editing chrome. */
 
+/* Colours come from the backoffice theme tokens in src/app/admin/admin.css (light and dark). */
 .nb-shell {
-  --nb-hover: rgba(55, 53, 47, 0.08);
+  --nb-hover: rgba(var(--nb-rgb), 0.08);
   --nb-select: rgba(35, 131, 226, 0.14);
   --nb-blue: #2383e2;
-  --nb-pop-shadow: 0 0 0 1px rgba(15, 15, 15, 0.05), 0 3px 6px rgba(15, 15, 15, 0.1), 0 9px 24px rgba(15, 15, 15, 0.2);
   position: relative;
-  background: #fff;
-  border: 1px solid #d8d8d4;
+  color: var(--adm-text);
+  background: var(--adm-bg);
+  border: 1px solid var(--adm-line-strong);
   border-radius: 8px;
   padding: 48px 24px 120px 72px;
   min-height: 420px;
@@ -40,7 +41,7 @@
   float: left;
   height: 0;
   pointer-events: none;
-  color: rgba(55, 53, 47, 0.35);
+  color: rgba(var(--nb-rgb), 0.35);
 }
 
 /* Selected blocks get Notion's blue wash. */
@@ -81,7 +82,7 @@
   border: 0;
   border-radius: 4px;
   background: transparent;
-  color: rgba(55, 53, 47, 0.35);
+  color: rgba(var(--nb-rgb), 0.35);
   fill: currentColor;
   cursor: pointer;
 }
@@ -91,7 +92,7 @@
 }
 .nb-handle > button:hover {
   background: var(--nb-hover);
-  color: rgba(55, 53, 47, 0.65);
+  color: rgba(var(--nb-rgb), 0.65);
 }
 @keyframes nb-fade {
   from {
@@ -101,12 +102,12 @@
 
 /* ------------ popovers ------------ */
 .nb-pop {
-  background: #fff;
+  background: var(--adm-pop);
   border-radius: 8px;
   box-shadow: var(--nb-pop-shadow);
   padding: 6px;
   font-size: 14px;
-  color: rgb(55, 53, 47);
+  color: var(--adm-text);
   z-index: 50;
 }
 .nb-pop button {
@@ -131,7 +132,7 @@
 .nb-check {
   margin-left: auto;
   font: 12px var(--font-geist-mono), monospace;
-  color: rgba(55, 53, 47, 0.45);
+  color: rgba(var(--nb-rgb), 0.45);
   background: none;
   border: 0;
   box-shadow: none;
@@ -143,7 +144,7 @@
   padding: 8px 8px 4px;
   font-size: 12px;
   font-weight: 500;
-  color: rgba(55, 53, 47, 0.55);
+  color: rgba(var(--nb-rgb), 0.55);
 }
 .nb-slash {
   position: fixed;
@@ -160,9 +161,9 @@
   place-items: center;
   width: 46px;
   height: 46px;
-  border: 1px solid rgba(55, 53, 47, 0.12);
+  border: 1px solid rgba(var(--nb-rgb), 0.12);
   border-radius: 4px;
-  background: #fff;
+  background: var(--adm-bg);
   font-size: 16px;
   font-weight: 500;
 }
@@ -183,14 +184,14 @@
 }
 .nb-slash-text small {
   font-size: 12px;
-  color: rgba(55, 53, 47, 0.6);
+  color: rgba(var(--nb-rgb), 0.6);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .nb-slash-empty {
   padding: 8px;
-  color: rgba(55, 53, 47, 0.5);
+  color: rgba(var(--nb-rgb), 0.5);
 }
 
 .nb-block-menu {
@@ -213,7 +214,7 @@
   align-items: center;
   height: 34px;
   padding: 0 4px;
-  background: #fff;
+  background: var(--adm-pop);
   border-radius: 6px;
   box-shadow: var(--nb-pop-shadow);
   font-size: 14px;
@@ -226,7 +227,7 @@
   border: 0;
   border-radius: 4px;
   background: transparent;
-  color: rgb(55, 53, 47);
+  color: var(--adm-text);
   cursor: pointer;
   white-space: nowrap;
 }
@@ -252,7 +253,7 @@
   width: 1px;
   align-self: stretch;
   margin: 6px 2px;
-  background: rgba(55, 53, 47, 0.12);
+  background: rgba(var(--nb-rgb), 0.12);
 }
 .nb-toolbar .nb-turn {
   margin-top: 6px;
@@ -268,9 +269,10 @@
   flex: 1;
   font: inherit;
   padding: 6px 8px;
-  border: 1px solid rgba(55, 53, 47, 0.16);
+  border: 1px solid rgba(var(--nb-rgb), 0.16);
   border-radius: 4px;
-  background: rgba(242, 241, 238, 0.6);
+  background: var(--adm-field);
+  color: inherit;
   outline: none;
 }
 .nb-link input:focus {
@@ -321,7 +323,7 @@
   margin: 0;
 }
 .nb-doc ul[data-type="taskList"] li[data-checked="true"] > div {
-  color: rgba(55, 53, 47, 0.45);
+  color: rgba(var(--nb-rgb), 0.45);
   text-decoration: line-through;
 }
 
@@ -342,7 +344,7 @@
   border-radius: 4px;
   background: transparent;
   cursor: pointer;
-  color: rgb(55, 53, 47);
+  color: var(--adm-text);
 }
 .nb-doc div[data-type="details"] > button::before {
   content: "";
@@ -384,20 +386,20 @@
   margin: 1em 0;
   padding: 16px 16px 16px 12px;
   border-radius: 6px;
-  background: rgb(241, 241, 239);
+  background: var(--nb-callout);
   font-size: 15px;
 }
 .nb-doc .nb-callout[data-callout="tip"] {
-  background: rgb(237, 243, 236);
+  background: var(--nb-callout-tip);
 }
 .nb-doc .nb-callout[data-callout="important"] {
-  background: rgb(244, 240, 247);
+  background: var(--nb-callout-important);
 }
 .nb-doc .nb-callout[data-callout="warning"] {
-  background: rgb(251, 243, 219);
+  background: var(--nb-callout-warning);
 }
 .nb-doc .nb-callout[data-callout="caution"] {
-  background: rgb(253, 235, 236);
+  background: var(--nb-callout-caution);
 }
 .nb-callout-icon {
   position: relative;
@@ -439,7 +441,7 @@
   position: relative;
   margin: 1.2em 0;
   border-radius: 6px;
-  background: rgb(247, 246, 243);
+  background: var(--adm-code);
 }
 .nb-code-bar {
   position: absolute;
@@ -458,7 +460,7 @@
   border-radius: 4px;
   padding: 2px 6px;
   background: transparent;
-  color: rgba(55, 53, 47, 0.65);
+  color: rgba(var(--nb-rgb), 0.65);
   outline: none;
 }
 .nb-code-bar input:hover,
@@ -527,7 +529,7 @@
   outline: none;
 }
 .nb-image figcaption input::placeholder {
-  color: rgba(55, 53, 47, 0.3);
+  color: rgba(var(--nb-rgb), 0.3);
 }
 .nb-image figcaption .nb-image-alt {
   font-size: 12px;
@@ -542,9 +544,9 @@
 .nb-doc .nb-raw {
   position: relative;
   margin: 1em 0;
-  border: 1px dashed rgba(55, 53, 47, 0.2);
+  border: 1px dashed rgba(var(--nb-rgb), 0.2);
   border-radius: 6px;
-  background: rgb(251, 251, 250);
+  background: var(--adm-hover);
 }
 .nb-raw-label {
   position: absolute;
@@ -554,8 +556,8 @@
   font: 10px var(--font-geist-mono), monospace;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(55, 53, 47, 0.45);
-  background: #fff;
+  color: rgba(var(--nb-rgb), 0.45);
+  background: var(--adm-bg);
 }
 .nb-raw textarea {
   display: block;
@@ -567,7 +569,7 @@
   border: 0;
   background: transparent;
   font: 13px/1.55 var(--font-geist-mono), monospace;
-  color: rgb(55, 53, 47);
+  color: var(--adm-text);
   outline: none;
 }
 .nb-doc .nb-raw.is-selected {
@@ -575,13 +577,13 @@
 }
 .nb-doc .nb-raw-inline {
   font: 0.85em var(--font-geist-mono), monospace;
-  color: #a35d00;
+  color: var(--adm-raw-inline);
 }
 .nb-doc .nb-footnote {
   font-size: 0.7em;
   padding: 0 3px;
   border-radius: 3px;
-  background: rgba(55, 53, 47, 0.08);
+  background: rgba(var(--nb-rgb), 0.08);
   color: var(--muted);
 }
 
@@ -597,14 +599,14 @@
 }
 .nb-doc th,
 .nb-doc td {
-  border: 1px solid rgb(233, 233, 231);
+  border: 1px solid var(--adm-line-strong);
   padding: 7px 9px;
   vertical-align: top;
   min-width: 60px;
   position: relative;
 }
 .nb-doc th {
-  background: rgb(247, 246, 243);
+  background: var(--adm-code);
   font-weight: 500;
   text-align: left;
 }
