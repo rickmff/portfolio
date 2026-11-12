@@ -89,7 +89,7 @@ export function Row({ children }: { children: React.ReactNode }) {
   return <div className="adm-row">{children}</div>;
 }
 
-type TrField = { name: string; label: string; rows?: number; markdown?: boolean };
+type TrField = { name: string; label: string; rows?: number; markdown?: boolean; blocks?: boolean };
 const LANGS = [
   { code: "en", label: "English" },
   { code: "pt", label: "Português" },
@@ -122,6 +122,7 @@ export function TranslationFields({
                   name={`tr.${l.code}.${f.name}`}
                   label={`${f.label} (${l.label})`}
                   defaultValue={value?.[l.code]?.[f.name] ?? ""}
+                  blocks={f.blocks}
                 />
               ) : (
                 <Area

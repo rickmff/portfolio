@@ -36,13 +36,13 @@ export default async function EditPost({ params }: { params: Promise<{ id: strin
         </Row>
         <Area name="excerpt" label="Excerpt" defaultValue={p?.excerpt} rows={2} hint="Used in RSS and link previews." />
         <ImageField label="Banner (wide, about 2:1; also shown when hovering the post on the blog list)" current={p?.bannerUrl} />
-        <MarkdownField name="body" label="Body" defaultValue={p?.body} />
+        <MarkdownField name="body" label="Body" defaultValue={p?.body} blocks />
         <TranslationFields
           value={p?.translations}
           fields={[
             { name: "title", label: "Title" },
             { name: "excerpt", label: "Excerpt", rows: 2 },
-            { name: "body", label: "Body", markdown: true },
+            { name: "body", label: "Body", markdown: true, blocks: true },
           ]}
         />
         <Row>

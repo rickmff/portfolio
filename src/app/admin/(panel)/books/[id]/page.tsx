@@ -57,7 +57,7 @@ export default async function EditBook({ params }: { params: Promise<{ id: strin
           hint="The book's most famous line, word for word. Highlighted when the book is picked off the shelf, on the book page and on /quotes."
         />
         <Text name="quoteSource" label="Where it is" defaultValue={b?.quoteSource} hint="Optional, e.g. Act III, Scene 1 or Chapter 21." />
-        <MarkdownField name="notes" label="Reading notes (hidden until the reader clicks Reveal)" defaultValue={b?.notes ?? ""} />
+        <MarkdownField name="notes" label="Reading notes (hidden until the reader clicks Reveal)" defaultValue={b?.notes ?? ""} blocks />
         {b?.notesGenerated ? (
           <p className="adm-flag">These notes were drafted for you in your style, not written by you. Rewrite them and untick the box below.</p>
         ) : null}
@@ -69,7 +69,7 @@ export default async function EditBook({ params }: { params: Promise<{ id: strin
             { name: "synopsis", label: "Synopsis", rows: 4 },
             { name: "quote", label: "Quote", rows: 3 },
             { name: "quoteSource", label: "Where it is" },
-            { name: "notes", label: "Reading notes", markdown: true },
+            { name: "notes", label: "Reading notes", markdown: true, blocks: true },
           ]}
         />
         <Check name="notesGenerated" label="Notes are a generated draft" defaultChecked={b?.notesGenerated ?? false} />
