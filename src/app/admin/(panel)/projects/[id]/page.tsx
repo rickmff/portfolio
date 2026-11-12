@@ -1,11 +1,14 @@
 import { eq } from "drizzle-orm";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { deleteProject, saveProject } from "@/app/admin/actions";
-import { AdminForm, DeleteButton } from "@/components/admin/AdminForm";
-import { Area, Check, Color, ImageField, Row, Text, TranslationFields } from "@/components/admin/Fields";
+import { AdminForm } from "@/components/admin/AdminForm";
+import { TitleInput } from "@/components/admin/Controls";
+import { Area, Check, Color, FileField, ImageField, Props, Section, Text, TranslationFields } from "@/components/admin/Fields";
 import { MarkdownField } from "@/components/admin/MarkdownField";
 import { db, schema } from "@/db";
+
+const CLIP = "video/mp4,video/webm";
+const STILL = "image/jpeg,image/png,image/webp,image/avif";
 
 export default async function EditProject({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -13,106 +16,88 @@ export default async function EditProject({ params }: { params: Promise<{ id: st
   const [p] = isNew ? [undefined] : await db.select().from(schema.projects).where(eq(schema.projects.id, Number(id)));
   if (!isNew && !p) notFound();
   return (
-    <>
-      <header className="adm-head">
-        <h1>{p ? p.title : "New project"}</h1>
-        <div className="adm-head-actions">
-          {p ? <Link href={`/work/${p.slug}`} target="_blank" className="adm-btn">View ↗</Link> : null}
-          {p ? <DeleteButton action={deleteProject.bind(null, p.id)} /> : null}
-        </div>
-      </header>
-      <AdminForm action={saveProject}>
-        {p ? <input type="hidden" name="id" value={p.id} /> : null}
-        <Row>
-          <Text name="title" label="Title" defaultValue={p?.title} required />
-          <Text name="slug" label="Slug" defaultValue={p?.slug} hint="Leave empty to generate from the title." />
-        </Row>
-        <Area name="summary" label="Summary" defaultValue={p?.summary} rows={2} />
-        <Row>
-          <Text name="year" label="Year" type="number" defaultValue={p?.year ?? new Date().getFullYear()} required />
-          <Text name="stack" label="Stack" defaultValue={p?.stack} placeholder="Next.js · Postgres" />
-          <Text name="sort" label="Order" type="number" defaultValue={p?.sort ?? 0} hint="Lower shows first." />
-        </Row>
-        <Row>
-          <Text name="liveUrl" label="Live URL" type="url" defaultValue={p?.liveUrl} />
-          <Text name="repoUrl" label="Repository URL" type="url" defaultValue={p?.repoUrl} />
-        </Row>
-        <Row>
-          <ImageField label="Cover image (4:5 works best)" current={p?.coverUrl} />
+    <AdminForm
+      action={saveProject}
+      crumb={{ href: "/admin/projects", label: "Projects" }}
+      title={p?.title ?? "New project"}
+      viewHref={p ? `/work/${p.slug}` : undefined}
+      deleteAction={p ? deleteProject.bind(null, p.id) : undefined}
+    >
+      {p ? <input type="hidden" name="id" value={p.id} /> : null}
+      <TitleInput name="title" defaultValue={p?.title} placeholder="Untitled project" required />
+      <Props>
+        <Check name="published" label="Published" icon="globe" defaultChecked={p?.published ?? true} />
+        <Area name="summary" label="Summary" defaultValue={p?.summary} />
+        <Text name="year" label="Year" type="number" icon="calendar" defaultValue={p?.year ?? new Date().getFullYear()} required />
+        <Text name="stack" label="Stack" icon="layers" defaultValue={p?.stack} placeholder="Next.js · Postgres" />
+        <Text name="liveUrl" label="Live URL" type="url" defaultValue={p?.liveUrl} placeholder="https://" />
+        <Text name="repoUrl" label="Repository" type="url" defaultValue={p?.repoUrl} placeholder="https://github.com/…" />
+        <Text name="sort" label="Order" type="number" icon="list" defaultValue={p?.sort ?? 0} hint="Lower shows first." />
+        <Text name="slug" label="Slug" icon="link" defaultValue={p?.slug} placeholder="From the title" hint="Leave empty to generate from the title." />
+      </Props>
+
+      <Section title="Card" icon="image" open={isNew} note="Cover, tint and hover clip">
+        <Props>
+          <ImageField label="Cover" current={p?.coverUrl} hint="4:5 works best." />
           <Color name="tint" label="Background tint" defaultValue={p?.tint ?? "#F1F0EB"} />
-        </Row>
-        <Row>
           <Text
             name="previewUrl"
-            label="Hover preview URL (optional)"
+            label="Hover preview URL"
+            icon="link"
             defaultValue={p?.previewUrl}
+            placeholder="Optional"
             hint="A short MP4/WebM or GIF that plays when someone hovers the card."
           />
-          <label className="adm-field">
-            <span>…or upload a clip</span>
-            <input type="file" name="preview" accept="video/mp4,video/webm,image/gif,image/webp" />
-            <small>4:5, muted, up to 40 MB. Replaces the URL.</small>
-          </label>
-        </Row>
-        <Row>
-          <div className="adm-field">
-            <span>Showcase film (16:9)</span>
-            {p?.showcaseUrl ? (
-              <>
-                <small>Current: {p.showcaseUrl}</small>
-                <label className="adm-check">
-                  <input type="checkbox" name="removeShowcase" />
-                  <span>Remove showcase</span>
-                </label>
-              </>
-            ) : null}
-            <input type="file" name="showcase" accept="video/mp4,video/webm" />
-            <small>showcase.mp4 from scripts/showcase-project.mjs (the desktop site, full frame), up to 40 MB.</small>
-          </div>
-          <label className="adm-field">
-            <span>Showcase poster</span>
-            <input type="file" name="showcasePoster" accept="image/jpeg,image/png,image/webp,image/avif" />
-            <small>The film&apos;s first frame (showcase.webp).</small>
-          </label>
-          <label className="adm-field">
-            <span>Phone part starts at (seconds, older films)</span>
-            <input type="number" name="showcaseMobileAt" step="0.01" min="0" defaultValue={p?.showcaseMobileAt ?? ""} />
-            <small>Only for older films with a phone part and no mobile clip below.</small>
-          </label>
-        </Row>
-        <Row>
-          <div className="adm-field">
-            <span>Mobile cover (9:16, mobile.webp)</span>
-            {p?.coverMobileUrl ? (
-              <div className="adm-image">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.coverMobileUrl} alt="" />
-                <label className="adm-check">
-                  <input type="checkbox" name="removeMobile" />
-                  <span>Remove mobile view</span>
-                </label>
-              </div>
-            ) : null}
-            <input type="file" name="coverMobile" accept="image/jpeg,image/png,image/webp,image/avif" />
-          </div>
-          <label className="adm-field">
-            <span>Mobile clip</span>
-            {p?.previewMobileUrl ? <small>Current: {p.previewMobileUrl}</small> : null}
-            <input type="file" name="previewMobile" accept="video/mp4,video/webm" />
-            <small>mobile.mp4, a 9:16 reel. Turns on the card&apos;s Desktop · Mobile buttons.</small>
-          </label>
-        </Row>
-        <MarkdownField name="body" label="Case study" defaultValue={p?.body} />
-        <TranslationFields
-          value={p?.translations}
-          fields={[
-            { name: "title", label: "Title" },
-            { name: "summary", label: "Summary", rows: 2 },
-            { name: "body", label: "Case study", markdown: true },
-          ]}
-        />
-        <Check name="published" label="Published" defaultChecked={p?.published ?? true} />
-      </AdminForm>
-    </>
+          <FileField name="preview" label="…or upload a clip" icon="film" accept="video/mp4,video/webm,image/gif,image/webp" hint="4:5, muted, up to 40 MB. Replaces the URL." />
+        </Props>
+      </Section>
+
+      <Section title="Showcase" icon="film" open={isNew} note="Film and mobile view on the project page">
+        <Props>
+          <FileField
+            name="showcase"
+            label="Showcase film"
+            icon="film"
+            accept={CLIP}
+            current={p?.showcaseUrl}
+            removeName="removeShowcase"
+            hint="16:9. showcase.mp4 from scripts/showcase-project.mjs (the desktop site, full frame), up to 40 MB."
+          />
+          <FileField name="showcasePoster" label="Showcase poster" icon="image" accept={STILL} current={p?.showcasePosterUrl} kind="image" hint="The film's first frame (showcase.webp)." />
+          <FileField
+            name="coverMobile"
+            label="Mobile cover"
+            icon="image"
+            accept={STILL}
+            current={p?.coverMobileUrl}
+            kind="image"
+            removeName="removeMobile"
+            removeLabel="Remove mobile view"
+            hint="9:16, mobile.webp."
+          />
+          <FileField name="previewMobile" label="Mobile clip" icon="film" accept={CLIP} current={p?.previewMobileUrl} hint="mobile.mp4, a 9:16 reel. Turns on the card's Desktop · Mobile buttons." />
+          <Text
+            name="showcaseMobileAt"
+            label="Phone part at (s)"
+            type="number"
+            icon="clock"
+            step="0.01"
+            min="0"
+            defaultValue={p?.showcaseMobileAt ?? ""}
+            hint="Only for older films with a phone part and no mobile clip."
+          />
+        </Props>
+      </Section>
+
+      <MarkdownField name="body" label="Case study" defaultValue={p?.body} />
+      <TranslationFields
+        value={p?.translations}
+        fields={[
+          { name: "title", label: "Title" },
+          { name: "summary", label: "Summary", rows: 2 },
+          { name: "body", label: "Case study", markdown: true },
+        ]}
+      />
+    </AdminForm>
   );
 }
