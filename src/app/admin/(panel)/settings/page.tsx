@@ -33,7 +33,7 @@ export default async function SettingsPage() {
           if (!TRANSLATED_SETTINGS.includes(key)) return <Text key={key} name={key} label={label} defaultValue={value(key)} />;
           if (key === "about")
             return LANGS.map((l) => (
-              <MarkdownField key={key + l.code} name={`${key}:${l.code}`} label={`${label} (${l.label})`} defaultValue={value(key, l.code)} />
+              <MarkdownField key={key + l.code} name={`${key}:${l.code}`} label={`${label} (${l.label})`} defaultValue={value(key, l.code)} blocks />
             ));
           return (
             <Row key={key}>
