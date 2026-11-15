@@ -66,7 +66,7 @@ export function AdminForm({
       onInput={(e) => {
         setDirty(true);
         const t = e.target as HTMLInputElement;
-        if (t.classList.contains("adm-title")) setLiveTitle(t.value);
+        if (t.classList.contains("adm-title") && !t.name.startsWith("tr.")) setLiveTitle(t.value);
       }}
       onChange={() => setDirty(true)}
       onSubmit={() => setDirty(false)}

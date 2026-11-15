@@ -35,11 +35,13 @@ export function TitleInput({
   defaultValue,
   placeholder = "Untitled",
   required,
+  autoFocus,
 }: {
   name: string;
   defaultValue?: string | null;
   placeholder?: string;
   required?: boolean;
+  autoFocus?: boolean;
 }) {
   return (
     <AutoTextarea
@@ -49,12 +51,13 @@ export function TitleInput({
       placeholder={placeholder}
       required={required}
       aria-label="Title"
-      autoFocus={!defaultValue}
+      autoFocus={autoFocus ?? !defaultValue}
       spellCheck
       onKeyDown={(e) => {
         if (e.key !== "Enter") return;
         e.preventDefault();
-        const next = e.currentTarget.closest("form")?.querySelector<HTMLElement>(".adm-prop-v :is(input, textarea, select)");
+        const scope = e.currentTarget.closest(".adm-tab-panel") ?? e.currentTarget.closest("form");
+        const next = scope?.querySelector<HTMLElement>(".adm-prop-v :is(input, textarea, select)");
         next?.focus();
       }}
     />
@@ -246,6 +249,64 @@ export function ThemeToggle({ initial }: { initial: Theme }) {
           <Icon name={t.icon} size={14} />
           <span className="adm-sr">{t.label}</span>
         </button>
+      ))}
+    </div>
+  );
+}
+
+/* Language tabs: the original text and its English and Portuguese versions, one page each. */
+
+export function LangTabs({
+  tabs,
+  panels,
+}: {
+  tabs: { id: string; label: string; note?: string; filled?: boolean }[];
+  panels: React.ReactNode[];
+}) {
+  const [active, setActive] = useState(tabs[0]?.id);
+  // Textareas measured while their tab was hidden have no height yet: size them on show.
+  useEffect(() => {
+    document.querySelectorAll<HTMLTextAreaElement>(`#panel-${active} textarea`).forEach((el) => {
+      if (!el.classList.contains("adm-md")) fit(el);
+    });
+  }, [active]);
+  return (
+    // A required field in a hidden tab would block saving silently: show its tab instead.
+    <div
+      className="adm-tabs-wrap"
+      onInvalidCapture={(e) => {
+        const panel = (e.target as HTMLElement).closest<HTMLElement>(".adm-tab-panel");
+        if (panel?.hidden) setActive(panel.id.replace(/^panel-/, ""));
+      }}
+    >
+      <div className="adm-tabbar" role="tablist" aria-label="Language">
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            id={`tab-${t.id}`}
+            aria-selected={active === t.id}
+            aria-controls={`panel-${t.id}`}
+            onClick={() => setActive(t.id)}
+          >
+            {t.label}
+            {t.note ? <small data-filled={t.filled || undefined}>{t.note}</small> : null}
+          </button>
+        ))}
+      </div>
+      {tabs.map((t, i) => (
+        // Hidden panels stay in the form, so every language saves together.
+        <div
+          key={t.id}
+          id={`panel-${t.id}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${t.id}`}
+          className="adm-tab-panel"
+          hidden={active !== t.id}
+        >
+          {panels[i]}
+        </div>
       ))}
     </div>
   );
