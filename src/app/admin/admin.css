@@ -45,6 +45,20 @@
   --tag-red: rgb(255, 226, 221);
   --tag-red-ink: rgb(93, 23, 21);
 
+  /* shadcn/ui tokens (date picker), mapped onto the backoffice theme. */
+  --background: var(--adm-bg);
+  --foreground: var(--adm-text);
+  --popover: var(--adm-pop);
+  --popover-foreground: var(--adm-text);
+  --primary: var(--adm-btn-bg);
+  --primary-foreground: var(--adm-btn-ink);
+  --accent: var(--adm-active);
+  --accent-foreground: var(--adm-strong);
+  --muted-foreground: var(--adm-faint);
+  --border: var(--adm-line-strong);
+  --input: var(--adm-line-strong);
+  --ring: var(--adm-accent);
+
   color-scheme: light;
   min-height: 100vh;
   min-height: 100dvh;
@@ -141,9 +155,14 @@
   font-family: var(--font-geist-mono), monospace;
   font-size: 13px;
 }
-.adm :focus-visible {
+.adm :is(a, button, summary):focus-visible {
   outline: 2px solid var(--adm-focus);
   outline-offset: 1px;
+}
+/* Text fields and the block editor show focus by their caret and background, like Notion: no ring. */
+.adm :is(input, textarea, select, [contenteditable]):focus,
+.adm :is(input, textarea, select, [contenteditable]):focus-visible {
+  outline: none;
 }
 
 /* ------------ shell and sidebar ------------ */
@@ -601,7 +620,6 @@ textarea.adm-pv {
 }
 .adm-pv:focus {
   background: var(--adm-field);
-  box-shadow: inset 0 0 0 1px var(--adm-line-strong);
 }
 .adm-pv:focus-visible {
   outline: none;
@@ -909,18 +927,24 @@ a.adm-chip:hover {
   border: 0;
   border-radius: 0;
   background: transparent;
-  padding: 4px 0 48px;
+  /* The gutter with the + and ⋮⋮ handle belongs to the editor, so the mouse can reach it. */
+  margin-left: -56px;
+  padding: 4px 0 48px 56px;
   min-height: 240px;
 }
 .adm-page .nb-doc {
   max-width: none;
 }
 .adm-page .nb-handle {
-  left: -50px;
+  left: 8px;
 }
 @media (max-width: 640px) {
+  .adm-page .nb-shell {
+    margin-left: -20px;
+    padding-left: 20px;
+  }
   .adm-page .nb-handle {
-    left: -20px;
+    left: 0;
   }
 }
 .adm-md,
@@ -1463,4 +1487,44 @@ a.adm-chip:hover {
 .adm-lookup-hits small {
   font-size: 11px;
   color: var(--adm-muted);
+}
+
+/* ------------ date picker (shadcn) as a property value ------------ */
+.adm-date {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 34px;
+}
+.adm .adm-date-trigger {
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--adm-text);
+}
+.adm .adm-date-trigger svg {
+  color: var(--adm-faint);
+}
+.adm .adm-date-trigger[data-empty] {
+  color: var(--adm-faint);
+}
+.adm .adm-date-clear {
+  width: 26px;
+  height: 26px;
+  color: var(--adm-faint);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.adm-prop:hover .adm-date-clear,
+.adm .adm-date-clear:focus-visible {
+  opacity: 1;
+}
+.adm [data-slot="popover-content"] {
+  box-shadow: var(--nb-pop-shadow);
+  border: 0;
+}
+.adm [data-slot="calendar"] select {
+  color-scheme: inherit;
 }
