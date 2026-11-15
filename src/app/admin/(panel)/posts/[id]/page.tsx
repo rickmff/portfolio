@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { deletePost, savePost } from "@/app/admin/actions";
 import { AdminForm } from "@/components/admin/AdminForm";
 import { TitleInput } from "@/components/admin/Controls";
-import { Area, Check, ImageField, Props, Text, TranslationFields } from "@/components/admin/Fields";
+import { Area, Check, DateTime, ImageField, Props, Text, TranslationFields } from "@/components/admin/Fields";
 import { MarkdownField } from "@/components/admin/MarkdownField";
 import { db, schema } from "@/db";
 
@@ -31,7 +31,7 @@ export default async function EditPost({ params }: { params: Promise<{ id: strin
       <TitleInput name="title" defaultValue={p?.title} placeholder="Untitled post" required />
       <Props>
         <Check name="published" label="Published" icon="globe" defaultChecked={p?.published ?? false} />
-        <Text name="publishedAt" label="Publish date" type="datetime-local" defaultValue={toLocalInput(p?.publishedAt)} hint="A future date schedules the post." />
+        <DateTime name="publishedAt" label="Publish date" defaultValue={toLocalInput(p?.publishedAt)} hint="A future date schedules the post." />
         <Text name="tags" label="Tags" icon="tag" defaultValue={p?.tags} placeholder="infra, product" />
         <Text name="slug" label="Slug" icon="link" defaultValue={p?.slug} placeholder="From the title" hint="Leave empty to generate from the title." />
         <Area name="excerpt" label="Excerpt" defaultValue={p?.excerpt} hint="Used in RSS and link previews." />

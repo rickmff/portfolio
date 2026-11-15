@@ -1,4 +1,5 @@
 import { AutoTextarea, ColorPick, FilePick } from "./Controls";
+import { DateTimePicker } from "./DateTimePicker";
 import { Icon, type IconName } from "./Icon";
 import { MarkdownField } from "./MarkdownField";
 
@@ -101,6 +102,16 @@ export function Color({ name, label, hint, defaultValue }: Base & { defaultValue
   return (
     <Prop label={label} icon="color" hint={hint} htmlFor={id}>
       <ColorPick id={id} name={name} defaultValue={defaultValue} />
+    </Prop>
+  );
+}
+
+/** A date and time, picked with the shadcn date picker. `defaultValue` is "YYYY-MM-DDTHH:mm" local time. */
+export function DateTime({ name, label, hint, icon = "calendar", defaultValue }: Base & { defaultValue?: string }) {
+  const id = idFor(name);
+  return (
+    <Prop label={label} icon={icon} hint={hint} htmlFor={id}>
+      <DateTimePicker id={id} name={name} defaultValue={defaultValue} />
     </Prop>
   );
 }
