@@ -21,33 +21,34 @@ export default async function EditHarnessItem({ params }: { params: Promise<{ id
       deleteAction={h ? deleteHarnessItem.bind(null, h.id) : undefined}
     >
       {h ? <input type="hidden" name="id" value={h.id} /> : null}
-      <TitleInput name="name" defaultValue={h?.name} placeholder="Tool name" required />
-      <Props>
-        <Text name="url" label="Link" type="url" defaultValue={h?.url} placeholder="https://" required />
-        <Area name="description" label="What you use it for" defaultValue={h?.description} hint="One short line." />
-        <Text
-          name="category"
-          label="Category"
-          icon="tag"
-          defaultValue={h?.category}
-          list="adm-categories"
-          placeholder="Editor, AI, Infra, Hardware…"
-          hint={categories.length ? `Pick an existing one or type a new one.` : undefined}
-        />
-        <Text name="sort" label="Order" type="number" icon="list" defaultValue={h?.sort ?? 0} />
-      </Props>
-      <datalist id="adm-categories">
-        {categories.map((c) => (
-          <option key={c} value={c!} />
-        ))}
-      </datalist>
       <TranslationFields
         value={h?.translations}
         fields={[
           { name: "description", label: "What you use it for", rows: 2 },
           { name: "category", label: "Category" },
         ]}
-      />
+      >
+        <TitleInput name="name" defaultValue={h?.name} placeholder="Tool name" required />
+        <Props>
+          <Text name="url" label="Link" type="url" defaultValue={h?.url} placeholder="https://" required />
+          <Area name="description" label="What you use it for" defaultValue={h?.description} hint="One short line." />
+          <Text
+            name="category"
+            label="Category"
+            icon="tag"
+            defaultValue={h?.category}
+            list="adm-categories"
+            placeholder="Editor, AI, Infra, Hardware…"
+            hint={categories.length ? `Pick an existing one or type a new one.` : undefined}
+          />
+          <Text name="sort" label="Order" type="number" icon="list" defaultValue={h?.sort ?? 0} />
+        </Props>
+        <datalist id="adm-categories">
+          {categories.map((c) => (
+            <option key={c} value={c!} />
+          ))}
+        </datalist>
+      </TranslationFields>
     </AdminForm>
   );
 }

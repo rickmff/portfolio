@@ -1528,3 +1528,79 @@ a.adm-chip:hover {
 .adm [data-slot="calendar"] select {
   color-scheme: inherit;
 }
+
+/* ------------ language tabs ------------ */
+.adm-tabs-wrap {
+  display: contents;
+}
+.adm-tabbar {
+  display: flex;
+  gap: 2px;
+  margin: 8px 0 -8px;
+  border-bottom: 1px solid var(--adm-line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.adm-tabbar button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px 6px 0 0;
+  background: none;
+  color: var(--adm-muted);
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.12s ease, background-color 0.12s ease;
+}
+.adm-tabbar button:hover {
+  background: var(--adm-hover);
+  color: var(--adm-text);
+}
+.adm-tabbar button[aria-selected="true"] {
+  color: var(--adm-strong);
+  font-weight: 500;
+}
+.adm-tabbar button[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--adm-strong);
+}
+.adm-tabbar small {
+  font-size: 11px;
+  font-weight: 400;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--tag-gray);
+  color: var(--adm-faint);
+}
+.adm-tabbar small[data-filled] {
+  background: var(--tag-green);
+  color: var(--tag-green-ink);
+}
+.adm-tab-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.adm-tab-panel[hidden],
+.adm-tr-page[hidden] {
+  display: none;
+}
+.adm-tr-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.adm-tr-page > .adm-lede {
+  margin-top: -12px;
+}

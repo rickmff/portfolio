@@ -1,4 +1,4 @@
-import { AutoTextarea, ColorPick, FilePick } from "./Controls";
+import { AutoTextarea, ColorPick, FilePick, LangTabs, TitleInput } from "./Controls";
 import { DateTimePicker } from "./DateTimePicker";
 import { Icon, type IconName } from "./Icon";
 import { MarkdownField } from "./MarkdownField";
@@ -219,53 +219,60 @@ const LANGS = [
 ] as const;
 
 /**
- * English and Portuguese versions of a row's text fields, saved into its translations. Each one
- * replaces the field above for visitors in that language; left empty, the field above shows.
+ * The page in tabs: the original text, then its English and Portuguese versions, saved into the
+ * row's translations. Each version replaces the original for visitors in that language; an empty
+ * field shows the original.
  */
 export function TranslationFields({
   fields,
   value,
+  children,
 }: {
   fields: TrField[];
   value?: Partial<Record<"en" | "pt", Record<string, string>>> | null;
+  /** The original page: title, properties and body. */
+  children: React.ReactNode;
 }) {
-  return (
-    <div className="adm-tr">
-      {LANGS.map((l) => {
-        const filled = fields.filter((f) => value?.[l.code]?.[f.name]).length;
-        return (
-          <Section
-            key={l.code}
-            title={`${l.label} version`}
-            icon="globe"
-            open={filled > 0}
-            note={filled ? `${filled}/${fields.length} filled` : "Empty, shows the text above"}
-          >
-            <Props>
-              {fields
-                .filter((f) => !f.markdown)
-                .map((f) =>
-                  f.rows && f.rows > 1 ? (
-                    <Area key={f.name} name={`tr.${l.code}.${f.name}`} label={f.label} defaultValue={value?.[l.code]?.[f.name]} />
-                  ) : (
-                    <Text key={f.name} name={`tr.${l.code}.${f.name}`} label={f.label} defaultValue={value?.[l.code]?.[f.name]} />
-                  ),
-                )}
-            </Props>
-            {fields
-              .filter((f) => f.markdown)
-              .map((f) => (
-                <MarkdownField
-                  key={f.name}
-                  name={`tr.${l.code}.${f.name}`}
-                  label={`${f.label} (${l.label})`}
-                  defaultValue={value?.[l.code]?.[f.name] ?? ""}
-                  blocks={f.blocks}
-                />
-              ))}
-          </Section>
-        );
-      })}
-    </div>
-  );
+  const titleField = fields.find((f) => f.name === "title" || f.name === "name");
+  const tabs = [
+    { id: "base", label: "Original" },
+    ...LANGS.map((l) => {
+      const filled = fields.filter((f) => value?.[l.code]?.[f.name]).length;
+      return { id: l.code, label: l.label, note: `${filled}/${fields.length}`, filled: filled > 0 };
+    }),
+  ];
+  const panels = [
+    children,
+    ...LANGS.map((l) => (
+      <div key={l.code} className="adm-tr-page">
+        {titleField ? (
+          <TitleInput name={`tr.${l.code}.${titleField.name}`} defaultValue={value?.[l.code]?.[titleField.name]} placeholder={`${l.label} title`} autoFocus={false} />
+        ) : null}
+        <p className="adm-lede">Empty fields show the Original text to {l.label} readers.</p>
+        <Props>
+          {fields
+            .filter((f) => !f.markdown && f !== titleField)
+            .map((f) =>
+              f.rows && f.rows > 1 ? (
+                <Area key={f.name} name={`tr.${l.code}.${f.name}`} label={f.label} defaultValue={value?.[l.code]?.[f.name]} />
+              ) : (
+                <Text key={f.name} name={`tr.${l.code}.${f.name}`} label={f.label} defaultValue={value?.[l.code]?.[f.name]} />
+              ),
+            )}
+        </Props>
+        {fields
+          .filter((f) => f.markdown)
+          .map((f) => (
+            <MarkdownField
+              key={f.name}
+              name={`tr.${l.code}.${f.name}`}
+              label={`${f.label} · ${l.label}`}
+              defaultValue={value?.[l.code]?.[f.name] ?? ""}
+              blocks={f.blocks}
+            />
+          ))}
+      </div>
+    )),
+  ];
+  return <LangTabs tabs={tabs} panels={panels} />;
 }
