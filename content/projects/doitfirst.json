@@ -1,0 +1,20 @@
+{
+  "title": "doitfirst",
+  "slug": "doitfirst",
+  "year": 2025,
+  "summary": "A Chrome extension that keeps X, YouTube, Instagram and TikTok locked until your to-do list is done.",
+  "body": "## The problem\n\nSite blockers fail in one of two ways. Either they're so strict you turn them off, or they're so easy to skip that a reload gets you back in. I didn't want to ban social media. I wanted it to come after the work, not before.\n\n## What I built\n\ndoitfirst puts a to-do list in front of X, YouTube, Instagram and TikTok. The site stays locked until the tasks are done.\n\n- **Task gate.** Finish your tasks to unlock the site.\n- **Session timer.** You get 25 minutes, then it locks again and asks for a new task.\n- **No loopholes.** Reloading or opening a new tab doesn't refill the time.\n- **YouTube focus.** Hides Shorts, the home feed and recommended videos, so a search doesn't turn into an hour.\n\nUnder the hood: a Manifest V3 extension in plain JavaScript and CSS. Tasks and settings live in `chrome.storage.sync`, the time left on each site in `chrome.storage.local`, and the only permission it asks for is storage.\n\n## Result\n\nIt's open source under MIT. No account, no server and no tracking: it makes no network requests at all, and its privacy policy says exactly that.",
+  "stack": "JavaScript, Chrome Extensions (Manifest V3), chrome.storage, CSS",
+  "repoUrl": "https://github.com/rickmff/doitfirst",
+  "tint": "#141414",
+  "published": true,
+  "translations": {
+    "pt": {
+      "summary": "Uma extensão para o Chrome que mantém X, YouTube, Instagram e TikTok bloqueados até você terminar a sua lista de tarefas.",
+      "body": "## O problema\n\nBloqueador de sites falha de um de dois jeitos. Ou é tão rígido que você desliga, ou é tão fácil de burlar que um reload te deixa entrar de novo. Eu não queria proibir rede social. Queria que ela viesse depois do trabalho, não antes.\n\n## O que eu construí\n\nO doitfirst coloca uma lista de tarefas na frente do X, YouTube, Instagram e TikTok. O site fica bloqueado até as tarefas estarem feitas.\n\n- **Portão de tarefas.** Termine as suas tarefas para desbloquear o site.\n- **Timer de sessão.** Você ganha 25 minutos, depois bloqueia de novo e pede uma tarefa nova.\n- **Sem brechas.** Recarregar a página ou abrir outra aba não devolve o tempo.\n- **Foco no YouTube.** Esconde os Shorts, o feed inicial e os vídeos recomendados, para uma busca não virar uma hora.\n\nPor baixo: uma extensão Manifest V3 em JavaScript e CSS puros. Tarefas e configurações ficam no `chrome.storage.sync`, o tempo restante de cada site no `chrome.storage.local`, e a única permissão que ela pede é storage.\n\n## Resultado\n\nÉ open source sob MIT. Sem conta, sem servidor e sem rastreamento: ela não faz nenhuma requisição de rede, e a política de privacidade diz exatamente isso."
+    }
+  },
+  "showcaseUrl": "https://cuq4a0zhq1jxefqs.public.blob.vercel-storage.com/media/f00a689c-a6e8-40b9-929e-a197097ce298.mp4",
+  "showcasePosterUrl": "https://cuq4a0zhq1jxefqs.public.blob.vercel-storage.com/media/b39f085f-67fe-4d51-a903-589811bc9639.webp",
+  "showcaseMobileAt": null
+}
