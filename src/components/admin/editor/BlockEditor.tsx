@@ -7,6 +7,7 @@ import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { uploadImage } from "@/app/admin/actions";
+import { fileSizeError } from "@/lib/upload-limits";
 import { duplicateBlock, editorExtensions, type SlashRender } from "./extensions";
 import { docToMarkdown, markdownToDoc } from "./markdown";
 import { BLOCKS, PICK_IMAGE, TURN_INTO, type SlashItem } from "./slash";
@@ -137,6 +138,11 @@ export default function BlockEditor({
   uploadInto.current = (files, pos) => {
     if (!editor) return;
     for (const f of files) {
+      const tooBig = fileSizeError(f);
+      if (tooBig) {
+        alert(tooBig);
+        continue;
+      }
       const preview = URL.createObjectURL(f);
       const at = pos ?? editor.state.selection.to;
       editor

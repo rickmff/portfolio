@@ -40,6 +40,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Lets the admin's browser size checks know they run under Vercel's 4.5 MB request cap.
+  env: { NEXT_PUBLIC_ON_VERCEL: process.env.VERCEL ? "1" : "" },
   // Uploads are content-addressed (random names, never rewritten), so optimised copies can live long.
   images: {
     minimumCacheTTL: 31_536_000,
