@@ -2,8 +2,10 @@ import { asc } from "drizzle-orm";
 import Link from "next/link";
 import { Icon } from "@/components/admin/Icon";
 import { db, schema } from "@/db";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function HarnessAdmin() {
+  await requireAdmin();
   const rows = await db.select().from(schema.harness).orderBy(asc(schema.harness.sort), asc(schema.harness.id));
   return (
     <div className="adm-page adm-page-wide">

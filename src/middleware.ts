@@ -46,6 +46,10 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
+  // The backoffice always passes here, whatever its path looks like; the pages check the session again.
   // Pages only: not Next's assets, /.well-known (Flags Explorer), the API, uploads, feeds, metadata routes or files with an extension.
-  matcher: ["/((?!_next/|\\.well-known/|api/|media/|og$|rss\\.xml|sitemap\\.xml|robots\\.txt|llms(?:-full)?\\.txt|.*\\.[a-z0-9]+$).*)"],
+  matcher: [
+    "/admin/:path*",
+    "/((?!_next/|\\.well-known/|api/|media/|og$|rss\\.xml|sitemap\\.xml|robots\\.txt|llms(?:-full)?\\.txt|.*\\.[a-z0-9]+$).*)",
+  ],
 };

@@ -2,8 +2,10 @@ import { asc, desc } from "drizzle-orm";
 import Link from "next/link";
 import { Icon } from "@/components/admin/Icon";
 import { db, schema } from "@/db";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function ProjectsAdmin() {
+  await requireAdmin();
   const rows = await db.select().from(schema.projects).orderBy(asc(schema.projects.sort), desc(schema.projects.year));
   return (
     <div className="adm-page adm-page-wide">

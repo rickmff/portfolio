@@ -2,10 +2,12 @@ import { desc, sql } from "drizzle-orm";
 import Link from "next/link";
 import { Icon } from "@/components/admin/Icon";
 import { db, schema } from "@/db";
+import { requireAdmin } from "@/lib/auth";
 
 const fmt = new Intl.DateTimeFormat("en", { day: "numeric", month: "short", year: "numeric" });
 
 export default async function PostsAdmin() {
+  await requireAdmin();
   const rows = await db
     .select()
     .from(schema.posts)

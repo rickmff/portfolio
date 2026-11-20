@@ -2,8 +2,10 @@ import { count, eq } from "drizzle-orm";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/admin/Icon";
 import { db, schema } from "@/db";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function Overview() {
+  await requireAdmin();
   const [[p], [b], [reading], [po], [drafts]] = await Promise.all([
     db.select({ n: count() }).from(schema.projects),
     db.select({ n: count() }).from(schema.books),

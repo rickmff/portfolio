@@ -5,10 +5,13 @@ import { AdminForm } from "@/components/admin/AdminForm";
 import { TitleInput } from "@/components/admin/Controls";
 import { Area, Props, Text, TranslationFields } from "@/components/admin/Fields";
 import { db, schema } from "@/db";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function EditHarnessItem({ params }: { params: Promise<{ id: string }> }) {
+  await requireAdmin();
   const { id } = await params;
   const isNew = id === "new";
+  if (!isNew && !/^[1-9]\d*$/.test(id)) notFound();
   const [h] = isNew ? [undefined] : await db.select().from(schema.harness).where(eq(schema.harness.id, Number(id)));
   if (!isNew && !h) notFound();
   const categories = [...new Set((await db.select({ c: schema.harness.category }).from(schema.harness)).map((r) => r.c).filter(Boolean))];

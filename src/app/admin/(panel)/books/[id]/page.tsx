@@ -8,10 +8,13 @@ import { Area, Check, Color, ImageField, Props, Section, Select, Text, Translati
 import { MarkdownField } from "@/components/admin/MarkdownField";
 import { bookHref } from "@/lib/books";
 import { db, schema } from "@/db";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function EditBook({ params }: { params: Promise<{ id: string }> }) {
+  await requireAdmin();
   const { id } = await params;
   const isNew = id === "new";
+  if (!isNew && !/^[1-9]\d*$/.test(id)) notFound();
   const [b] = isNew ? [undefined] : await db.select().from(schema.books).where(eq(schema.books.id, Number(id)));
   if (!isNew && !b) notFound();
   return (
