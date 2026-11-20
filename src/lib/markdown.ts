@@ -4,6 +4,7 @@ import markedAlert from "marked-alert";
 import markedFootnote from "marked-footnote";
 import { gfmHeadingId } from "marked-gfm-heading-id";
 import { markedHighlight } from "marked-highlight";
+import { sanitizeHtml } from "./sanitize";
 
 // Kept in its own module so client components can slugify without pulling in marked and highlight.js.
 export { slugify } from "./slug";
@@ -16,17 +17,22 @@ export const BLOB_HOST = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.c
 // Widths Next's image optimiser serves by default (deviceSizes + the larger imageSizes).
 const WIDTHS = [384, 640, 828, 1080, 1200, 1920];
 
+/** A quote inside an attribute value would end it early (an alt text like: the first "bug"). */
+const attr = (v: string) => v.replace(/"/g, "&quot;");
+
 /**
  * A local (or Blob) image with a known size gets width/height and a srcset through Next's optimiser, so
  * it arrives as WebP/AVIF at the width the column needs and never shifts the text below it.
  * It still shows at its own size, capped by the column, exactly like the plain tag.
  */
-function imgTag(href: string, alt: string, dims?: ImageDims) {
-  const d = dims?.[href];
-  if (!d || !(href.startsWith("/") || BLOB_HOST.test(href)) || /\.(gif|svg)(\?|$)/i.test(href)) {
+function imgTag(rawHref: string, rawAlt: string, dims?: ImageDims) {
+  const href = attr(rawHref);
+  const alt = attr(rawAlt);
+  const d = dims?.[rawHref];
+  if (!d || !(rawHref.startsWith("/") || BLOB_HOST.test(rawHref)) || /\.(gif|svg)(\?|$)/i.test(rawHref)) {
     return `<img src="${href}" alt="${alt}" loading="lazy" decoding="async" />`;
   }
-  const url = (w: number) => `/_next/image?url=${encodeURIComponent(href)}&w=${w}&q=80`;
+  const url = (w: number) => `/_next/image?url=${encodeURIComponent(rawHref)}&w=${w}&q=80`;
   const widths = WIDTHS.filter((w) => w < d.width);
   const full = WIDTHS.find((w) => w >= d.width);
   const srcset = widths.map((w) => `${url(w)} ${w}w`);
@@ -71,7 +77,7 @@ const md = new Marked(
         const preview = token.title?.match(/^preview:(\S+)$/)?.[1];
         if (!preview) return Renderer.prototype.link.call(this, token);
         const text = this.parser.parseInline(token.tokens);
-        return `<a href="${token.href}" class="has-preview" target="_blank" rel="noopener noreferrer">${text}<span class="link-preview" aria-hidden="true"><img src="${preview}" alt="" loading="lazy" /></span></a>`;
+        return `<a href="${attr(token.href)}" class="has-preview" target="_blank" rel="noopener noreferrer">${text}<span class="link-preview" aria-hidden="true"><img src="${attr(preview)}" alt="" loading="lazy" /></span></a>`;
       },
       // An image with a title ![alt](src "caption") gets a caption. Spans, because images sit inside <p>.
       image({ href, title, text }) {
@@ -82,11 +88,11 @@ const md = new Marked(
   },
 );
 
-/** Content is authored only by the site owner in the backoffice, so raw HTML is allowed. */
+/** Raw HTML in the source is allowed, but the result passes the allow-list in sanitize.ts before it is shown. */
 export function renderMarkdown(src: string, dims?: ImageDims) {
   currentDims = dims;
   try {
-    return md.parse(src, { async: false });
+    return sanitizeHtml(md.parse(src, { async: false }));
   } finally {
     currentDims = undefined;
   }

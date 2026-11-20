@@ -60,6 +60,7 @@
     "server-only": "^0.0.1",
     "sharp": "^0.35.5",
     "tailwind-merge": "^3.7.0",
+    "xss": "^1.0.17",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -77,5 +78,13 @@
     "tsx": "^4.23.15",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@10.28.0"
+  "packageManager": "pnpm@10.28.0",
+  "pnpm": {
+    "overrides": {
+      "postcss@<8.5.23": ">=8.5.23",
+      "@vercel/cli-config>zod": ">=4.6.6",
+      "@esbuild-kit/core-utils>esbuild": ">=0.25.0",
+      "minimatch@>=7.0.0 <11.0.1": ">=11.0.1"
+    }
+  }
 }
