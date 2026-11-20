@@ -1,23 +1,55 @@
+<div align="center">
+
 # Portfolio
 
-Source of [rickmff.com](https://rickmff.com), the personal site of Henrique Matos. A minimalist portfolio with a small backoffice to manage all of its content.
+The source of [rickmff.com](https://rickmff.com), the personal site of Henrique Matos.<br>
+Projects, books and writing, with a small backoffice to manage it all.
 
-## Features
+[![Next.js](https://img.shields.io/badge/Next.js_15-000?logo=nextdotjs&logoColor=fff)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React_19-000?logo=react&logoColor=fff)](https://react.dev)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_4-000?logo=tailwindcss&logoColor=fff)](https://tailwindcss.com)
+[![Turso](https://img.shields.io/badge/Turso-000?logo=turso&logoColor=fff)](https://turso.tech)
+[![Vercel](https://img.shields.io/badge/Vercel-000?logo=vercel&logoColor=fff)](https://vercel.com)
 
-- **Work**: a project gallery with case-study pages.
-- **Books**: an interactive 3D bookshelf, book pages with notes, and a quotes page.
-- **Blog**: posts in English and Portuguese, with RSS.
-- **Admin** (`/admin`): a Notion-style editor (Tiptap) for projects, books, posts and settings. Google sign-in, limited to one account.
-- **Content API** (`/api/content`): token-protected endpoints to publish content from scripts.
-- SEO extras: sitemap, Open Graph images, `llms.txt`.
+<img src="docs/readme/home.webp" alt="Home page of rickmff.com" width="100%">
+
+</div>
+
+## What's inside
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/readme/work.webp" alt="Project gallery">
+      <b>Projects</b><br>
+      A gallery of work, each with its own case study.
+    </td>
+    <td width="50%" valign="top">
+      <img src="docs/readme/books.webp" alt="3D bookshelf">
+      <b>Books</b><br>
+      An interactive 3D bookshelf, with notes and quotes.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/readme/admin.webp" alt="Backoffice editor">
+      <b>Backoffice</b><br>
+      A Notion-style editor for every page. Google sign-in, one account.
+    </td>
+    <td width="50%" valign="top">
+      <b>Also</b>
+      <ul>
+        <li>Blog in English and Portuguese, with RSS.</li>
+        <li>Content API at <code>/api/content</code> to publish from scripts.</li>
+        <li>Sitemap, Open Graph images and <code>llms.txt</code>.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 ## Stack
 
-- [Next.js 15](https://nextjs.org) (App Router), React 19, TypeScript
-- Tailwind CSS 4
-- [Drizzle ORM](https://orm.drizzle.team) on [Turso](https://turso.tech) (libSQL); local SQLite in development
-- Vercel Blob for uploads, Vercel Analytics, Flags SDK
-- Hosted on [Vercel](https://vercel.com)
+Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Drizzle ORM on Turso (libSQL) · Tiptap · Vercel Blob, Analytics and Flags
 
 ## Run locally
 
@@ -25,59 +57,58 @@ Requires Node.js 20+ and pnpm 10.
 
 ```bash
 pnpm install
-cp .env.example .env.local   # fill in the values below
-pnpm db:migrate              # create the schema
-pnpm db:seed                 # load sample content
-pnpm dev                     # http://localhost:3000
+cp .env.example .env.local
+pnpm db:migrate && pnpm db:seed
+pnpm dev                      # http://localhost:3000
 ```
 
-With no Turso variables set, the app uses a local SQLite file at `./data/portfolio.db` and stores uploads in `./uploads`.
+Without Turso variables, the app uses a local SQLite file (`./data/portfolio.db`) and stores uploads in `./uploads`.
 
-### Environment variables
+<details>
+<summary><b>Environment variables</b></summary>
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `SESSION_SECRET` | Yes | Signs admin sessions. Generate with `openssl rand -base64 48`. |
-| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Yes, for `/admin` | Google OAuth client. Redirect URI: `<SITE_URL>/admin/auth/callback`. |
-| `ADMIN_EMAIL` | Yes, for `/admin` | The only Google account allowed into the admin. |
-| `SITE_URL` | Yes | Public URL for OAuth, sitemap and canonical links. Defaults to `http://localhost:3000`. |
-| `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN` | Production | Turso database. Leave empty for local SQLite. |
-| `DATABASE_URL` | No | Local database file. Default `file:./data/portfolio.db`. |
-| `CONTENT_API_TOKEN` | No | Enables the content API (min. 32 chars). Generate with `openssl rand -hex 32`. |
-| `BLOB_READ_WRITE_TOKEN` | No | Stores uploads in Vercel Blob instead of the local disk. |
-| `GOOGLE_BOOKS_API_KEY` | No | Book previews from the Google Books API. |
-| `GITHUB_TOKEN` | No | GitHub contribution graph on the home page. Works without it. |
+| `SESSION_SECRET` | Yes | Signs admin sessions. `openssl rand -base64 48` |
+| `SITE_URL` | Yes | Public URL for OAuth, sitemap and canonical links. |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | For `/admin` | Google OAuth. Redirect URI: `<SITE_URL>/admin/auth/callback` |
+| `ADMIN_EMAIL` | For `/admin` | The only Google account allowed in. |
+| `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN` | Production | Turso database. Empty means local SQLite. |
+| `BLOB_READ_WRITE_TOKEN` | No | Uploads to Vercel Blob instead of disk. |
+| `CONTENT_API_TOKEN` | No | Enables the content API (32+ chars). |
+| `GOOGLE_BOOKS_API_KEY` | No | Book previews. |
+| `GITHUB_TOKEN` | No | Contribution graph on the home page. |
+| `DATABASE_URL` | No | Local database file. Default `file:./data/portfolio.db` |
 
-## Scripts
+</details>
+
+<details>
+<summary><b>Scripts</b></summary>
 
 | Command | Action |
 | --- | --- |
-| `pnpm dev` | Start the dev server. |
-| `pnpm build` / `pnpm start` | Build and serve for production. |
+| `pnpm dev` | Dev server. |
+| `pnpm build` / `pnpm start` | Production build and server. |
 | `pnpm lint` / `pnpm typecheck` | Lint and type-check. |
-| `pnpm db:generate` | Generate a migration from `src/db/schema.ts`. |
-| `pnpm db:migrate` | Apply migrations. |
-| `pnpm db:seed` | Seed sample content and sync book data. |
-| `pnpm db:studio` | Open Drizzle Studio. |
+| `pnpm db:generate` | New migration from `src/db/schema.ts`. |
+| `pnpm db:migrate` / `pnpm db:seed` | Apply migrations / seed content. |
+| `pnpm db:studio` | Drizzle Studio. |
 
-## Deploying to Vercel
+</details>
 
-1. Import the repository in Vercel.
-2. Add the Turso integration, or set `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` yourself.
-3. Connect a Blob store for uploads.
-4. Set the other variables from the table above.
+## Deploy
 
-The build runs `pnpm vercel-build`: it applies migrations, seeds, then builds Next.js. The build fails on purpose if `TURSO_DATABASE_URL` is missing.
+Import the repo in Vercel, add the Turso integration and a Blob store, then set the variables above. The build runs `pnpm vercel-build`: migrate, seed, then `next build`. It fails on purpose when `TURSO_DATABASE_URL` is missing.
 
-## Project structure
+## Structure
 
 ```
 src/app/(site)   public pages: home, work, books, quotes, blog, about
 src/app/admin    backoffice
 src/app/api      content API
-src/components   UI components (3D book, shelf, gallery, ...)
+src/components   UI: 3D book, shelf, gallery, ...
 src/db           Drizzle schema and connection
-src/lib          data access, auth, i18n, markdown, SEO
+src/lib          data, auth, i18n, markdown, SEO
 drizzle/         SQL migrations
 scripts/         migrate, seed and import scripts
 ```
