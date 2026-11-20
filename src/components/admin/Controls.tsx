@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { fileSizeError, formatMb } from "@/lib/upload-limits";
 import { Icon, type IconName } from "./Icon";
 
 /* Textareas that grow with their text, so nothing scrolls inside a field. */
@@ -86,7 +87,8 @@ export function FilePick({
   removeLabel?: string;
 }) {
   const input = useRef<HTMLInputElement>(null);
-  const [picked, setPicked] = useState<{ name: string; url: string | null } | null>(null);
+  const [picked, setPicked] = useState<{ name: string; size: number; url: string | null } | null>(null);
+  const [tooBig, setTooBig] = useState<string | null>(null);
   const [removing, setRemoving] = useState(false);
   useEffect(() => () => {
     if (picked?.url) URL.revokeObjectURL(picked.url);
@@ -117,11 +119,19 @@ export function FilePick({
           className="adm-sr"
           onChange={(e) => {
             const f = e.target.files?.[0];
-            setPicked(f ? { name: f.name, url: f.type.startsWith("image/") ? URL.createObjectURL(f) : null } : null);
+            // Too big to save: drop it here, before it reaches the server and fails the save.
+            const err = f ? fileSizeError(f) : null;
+            setTooBig(err);
+            if (err) {
+              e.target.value = "";
+              setPicked(null);
+              return;
+            }
+            setPicked(f ? { name: f.name, size: f.size, url: f.type.startsWith("image/") ? URL.createObjectURL(f) : null } : null);
           }}
         />
         <Icon name="upload" size={14} />
-        <span>{picked ? picked.name : current ? "Replace" : "Upload"}</span>
+        <span>{picked ? `${picked.name} · ${formatMb(picked.size)}` : current ? "Replace" : "Upload"}</span>
       </label>
       {picked ? (
         <button
@@ -131,6 +141,7 @@ export function FilePick({
           onClick={() => {
             if (input.current) input.current.value = "";
             setPicked(null);
+            setTooBig(null);
           }}
         >
           <Icon name="x" size={14} />
@@ -142,6 +153,11 @@ export function FilePick({
           <Icon name="trash" size={14} />
           <span>{removing ? "Will be removed" : removeLabel}</span>
         </label>
+      ) : null}
+      {tooBig ? (
+        <span className="adm-file-error" role="alert">
+          {tooBig}
+        </span>
       ) : null}
     </div>
   );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import type { FormState } from "@/app/admin/actions";
+import { formSizeError } from "@/lib/upload-limits";
 import { Icon } from "./Icon";
 
 type Action = (state: FormState, fd: FormData) => Promise<FormState>;
@@ -35,6 +36,8 @@ export function AdminForm({
   const form = useRef<HTMLFormElement>(null);
   const [dirty, setDirty] = useState(false);
   const [liveTitle, setLiveTitle] = useState(title);
+  // Caught in the browser before sending, so an oversized save never reaches the server.
+  const [blocked, setBlocked] = useState<string | null>(null);
 
   useEffect(() => {
     if (state?.ok) setDirty(false);
@@ -68,8 +71,21 @@ export function AdminForm({
         const t = e.target as HTMLInputElement;
         if (t.classList.contains("adm-title") && !t.name.startsWith("tr.")) setLiveTitle(t.value);
       }}
-      onChange={() => setDirty(true)}
-      onSubmit={() => setDirty(false)}
+      onChange={() => {
+        setDirty(true);
+        setBlocked(null);
+      }}
+      onSubmit={(e) => {
+        // The delete button skips the check: it sends no files worth keeping.
+        const submitter = (e.nativeEvent as SubmitEvent).submitter;
+        const err = submitter?.hasAttribute("formnovalidate") ? null : formSizeError(e.currentTarget);
+        setBlocked(err);
+        if (err) {
+          e.preventDefault();
+          return;
+        }
+        setDirty(false);
+      }}
     >
       <div className="adm-bar">
         <nav className="adm-crumbs" aria-label="Breadcrumb">
@@ -82,7 +98,7 @@ export function AdminForm({
           <span className="adm-crumb-here">{liveTitle?.trim() || title || "Untitled"}</span>
         </nav>
         <div className="adm-bar-actions">
-          <SaveState dirty={dirty} state={state} />
+          <SaveState dirty={dirty} state={blocked ? { error: blocked } : state} blocked={Boolean(blocked)} />
           {viewHref ? (
             <Link href={viewHref} target="_blank" className="adm-ghost" title="View on the site">
               <Icon name="external" size={14} />
@@ -113,12 +129,12 @@ export function AdminForm({
   );
 }
 
-function SaveState({ dirty, state }: { dirty: boolean; state: FormState }) {
+function SaveState({ dirty, state, blocked }: { dirty: boolean; state: FormState; blocked?: boolean }) {
   const { pending } = useFormStatus();
   if (pending) return <span className="adm-status">Saving…</span>;
   if (state?.error)
     return (
-      <span className="adm-status is-error" role="alert" title={state.error}>
+      <span className={`adm-status is-error${blocked ? " is-blocking" : ""}`} role="alert" title={state.error}>
         {state.error}
       </span>
     );

@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useDeferredValue, useMemo, useRef, useState } from "react";
 import { uploadImage } from "@/app/admin/actions";
+import { fileSizeError } from "@/lib/upload-limits";
 import { renderMarkdown } from "@/lib/markdown";
 
 type Mode = "blocks" | "write" | "split" | "preview";
@@ -76,6 +77,8 @@ export function MarkdownField({
   };
 
   const upload = async (f: File) => {
+    const tooBig = fileSizeError(f);
+    if (tooBig) return alert(tooBig);
     setBusy(true);
     const fd = new FormData();
     fd.set("file", f);
