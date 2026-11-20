@@ -3,10 +3,12 @@ import { cookies } from "next/headers";
 import { SideNav, ThemeToggle } from "@/components/admin/Controls";
 import { Icon } from "@/components/admin/Icon";
 import { logout } from "../actions";
+import { requireAdmin } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function Panel({ children }: { children: React.ReactNode }) {
+  await requireAdmin();
   const chosen = (await cookies()).get("adm_theme")?.value;
   const theme = chosen === "light" || chosen === "dark" ? chosen : "system";
   return (

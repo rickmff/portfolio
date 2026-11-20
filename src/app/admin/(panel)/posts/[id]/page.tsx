@@ -6,6 +6,7 @@ import { TitleInput } from "@/components/admin/Controls";
 import { Area, Check, DateTime, ImageField, Props, Text, TranslationFields } from "@/components/admin/Fields";
 import { MarkdownField } from "@/components/admin/MarkdownField";
 import { db, schema } from "@/db";
+import { requireAdmin } from "@/lib/auth";
 
 /** datetime-local wants local "YYYY-MM-DDTHH:mm" without a zone. */
 function toLocalInput(d: Date | null | undefined) {
@@ -15,8 +16,10 @@ function toLocalInput(d: Date | null | undefined) {
 }
 
 export default async function EditPost({ params }: { params: Promise<{ id: string }> }) {
+  await requireAdmin();
   const { id } = await params;
   const isNew = id === "new";
+  if (!isNew && !/^[1-9]\d*$/.test(id)) notFound();
   const [p] = isNew ? [undefined] : await db.select().from(schema.posts).where(eq(schema.posts.id, Number(id)));
   if (!isNew && !p) notFound();
   return (

@@ -5,6 +5,7 @@ import type { IconName } from "@/components/admin/Icon";
 import { MarkdownField } from "@/components/admin/MarkdownField";
 import { db, schema } from "@/db";
 import { SETTING_KEYS, TRANSLATED_SETTINGS, type SettingKey } from "@/lib/settings";
+import { requireAdmin } from "@/lib/auth";
 
 const LANGS = [
   { code: "en", label: "EN" },
@@ -44,6 +45,7 @@ function splitLabel(label: string) {
 }
 
 export default async function SettingsPage() {
+  await requireAdmin();
   // The raw rows, not the visitor-localised values the site reads.
   const rows = await db.select().from(schema.settings);
   const map: Record<string, string> = Object.fromEntries(rows.map((r) => [r.key, r.value]));

@@ -3,8 +3,10 @@ import Link from "next/link";
 import { BookOrder } from "@/components/admin/BookOrder";
 import { Icon } from "@/components/admin/Icon";
 import { db, schema } from "@/db";
+import { requireAdmin } from "@/lib/auth";
 
 export default async function BooksAdmin() {
+  await requireAdmin();
   const { books } = schema;
   const rows = await db
     .select({ id: books.id, title: books.title, author: books.author, status: books.status, color: books.color, coverUrl: books.coverUrl, notesGenerated: books.notesGenerated })

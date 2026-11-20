@@ -6,13 +6,16 @@ import { TitleInput } from "@/components/admin/Controls";
 import { Area, Check, Color, FileField, ImageField, Props, Section, Text, TranslationFields } from "@/components/admin/Fields";
 import { MarkdownField } from "@/components/admin/MarkdownField";
 import { db, schema } from "@/db";
+import { requireAdmin } from "@/lib/auth";
 
 const CLIP = "video/mp4,video/webm";
 const STILL = "image/jpeg,image/png,image/webp,image/avif";
 
 export default async function EditProject({ params }: { params: Promise<{ id: string }> }) {
+  await requireAdmin();
   const { id } = await params;
   const isNew = id === "new";
+  if (!isNew && !/^[1-9]\d*$/.test(id)) notFound();
   const [p] = isNew ? [undefined] : await db.select().from(schema.projects).where(eq(schema.projects.id, Number(id)));
   if (!isNew && !p) notFound();
   return (

@@ -21,6 +21,32 @@ export const MIME: Record<string, string> = {
   ".pdf": "application/pdf",
 };
 
+const ascii = (b: Uint8Array, from: number, to: number) => String.fromCharCode(...b.subarray(from, to));
+
+/** The extension alone is the uploader's word; the first bytes say what the file really is. */
+function matchesType(ext: string, b: Uint8Array) {
+  switch (ext) {
+    case ".jpg":
+    case ".jpeg":
+      return b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff;
+    case ".png":
+      return ascii(b, 1, 4) === "PNG" && b[0] === 0x89;
+    case ".gif":
+      return ascii(b, 0, 4) === "GIF8";
+    case ".webp":
+      return ascii(b, 0, 4) === "RIFF" && ascii(b, 8, 12) === "WEBP";
+    case ".avif":
+    case ".mp4":
+      return ascii(b, 4, 8) === "ftyp";
+    case ".webm":
+      return b[0] === 0x1a && b[1] === 0x45 && b[2] === 0xdf && b[3] === 0xa3;
+    case ".pdf":
+      return ascii(b, 0, 5) === "%PDF-";
+    default:
+      return false;
+  }
+}
+
 /** Saves an uploaded image (or short MP4/WebM clip, or a PDF when `pdf` is set) and returns its public URL, or null when no file was sent. */
 export async function saveUpload(
   file: FormDataEntryValue | null,
@@ -33,6 +59,8 @@ export async function saveUpload(
   // Vercel caps function request bodies at 4.5 MB (the browser checks this first, see upload-limits.ts).
   const maxMb = process.env.VERCEL ? REQUEST_MAX_MB : (opts.maxMb ?? 8);
   if (file.size > maxMb * 1024 * 1024) throw new Error(`Files must be ${maxMb} MB or smaller.`);
+  if (!matchesType(ext, new Uint8Array(await file.slice(0, 16).arrayBuffer())))
+    throw new Error("That file's contents do not match its extension.");
   const name = `${randomUUID()}${ext}`;
   // On Vercel the disk is ephemeral, so files go to Vercel Blob when a store is connected.
   if (blobConfigured()) {
