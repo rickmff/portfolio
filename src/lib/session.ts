@@ -1,7 +1,8 @@
 import { SignJWT, jwtVerify } from "jose";
 
 export const SESSION_COOKIE = "pf_session";
-const MAX_AGE = 60 * 60 * 24 * 14;
+// A copied token stays valid until it expires (logout only clears the cookie); changing SESSION_SECRET ends every session at once.
+const MAX_AGE = 60 * 60 * 24 * 7;
 
 function secret() {
   const s = process.env.SESSION_SECRET;
