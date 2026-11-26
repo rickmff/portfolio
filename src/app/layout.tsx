@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: "Henrique Matos", template: "%s — Henrique Matos" },
+  title: { default: "Henrique Faria", template: "%s — Henrique Faria" },
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

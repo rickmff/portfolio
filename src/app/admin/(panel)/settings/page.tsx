@@ -13,13 +13,15 @@ const LANGS = [
 ] as const;
 
 const GROUPS: { title: string; icon: IconName; keys: SettingKey[] }[] = [
-  { title: "Profile", icon: "user", keys: ["name", "role", "bio", "knowsAbout", "worksFor", "location"] },
+  { title: "Profile", icon: "user", keys: ["name", "alternateName", "role", "bio", "knowsAbout", "worksFor", "location", "languages"] },
   { title: "Home page", icon: "home", keys: ["hero", "heroBy", "heroByUrl", "now"] },
   { title: "Contact and links", icon: "link", keys: ["email", "github", "linkedin", "twitter", "discord", "cv"] },
 ];
 
 const ICONS: Partial<Record<SettingKey, IconName>> = {
   name: "title",
+  alternateName: "tag",
+  languages: "globe",
   role: "user",
   knowsAbout: "tag",
   worksFor: "grid",

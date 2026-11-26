@@ -32,11 +32,15 @@ export const languageAlternates = (path: string) => ({
 
 export const profiles = (s: SiteSettings) => [s.github, s.linkedin, s.twitter].filter(Boolean);
 
-export const expertise = (s: SiteSettings) =>
-  s.knowsAbout
+const list = (v: string) =>
+  v
     .split(",")
     .map((t) => t.trim())
     .filter(Boolean);
+
+export const expertise = (s: SiteSettings) => list(s.knowsAbout);
+export const otherNames = (s: SiteSettings) => list(s.alternateName);
+export const languagesSpoken = (s: SiteSettings) => list(s.languages);
 
 const handle = (url: string) => url.match(/(?:twitter|x)\.com\/([^/?#]+)/)?.[1];
 
@@ -109,15 +113,26 @@ export function personSchema(s: SiteSettings) {
     "@type": "Person",
     "@id": PERSON_ID,
     name: s.name,
+    ...(otherNames(s).length > 0 && { alternateName: otherNames(s) }),
     url: SITE_URL,
     image: absoluteUrl(PROFILE_IMAGE),
     jobTitle: s.role,
+    hasOccupation: {
+      "@type": "Occupation",
+      name: s.role,
+      skills: expertise(s).join(", "),
+      ...(s.location && { occupationLocation: { "@type": "Place", name: s.location } }),
+    },
     description: s.bio,
     sameAs: profiles(s),
     knowsAbout: expertise(s),
+    ...(languagesSpoken(s).length > 0 && { knowsLanguage: languagesSpoken(s) }),
     ...(s.email && { email: `mailto:${s.email}` }),
     ...(s.worksFor && { worksFor: { "@type": "Organization", name: s.worksFor } }),
-    ...(s.location && { homeLocation: { "@type": "Place", name: s.location } }),
+    ...(s.location && {
+      homeLocation: { "@type": "Place", name: s.location },
+      workLocation: { "@type": "Place", name: s.location },
+    }),
     mainEntityOfPage: `${SITE_URL}/about`,
   };
 }

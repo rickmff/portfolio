@@ -8,7 +8,7 @@ import { getPost, getSettings } from "@/lib/data";
 import { getDict, getLocale } from "@/lib/i18n/server";
 import { imageDims } from "@/lib/image-dims";
 import { readingMinutes, renderMarkdown } from "@/lib/markdown";
-import { absoluteUrl, breadcrumbs, localeUrl, metaFor, PERSON_ID, WEBSITE_ID } from "@/lib/seo";
+import { absoluteUrl, breadcrumbs, localeUrl, metaFor, PERSON_ID, profiles, SITE_URL, WEBSITE_ID } from "@/lib/seo";
 
 const tagList = (tags: string) =>
   tags
@@ -60,7 +60,7 @@ export default async function PostPage({ params }: Props) {
             keywords: tagList(post.tags),
             wordCount: post.body.split(/\s+/).filter(Boolean).length,
             timeRequired: `PT${minutes}M`,
-            author: { "@id": PERSON_ID },
+            author: { "@type": "Person", "@id": PERSON_ID, name: settings.name, url: SITE_URL },
             publisher: { "@id": PERSON_ID },
             isPartOf: [{ "@id": localeUrl(locale, "/blog") }, { "@id": WEBSITE_ID }],
           },
@@ -73,7 +73,11 @@ export default async function PostPage({ params }: Props) {
       />
       <header className="wrap page-title reveal">
         <p className="eyebrow" style={{ margin: 0 }}>
-          {date.format(post.publishedAt!)} · {t.blog.minRead(minutes)}
+          {t.blog.by}{" "}
+          <Link href="/about" rel="author" className="link-muted">
+            {settings.name}
+          </Link>{" "}
+          · {date.format(post.publishedAt!)} · {t.blog.minRead(minutes)}
         </p>
         <h1>{post.title}</h1>
       </header>
@@ -86,7 +90,20 @@ export default async function PostPage({ params }: Props) {
       ) : null}
       <div className="wrap">
         <div className="prose" dangerouslySetInnerHTML={{ __html: renderMarkdown(post.body, await imageDims(post.body)) }} />
-        <p className="prose" style={{ marginTop: 80, fontSize: 13 }}>
+        <aside className="prose post-author">
+          <p className="eyebrow" style={{ margin: 0 }}>{t.blog.writtenBy}</p>
+          <p style={{ margin: "8px 0 0" }}>
+            <Link href="/about" rel="author">{settings.name}</Link> — {settings.bio}
+          </p>
+          <p className="post-author-links">
+            {profiles(settings).map((u) => (
+              <a key={u} href={u} rel="me noopener noreferrer" target="_blank" className="link-muted">
+                {new URL(u).hostname.replace(/^www\./, "")}
+              </a>
+            ))}
+          </p>
+        </aside>
+        <p className="prose" style={{ marginTop: 48, fontSize: 13 }}>
           <Link href="/blog" className="link-muted with-arrow"><Arrow dir="left" /> {t.blog.all}</Link>
         </p>
       </div>

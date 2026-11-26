@@ -7,7 +7,7 @@ import { useLayoutEffect, useRef } from "react";
  * words are measured after layout and every word on the same line shares that line's delay.
  */
 export function HeroLines({ text }: { text: string }) {
-  const ref = useRef<HTMLHeadingElement>(null);
+  const ref = useRef<HTMLParagraphElement>(null);
 
   useLayoutEffect(() => {
     const h = ref.current;
@@ -46,7 +46,7 @@ export function HeroLines({ text }: { text: string }) {
   });
 
   return (
-    <h1 ref={ref} className="hero-lines">
+    <p ref={ref} className="hero-lines">
       <span className="sr-only">{text.replace(/\*\*/g, "")}</span>
       <span aria-hidden="true">
         {words.map(({ w, bold, glue }, i) => (
@@ -56,6 +56,6 @@ export function HeroLines({ text }: { text: string }) {
           </span>
         ))}
       </span>
-    </h1>
+    </p>
   );
 }

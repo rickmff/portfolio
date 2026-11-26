@@ -1,5 +1,9 @@
 export const SETTING_KEYS = {
-  name: { label: "Name", fallback: "Henrique Matos" },
+  name: { label: "Name", fallback: "Henrique Faria" },
+  alternateName: {
+    label: "Other names (comma-separated: earlier names and handles that should resolve to you)",
+    fallback: "Henrique Matos, rickmff",
+  },
   role: { label: "Role (small caps line)", fallback: "Fullstack developer" },
   bio: {
     label: "Short bio (one or two sentences — the description search engines, social cards and AI assistants use)",
@@ -12,6 +16,7 @@ export const SETTING_KEYS = {
   },
   worksFor: { label: "Current company (optional)", fallback: "" },
   location: { label: "Location (optional, e.g. Lisbon, Portugal)", fallback: "" },
+  languages: { label: "Languages you speak (comma-separated)", fallback: "Portuguese, English" },
   hero: {
     label: "Hero sentence (wrap a word in **double asterisks** to emphasise it)",
     fallback:
