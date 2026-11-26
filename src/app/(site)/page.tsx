@@ -42,7 +42,9 @@ export default async function Home() {
       <section className="wrap hero">
         <HalloweenBats /> {/* seasonal:halloween */}
         <NatalSnow /> {/* seasonal:natal */}
-        <p className="eyebrow hero-in" style={{ margin: 0 }}>{settings.role}</p>
+        <h1 className="eyebrow hero-in hero-name">
+          {settings.name} · {settings.role}
+        </h1>
         <HeroLines text={settings.hero} />
         {settings.heroBy ? (
           <p className="hero-by hero-after">

@@ -33,26 +33,42 @@ export default async function ProjectPage({ params }: Props) {
   const others = all.filter((o) => o.id !== p.id);
   const url = localeUrl(locale, `/work/${p.slug}`);
   const image = p.showcasePosterUrl || p.coverUrl;
+  const stack = p.stack
+    .split(/[,·]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
   return (
     <article className="section">
       <JsonLd
         graph={[
           {
-            "@type": "CreativeWork",
+            "@type": p.liveUrl ? ["CreativeWork", "WebApplication"] : "CreativeWork",
             "@id": `${url}#work`,
             url,
+            mainEntityOfPage: url,
             name: p.title,
             description: p.summary,
+            inLanguage: locale === "pt" ? "pt-BR" : "en",
             ...(image && { image: absoluteUrl(image) }),
             dateCreated: String(p.year),
-            keywords: p.stack
-              .split(",")
-              .map((s) => s.trim())
-              .filter(Boolean),
+            keywords: stack,
             creator: { "@id": PERSON_ID },
             author: { "@id": PERSON_ID },
+            ...(p.liveUrl && { applicationCategory: "WebApplication", operatingSystem: "Web", installUrl: p.liveUrl }),
             ...(p.liveUrl || p.repoUrl ? { sameAs: [p.liveUrl, p.repoUrl].filter(Boolean) } : {}),
           },
+          ...(p.repoUrl
+            ? [
+                {
+                  "@type": "SoftwareSourceCode",
+                  "@id": `${url}#code`,
+                  name: p.title,
+                  codeRepository: p.repoUrl,
+                  author: { "@id": PERSON_ID },
+                  targetProduct: { "@id": `${url}#work` },
+                },
+              ]
+            : []),
           breadcrumbs(locale, [
             { name: settings.name, path: "/" },
             { name: t.home.latestWork, path: "/#work" },

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { schema } from "@/db";
+import { pingIndexNow } from "./indexnow";
 import { slugify } from "./markdown";
 
 /**
@@ -85,6 +86,7 @@ export function withSlug(c: Collection, data: Record<string, unknown>) {
 
 export function refreshSite() {
   revalidatePath("/", "layout");
+  pingIndexNow();
 }
 
 export function errorResponse(e: unknown) {

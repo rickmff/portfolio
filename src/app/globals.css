@@ -153,7 +153,10 @@ a {
   padding-block: 200px var(--section-gap);
   text-align: center;
 }
-.hero h1,
+.hero-name {
+  margin: 0;
+  font-weight: 400;
+}
 .hero-lines {
   margin: 32px auto 0;
   max-width: 760px;
@@ -163,7 +166,7 @@ a {
   font-weight: 300;
   text-wrap: balance;
 }
-.hero h1 strong {
+.hero-lines strong {
   font-weight: 500;
 }
 .hero-by {
@@ -2790,4 +2793,17 @@ button.book-read {
     padding-inline: 20px;
     mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 20px), transparent);
   }
+}
+
+.post-author {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+}
+.post-author-links {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0 0;
+  font-size: 12px;
 }
