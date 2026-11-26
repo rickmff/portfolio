@@ -3,8 +3,8 @@ import { after } from "next/server";
 import sitemap from "@/app/sitemap";
 import { SITE_URL } from "./seo";
 
-/** An 8–128 character key you choose; the same value is served at /indexnow.txt to prove the site is yours. */
-export const INDEXNOW_KEY = process.env.INDEXNOW_KEY?.trim() || "";
+/** IndexNow keys are public by design: the same value is served at /indexnow.txt to prove the site is yours. */
+export const INDEXNOW_KEY = process.env.INDEXNOW_KEY?.trim() || "8541c2fe3193a1c1e09ea640d3efc0ab";
 
 /**
  * Tells Bing, Yandex, Seznam and Naver (IndexNow) that the site changed, so they recrawl in
