@@ -16,6 +16,7 @@ const GROUPS: { title: string; icon: IconName; keys: SettingKey[] }[] = [
   { title: "Profile", icon: "user", keys: ["name", "alternateName", "role", "bio", "knowsAbout", "worksFor", "location", "languages"] },
   { title: "Home page", icon: "home", keys: ["hero", "heroBy", "heroByUrl", "now"] },
   { title: "Contact and links", icon: "link", keys: ["email", "github", "linkedin", "twitter", "discord", "cv"] },
+  { title: "Search engines", icon: "globe", keys: ["googleVerification", "bingVerification"] },
 ];
 
 const ICONS: Partial<Record<SettingKey, IconName>> = {
@@ -36,6 +37,8 @@ const ICONS: Partial<Record<SettingKey, IconName>> = {
   twitter: "link",
   discord: "link",
   cv: "file",
+  googleVerification: "globe",
+  bingVerification: "globe",
 };
 
 const LONG: SettingKey[] = ["bio", "knowsAbout", "hero", "now"];

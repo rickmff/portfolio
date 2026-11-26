@@ -19,6 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: settings.name, template: `%s — ${settings.name}` },
     authors: [{ name: settings.name, url: "/about" }],
     creator: settings.name,
+    verification: {
+      ...(settings.googleVerification && { google: settings.googleVerification }),
+      ...(settings.bingVerification && { other: { "msvalidate.01": settings.bingVerification } }),
+    },
   };
 }
 
