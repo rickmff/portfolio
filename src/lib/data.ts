@@ -67,14 +67,11 @@ export async function getBooks() {
   return rows.map((b) => ({ ...localize(b, locale), slug: slugify(b.title) }));
 }
 
-const livePost = and(
-  eq(posts.published, true),
-  isNotNull(posts.publishedAt),
-  lte(posts.publishedAt, new Date()),
-);
+/** A function, not a constant: the cut-off must be "now" on every query, not when the module loaded. */
+const livePost = () => and(eq(posts.published, true), isNotNull(posts.publishedAt), lte(posts.publishedAt, new Date()));
 
 export function getPublishedPosts(limit?: number) {
-  const q = db.select().from(posts).where(livePost).orderBy(desc(posts.publishedAt));
+  const q = db.select().from(posts).where(livePost()).orderBy(desc(posts.publishedAt));
   return localizeAll(limit ? q.limit(limit) : q);
 }
 
@@ -82,6 +79,6 @@ export async function getPost(slug: string) {
   const [row] = await db
     .select()
     .from(posts)
-    .where(and(eq(posts.slug, slug), livePost));
+    .where(and(eq(posts.slug, slug), livePost()));
   return row ? localize(row, await getLocale()) : null;
 }
